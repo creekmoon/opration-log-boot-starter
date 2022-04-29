@@ -1,12 +1,15 @@
 package operationLog.core;
 
+/**
+ * 实现这个接口,需要保证线程安全!
+ */
 public interface OptLogHandler {
 
 
     /**
      * 定义http本次请求是否成功  如果成功则记录 不成功则不记录
      *
-     * @param functionResult
+     * @param functionResult 本次执行的结果
      * @return
      */
     boolean requestIsSuccess(Object functionResult);

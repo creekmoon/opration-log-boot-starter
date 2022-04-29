@@ -1,5 +1,6 @@
 package operationLog.core;
 
+import cn.hutool.Hutool;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -19,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -43,6 +45,12 @@ public class LogAspect implements ApplicationContextAware {
 
     /*没有实现OptLogUserInfoProvider接口时,进行提示,最大提示次数150 */
     private int tryCount = 100;
+
+    @PostConstruct
+    public void init() {
+        /*当切片启用时, 标记整个服务启用*/
+        LogContext.disable = false;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -77,10 +85,10 @@ public class LogAspect implements ApplicationContextAware {
                 logRecord.setProjectName(OptLogUserInfoProvider.getProjectName());
             } catch (Exception e) {
                 e.printStackTrace();
-                log.error("[日志推送]获取当前用户信息发生异常!");
+                log.debug("[日志推送]获取当前用户信息发生异常!");
             }
         }
-        logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unkonwMethod"));
+        logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
         logRecord.setRemark(swaggerApi == null ? annotation.value() : swaggerApi.value());
 
         try {
@@ -110,7 +118,7 @@ public class LogAspect implements ApplicationContextAware {
                     .collect(Collectors.toList());
             logRecord.setRequestParams(new JSONArray(argList));
         } catch (Exception e) {
-            log.error("[日志推送]获取方法参数出错！本次参数保存空值！", e);
+            log.debug("[日志推送]获取方法参数出错！本次参数保存空值！", e);
             logRecord.setRequestParams(new JSONArray());
         }
         /*初始化上下文*/
@@ -139,8 +147,11 @@ public class LogAspect implements ApplicationContextAware {
                 e.printStackTrace();
                 log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
             }
-            /*输出日志结果*/
-            applicationContext.getBean(OptLogHandler.class).save(logRecord);
+            /*保存日志结果*/
+            LogThreadPool.runTask(logRecord.getUserId(), () -> {
+                LogFiller.fill(logRecord);
+                applicationContext.getBean(OptLogHandler.class).save(logRecord);
+            });
             return functionResult;
         } finally {
             LogContext.request2Logs.remove(request);   //及时移除对象

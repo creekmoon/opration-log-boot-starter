@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class LogContext {
+    /*当前是否处于禁用状态*/
+    static boolean disable = true;
     /*当前请求*/
     protected static ThreadLocal<ServletRequest> currentServletRequest = new ThreadLocal<>();
     /*跟踪的元数据*/
@@ -29,6 +31,9 @@ public class LogContext {
      * @param metadata 元数据,传入需要监控的对象
      */
     public static void follow(Callable<Object> metadata) {
+        if (disable) {
+            return;
+        }
         ServletRequest servletRequest = currentServletRequest.get();
         if (servletRequest == null) {
             log.error("[日志推送]获取当前ServletRequest失败! ");
@@ -56,7 +61,7 @@ public class LogContext {
      * @param markPoints
      */
     public static void addMarkPoints(String... markPoints) {
-        if (markPoints == null) {
+        if (disable || markPoints == null) {
             return;
         }
         ServletRequest servletRequest = currentServletRequest.get();
