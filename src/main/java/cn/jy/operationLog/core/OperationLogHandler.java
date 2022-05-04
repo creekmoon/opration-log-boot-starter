@@ -1,9 +1,9 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
 /**
  * 实现这个接口,需要保证线程安全!
  */
-public interface OptLogHandler {
+public interface OperationLogHandler {
 
 
     /**
@@ -18,7 +18,7 @@ public interface OptLogHandler {
     /**
      * 定义如何保存这个日志
      *
-     * @param LogRecord
+     * @param logRecord
      */
-    void save(LogRecord LogRecord);
+    void save(LogRecord logRecord);
 }

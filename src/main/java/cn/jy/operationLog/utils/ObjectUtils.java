@@ -1,4 +1,4 @@
-package operationLog.core;
+package cn.jy.operationLog.utils;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class LogContext {
     /*当前是否处于禁用状态*/
-    static boolean disable = true;
+    public static boolean disable = true;
     /*当前请求*/
     protected static ThreadLocal<ServletRequest> currentServletRequest = new ThreadLocal<>();
     /*跟踪的元数据*/

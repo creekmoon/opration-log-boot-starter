@@ -1,6 +1,5 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
-import cn.hutool.Hutool;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -20,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LogAspect implements ApplicationContextAware {
 
-    private volatile OptLogUserInfoProvider logUserInfoProvider;
+    private volatile OperationLogUserInfoProvider logUserInfoProvider;
     /**
      * 上下文对象实例
      */
@@ -46,18 +44,12 @@ public class LogAspect implements ApplicationContextAware {
     /*没有实现OptLogUserInfoProvider接口时,进行提示,最大提示次数150 */
     private int tryCount = 100;
 
-    @PostConstruct
-    public void init() {
-        /*当切片启用时, 标记整个服务启用*/
-        LogContext.disable = false;
-    }
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
-    @Pointcut("@annotation(operationLog.core.OptLog)")
+    @Pointcut("@annotation(cn.jy.operationLog.core.OperationLog)")
     private void pointcut() {
     }
 
@@ -73,16 +65,16 @@ public class LogAspect implements ApplicationContextAware {
         /*获取注解值*/
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         ApiOperation swaggerApi = signature.getMethod().getAnnotation(ApiOperation.class);
-        OptLog annotation = signature.getMethod().getAnnotation(OptLog.class);
+        OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
         /*初始化日志对象*/
         LogRecord logRecord = new LogRecord();
-        OptLogUserInfoProvider OptLogUserInfoProvider = getLogUserInfoProvider();
-        if (OptLogUserInfoProvider != null) {
+        OperationLogUserInfoProvider OperationLogUserInfoProvider = getLogUserInfoProvider();
+        if (OperationLogUserInfoProvider != null) {
             try {
-                logRecord.setUserId(OptLogUserInfoProvider.getUserId());
-                logRecord.setUserName(OptLogUserInfoProvider.getUserName());
-                logRecord.setOrgId(OptLogUserInfoProvider.getOrgId());
-                logRecord.setProjectName(OptLogUserInfoProvider.getProjectName());
+                logRecord.setUserId(OperationLogUserInfoProvider.getUserId());
+                logRecord.setUserName(OperationLogUserInfoProvider.getUserName());
+                logRecord.setOrgId(OperationLogUserInfoProvider.getOrgId());
+                logRecord.setProjectName(OperationLogUserInfoProvider.getProjectName());
             } catch (Exception e) {
                 e.printStackTrace();
                 log.debug("[日志推送]获取当前用户信息发生异常!");
@@ -128,7 +120,7 @@ public class LogAspect implements ApplicationContextAware {
             LogContext.request2Logs.put(request, logRecord);
             /*判断当前方法是否执行成功*/
             Object functionResult = pjp.proceed();
-            if (!applicationContext.getBean(OptLogHandler.class).requestIsSuccess(functionResult)
+            if (!applicationContext.getBean(OperationLogHandler.class).requestIsSuccess(functionResult)
             ) {
                 logRecord.setRequestResult(false);
                 if (annotation.onlySuccess()) {
@@ -150,7 +142,7 @@ public class LogAspect implements ApplicationContextAware {
             /*保存日志结果*/
             LogThreadPool.runTask(logRecord.getUserId(), () -> {
                 LogFiller.fill(logRecord);
-                applicationContext.getBean(OptLogHandler.class).save(logRecord);
+                applicationContext.getBean(OperationLogHandler.class).save(logRecord);
             });
             return functionResult;
         } finally {
@@ -160,31 +152,11 @@ public class LogAspect implements ApplicationContextAware {
         }
     }
 
-    private OptLogUserInfoProvider getLogUserInfoProvider() {
+    private OperationLogUserInfoProvider getLogUserInfoProvider() {
         if (this.logUserInfoProvider == null && tryCount >= 0) {
             synchronized (this) {
                 if (this.logUserInfoProvider == null) {
-                    Map<String, OptLogUserInfoProvider> beansOfType = applicationContext.getBeansOfType(OptLogUserInfoProvider.class);
-                    if (beansOfType.size() > 0) {
-                        if (beansOfType.size() > 1) {
-                            log.debug("[日志推送]无法自动注入用户信息..OptLogUserInfoProvider接口存在多个实现类,请只保留一个");
-                            log.debug("[日志推送]无法自动注入用户信息..OptLogUserInfoProvider接口存在多个实现类,请只保留一个");
-                            log.debug("[日志推送]无法自动注入用户信息..OptLogUserInfoProvider接口存在多个实现类,请只保留一个");
-                            log.debug("[日志推送]无法自动注入用户信息..OptLogUserInfoProvider接口存在多个实现类,请只保留一个");
-                            return null;
-                        }
-                        for (OptLogUserInfoProvider value : beansOfType.values()) {
-                            this.logUserInfoProvider = value;
-                            return value;
-                        }
-                    } else {
-                        log.debug("[日志推送]无法自动注入用户信息..请实现OptLogUserInfoProvider接口");
-                        log.debug("[日志推送]无法自动注入用户信息..请实现OptLogUserInfoProvider接口");
-                        log.debug("[日志推送]无法自动注入用户信息..请实现OptLogUserInfoProvider接口");
-                        log.debug("[日志推送]无法自动注入用户信息..请实现OptLogUserInfoProvider接口");
-                        return null;
-                    }
-                    tryCount--;
+                    this.logUserInfoProvider = applicationContext.getBean(OperationLogUserInfoProvider.class);
                 }
             }
         }

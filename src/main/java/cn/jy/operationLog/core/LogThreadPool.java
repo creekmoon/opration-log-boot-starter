@@ -1,7 +1,8 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
 
@@ -9,11 +10,18 @@ import java.util.concurrent.*;
 /**
  * 专用于后置处理的线程池
  */
+@Slf4j
 public class LogThreadPool {
 
-    private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-            .setNamePrefix("logs-thread")
-            .build();
+    private static ThreadFactory namedThreadFactory;
+
+    static {
+        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder().setNamePrefix("logs-thread");
+        threadFactoryBuilder.setUncaughtExceptionHandler((Thread t, Throwable e) -> {
+            log.error("操作日志记录线程出错!", e);
+        });
+        namedThreadFactory = threadFactoryBuilder.build();
+    }
 
     private static ExecutorService service1 = new ThreadPoolExecutor(
             1,

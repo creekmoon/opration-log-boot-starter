@@ -1,4 +1,4 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

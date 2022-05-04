@@ -1,7 +1,7 @@
-package operationLog.autoConfig;
+package cn.jy.operationLog.config;
 
 
-import operationLog.core.LogAspect;
+import cn.jy.operationLog.core.LogAspect;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({LogAspect.class})
+@Import({OptLogAutoConfiguration.class})
 public @interface EnableOperationLog {
 
 }

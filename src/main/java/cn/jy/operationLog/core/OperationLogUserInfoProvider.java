@@ -1,6 +1,6 @@
-package operationLog.core;
+package cn.jy.operationLog.core;
 
-public interface OptLogUserInfoProvider {
+public interface OperationLogUserInfoProvider {
 
     String getUserName();
 
