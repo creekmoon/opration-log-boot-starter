@@ -23,6 +23,8 @@ public class DefaultOperationLogUserInfoProvider implements OperationLogUserInfo
 
     @Override
     public Long getUserId() {
+        Exception exception = new Exception("请实现OperationLogUserInfoProvider接口,并交给Spring管理");
+        exception.printStackTrace();
         log.error("请实现OperationLogUserInfoProvider接口,并交给Spring管理");
         return unknownLong;
     }

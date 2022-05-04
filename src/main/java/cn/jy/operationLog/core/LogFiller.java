@@ -16,7 +16,7 @@ public class LogFiller {
 
     /*后期处理日志(查找不同点) 并输出内容*/
     public static void fill(LogRecord record) {
-        LogThreadPool.runTask(Optional.ofNullable(record.getUserId()).orElse(1L), () -> {
+        LogThreadPool.runTask(record.getUserId(), () -> {
             /*找出改变的字段*/
             Map<String, Object> oldMap = Optional.ofNullable(record.preValue).map(BeanUtil::beanToMap).orElse(null);
             Map<String, Object> newMap = Optional.ofNullable(record.afterValue).map(BeanUtil::beanToMap).orElse(null);
@@ -29,7 +29,7 @@ public class LogFiller {
             record.setEffectFieldsBefore(oldMap);
             record.setEffectFieldsAfter(newMap);
             /*设置操作时间*/
-            record.setOpsTime(new Date(System.currentTimeMillis()));
+            record.setOpsTime(new Date());
 
         });
     }

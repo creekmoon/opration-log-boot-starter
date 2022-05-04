@@ -41,9 +41,6 @@ public class LogAspect implements ApplicationContextAware {
      */
     private ApplicationContext applicationContext;
 
-    /*没有实现OptLogUserInfoProvider接口时,进行提示,最大提示次数150 */
-    private int tryCount = 100;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -153,7 +150,7 @@ public class LogAspect implements ApplicationContextAware {
     }
 
     private OperationLogUserInfoProvider getLogUserInfoProvider() {
-        if (this.logUserInfoProvider == null && tryCount >= 0) {
+        if (this.logUserInfoProvider == null) {
             synchronized (this) {
                 if (this.logUserInfoProvider == null) {
                     this.logUserInfoProvider = applicationContext.getBean(OperationLogUserInfoProvider.class);
