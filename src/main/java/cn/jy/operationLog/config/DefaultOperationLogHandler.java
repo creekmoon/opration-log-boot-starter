@@ -18,11 +18,6 @@ public class DefaultOperationLogHandler implements OperationLogHandler {
 
     @Override
     public void save(LogRecord logRecord) {
-        log.error("请实现OperationLogHandler接口,并交给Spring管理");
-        log.error("请实现OperationLogHandler接口,并交给Spring管理");
-        log.error("请实现OperationLogHandler接口,并交给Spring管理");
-        Exception exception = new Exception("请实现OperationLogHandler接口,并交给Spring管理");
-        exception.printStackTrace();
-        log.info(logRecord.toString());
+        log.info("operation-log:" + logRecord.toString());
     }
 }
