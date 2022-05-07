@@ -42,6 +42,7 @@ public class VdpWebApplication {
 在需要记录操作的controller方法上加入注解 @OperationLog
 
 ```java
+@RequestMapping("web/{version}/tTransport")
 public class TTransportController {
 
     @PostMapping(value = "/update")
