@@ -15,6 +15,10 @@
     </description>
     <url>https://github.com/yinjiangyue/opration-log-boot-starter</url>
 
+    <!--注意 install会有报错, 但是不会影响结果-->
+    <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
+
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -149,6 +153,7 @@
         </snapshotRepository>
     </distributionManagement>
 
+
     <build>
         <pluginManagement>
             <plugins>
@@ -181,7 +186,7 @@
                     </configuration>
                 </plugin>
 
-                <!--定义javadoc插件-->
+                <!--定义javadoc插件  整个过程会有报错,因为有些注释格式不正确.但是不影响结果 已经启用<doclint>none</doclint>忽略了错误-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -224,44 +229,25 @@
 
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!--我们上传的jar包，需要包含doc和源码-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <!--默认用这个配置文件 -->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                        </configuration>
-                    </plugin>
-                    <!--我们上传的jar包，需要包含doc和源码-->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                    </plugin>
-                    <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
-                    <!-- GPG -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 
 </project>
