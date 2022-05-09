@@ -163,6 +163,16 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <!--不是很明白为什么加executions这个标签,我也不理解有啥用(貌似能提高编译速度),跟着大佬们加,实测其实不加也没有影响-->
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
                     <!-- GPG -->
