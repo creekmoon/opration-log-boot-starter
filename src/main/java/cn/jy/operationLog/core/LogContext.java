@@ -3,7 +3,6 @@ package cn.jy.operationLog.core;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 import javax.servlet.ServletRequest;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +40,7 @@ public class LogContext {
         }
         LogRecord record = request2Logs.get(servletRequest);
         if (record == null) {
-            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OptLog注解!");
+            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;
         }
         metadataSupplier.set(metadata);
@@ -67,7 +66,7 @@ public class LogContext {
         ServletRequest servletRequest = currentServletRequest.get();
         LogRecord record = request2Logs.get(servletRequest);
         if (record == null) {
-            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OptLog注解!");
+            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;
         }
         for (String markPoint : markPoints) {
