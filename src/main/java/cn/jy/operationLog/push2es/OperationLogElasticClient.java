@@ -1,13 +1,13 @@
 package cn.jy.operationLog.push2es;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
 import cn.jy.operationLog.core.LogRecord;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import junit.framework.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -37,13 +37,16 @@ public class OperationLogElasticClient {
 
     @PostConstruct
     void init() {
-        Assert.assertNotNull(config.getIndexName());
-        Assert.assertNotNull(config.getPort());
-        Assert.assertNotNull(config.getHostName());
+        if (StrUtil.isBlank(config.getIndexName())
+                || StrUtil.isBlank(config.getHostName())
+                || config.getPort() == null
+        ) {
+            throw new RuntimeException("OperationLogElasticClient 参数不完整!无法启动!");
+        }
         initClient();
     }
 
-    public void save2ElasticSearch(LogRecord logRecord){
+    public void save2ElasticSearch(LogRecord logRecord) {
         try {
             elasticsearchClient.index(IndexRequest.of(builder -> builder.index(config.getIndexName())
                     .id(UUID.fastUUID().toString())
