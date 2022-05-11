@@ -46,13 +46,25 @@ public class OperationLogElasticClient {
         initClient();
     }
 
-    public void save2ElasticSearch(LogRecord logRecord) {
+
+    /**
+     * 保存数据至ES
+     *
+     * @param logRecord  数据对象实体类
+     * @param retryCount 重试次数（ ES存在BUG 捕获I/O reactor后会导致SSL中断， 此时再次请求就可以了）
+     */
+    public void save2ElasticSearch(LogRecord logRecord, int retryCount) {
         try {
             elasticsearchClient.index(IndexRequest.of(builder -> builder.index(config.getIndexName())
                     .id(UUID.fastUUID().toString())
                     .document(logRecord)
             ));
         } catch (IOException e) {
+            if (retryCount > 0) {
+                log.debug("操作日志保存数据失败！ 再次尝试重试保存， 剩余{}次", retryCount - 1);
+                save2ElasticSearch(logRecord, retryCount - 1);
+                return;
+            }
             throw new RuntimeException(e);
         }
     }

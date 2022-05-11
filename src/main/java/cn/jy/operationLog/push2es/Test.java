@@ -1,7 +1,6 @@
 package cn.jy.operationLog.push2es;
 
 
-
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -35,10 +34,8 @@ public class Test {
 
         // Create the transport with a Jackson mapper
         ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
-
         // And create the API client
         ElasticsearchClient client = new ElasticsearchClient(transport);
-
         Student student = new Student();
         student.setId(1551L);
         student.setName("ywwuyi");

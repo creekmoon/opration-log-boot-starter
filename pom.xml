@@ -151,6 +151,14 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.12.3</version>
         </dependency>
+
+        <!--如果引用时报String转换错误，可以引用这个包-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.httpcomponents</groupId>-->
+<!--            <artifactId>httpclient</artifactId>-->
+<!--            <version>4.5.13</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
 
@@ -223,7 +231,7 @@
                     </configuration>
                 </plugin>
 
-                <!--定义gpg签名插件-->
+                <!--定义gpg签名插件 Gpg4win 构建时会自动调用gpg.exe进行签名-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
