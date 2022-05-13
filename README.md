@@ -93,7 +93,7 @@ public class MyOperationLogHandler implements OperationLogHandler {
 
 ```java
 
-public interface OperationLogUserInfoProvider {
+public interface OperationLogDetailProvider {
 
     String getUserName();
 

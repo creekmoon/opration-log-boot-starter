@@ -1,6 +1,5 @@
 package cn.jy.operationLog.core;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.jy.operationLog.utils.ObjectUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LogAspect implements ApplicationContextAware {
 
-    private volatile OperationLogUserInfoProvider logUserInfoProvider;
+    private volatile OperationLogDetailProvider logDetailProvider;
     /**
      * 上下文对象实例
      */
@@ -64,18 +63,11 @@ public class LogAspect implements ApplicationContextAware {
         OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
         /*初始化日志对象*/
         LogRecord logRecord = new LogRecord();
-        OperationLogUserInfoProvider OperationLogUserInfoProvider = getLogUserInfoProvider();
-        if (OperationLogUserInfoProvider != null) {
-            try {
-                logRecord.setUserId(OperationLogUserInfoProvider.getUserId());
-                logRecord.setUserName(OperationLogUserInfoProvider.getUserName());
-                logRecord.setOrgId(OperationLogUserInfoProvider.getOrgId());
-                logRecord.setProjectName(OperationLogUserInfoProvider.getProjectName());
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.debug("[日志推送]获取当前用户信息发生异常!");
-            }
-        }
+        OperationLogDetailProvider detailProvider = getLogDetailProvider();
+        logRecord.setUserId(detailProvider.getUserId());
+        logRecord.setUserName(detailProvider.getUserName());
+        logRecord.setOrgId(detailProvider.getOrgId());
+        logRecord.setProjectName(detailProvider.getProjectName());
         logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
         logRecord.setRemark(swaggerApi == null ? annotation.value() : swaggerApi.value());
 
@@ -112,24 +104,19 @@ public class LogAspect implements ApplicationContextAware {
         /*初始化上下文*/
         HttpServletRequest request = servletAttributes.getRequest();
         try {
-            LogContext.currentServletRequest.set(request);
-            LogContext.request2Logs.put(request, logRecord);
+            OperationLogContext.currentServletRequest.set(request);
+            OperationLogContext.request2Logs.put(request, logRecord);
             /*判断当前方法是否执行成功*/
             Object functionResult = pjp.proceed();
-            if (!applicationContext.getBean(OperationLogHandler.class).requestIsSuccess(functionResult)
-            ) {
-                logRecord.setRequestResult(false);
-                if (annotation.onlySuccess()) {
-                    log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
-                    return functionResult;
-                }
-            } else {
-                logRecord.setRequestResult(true);
+            /*判断日志是否执行成功*/
+            if (detailProvider.requestIsFail(functionResult) && !annotation.saveOnFail()) {
+                log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
+                return functionResult;
             }
-            /*如果方法执行成功,拿取方法执行后的结果*/
+            /*跟踪指定的执行结果*/
             try {
-                if (LogContext.metadataSupplier.get() != null) {
-                    logRecord.setAfterValue(LogContext.metadataSupplier.get().call());
+                if (OperationLogContext.metadataSupplier.get() != null) {
+                    logRecord.setAfterValue(OperationLogContext.metadataSupplier.get().call());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,26 +124,26 @@ public class LogAspect implements ApplicationContextAware {
             }
             /*保存日志结果*/
             LogThreadPool.runTask(logRecord.getUserId(), () -> {
-                OperationLogHandler.findDifferent(logRecord);
+                ObjectUtils.findDifferent(logRecord);
                 applicationContext.getBean(OperationLogHandler.class).save(logRecord);
             });
             return functionResult;
         } finally {
-            LogContext.request2Logs.remove(request);   //及时移除对象
-            LogContext.currentServletRequest.remove(); //及时移除对象
-            LogContext.metadataSupplier.remove();//及时移除对象
+            OperationLogContext.request2Logs.remove(request);   //及时移除对象
+            OperationLogContext.currentServletRequest.remove(); //及时移除对象
+            OperationLogContext.metadataSupplier.remove();//及时移除对象
         }
     }
 
-    private OperationLogUserInfoProvider getLogUserInfoProvider() {
-        if (this.logUserInfoProvider == null) {
+    private OperationLogDetailProvider getLogDetailProvider() {
+        if (this.logDetailProvider == null) {
             synchronized (this) {
-                if (this.logUserInfoProvider == null) {
-                    this.logUserInfoProvider = applicationContext.getBean(OperationLogUserInfoProvider.class);
+                if (this.logDetailProvider == null) {
+                    this.logDetailProvider = applicationContext.getBean(OperationLogDetailProvider.class);
                 }
             }
         }
-        return this.logUserInfoProvider;
+        return this.logDetailProvider;
 
     }
 }

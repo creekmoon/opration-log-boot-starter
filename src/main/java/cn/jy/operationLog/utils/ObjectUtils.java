@@ -1,9 +1,9 @@
 package cn.jy.operationLog.utils;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import cn.hutool.core.bean.BeanUtil;
+import cn.jy.operationLog.core.LogRecord;
+
+import java.util.*;
 
 public class ObjectUtils {
 
@@ -46,5 +46,22 @@ public class ObjectUtils {
         changedFields.addAll(noComparedKeys);
         ignoreKeys.forEach(changedFields::remove);
         return changedFields;
+    }
+
+
+    public static void findDifferent(LogRecord record) {
+        /*找出改变的字段*/
+        Map<String, Object> oldMap = Optional.ofNullable(record.getPreValue()).map(BeanUtil::beanToMap).orElse(null);
+        Map<String, Object> newMap = Optional.ofNullable(record.getAfterValue()).map(BeanUtil::beanToMap).orElse(null);
+        Set<String> different = ObjectUtils.findDifferent4Map(
+                oldMap,
+                newMap,
+                Collections.EMPTY_SET);
+        record.setEffectFields(different);
+        /*找出改变的字段对应的值*/
+        record.setEffectFieldsBefore(oldMap);
+        record.setEffectFieldsAfter(newMap);
+        /*设置操作时间*/
+        record.setOpsTime(new Date());
     }
 }

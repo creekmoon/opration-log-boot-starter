@@ -12,6 +12,6 @@ public @interface OperationLog {
     String value() default "未描述的操作";
 
 
-    //日志记录条件: 执行成功才会记录()
-    boolean onlySuccess() default true;
+    //操作失败时,不进行日志记录
+    boolean saveOnFail() default false;
 }

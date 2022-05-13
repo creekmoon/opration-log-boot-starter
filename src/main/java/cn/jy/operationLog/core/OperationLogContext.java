@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author JY
  */
 @Slf4j
-public class LogContext {
+public class OperationLogContext {
     /*当前是否处于禁用状态*/
     public static boolean disable = true;
     /*当前请求*/

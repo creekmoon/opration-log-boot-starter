@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({OperationLogElasticConstant.class,OperationLogElasticClient.class})
+@Import({OperationLogElasticConstant.class,OperationLogElasticClient.class,Push2ElasticSearchOperationLogHandler.class})
 public @interface EnableOperationLogElasticSearchSupport {
 
 }
