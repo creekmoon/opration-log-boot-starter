@@ -9,7 +9,7 @@
 <dependency>
     <groupId>io.github.yinjiangyue</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ public class TTransportController {
 
 ### 查看效果
 
-如果能够成功启动.那么会将操作的情况打印到控制台.
+如果能够成功启动.那么会将每次操作的情况打印到控制台.
 
 ```text
 operation-log:LogRecord(userId=1, orgId=1, userName=unknown  ..........省略
@@ -182,7 +182,35 @@ public interface OperationLogHandler {
 
 
 }
+```
 
+## 对ElasticSearch的支持
 
+### 使用步骤
+* 在SpringBoot的Main方法上, 使用注解 **@EnableOperationLogElasticSearchSupport**
+* 在application.yaml配置ES的连接参数
+
+### 配置举例
+```java
+@EnableOperationLogElasticSearchSupport
+@EnableOperationLog
+@ComponentScan(basePackages = {"com.vdp", "com.wtx.mgt"})
+public class VdpWebApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(VdpWebApplication.class, args);
+    }
+
+} 
+```
+
+```yaml
+operation-log:
+  host-name: 192.168.1.109
+  port: 9200
+  index-name: web-logs
+  user-name: elastic
+  password: elastic
+```
 
 

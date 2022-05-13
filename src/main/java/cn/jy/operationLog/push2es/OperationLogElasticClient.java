@@ -51,7 +51,7 @@ public class OperationLogElasticClient {
      * 保存数据至ES
      *
      * @param logRecord  数据对象实体类
-     * @param retryCount 重试次数（ ES存在BUG 捕获I/O reactor后会导致SSL中断， 此时再次请求就可以了）
+     * @param retryCount 重试次数（ 这个参数的意义在于,ES存在BUG 捕获I/O reactor的异常后会导致SSL中断， 此时再次请求就可以了）
      */
     public void save2ElasticSearch(LogRecord logRecord, int retryCount) {
         try {
