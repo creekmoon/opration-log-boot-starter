@@ -9,7 +9,7 @@
 <dependency>
     <groupId>io.github.yinjiangyue</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
