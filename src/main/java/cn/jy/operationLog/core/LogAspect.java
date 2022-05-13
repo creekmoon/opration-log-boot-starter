@@ -3,7 +3,6 @@ package cn.jy.operationLog.core;
 import cn.jy.operationLog.utils.ObjectUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,10 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -125,7 +125,9 @@ public class LogAspect implements ApplicationContextAware {
             /*保存日志结果*/
             LogThreadPool.runTask(logRecord.getUserId(), () -> {
                 ObjectUtils.findDifferent(logRecord);
-                applicationContext.getBean(OperationLogHandler.class).save(logRecord);
+                for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
+                    operationLogHandler.handle(logRecord);
+                }
             });
             return functionResult;
         } finally {

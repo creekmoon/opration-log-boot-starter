@@ -1,8 +1,7 @@
 package cn.jy.operationLog.core;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.*;
@@ -35,8 +34,9 @@ public class LogRecord {
     Boolean requestResult;
     /*操作参数*/
     JSONArray requestParams;
-    /*操作时间*/
-    Date opsTime;
+    /*操作时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    Date operationTime;
     /*标记点*/
     List<String> markPoints = new ArrayList<>(4);
 }

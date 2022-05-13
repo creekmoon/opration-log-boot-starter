@@ -1,10 +1,5 @@
 package cn.jy.operationLog.core;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.jy.operationLog.utils.ObjectUtils;
-
-import java.util.*;
-
 /**
  * 实现这个接口,需要保证线程安全!
  */
@@ -12,11 +7,11 @@ public interface OperationLogHandler {
 
 
     /**
-     * 定义如何保存这个日志
+     * 定义处理这个日志对象
      *
      * @param logRecord
      */
-    void save(LogRecord logRecord);
+    void handle(LogRecord logRecord);
 
 
 }

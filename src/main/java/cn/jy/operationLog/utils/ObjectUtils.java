@@ -62,6 +62,6 @@ public class ObjectUtils {
         record.setEffectFieldsBefore(oldMap);
         record.setEffectFieldsAfter(newMap);
         /*设置操作时间*/
-        record.setOpsTime(new Date());
+        record.setOperationTime(new Date());
     }
 }
