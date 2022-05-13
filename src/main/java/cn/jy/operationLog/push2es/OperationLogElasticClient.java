@@ -60,6 +60,7 @@ public class OperationLogElasticClient {
                     .document(logRecord)
             ));
         } catch (IOException e) {
+            /*如果保存失败, 则再次进行重试 直到重试次数为0就抛出异常*/
             if (retryCount > 0) {
                 log.info("操作日志保存数据失败！ 再次尝试重试保存， 剩余{}次", retryCount - 1);
                 save2ElasticSearch(logRecord, retryCount - 1);
