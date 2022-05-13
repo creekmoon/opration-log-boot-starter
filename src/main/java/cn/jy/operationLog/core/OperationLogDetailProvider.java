@@ -14,12 +14,12 @@ public interface OperationLogDetailProvider {
     String getProjectName();
 
     /**
-     * 定义http本次请求是否失败 (默认 false)
+     * 在没有抛异常的情况下,定义http本次请求是否失败 (默认 false)
      *
      * @param returnValue 方法请求的返回值
      * @return
      */
-    default Boolean requestIsFail(Object returnValue) {
+    default Boolean requestIsFail(LogRecord logRecord,Object returnValue) {
         return false;
     }
 }
