@@ -1,8 +1,9 @@
 package cn.jy.operationLog.core;
 
 
-import cn.hutool.core.thread.ThreadFactoryBuilder;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 import java.util.concurrent.*;
 
@@ -16,11 +17,7 @@ public class LogThreadPool {
     private static ThreadFactory namedThreadFactory;
 
     static {
-        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder().setNamePrefix("logs-thread");
-        threadFactoryBuilder.setUncaughtExceptionHandler((Thread t, Throwable e) -> {
-            log.error("操作日志记录线程出错!", e);
-        });
-        namedThreadFactory = threadFactoryBuilder.build();
+        namedThreadFactory = new CustomizableThreadFactory("logs-thread");
     }
 
     private static ExecutorService service1 = new ThreadPoolExecutor(
