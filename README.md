@@ -19,7 +19,7 @@
 这个工具需要额外依赖
 
 * fastjson
-* hutool-all
+* hutool-core
 * lombok
 
 ### 快速开始
