@@ -2,6 +2,7 @@ package cn.jy.operationLog.utils;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.jy.operationLog.core.LogRecord;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.*;
 
@@ -59,8 +60,14 @@ public class ObjectUtils {
                 Collections.EMPTY_SET);
         record.setEffectFields(different);
         /*找出改变的字段对应的值*/
-        record.setEffectFieldsBefore(oldMap);
-        record.setEffectFieldsAfter(newMap);
+        JSONObject effectFieldsBefore = new JSONObject();
+        JSONObject effectFieldsAfter = new JSONObject();
+        for (String field : different) {
+            effectFieldsBefore.put(field, oldMap == null ? null : oldMap.get(field));
+            effectFieldsAfter.put(field, newMap == null ? null : newMap.get(field));
+        }
+        record.setEffectFieldsBefore(effectFieldsBefore);
+        record.setEffectFieldsAfter(effectFieldsAfter);
         /*设置操作时间*/
         record.setOperationTime(new Date());
     }
