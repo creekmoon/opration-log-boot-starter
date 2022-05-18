@@ -1,5 +1,6 @@
 # operation-log-starter
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.yinjiangyue/operation-log-boot-starter/badge.svg)](https://mvnrepository.com/artifact/io.github.yinjiangyue/operation-log-boot-starter)
+[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 简易的业务操作日志AOP实现类, 用于记录业务中的Controller的操作日志,能记录用户什么时候修改了哪些字段
 
 #### maven引用方式
@@ -9,7 +10,7 @@
 <dependency>
     <groupId>io.github.yinjiangyue</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
