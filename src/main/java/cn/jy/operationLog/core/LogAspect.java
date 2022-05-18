@@ -118,7 +118,7 @@ public class LogAspect implements ApplicationContextAware {
                 log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
             }
             /*判断日志是否执行成功*/
-            if (detailProvider.requestIsFail(logRecord, functionResult) && !annotation.saveOnFail()) {
+            if (detailProvider.requestIsFail(logRecord, functionResult) && !annotation.handleOnFail()) {
                 log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
                 return functionResult;
             }

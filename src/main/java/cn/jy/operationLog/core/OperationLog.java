@@ -13,5 +13,5 @@ public @interface OperationLog {
 
 
     //操作失败时,不进行日志记录
-    boolean saveOnFail() default false;
+    boolean handleOnFail() default false;
 }
