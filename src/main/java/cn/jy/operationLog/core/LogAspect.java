@@ -106,8 +106,23 @@ public class LogAspect implements ApplicationContextAware {
         try {
             OperationLogContext.currentServletRequest.set(request);
             OperationLogContext.request2Logs.put(request, logRecord);
-            /*判断当前方法是否执行成功*/
-            Object functionResult = pjp.proceed();
+            /*执行原生的方法*/
+            Object functionResult = null;
+            try {
+                functionResult = pjp.proceed();
+            }catch (Exception e){
+                log.debug("[日志推送]原生方法执行异常!");
+                logRecord.setRequestResult(Boolean.FALSE);
+            }
+            /*判断业务是否失败*/
+            if (logRecord.getRequestResult()) {
+                logRecord.setRequestResult(!detailProvider.requestIsFail(logRecord, functionResult));
+            }
+            /*执行失败则不处理*/
+            if (!logRecord.getRequestResult() && !annotation.handleOnFail()) {
+                log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
+                return functionResult;
+            }
             /*跟踪指定的执行结果*/
             try {
                 if (OperationLogContext.metadataSupplier.get() != null) {
@@ -116,11 +131,6 @@ public class LogAspect implements ApplicationContextAware {
             } catch (Exception e) {
                 e.printStackTrace();
                 log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
-            }
-            /*判断日志是否执行成功*/
-            if (detailProvider.requestIsFail(logRecord, functionResult) && !annotation.handleOnFail()) {
-                log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
-                return functionResult;
             }
             /*保存日志结果*/
             LogThreadPool.runTask(logRecord.getUserId(), () -> {

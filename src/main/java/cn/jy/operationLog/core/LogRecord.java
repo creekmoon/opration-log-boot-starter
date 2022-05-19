@@ -31,7 +31,7 @@ public class LogRecord {
     /*操作之后的值*/
     Object afterValue;
     /*操作结果*/
-    Boolean requestResult;
+    Boolean requestResult = Boolean.TRUE;
     /*操作参数*/
     JSONArray requestParams;
     /*操作时间 */

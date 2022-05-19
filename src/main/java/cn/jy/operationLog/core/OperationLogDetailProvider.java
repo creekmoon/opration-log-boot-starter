@@ -20,6 +20,6 @@ public interface OperationLogDetailProvider {
      * @return
      */
     default Boolean requestIsFail(LogRecord logRecord,Object returnValue) {
-        return false;
+        return Boolean.FALSE;
     }
 }

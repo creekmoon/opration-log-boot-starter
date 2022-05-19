@@ -228,7 +228,7 @@ public interface OperationLogDetailProvider {
 ```
 
 #### 例外
-如果你的OperationLog注解上标记有 **handleOnFail = true** 则会忽略上面的requestIsFail结果,无论如何都会生成日志 即一定会执行handle()
+如果你的OperationLog注解上标记有 **handleOnFail = true** 则会忽略任何错误,即使Controller方法报异常,也会执行handle()
 ```java
 @OperationLog(handleOnFail = true)
 ```
@@ -261,5 +261,21 @@ operation-log:
   user-name: elastic
   password: elastic
 ```
-
+## 常见错误解决
+```xml
+        <dependencies>
+        <!--如果引用时报NoSuchMethod转换错误，可以引用这个包-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+           <artifactId>httpclient</artifactId>
+           <version>4.5.13</version>
+        </dependency>
+        <!--如果引用时报ES的客户端错误，可以引用这个包-->
+        <dependency>
+           <groupId>jakarta.json</groupId>
+           <artifactId>jakarta.json-api</artifactId>
+           <version>2.1.0</version>
+        </dependency>
+        </dependencies>
+```
 
