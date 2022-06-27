@@ -4,20 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.creekmoon</groupId>
-    <artifactId>operation-log-project</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
-    <modules>
-        <module>operation-log-boot-starter</module>
-    </modules>
+    <parent>
+        <groupId>io.github.creekmoon</groupId>
+        <artifactId>operation-log-project</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-    <name>operation-log-project</name>
+    <groupId>io.github.creekmmoon</groupId>
+    <artifactId>operation-log-boot-starter</artifactId>
+    <packaging>pom</packaging>
+    <version>${current.version}</version>
+
+
+    <name>operation-log-boot-starter</name>
     <description>
         一个简易记录用户操作日志的Spring应用程序
         A simple spring application that records user operations
     </description>
-    <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+    <url>https://github.com/creekmmoon/opration-log-boot-starter</url>
 
     <!--注意 install会有报错, 但是不会影响结果-->
     <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
@@ -46,55 +50,29 @@
         <developer>
             <name>JY</name>
             <email>creekmmoon@hotmail.com</email>
-            <url>https://github.com/creekmoon</url>
+            <url>https://github.com/creekmmoon</url>
         </developer>
     </developers>
 
-    <properties>
-        <current.version>1.0.0</current.version>
-        <!-- 文件拷贝时的编码 -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- 编译时的编码 -->
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <srping.boot.version>2.6.7</srping.boot.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <hutool.version>4.6.17</hutool.version>
-        <lombok.version>1.18.22</lombok.version>
-        <fastjson.version>1.2.69</fastjson.version>
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <spring-web.verison>5.3.16</spring-web.verison>
-        <swagger-annotations.verison>1.5.22</swagger-annotations.verison>
 
-    </properties>
-    <dependencyManagement>
-        <dependencies>
+    <dependencies>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${srping.boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>${srping.boot.version}</version>
-            <optional>true</optional>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>${srping.boot.version}</version>
+            <artifactId>spring-boot</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -102,75 +80,63 @@
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.9.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring-web.verison}</version>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-annotations.verison}</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
         </dependency>
-
         <!--ES的依赖-->
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
             <version>7.17.3</version>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.12.3</version>
+            <scope>provided</scope>
         </dependency>
 
         <!--如果引用时报String转换错误，可以引用这个包-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.httpcomponents</groupId>-->
-            <!--            <artifactId>httpclient</artifactId>-->
-            <!--            <version>4.5.13</version>-->
-            <!--        </dependency>-->
-            <!--如果引用时报ES的客户端错误，可以引用这个包-->
-            <!--        <dependency>-->
-            <!--            <groupId>jakarta.json</groupId>-->
-            <!--            <artifactId>jakarta.json-api</artifactId>-->
-            <!--            <version>2.1.0</version>-->
-            <!--        </dependency>-->
-        </dependencies>
-    </dependencyManagement>
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.httpcomponents</groupId>-->
+        <!--            <artifactId>httpclient</artifactId>-->
+        <!--            <version>4.5.13</version>-->
+        <!--        </dependency>-->
+        <!--如果引用时报ES的客户端错误，可以引用这个包-->
+        <!--        <dependency>-->
+        <!--            <groupId>jakarta.json</groupId>-->
+        <!--            <artifactId>jakarta.json-api</artifactId>-->
+        <!--            <version>2.1.0</version>-->
+        <!--        </dependency>-->
+    </dependencies>
+
 
     <distributionManagement>
         <repository>
@@ -277,7 +243,6 @@
             </plugin>
         </plugins>
     </build>
-
 
 
 </project>
