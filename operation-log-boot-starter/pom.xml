@@ -12,11 +12,9 @@
 
     <groupId>io.github.creekmmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <packaging>pom</packaging>
     <version>${current.version}</version>
 
 
-    <name>operation-log-boot-starter</name>
     <description>
         一个简易记录用户操作日志的Spring应用程序
         A simple spring application that records user operations

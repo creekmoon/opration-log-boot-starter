@@ -9,46 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>operation-log-boot-starter</module>
+        <module>operation-log-example</module>
     </modules>
 
-    <name>operation-log-project</name>
-    <description>
-        一个简易记录用户操作日志的Spring应用程序
-        A simple spring application that records user operations
-    </description>
-    <url>https://github.com/creekmoon/opration-log-boot-starter</url>
-
-    <!--注意 install会有报错, 但是不会影响结果-->
-    <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
-
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/creekmmoon/opration-log-boot-starter/issues</url>
-    </issueManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/creekmmoon/opration-log-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/creekmmoon/opration-log-boot-starter.git</developerConnection>
-        <url>https://github.com/creekmmoon/opration-log-boot-starter</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>JY</name>
-            <email>creekmmoon@hotmail.com</email>
-            <url>https://github.com/creekmoon</url>
-        </developer>
-    </developers>
 
     <properties>
         <current.version>1.0.0</current.version>
@@ -71,51 +34,43 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${srping.boot.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
             <version>${srping.boot.version}</version>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <version>${srping.boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -136,14 +91,11 @@
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations.verison}</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <version>1.6</version>
         </dependency>
-
         <!--ES的依赖-->
         <dependency>
             <groupId>co.elastic.clients</groupId>
@@ -182,102 +134,6 @@
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <!--定义编译版本-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-                <!--定义源码解析插件-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <inherited>true</inherited>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <excludeResources>true</excludeResources>
-                        <useDefaultExcludes>true</useDefaultExcludes>
-                    </configuration>
-                </plugin>
-
-                <!--定义javadoc插件  整个过程会有报错,因为有些注释格式不正确.但是不影响结果 已经启用<doclint>none</doclint>忽略了错误-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <inherited>true</inherited>
-                    <executions>
-                        <execution>
-                            <id>bundle-sources</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <maxmemory>1024</maxmemory>
-                        <encoding>UTF-8</encoding>
-                        <show>protected</show>
-                        <notree>true</notree>
-                        <failOnError>false</failOnError>
-                        <doclint>none</doclint>
-                    </configuration>
-                </plugin>
-
-                <!--定义gpg签名插件 Gpg4win 构建时会自动调用gpg.exe进行签名-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <!--我们上传的jar包，需要包含doc和源码-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
-            <!-- GPG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 
 
 </project>
