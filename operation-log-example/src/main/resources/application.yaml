@@ -1,0 +1,13 @@
+server:
+  port: 13555
+Spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+swagger-config:
+  enable: true
+  protocol: http
+  base-package: cn.jy.excelUtils.example
+  title: 日志测试API
+  version: 1.0
+  description: 日志测试API
