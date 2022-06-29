@@ -9,38 +9,26 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>operation-log-boot-starter</module>
         <module>operation-log-example</module>
     </modules>
 
 
-    <properties>
-        <current.version>1.0.0</current.version>
-        <!-- 文件拷贝时的编码 -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- 编译时的编码 -->
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <srping.boot.version>2.6.8</srping.boot.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <hutool.version>5.8.3</hutool.version>
-        <lombok.version>1.18.22</lombok.version>
-        <fastjson.version>1.2.69</fastjson.version>
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <spring-web.verison>5.3.16</spring-web.verison>
-        <swagger-annotations.verison>1.5.22</swagger-annotations.verison>
-        <elasticsearch-java.version>7.17.3</elasticsearch-java.version>
-        <jackson-databind.version>2.12.6.1</jackson-databind.version>
-        <aspectjweaver.version>1.9.4</aspectjweaver.version>
-        <swagger.version>2.8.0</swagger.version>
-        <knife4j.version>2.0.9</knife4j.version>
-    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>${srping.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${srping.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
                 <version>${srping.boot.version}</version>
             </dependency>
             <dependency>
@@ -52,11 +40,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <version>${srping.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -79,19 +62,9 @@
                 <version>${fastjson.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectjweaver.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring-web.verison}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
@@ -127,8 +100,16 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
             <!--如果引用时报String转换错误，可以引用这个包-->
             <!--        <dependency>-->
             <!--            <groupId>org.apache.httpcomponents</groupId>-->
@@ -143,6 +124,29 @@
             <!--        </dependency>-->
         </dependencies>
     </dependencyManagement>
+
+    <properties>
+        <current.version>1.2.0</current.version>
+        <!-- 文件拷贝时的编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译时的编码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <srping.boot.version>2.6.8</srping.boot.version>
+        <hutool.version>5.8.3</hutool.version>
+        <lombok.version>1.18.22</lombok.version>
+        <fastjson.version>1.2.69</fastjson.version>
+        <swagger-annotations.verison>1.5.22</swagger-annotations.verison>
+        <swagger.version>2.8.0</swagger.version>
+        <elasticsearch-java.version>7.17.3</elasticsearch-java.version>
+        <jackson-databind.version>2.12.6.1</jackson-databind.version>
+        <aspectjweaver.version>1.9.4</aspectjweaver.version>
+        <knife4j.version>2.0.9</knife4j.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+    </properties>
 
     <distributionManagement>
         <repository>

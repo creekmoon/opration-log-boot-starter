@@ -7,7 +7,14 @@ Spring:
 swagger-config:
   enable: true
   protocol: http
-  base-package: cn.jy.excelUtils.example
+  base-package: cn.jy.operationLog
   title: 日志测试API
   version: 1.0
   description: 日志测试API
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.5.52.88:3306/lala?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 'witexun65535!'
