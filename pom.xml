@@ -33,6 +33,7 @@
 
         <elasticsearch-java.version>7.17.3</elasticsearch-java.version>
         <jackson-databind.version>2.12.3</jackson-databind.version>
+        <aspectjweaver.version>1.9.4</aspectjweaver.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -79,7 +80,7 @@
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.9.4</version>
+                <version>${aspectjweaver.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
