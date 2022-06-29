@@ -14,6 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 @Aspect
 @Component
 @Slf4j
-public class LogAspect implements ApplicationContextAware {
+public class LogAspect implements ApplicationContextAware, Ordered {
 
     private volatile OperationLogRecordFactory logDetailProvider;
     /**
@@ -99,29 +100,29 @@ public class LogAspect implements ApplicationContextAware {
         /*初始化上下文*/
         HttpServletRequest request = servletAttributes.getRequest();
         try {
+            /*初始化数据*/
             OperationLogContext.currentServletRequest.set(request);
             OperationLogContext.request2Logs.put(request, logRecord);
-            /*执行原生的方法*/
-            Object functionResult = null;
+            return pjp.proceed();
+        } catch (Exception e) {
+            log.debug("[日志推送]原生方法执行异常!");
+            logRecord.setRequestResult(Boolean.FALSE);
+            throw e;
+        } finally {
+            /*跟踪结果变化*/
             try {
-                functionResult = pjp.proceed();
-            } catch (Exception e) {
-                log.debug("[日志推送]原生方法执行异常!");
-                logRecord.setRequestResult(Boolean.FALSE);
-            }
-            /*执行失败则不处理*/
-            if (!logRecord.getRequestResult() && !annotation.handleOnFail()) {
-                log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
-                return functionResult;
-            }
-            /*跟踪指定的执行结果*/
-            try {
-                if (OperationLogContext.metadataSupplier.get() != null) {
+                if (!logRecord.getRequestResult() && !annotation.handleOnFail()) {
+                    log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
+                } else if (OperationLogContext.metadataSupplier.get() != null) {
                     logRecord.setAfterValue(OperationLogContext.metadataSupplier.get().call());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
+            } finally {
+                OperationLogContext.request2Logs.remove(request);   //及时移除对象
+                OperationLogContext.currentServletRequest.remove(); //及时移除对象
+                OperationLogContext.metadataSupplier.remove();//及时移除对象
             }
             /*保存日志结果*/
             LogThreadPool.runTask(() -> {
@@ -130,13 +131,9 @@ public class LogAspect implements ApplicationContextAware {
                     operationLogHandler.handle(logRecord);
                 }
             });
-            return functionResult;
-        } finally {
-            OperationLogContext.request2Logs.remove(request);   //及时移除对象
-            OperationLogContext.currentServletRequest.remove(); //及时移除对象
-            OperationLogContext.metadataSupplier.remove();//及时移除对象
         }
     }
+
 
     private OperationLogRecordFactory getLogDetailFactory() {
         if (this.logDetailProvider == null) {
@@ -148,5 +145,10 @@ public class LogAspect implements ApplicationContextAware {
         }
         return this.logDetailProvider;
 
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
     }
 }

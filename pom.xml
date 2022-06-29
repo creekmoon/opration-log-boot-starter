@@ -30,9 +30,8 @@
         <servlet-api.version>3.1.0</servlet-api.version>
         <spring-web.verison>5.3.16</spring-web.verison>
         <swagger-annotations.verison>1.5.22</swagger-annotations.verison>
-
         <elasticsearch-java.version>7.17.3</elasticsearch-java.version>
-        <jackson-databind.version>2.12.3</jackson-databind.version>
+        <jackson-databind.version>2.12.6.1</jackson-databind.version>
         <aspectjweaver.version>1.9.4</aspectjweaver.version>
     </properties>
     <dependencyManagement>
@@ -91,11 +90,6 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.verison}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
             </dependency>
             <!--ES的依赖-->
             <dependency>

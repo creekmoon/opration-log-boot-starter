@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component //定义配置类
 @Data //提供get set方法
-@ConfigurationProperties(prefix = "operation-log.elasticSearch") //yml配置中的路径
+@ConfigurationProperties(prefix = "operation-log.elastic") //yml配置中的路径
 public class OperationLogElasticConstant {
     private String hostName;
     private Integer port;
