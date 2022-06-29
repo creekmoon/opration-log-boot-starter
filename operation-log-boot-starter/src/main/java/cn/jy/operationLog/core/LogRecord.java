@@ -37,6 +37,6 @@ public class LogRecord {
     /*操作时间 */
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date operationTime;
-    /*标记点*/
-    List<String> markPoints = new ArrayList<>(4);
+    /*记录标签*/
+    List<String> tags = new ArrayList<>(4);
 }

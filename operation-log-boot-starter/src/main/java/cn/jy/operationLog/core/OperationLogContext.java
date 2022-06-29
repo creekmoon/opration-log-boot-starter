@@ -59,7 +59,7 @@ public class OperationLogContext {
      *
      * @param markPoints
      */
-    public static void addMarkPoints(String... markPoints) {
+    public static void addTags(String... markPoints) {
         if (disable || markPoints == null) {
             return;
         }
@@ -71,7 +71,7 @@ public class OperationLogContext {
         }
         for (String markPoint : markPoints) {
             if (markPoint != null) {
-                record.getMarkPoints().add(markPoint.trim());
+                record.getTags().add(markPoint.trim());
             }
         }
     }

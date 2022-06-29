@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LogAspect implements ApplicationContextAware {
 
-    private volatile OperationLogDetailProvider logDetailProvider;
+    private volatile OperationLogRecordFactory logDetailProvider;
     /**
      * 上下文对象实例
      */
@@ -62,12 +62,7 @@ public class LogAspect implements ApplicationContextAware {
         ApiOperation swaggerApi = signature.getMethod().getAnnotation(ApiOperation.class);
         OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
         /*初始化日志对象*/
-        LogRecord logRecord = new LogRecord();
-        OperationLogDetailProvider detailProvider = getLogDetailProvider();
-        logRecord.setUserId(detailProvider.getUserId());
-        logRecord.setUserName(detailProvider.getUserName());
-        logRecord.setOrgId(detailProvider.getOrgId());
-        logRecord.setProjectName(detailProvider.getProjectName());
+        LogRecord logRecord = getLogDetailFactory().createNewLogRecord();
         logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
         logRecord.setRemark(swaggerApi == null ? annotation.value() : swaggerApi.value());
 
@@ -110,13 +105,9 @@ public class LogAspect implements ApplicationContextAware {
             Object functionResult = null;
             try {
                 functionResult = pjp.proceed();
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.debug("[日志推送]原生方法执行异常!");
                 logRecord.setRequestResult(Boolean.FALSE);
-            }
-            /*判断业务是否失败*/
-            if (logRecord.getRequestResult()) {
-                logRecord.setRequestResult(!detailProvider.requestIsFail(logRecord, functionResult));
             }
             /*执行失败则不处理*/
             if (!logRecord.getRequestResult() && !annotation.handleOnFail()) {
@@ -133,7 +124,7 @@ public class LogAspect implements ApplicationContextAware {
                 log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
             }
             /*保存日志结果*/
-            LogThreadPool.runTask(logRecord.getUserId(), () -> {
+            LogThreadPool.runTask(() -> {
                 ObjectUtils.findDifferent(logRecord);
                 for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
                     operationLogHandler.handle(logRecord);
@@ -147,11 +138,11 @@ public class LogAspect implements ApplicationContextAware {
         }
     }
 
-    private OperationLogDetailProvider getLogDetailProvider() {
+    private OperationLogRecordFactory getLogDetailFactory() {
         if (this.logDetailProvider == null) {
             synchronized (this) {
                 if (this.logDetailProvider == null) {
-                    this.logDetailProvider = applicationContext.getBean(OperationLogDetailProvider.class);
+                    this.logDetailProvider = applicationContext.getBean(OperationLogRecordFactory.class);
                 }
             }
         }
