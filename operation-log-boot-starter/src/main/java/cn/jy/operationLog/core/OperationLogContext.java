@@ -53,6 +53,17 @@ public class OperationLogContext {
         }
     }
 
+
+    /**
+     * 获取当前的操作记录
+     *
+     * @return
+     */
+    public static LogRecord getCurrentLogRecord() {
+        ServletRequest servletRequest = currentServletRequest.get();
+        return servletRequest == null ? null : request2Logs.get(servletRequest);
+    }
+
     /**
      * 增加标记点
      * 标记点是一个字符串,一个日志可以有多个标记点. 日志可以通过相同的标记点作为查询条件,快速定位对象
@@ -63,8 +74,7 @@ public class OperationLogContext {
         if (disable || markPoints == null) {
             return;
         }
-        ServletRequest servletRequest = currentServletRequest.get();
-        LogRecord record = request2Logs.get(servletRequest);
+        LogRecord record = getCurrentLogRecord();
         if (record == null) {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;

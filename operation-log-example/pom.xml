@@ -11,11 +11,21 @@
 
     <artifactId>operation-log-example</artifactId>
     <dependencies>
-
+        <!--本项目-->
+        <dependency>
+            <groupId>io.github.creekmoon</groupId>
+            <artifactId>operation-log-boot-starter</artifactId>
+            <version>${current.version}</version>
+        </dependency>
         <!--spring依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.6.8</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -53,12 +63,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <!--本项目-->
-        <dependency>
-            <groupId>io.github.creekmoon</groupId>
-            <artifactId>operation-log-boot-starter</artifactId>
-            <version>${current.version}</version>
         </dependency>
     </dependencies>
     <properties>

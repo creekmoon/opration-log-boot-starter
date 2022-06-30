@@ -103,34 +103,45 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             /*初始化数据*/
             OperationLogContext.currentServletRequest.set(request);
             OperationLogContext.request2Logs.put(request, logRecord);
-            return pjp.proceed();
+            /*执行真正的方法*/
+            Object returnValue = pjp.proceed();
+            /*执行工厂类afterReturn方法*/
+            getLogDetailFactory().afterReturn(logRecord, returnValue);
+            return returnValue;
         } catch (Exception e) {
-            log.debug("[日志推送]原生方法执行异常!");
+            log.debug("[日志推送]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
             throw e;
         } finally {
-            /*跟踪结果变化*/
-            try {
-                if (!logRecord.getRequestResult() && !annotation.handleOnFail()) {
-                    log.debug("[日志推送]用户操作没有成功,将不进行日志记录");
-                } else if (OperationLogContext.metadataSupplier.get() != null) {
-                    logRecord.setAfterValue(OperationLogContext.metadataSupplier.get().call());
+            /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
+            boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && annotation.handleOnFail());
+            /*进行日志记录*/
+            if (isNeedRecord) {
+                if (OperationLogContext.metadataSupplier.get() != null) {
+                    try {
+                        /*跟踪结果变化*/
+                        logRecord.setAfterValue(OperationLogContext.metadataSupplier.get().call());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue!");
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue");
-            } finally {
-                OperationLogContext.request2Logs.remove(request);   //及时移除对象
-                OperationLogContext.currentServletRequest.remove(); //及时移除对象
-                OperationLogContext.metadataSupplier.remove();//及时移除对象
+                /*保存日志结果*/
+                LogThreadPool.runTask(() -> {
+                    ObjectUtils.findDifferent(logRecord);
+                    for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
+                        operationLogHandler.handle(logRecord);
+                    }
+                });
             }
-            /*保存日志结果*/
-            LogThreadPool.runTask(() -> {
-                ObjectUtils.findDifferent(logRecord);
-                for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
-                    operationLogHandler.handle(logRecord);
-                }
-            });
+            /*不进行日志记录*/
+            if (!isNeedRecord) {
+                log.debug("[日志推送]用户操作没有成功,不会进行日志记录");
+            }
+            /*最后移除对象*/
+            OperationLogContext.request2Logs.remove(request);   //及时移除对象
+            OperationLogContext.currentServletRequest.remove(); //及时移除对象
+            OperationLogContext.metadataSupplier.remove();//及时移除对象
         }
     }
 
