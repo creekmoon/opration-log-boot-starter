@@ -1,6 +1,5 @@
 package cn.jy.operationLog.config;
 
-import cn.jy.operationLog.core.DefaultOperationLogRecordFactory;
 import cn.jy.operationLog.core.LogAspect;
 import cn.jy.operationLog.core.OperationLogContext;
 import org.springframework.context.annotation.Configuration;

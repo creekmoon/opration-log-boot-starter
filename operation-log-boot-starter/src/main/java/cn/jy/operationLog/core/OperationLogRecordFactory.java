@@ -14,7 +14,7 @@ public interface OperationLogRecordFactory {
      * @param returnValue      当前注解所在的方法返回值
      */
     default void afterReturn(LogRecord currentLogRecord, Object returnValue) {
-
+            // 默认不做任何处理
     }
 
 

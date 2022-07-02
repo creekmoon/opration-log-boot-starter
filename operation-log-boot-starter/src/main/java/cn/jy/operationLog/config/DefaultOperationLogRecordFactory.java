@@ -1,4 +1,4 @@
-package cn.jy.operationLog.core;
+package cn.jy.operationLog.config;
 
 import cn.jy.operationLog.core.LogRecord;
 import cn.jy.operationLog.core.OperationLogRecordFactory;
