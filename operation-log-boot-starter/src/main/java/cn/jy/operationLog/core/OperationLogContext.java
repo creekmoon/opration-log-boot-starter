@@ -53,16 +53,29 @@ public class OperationLogContext {
         }
     }
 
-
     /**
-     * 获取当前的操作记录
+     * 标记当前的日志操作为失败
      *
      * @return
      */
-    public static LogRecord getCurrentLogRecord() {
+    public static void markLogFail() {
+        LogRecord currentLogRecord = getLog();
+        if (currentLogRecord == null) {
+            return;
+        }
+        currentLogRecord.setRequestResult(false);
+    }
+
+    /**
+     * 获取当前的日志记录对象
+     *
+     * @return
+     */
+    public static LogRecord getLog() {
         ServletRequest servletRequest = currentServletRequest.get();
         return servletRequest == null ? null : request2Logs.get(servletRequest);
     }
+
 
     /**
      * 增加标记点
@@ -70,11 +83,11 @@ public class OperationLogContext {
      *
      * @param markPoints
      */
-    public static void addTags(String... markPoints) {
+    public static void addLogTags(String... markPoints) {
         if (disable || markPoints == null) {
             return;
         }
-        LogRecord record = getCurrentLogRecord();
+        LogRecord record = getLog();
         if (record == null) {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;

@@ -6,50 +6,13 @@
 
     <parent>
         <groupId>io.github.creekmoon</groupId>
-        <artifactId>operation-log-project</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>operation-log-parent</artifactId>
+        <version>1.2.0</version>
     </parent>
 
+    <name>operation-log-boot-starter</name>
     <artifactId>operation-log-boot-starter</artifactId>
     <version>${current.version}</version>
-
-
-    <description>
-        一个简易记录用户操作日志的Spring应用程序
-        A simple spring application that records user operations
-    </description>
-    <url>https://github.com/creekmmoon/opration-log-boot-starter</url>
-
-    <!--注意 install会有报错, 但是不会影响结果-->
-    <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
-
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/creekmmoon/opration-log-boot-starter/issues</url>
-    </issueManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/creekmmoon/opration-log-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/creekmmoon/opration-log-boot-starter.git</developerConnection>
-        <url>https://github.com/creekmmoon/opration-log-boot-starter</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>JY</name>
-            <email>creekmmoon@hotmail.com</email>
-            <url>https://github.com/creekmmoon</url>
-        </developer>
-    </developers>
 
 
     <dependencies>
@@ -78,7 +41,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -92,7 +54,7 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>
-        <!--ES的依赖-->
+        <!--ES的依赖 如果启用快速推送ES的功能 需要这个包-->
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
@@ -123,6 +85,43 @@
         <!--        </dependency>-->
     </dependencies>
 
+
+    <description>
+        一个简易记录用户操作日志的Spring应用程序
+        A simple spring application that records user operations
+    </description>
+    <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+
+    <!--注意 install会有报错, 但是不会影响结果-->
+    <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/creekmoon/opration-log-boot-starter/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</connection>
+        <developerConnection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</developerConnection>
+        <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>JY</name>
+            <email>yinjiangyue@hotmail.com</email>
+            <url>https://github.com/creekmoon</url>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <repository>
