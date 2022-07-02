@@ -1,4 +1,4 @@
-package cn.jy.operationLog.push2es;
+package cn.jy.operationLog.elasticSupport;
 
 import cn.jy.operationLog.core.LogRecord;
 import cn.jy.operationLog.core.OperationLogHandler;

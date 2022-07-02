@@ -1,7 +1,8 @@
-package cn.jy.operationLog.push2es;
+package cn.jy.operationLog.elasticSupport;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import cn.jy.operationLog.config.OperationLogConfig;
 import cn.jy.operationLog.core.LogRecord;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
@@ -33,7 +34,7 @@ public class OperationLogElasticClient {
     /*ES JAVA API*/
     ElasticsearchClient elasticsearchClient = null;
     @Autowired
-    OperationLogElasticConstant config;
+    OperationLogConfig.ElasticConfig config;
 
     @PostConstruct
     void init() {

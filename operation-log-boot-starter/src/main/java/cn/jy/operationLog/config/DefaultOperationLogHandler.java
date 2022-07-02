@@ -2,7 +2,7 @@ package cn.jy.operationLog.config;
 
 import cn.jy.operationLog.core.LogRecord;
 import cn.jy.operationLog.core.OperationLogHandler;
-import cn.jy.operationLog.push2es.Push2ElasticSearchOperationLogHandler;
+import cn.jy.operationLog.elasticSupport.Push2ElasticSearchOperationLogHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;

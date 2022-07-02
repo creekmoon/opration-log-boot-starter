@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({OperationLogAutoConfiguration.class})
+@Import({OperationLogConfig.class, OperationLogAutoConfiguration.class})
 public @interface EnableOperationLog {
 
 }

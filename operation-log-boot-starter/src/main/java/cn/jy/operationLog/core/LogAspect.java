@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -72,6 +73,13 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             List<Object> argList = Arrays
                     .stream(Optional.ofNullable(pjp.getArgs()).orElse(new Object[]{}))
                     .map(currentParams -> {
+                        /*如果是ServletRequest或者HttpServletResponse 不能进行序列化*/
+                        if (currentParams instanceof HttpServletRequest
+                                || currentParams instanceof HttpServletResponse) {
+                            JSONObject jsonObject = new JSONObject(1);
+                            jsonObject.put("arg", "无法进行序列化的对象");
+                            return jsonObject;
+                        }
                         /*如果是基本类型的参数，则将其转为JSON形式。 如果是对象类型参数，则不需要处理*/
                         if (currentParams.getClass().isPrimitive()
                                 || currentParams instanceof Boolean
@@ -86,7 +94,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                                 || currentParams instanceof String
                         ) {
                             JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("arg", currentParams);
+                            jsonObject.put("arg", String.valueOf(currentParams));
                             return jsonObject;
                         }
                         return currentParams;
@@ -94,7 +102,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                     .collect(Collectors.toList());
             logRecord.setRequestParams(new JSONArray(argList));
         } catch (Exception e) {
-            log.debug("[日志推送]获取方法参数出错！本次参数保存空值！", e);
+            log.error("[日志推送]获取方法参数出错！可能入参含有无法转换为JSON的值! 本次参数保存空值！", e);
             logRecord.setRequestParams(new JSONArray());
         }
         /*初始化上下文*/
@@ -130,7 +138,11 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                 LogThreadPool.runTask(() -> {
                     ObjectUtils.findDifferent(logRecord);
                     for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
-                        operationLogHandler.handle(logRecord);
+                        try {
+                            operationLogHandler.handle(logRecord);
+                        } catch (Exception e) {
+                            log.error("[日志推送]日志处理器执行异常!", e);
+                        }
                     }
                 });
             }
