@@ -38,7 +38,7 @@ public class OperationLogElasticClient {
     @PostConstruct
     void init() {
         if (StrUtil.isBlank(config.getIndexName())
-                || StrUtil.isBlank(config.getHostName())
+                || StrUtil.isBlank(config.getHost())
                 || config.getPort() == null
         ) {
             throw new RuntimeException("OperationLogElasticClient 参数不完整!无法启动!");
@@ -71,7 +71,7 @@ public class OperationLogElasticClient {
     }
 
     private void initClient() {
-        RestClientBuilder builder = RestClient.builder(new HttpHost(config.getHostName(), config.getPort()));
+        RestClientBuilder builder = RestClient.builder(new HttpHost(config.getHost(), config.getPort()));
 
         if (config.getUserName() != null && config.getPassword() != null) {
             /*如果没有配置用户名和密码,就跳过这个*/

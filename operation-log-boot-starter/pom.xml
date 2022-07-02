@@ -145,6 +145,14 @@
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
+                        <!--配置注解处理器 貌似不配置也会有提示-->
+                        <annotationProcessors>
+                            <annotationProcessor>
+                                org.springframework.boot.configurationprocessor.ConfigurationMetadataAnnotationProcessor
+                            </annotationProcessor>
+                            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                            </annotationProcessor>
+                        </annotationProcessors>
                     </configuration>
                 </plugin>
                 <!--定义源码解析插件-->
