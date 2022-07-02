@@ -15,12 +15,15 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -66,18 +69,29 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         /*初始化日志对象*/
         LogRecord logRecord = getLogDetailFactory().createNewLogRecord();
         logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
-        logRecord.setRemark(swaggerApi == null ? annotation.value() : swaggerApi.value());
+        logRecord.setOperationName(swaggerApi == null ? annotation.value() : swaggerApi.value());
 
         try {
             /*处理传递过来的参数*/
             List<Object> argList = Arrays
                     .stream(Optional.ofNullable(pjp.getArgs()).orElse(new Object[]{}))
                     .map(currentParams -> {
-                        /*如果是ServletRequest或者HttpServletResponse 不能进行序列化*/
-                        if (currentParams instanceof HttpServletRequest
-                                || currentParams instanceof HttpServletResponse) {
+                        /*对不能进行序列化的类进行额外处理*/
+                        if (currentParams instanceof ServletRequest) {
                             JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("arg", "无法进行序列化的对象");
+                            jsonObject.put("servletRequest", "无法序列化");
+                            return jsonObject;
+                        } else if (currentParams instanceof ServletResponse) {
+                            JSONObject jsonObject = new JSONObject(1);
+                            jsonObject.put("servletResponse", "无法序列化");
+                            return jsonObject;
+                        } else if (currentParams instanceof MultipartFile) {
+                            JSONObject jsonObject = new JSONObject(1);
+                            jsonObject.put("multipartFile", "无法序列化");
+                            return jsonObject;
+                        } else if (currentParams instanceof InputStreamSource) {
+                            JSONObject jsonObject = new JSONObject(1);
+                            jsonObject.put("inputStreamSource", "无法序列化");
                             return jsonObject;
                         }
                         /*如果是基本类型的参数，则将其转为JSON形式。 如果是对象类型参数，则不需要处理*/

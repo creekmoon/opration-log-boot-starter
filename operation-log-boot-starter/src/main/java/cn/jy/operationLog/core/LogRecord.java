@@ -16,9 +16,9 @@ public class LogRecord {
     String userName;
     /*当前项目名称*/
     String projectName;
-    /*本次操作说明*/
-    String remark;
-    /*操作方法*/
+    /*本次操作本次操作名称 如果未在@operationLog中指定,则默认读取swagger注解*/
+    String operationName;
+    /*操作的JAVA方法名称*/
     String methodName;
     /*可能改变的值*/
     Set<String> effectFields;
@@ -37,6 +37,8 @@ public class LogRecord {
     /*操作时间 */
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     Date operationTime;
-    /*记录标签*/
-    List<String> tags = new ArrayList<>(4);
+    /*记录标签 可以用标签进行索引查找 */
+    List<String> tags = new LinkedList();
+    /*备注 可以手动为此次操作添加备注*/
+    List<String> remarks = new LinkedList();
 }

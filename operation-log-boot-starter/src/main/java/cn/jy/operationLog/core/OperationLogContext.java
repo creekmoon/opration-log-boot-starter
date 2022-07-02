@@ -58,8 +58,8 @@ public class OperationLogContext {
      *
      * @return
      */
-    public static void markLogFail() {
-        LogRecord currentLogRecord = getLog();
+    public static void markFail() {
+        LogRecord currentLogRecord = getCurrentLogRecord();
         if (currentLogRecord == null) {
             return;
         }
@@ -71,30 +71,50 @@ public class OperationLogContext {
      *
      * @return
      */
-    public static LogRecord getLog() {
+    public static LogRecord getCurrentLogRecord() {
         ServletRequest servletRequest = currentServletRequest.get();
         return servletRequest == null ? null : request2Logs.get(servletRequest);
     }
 
 
     /**
-     * 增加标记点
-     * 标记点是一个字符串,一个日志可以有多个标记点. 日志可以通过相同的标记点作为查询条件,快速定位对象
+     * 增加标签 可以根据自己定义的标签,方便索引日志
      *
-     * @param markPoints
+     * @param tags 标签
      */
-    public static void addLogTags(String... markPoints) {
-        if (disable || markPoints == null) {
+    public static void addTags(String... tags) {
+        if (disable || tags == null) {
             return;
         }
-        LogRecord record = getLog();
+        LogRecord record = getCurrentLogRecord();
         if (record == null) {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;
         }
-        for (String markPoint : markPoints) {
+        for (String markPoint : tags) {
             if (markPoint != null) {
                 record.getTags().add(markPoint.trim());
+            }
+        }
+    }
+
+    /**
+     * 增加备注
+     *
+     * @param remarks 备注信息
+     */
+    public static void addRemarks(String... remarks) {
+        if (disable || remarks == null) {
+            return;
+        }
+        LogRecord record = getCurrentLogRecord();
+        if (record == null) {
+            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
+            return;
+        }
+        for (String remark : remarks) {
+            if (remark != null) {
+                record.getRemarks().add(remark.trim());
             }
         }
     }
