@@ -12,7 +12,7 @@
 <dependency>
     <groupId>io.github.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -73,7 +73,7 @@ LogRecord是记录当前的操作信息实体类
 * 传入的参数值 requestParams
 * 本次修改前/修改后的值 preValue/afterValue
 * 受到本次影响的字段 effectFields/effectFieldsBefore/effectFieldsAfter
-* 标记点 markPoints 用于辅助ES查询的字段
+* 标签 tags 用于辅助ES查询的字段
 
 ```JSON
 {
@@ -111,7 +111,7 @@ LogRecord是记录当前的操作信息实体类
     "driverId": 13,
     "vehicleId": 58
   },
-  "markPoints": []
+  "tags": []
 }
 ```
 
@@ -131,8 +131,9 @@ OperationLogContext.follow(Supplier supplier);
 你可以在**LogRecord.effectFields**看到受影响的字段. 
 
 示例: 这是一个修改接口,日志会跟踪变化而得知用户修改了哪一些值
+
 ```java
-import cn.jy.operationLog.core.OperationLogContext;
+import cn.creekmoon.operationLog.core.OperationLogContext;
 
 public class TTransportController {
 
@@ -140,7 +141,9 @@ public class TTransportController {
     @OperationLog
     public ReturnValue update(TTransport tTransport) {
         //设置一个追踪的目标
-        OperationLogContext.follow(()->{return getDeatil(tTransport.getId());});
+        OperationLogContext.follow(() -> {
+            return getDeatil(tTransport.getId());
+        });
         //业务代码
         return ReturnValue.success();
     }
@@ -170,67 +173,50 @@ public interface OperationLogHandler {
 
 ```
 
+### 定义自己的日志对象
 
-### 完善更多的日志详情
+**实现OperationLogRecordFactory接口并加上@Component注解**
 
+这里需要定义做一件事情:
 
-
-#### 实现OperationLogDetailProvider接口并加上@Component注解
-
- 
-* getUserName 用户名 
-* getUserId 用户id 
-* getOrgId 用户机构id 
-* getProjectName 当前的项目名称
-* requestIsFail 本次操作是否失败(详见下方说明) 默认值 false
+* 如何初始化LogRecord对象 (例如设置一些默认值,当然你也可以创建一个继承于它的类,以便拓展它的属性)
 
 ```java
 
-public interface OperationLogDetailProvider {
-
-    String getUserName();
-
-    Long getUserId();
-
-    Long getOrgId();
-
-    String getProjectName();
-
-    default Boolean requestIsFail(LogRecord logRecord,Object returnValue) {
-        return false;
+@Component
+public class DefaultOperationLogRecordFactory implements OperationLogRecordFactory {
+    @Override
+    public LogRecord createNewLogRecord() {
+        /*初始化LogRecord*/
+        LogRecord logRecord = new LogRecord();
+        logRecord.setOrgId(999L);
+        logRecord.setUserId(999L);
+        logRecord.setUserName("lalala");
+        logRecord.setProjectName("web-project");
+        return logRecord;
     }
 }
-```
 
+```
 
 ### 定义日志是否应该进行记录
 
-#### 避免垃圾日志
-默认只要不抛出异常,都会进行日志记录.
+默认**不会记录失败**的日志.除非手动指定 handleOnFail = true 因为我不希望产生过多的垃圾日志,因为如果操作失败,通常都会回滚数据,失败的操作实际上是没有意义的
 
-日志的记录存在一个缺陷: **不能够意识到执行结果所代表的业务意义**.
+在组件中,有两种方法标记日志失败:
 
-举个例子: update接口执行成功, 但返回的信息提示"车辆运行中,无法修改数据".
+- 自动标记失败,只要抛出异常,就会标记日志操作失败
 
-**我们不想产生过多无意义的垃圾日志**,所以针对这种**业务层面的失败**,我们期望它不要进行日志记录.
-
-所以,我们需要**自定义requestIsFail方法**, 告诉日志组件,如果有错误信息,就应该抛弃本次日志.
-
-* 结果为true 不进行日志处理 即不会执行handle()
-* 结果为false 进行日志处理 即不会执行handle()
 ```java
-    default Boolean requestIsFail(LogRecord logRecord,Object returnValue) {
-        if(returnValue instanceof ReturnVaule){
-           return  ((ReturnVaule)returnValue).getErrorMsg != null;
-        }
-        return false;
-    }
+//如果你的OperationLog注解上标记有 **handleOnFail = true** 则会忽略任何错误,也会执行handle()
+@OperationLog(handleOnFail = true)
 ```
 
-#### 例外
-如果你的OperationLog注解上标记有 **handleOnFail = true** 则会忽略任何错误,即使Controller方法报异常,也会执行handle()
+- 手动标记失败,如下
+
 ```java
-@OperationLog(handleOnFail = true)
+//代码任意一个地方,执行    
+OperationLogContext.fail();
 ```
 
 ## 对ElasticSearch的支持
@@ -255,11 +241,12 @@ public class VdpWebApplication {
 
 ```yaml
 operation-log:
-  host-name: 192.168.1.109
-  port: 9200
-  index-name: web-logs
-  user-name: elastic
-  password: elastic
+  elastic:
+    user-name: elastic
+    port: 9200
+    index-name: test-opt-220702
+    password: qwe45678
+    host: 121.5.52.88
 ```
 ## 常见错误解决
 ```xml
