@@ -111,6 +111,14 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                             jsonObject.put("arg", String.valueOf(currentParams));
                             return jsonObject;
                         }
+                        /*如果是数组类型的参数，则将其转为JSON形式。*/
+                        if (currentParams instanceof List
+                                || currentParams.getClass().isArray()
+                        ) {
+                            JSONObject jsonObject = new JSONObject(1);
+                            jsonObject.put("arg", currentParams);
+                            return jsonObject;
+                        }
                         return currentParams;
                     })
                     .collect(Collectors.toList());

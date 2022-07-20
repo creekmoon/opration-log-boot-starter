@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.creekmoon</groupId>
         <artifactId>operation-log-parent</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </parent>
 
     <name>operation-log-boot-starter</name>
