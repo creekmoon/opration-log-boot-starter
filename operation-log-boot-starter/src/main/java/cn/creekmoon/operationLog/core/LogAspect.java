@@ -1,6 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
 import cn.creekmoon.operationLog.utils.ObjectUtils;
+import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
@@ -116,7 +117,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                                 || currentParams.getClass().isArray()
                         ) {
                             JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("arg", currentParams);
+                            jsonObject.put("arg", ArrayUtil.toString(currentParams));
                             return jsonObject;
                         }
                         return currentParams;
