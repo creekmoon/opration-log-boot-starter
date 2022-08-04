@@ -109,7 +109,8 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                                 || currentParams instanceof String
                         ) {
                             JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("arg", String.valueOf(currentParams));
+                            /* 这里value加一个前缀 arg= 强制让ES识别成字符串 否则可能会错误识别成Date类型*/
+                            jsonObject.put("arg", "arg=" + String.valueOf(currentParams));
                             return jsonObject;
                         }
                         /*如果是数组类型的参数，则将其转为JSON形式。*/
@@ -117,7 +118,8 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                                 || currentParams.getClass().isArray()
                         ) {
                             JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("arg", ArrayUtil.toString(currentParams));
+                            /* 这里value加一个前缀 arg= 强制让ES识别成字符串 否则可能会错误识别成Date类型*/
+                            jsonObject.put("arg", "arg=" + ArrayUtil.toString(currentParams));
                             return jsonObject;
                         }
                         return currentParams;
