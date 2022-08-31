@@ -249,6 +249,7 @@ operation-log:
     host: 121.5.52.88
 ```
 ## 常见错误解决
+#### 依赖问题
 ```xml
         <dependencies>
         <!--如果引用时报NoSuchMethod转换错误，可以引用这个包-->
@@ -257,12 +258,18 @@ operation-log:
            <artifactId>httpclient</artifactId>
            <version>4.5.13</version>
         </dependency>
-        <!--如果引用时报ES的客户端错误，可以引用这个包-->
-        <dependency>
-           <groupId>jakarta.json</groupId>
-           <artifactId>jakarta.json-api</artifactId>
-           <version>2.1.0</version>
-        </dependency>
-        </dependencies>
+    <!--如果引用时报ES的客户端错误，可以引用这个包-->
+    <dependency>
+        <groupId>jakarta.json</groupId>
+        <artifactId>jakarta.json-api</artifactId>
+        <version>2.1.0</version>
+    </dependency>
+</dependencies>
 ```
 
+#### Elastic索引问题
+
+```yaml
+  #如果提示索引上限达到1000个 需要为ES的索引进行配置 (直接去Kibana可视化配置就好,不需要重启)
+  "index.mapping.total_fields.limit": "5000",
+```
