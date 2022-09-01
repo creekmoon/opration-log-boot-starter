@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.elasticSupport;
 
-import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.StrUtil;
 import cn.creekmoon.operationLog.config.OperationLogConfig;
 import cn.creekmoon.operationLog.core.LogRecord;
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
@@ -56,9 +56,11 @@ public class OperationLogElasticClient {
      */
     public void save2ElasticSearch(LogRecord logRecord, int retryCount) {
         try {
-            elasticsearchClient.index(IndexRequest.of(builder -> builder.index(config.getIndexName())
-                    .id(UUID.fastUUID().toString())
-                    .document(logRecord)
+            elasticsearchClient.index(IndexRequest.of(
+                    builder ->
+                            builder.index(config.getIndexName())
+                                    .id(UUID.fastUUID().toString())
+                                    .document(logRecord)
             ));
         } catch (IOException e) {
             /*如果保存失败, 则再次进行重试 直到重试次数为0就抛出异常*/
