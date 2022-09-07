@@ -268,14 +268,13 @@ operation-log:
 ```
 
 #### Elastic索引问题
-
+如果提示索引上限达到1000个 需要为ES的索引进行配置 (直接去Kibana可视化配置就好,不需要重启)
 ```yaml
-  #如果提示索引上限达到1000个 需要为ES的索引进行配置 (直接去Kibana可视化配置就好,不需要重启)
-  "index.mapping.total_fields.limit": "5000",
+
+"index.mapping.total_fields.limit": "5000",
 ```
 
 清理Elastic索引数据
-
 ```json
 POST walmart-operation-log/_delete_by_query
 {
