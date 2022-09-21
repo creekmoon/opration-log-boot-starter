@@ -91,9 +91,9 @@ public class OperationLogContext {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!");
             return;
         }
-        for (String markPoint : tags) {
-            if (markPoint != null) {
-                record.getTags().add(markPoint.trim());
+        for (String tag : tags) {
+            if (tag != null && !"".equals(tag)) {
+                record.getTags().add(tag.trim());
             }
         }
     }
