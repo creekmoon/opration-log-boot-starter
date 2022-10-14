@@ -45,7 +45,9 @@ public class ObjectUtils {
             }
         });
         changedFields.addAll(noComparedKeys);
-        ignoreKeys.forEach(changedFields::remove);
+        if (ignoreKeys != null) {
+            ignoreKeys.forEach(changedFields::remove);
+        }
         return changedFields;
     }
 
