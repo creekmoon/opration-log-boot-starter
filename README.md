@@ -125,7 +125,7 @@ LogRecord是记录当前的操作信息实体类
 ```java
 OperationLogContext.follow(Supplier supplier);
 ```
- 
+
 你需要提供**回调函数**(Supplier),告诉组件该如何去获取对象.只有这样才能够正确地跟踪到变化的值.    
 它将在方法**开始时**和方法**结束时**分别调用一次,最后会对比两者的变化.  
 你可以在**LogRecord.effectFields**看到受影响的字段. 
@@ -270,11 +270,11 @@ operation-log:
 #### Elastic索引问题
 如果提示索引上限达到1000个 需要为ES的索引进行配置 (直接去Kibana可视化配置就好,不需要重启)
 ```yaml
-
 "index.mapping.total_fields.limit": "5000",
 ```
 
 清理Elastic索引数据
+
 ```json
 POST walmart-operation-log/_delete_by_query
 {
@@ -286,4 +286,40 @@ POST walmart-operation-log/_delete_by_query
     }
   }
 }
+
+
+
+```
+
+定义了Elastic索引声明周期, 但是删除阶段没有奏效 可以看这个人的文章
+
+[这个人的文章]: https://blog.csdn.net/m0_60696455/article/details/119736496
+
+
+
+> 这貌似是源于kibana的一个BUG,使用kibana创建索引声明周期时, actions为空
+> 所以需要去kibana管理声明周期那里,复制一下它的更新语句, 然后为delete阶段添加一个action
+> 如下所示, 只展示需改动的部分:
+
+```json
+
+//之前的
+{
+  "delete": {
+    "min_age": "30d",
+    "actions": {
+    }
+  }
+}
+
+//添加action之后的
+{
+  "delete": {
+    "min_age": "30d",
+    "actions": {
+      "delete": {}
+    }
+  }
+}
+
 ```
