@@ -2,8 +2,8 @@ package cn.creekmoon.operationLog.elasticSupport;
 
 import cn.creekmoon.operationLog.config.OperationLogConfig;
 import cn.creekmoon.operationLog.core.LogRecord;
-import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutool589.core.lang.UUID;
+import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;

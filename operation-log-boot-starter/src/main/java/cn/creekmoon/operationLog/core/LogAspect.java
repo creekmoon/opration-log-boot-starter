@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
 import cn.creekmoon.operationLog.utils.ObjectUtils;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;

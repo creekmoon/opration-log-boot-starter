@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.example.controller;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
 import cn.creekmoon.operationLog.core.OperationLog;
 import cn.creekmoon.operationLog.example.mapper.TCargoMapper;
 import cn.creekmoon.operationLog.example.model.TCargo;
