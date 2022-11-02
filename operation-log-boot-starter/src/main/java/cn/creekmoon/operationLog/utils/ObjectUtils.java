@@ -1,7 +1,8 @@
 package cn.creekmoon.operationLog.utils;
 
-import cn.hutool.core.bean.BeanUtil;
+
 import cn.creekmoon.operationLog.core.LogRecord;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.*;
