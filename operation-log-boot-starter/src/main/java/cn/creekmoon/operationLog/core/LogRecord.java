@@ -4,10 +4,8 @@ import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
 import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.UTC_MS_PATTERN;
@@ -49,11 +47,11 @@ public class LogRecord {
 
 
     /**
-     * 转换为JSON对象
+     * 内置方法, 转换为打平的JSON对象(即所有第一级属性都转为简单的String或String[]类型)
      *
      * @return
      */
-    public JSONObject toJSONObject() {
+    public JSONObject toFlatJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userId", userId != null ? String.valueOf(userId) : null);
         jsonObject.put("orgId", orgId != null ? String.valueOf(orgId) : null);
