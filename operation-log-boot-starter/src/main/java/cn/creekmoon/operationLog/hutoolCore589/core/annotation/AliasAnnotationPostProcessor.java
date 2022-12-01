@@ -1,25 +1,25 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.Alias;
-import cn.hutool.core.annotation.ForceAliasedAnnotationAttribute;
-import cn.hutool.core.annotation.SynthesizedAnnotationPostProcessor;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.map.ForestMap;
-import cn.hutool.core.map.LinkedForestMap;
-import cn.hutool.core.map.TreeEntry;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.ForceAliasedAnnotationAttribute;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.ForestMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.LinkedForestMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.TreeEntry;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.util.Map;
 
 /**
- * <p>用于处理注解对象中带有{@link cn.hutool.core.annotation.Alias}注解的属性。<br>
- * 当该处理器执行完毕后，{@link cn.hutool.core.annotation.Alias}注解指向的目标注解的属性将会被包装并替换为
+ * <p>用于处理注解对象中带有{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}注解的属性。<br>
+ * 当该处理器执行完毕后，{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}注解指向的目标注解的属性将会被包装并替换为
  * {@link ForceAliasedAnnotationAttribute}。
  *
  * @author huangchengxing
- * @see cn.hutool.core.annotation.Alias
+ * @see cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias
  * @see ForceAliasedAnnotationAttribute
  */
 public class AliasAnnotationPostProcessor implements SynthesizedAnnotationPostProcessor {
@@ -36,7 +36,7 @@ public class AliasAnnotationPostProcessor implements SynthesizedAnnotationPostPr
 		// 记录别名与属性的关系
 		final ForestMap<String, AnnotationAttribute> attributeAliasMappings = new LinkedForestMap<>(false);
 		attributeMap.forEach((attributeName, attribute) -> {
-			final String alias = Opt.ofNullable(attribute.getAnnotation(cn.hutool.core.annotation.Alias.class))
+			final String alias = Opt.ofNullable(attribute.getAnnotation(cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias.class))
 					.map(Alias::value)
 					.orElse(null);
 			if (ObjectUtil.isNull(alias)) {

@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.hutool.core.img.FontUtil;
-import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.FontUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -117,7 +117,7 @@ public class GraphicsUtil {
         for (int i = 0; i < len; i++) {
             if (null == color) {
                 // 产生随机的颜色值，让输出的每个字符的颜色值都将不同。
-                g.setColor(cn.hutool.core.img.ImgUtil.randomColor());
+                g.setColor(cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.randomColor());
             }
             g.drawString(String.valueOf(str.charAt(i)), i * charWidth, midY);
         }

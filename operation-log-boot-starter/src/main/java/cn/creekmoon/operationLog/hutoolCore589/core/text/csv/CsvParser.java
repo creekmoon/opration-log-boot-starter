@@ -1,15 +1,15 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.hutool.core.collection.ComputeIter;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.text.csv.CsvReadConfig;
-import cn.hutool.core.text.csv.CsvRow;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ComputeIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvReadConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @author Looly
  */
-public final class CsvParser extends ComputeIter<cn.hutool.core.text.csv.CsvRow> implements Closeable, Serializable {
+public final class CsvParser extends ComputeIter<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> implements Closeable, Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int DEFAULT_ROW_CAPACITY = 10;
@@ -52,7 +52,7 @@ public final class CsvParser extends ComputeIter<cn.hutool.core.text.csv.CsvRow>
     /**
      * 标题行
      */
-    private cn.hutool.core.text.csv.CsvRow header;
+    private cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow header;
     /**
      * 当前行号
      */
@@ -102,7 +102,7 @@ public final class CsvParser extends ComputeIter<cn.hutool.core.text.csv.CsvRow>
     }
 
     @Override
-    protected cn.hutool.core.text.csv.CsvRow computeNext() {
+    protected cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow computeNext() {
         return nextRow();
     }
 
@@ -112,7 +112,7 @@ public final class CsvParser extends ComputeIter<cn.hutool.core.text.csv.CsvRow>
      * @return CsvRow
      * @throws IORuntimeException IO读取异常
      */
-    public cn.hutool.core.text.csv.CsvRow nextRow() throws IORuntimeException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow nextRow() throws IORuntimeException {
         List<String> currentFields;
         int fieldCount;
         while (false == finished) {
@@ -160,7 +160,7 @@ public final class CsvParser extends ComputeIter<cn.hutool.core.text.csv.CsvRow>
                 continue;
             }
 
-            return new cn.hutool.core.text.csv.CsvRow(lineNo, null == header ? null : header.headerMap, currentFields);
+            return new cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow(lineNo, null == header ? null : header.headerMap, currentFields);
         }
 
         return null;

@@ -1,50 +1,50 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.convert;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.ConvertException;
-import cn.hutool.core.convert.Converter;
-import cn.hutool.core.convert.impl.ArrayConverter;
-import cn.hutool.core.convert.impl.AtomicBooleanConverter;
-import cn.hutool.core.convert.impl.AtomicIntegerArrayConverter;
-import cn.hutool.core.convert.impl.AtomicLongArrayConverter;
-import cn.hutool.core.convert.impl.AtomicReferenceConverter;
-import cn.hutool.core.convert.impl.BeanConverter;
-import cn.hutool.core.convert.impl.BooleanConverter;
-import cn.hutool.core.convert.impl.CalendarConverter;
-import cn.hutool.core.convert.impl.CharacterConverter;
-import cn.hutool.core.convert.impl.CharsetConverter;
-import cn.hutool.core.convert.impl.ClassConverter;
-import cn.hutool.core.convert.impl.CollectionConverter;
-import cn.hutool.core.convert.impl.CurrencyConverter;
-import cn.hutool.core.convert.impl.DateConverter;
-import cn.hutool.core.convert.impl.DurationConverter;
-import cn.hutool.core.convert.impl.EnumConverter;
-import cn.hutool.core.convert.impl.LocaleConverter;
-import cn.hutool.core.convert.impl.MapConverter;
-import cn.hutool.core.convert.impl.NumberConverter;
-import cn.hutool.core.convert.impl.OptConverter;
-import cn.hutool.core.convert.impl.OptionalConverter;
-import cn.hutool.core.convert.impl.PathConverter;
-import cn.hutool.core.convert.impl.PeriodConverter;
-import cn.hutool.core.convert.impl.PrimitiveConverter;
-import cn.hutool.core.convert.impl.ReferenceConverter;
-import cn.hutool.core.convert.impl.StackTraceElementConverter;
-import cn.hutool.core.convert.impl.StringConverter;
-import cn.hutool.core.convert.impl.TemporalAccessorConverter;
-import cn.hutool.core.convert.impl.TimeZoneConverter;
-import cn.hutool.core.convert.impl.URIConverter;
-import cn.hutool.core.convert.impl.URLConverter;
-import cn.hutool.core.convert.impl.UUIDConverter;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.lang.TypeReference;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.ServiceLoaderUtil;
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.ArrayConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.AtomicBooleanConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.AtomicIntegerArrayConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.AtomicLongArrayConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.AtomicReferenceConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.BeanConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.BooleanConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.CalendarConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.CharacterConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.CharsetConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.ClassConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.CollectionConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.CurrencyConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.DateConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.DurationConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.EnumConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.LocaleConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.MapConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.OptConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.OptionalConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.PathConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.PeriodConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.PrimitiveConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.ReferenceConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.StackTraceElementConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.StringConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.TemporalAccessorConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.TimeZoneConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.URIConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.URLConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.UUIDConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.TypeReference;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ServiceLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.io.Serializable;
 import java.lang.ref.SoftReference;
@@ -103,11 +103,11 @@ public class ConverterRegistry implements Serializable {
     /**
      * 默认类型转换器
      */
-    private Map<Type, cn.hutool.core.convert.Converter<?>> defaultConverterMap;
+    private Map<Type, cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<?>> defaultConverterMap;
     /**
      * 用户自定义类型转换器
      */
-    private volatile Map<Type, cn.hutool.core.convert.Converter<?>> customConverterMap;
+    private volatile Map<Type, cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<?>> customConverterMap;
 
     /**
      * 类级的内部类，也就是静态的成员式内部类，该内部类的实例与外部类的实例 没有绑定关系，而且只有被调用到才会装载，从而实现了延迟加载
@@ -140,7 +140,7 @@ public class ConverterRegistry implements Serializable {
      * 使用SPI加载转换器
      */
     private void putCustomBySpi() {
-        ServiceLoaderUtil.load(cn.hutool.core.convert.Converter.class).forEach(converter -> {
+        ServiceLoaderUtil.load(cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter.class).forEach(converter -> {
             try {
                 Type type = TypeUtil.getTypeArgument(ClassUtil.getClass(converter));
                 if (null != type) {
@@ -159,7 +159,7 @@ public class ConverterRegistry implements Serializable {
      * @param converterClass 转换器类，必须有默认构造方法
      * @return ConverterRegistry
      */
-    public ConverterRegistry putCustom(Type type, Class<? extends cn.hutool.core.convert.Converter<?>> converterClass) {
+    public ConverterRegistry putCustom(Type type, Class<? extends cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<?>> converterClass) {
         return putCustom(type, ReflectUtil.newInstance(converterClass));
     }
 
@@ -170,7 +170,7 @@ public class ConverterRegistry implements Serializable {
      * @param converter 转换器
      * @return ConverterRegistry
      */
-    public ConverterRegistry putCustom(Type type, cn.hutool.core.convert.Converter<?> converter) {
+    public ConverterRegistry putCustom(Type type, cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<?> converter) {
         if (null == customConverterMap) {
             synchronized (this) {
                 if (null == customConverterMap) {
@@ -190,8 +190,8 @@ public class ConverterRegistry implements Serializable {
      * @param isCustomFirst 是否自定义转换器优先
      * @return 转换器
      */
-    public <T> cn.hutool.core.convert.Converter<T> getConverter(Type type, boolean isCustomFirst) {
-        cn.hutool.core.convert.Converter<T> converter;
+    public <T> cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T> getConverter(Type type, boolean isCustomFirst) {
+        cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T> converter;
         if (isCustomFirst) {
             converter = this.getCustomConverter(type);
             if (null == converter) {
@@ -214,8 +214,8 @@ public class ConverterRegistry implements Serializable {
      * @return 转换器
      */
     @SuppressWarnings("unchecked")
-    public <T> cn.hutool.core.convert.Converter<T> getDefaultConverter(Type type) {
-        return (null == defaultConverterMap) ? null : (cn.hutool.core.convert.Converter<T>) defaultConverterMap.get(type);
+    public <T> cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T> getDefaultConverter(Type type) {
+        return (null == defaultConverterMap) ? null : (cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T>) defaultConverterMap.get(type);
     }
 
     /**
@@ -226,8 +226,8 @@ public class ConverterRegistry implements Serializable {
      * @return 转换器
      */
     @SuppressWarnings("unchecked")
-    public <T> cn.hutool.core.convert.Converter<T> getCustomConverter(Type type) {
-        return (null == customConverterMap) ? null : (cn.hutool.core.convert.Converter<T>) customConverterMap.get(type);
+    public <T> cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T> getCustomConverter(Type type) {
+        return (null == customConverterMap) ? null : (cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T>) customConverterMap.get(type);
     }
 
     /**
@@ -239,10 +239,10 @@ public class ConverterRegistry implements Serializable {
      * @param defaultValue  默认值
      * @param isCustomFirst 是否自定义转换器优先
      * @return 转换后的值
-     * @throws cn.hutool.core.convert.ConvertException 转换器不存在
+     * @throws cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException 转换器不存在
      */
     @SuppressWarnings("unchecked")
-    public <T> T convert(Type type, Object value, T defaultValue, boolean isCustomFirst) throws cn.hutool.core.convert.ConvertException {
+    public <T> T convert(Type type, Object value, T defaultValue, boolean isCustomFirst) throws cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException {
         if (TypeUtil.isUnknown(type) && null == defaultValue) {
             // 对于用户不指定目标类型的情况，返回原值
             return (T) value;
@@ -259,7 +259,7 @@ public class ConverterRegistry implements Serializable {
         }
 
         // 标准转换器
-        final cn.hutool.core.convert.Converter<T> converter = getConverter(type, isCustomFirst);
+        final cn.creekmoon.operationLog.hutoolCore589.core.convert.Converter<T> converter = getConverter(type, isCustomFirst);
         if (null != converter) {
             return converter.convert(value, defaultValue);
         }
@@ -292,7 +292,7 @@ public class ConverterRegistry implements Serializable {
         }
 
         // 无法转换
-        throw new cn.hutool.core.convert.ConvertException("Can not Converter from [{}] to [{}]", value.getClass().getName(), type.getTypeName());
+        throw new cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException("Can not Converter from [{}] to [{}]", value.getClass().getName(), type.getTypeName());
     }
 
     /**
@@ -304,9 +304,9 @@ public class ConverterRegistry implements Serializable {
      * @param value        值
      * @param defaultValue 默认值
      * @return 转换后的值
-     * @throws cn.hutool.core.convert.ConvertException 转换器不存在
+     * @throws cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException 转换器不存在
      */
-    public <T> T convert(Type type, Object value, T defaultValue) throws cn.hutool.core.convert.ConvertException {
+    public <T> T convert(Type type, Object value, T defaultValue) throws cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException {
         return convert(type, value, defaultValue, true);
     }
 
@@ -317,7 +317,7 @@ public class ConverterRegistry implements Serializable {
      * @param type  类型
      * @param value 值
      * @return 转换后的值，默认为{@code null}
-     * @throws cn.hutool.core.convert.ConvertException 转换器不存在
+     * @throws cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException 转换器不存在
      */
     public <T> T convert(Type type, Object value) throws ConvertException {
         return convert(type, value, null);

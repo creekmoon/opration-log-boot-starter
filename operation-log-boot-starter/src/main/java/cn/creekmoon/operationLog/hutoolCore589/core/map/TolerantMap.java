@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.map.MapWrapper;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapWrapper;
 
 import java.util.HashMap;
 import java.util.Map;

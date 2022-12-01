@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.hutool.core.thread.DelegatedExecutorService;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.DelegatedExecutorService;
 
 import java.util.concurrent.ExecutorService;
 

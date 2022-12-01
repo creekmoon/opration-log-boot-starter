@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
-import cn.hutool.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
 
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;

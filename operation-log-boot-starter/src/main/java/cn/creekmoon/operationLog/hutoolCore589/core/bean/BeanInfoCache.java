@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.hutool.core.lang.func.Func0;
-import cn.hutool.core.map.ReferenceConcurrentMap;
-import cn.hutool.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.ReferenceConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
 
 import java.beans.PropertyDescriptor;
 import java.util.Map;

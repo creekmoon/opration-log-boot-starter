@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.SynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAggregateAnnotation;
 
 /**
  * 注解选择器，指定两个注解，选择其中一个返回。<br>

@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.func.Func1;
-import cn.hutool.core.lang.func.LambdaUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.LambdaUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class EnumUtil {
      * @since 4.5.18
      */
     public static <E extends Enum<E>> E fromStringQuietly(Class<E> enumClass, String value) {
-        if (null == enumClass || cn.hutool.core.util.StrUtil.isBlank(value)) {
+        if (null == enumClass || cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(value)) {
             return null;
         }
 
@@ -358,7 +358,7 @@ public class EnumUtil {
      * @return 是非匹配
      */
     public static boolean equalsIgnoreCase(final Enum<?> e, String val) {
-        return cn.hutool.core.util.StrUtil.equalsIgnoreCase(toString(e), val);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.equalsIgnoreCase(toString(e), val);
     }
 
     /**

@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.NoResourceException;
-import cn.hutool.core.io.resource.UrlResource;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.NoResourceException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.UrlResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import java.net.URL;
 

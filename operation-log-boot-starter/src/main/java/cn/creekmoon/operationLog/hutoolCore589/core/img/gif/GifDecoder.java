@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img.gif;
 
-import cn.hutool.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

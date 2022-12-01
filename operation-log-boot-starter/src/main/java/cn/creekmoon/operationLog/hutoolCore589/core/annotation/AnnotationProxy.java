@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.Alias;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * 注解代理<br>
- * 通过代理指定注解，可以自定义调用注解的方法逻辑，如支持{@link cn.hutool.core.annotation.Alias} 注解
+ * 通过代理指定注解，可以自定义调用注解的方法逻辑，如支持{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias} 注解
  *
  * @param <T> 注解类型
  * @since 5.7.23
@@ -47,7 +47,7 @@ public class AnnotationProxy<T extends Annotation> implements Annotation, Invoca
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
 		// 注解别名
-		cn.hutool.core.annotation.Alias alias = method.getAnnotation(Alias.class);
+		cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias alias = method.getAnnotation(Alias.class);
 		if (null != alias) {
 			final String name = alias.value();
 			if (StrUtil.isNotBlank(name)) {

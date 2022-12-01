@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.time.DayOfWeek;
 import java.util.Calendar;

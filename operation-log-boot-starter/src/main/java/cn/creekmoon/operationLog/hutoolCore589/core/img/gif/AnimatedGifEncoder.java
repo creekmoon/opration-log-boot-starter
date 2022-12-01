@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img.gif;
 
-import cn.hutool.core.img.gif.NeuQuant;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.gif.NeuQuant;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -318,7 +318,7 @@ public class AnimatedGifEncoder {
         int len = pixels.length;
         int nPix = len / 3;
         indexedPixels = new byte[nPix];
-        cn.hutool.core.img.gif.NeuQuant nq = new NeuQuant(pixels, len, sample);
+        cn.creekmoon.operationLog.hutoolCore589.core.img.gif.NeuQuant nq = new NeuQuant(pixels, len, sample);
         // initialize quantizer
         colorTab = nq.process(); // create reduced palette
         // convert map from BGR to RGB
@@ -551,7 +551,7 @@ public class AnimatedGifEncoder {
      * @throws IOException IO异常
      */
     protected void writePixels() throws IOException {
-        cn.hutool.core.img.gif.LZWEncoder encoder = new cn.hutool.core.img.gif.LZWEncoder(width, height, indexedPixels, colorDepth);
+        cn.creekmoon.operationLog.hutoolCore589.core.img.gif.LZWEncoder encoder = new cn.creekmoon.operationLog.hutoolCore589.core.img.gif.LZWEncoder(width, height, indexedPixels, colorDepth);
         encoder.encode(out);
     }
 

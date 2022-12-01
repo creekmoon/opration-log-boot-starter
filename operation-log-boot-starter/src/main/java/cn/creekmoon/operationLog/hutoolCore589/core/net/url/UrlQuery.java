@@ -1,15 +1,15 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net.url;
 
-import cn.hutool.core.codec.PercentCodec;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.map.TableMap;
-import cn.hutool.core.net.FormUrlencoded;
-import cn.hutool.core.net.RFC3986;
-import cn.hutool.core.net.URLDecoder;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.PercentCodec;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.TableMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.FormUrlencoded;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLDecoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;

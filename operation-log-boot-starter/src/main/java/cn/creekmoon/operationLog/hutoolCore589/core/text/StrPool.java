@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.text.CharPool;
-import cn.hutool.core.util.XmlUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.XmlUtil;
 
 /**
  * 常用字符串常量定义

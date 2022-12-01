@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.escape;
 
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.text.replacer.StrReplacer;
-import cn.hutool.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.StrReplacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
 
 /**
  * 形如&#39;的反转义器

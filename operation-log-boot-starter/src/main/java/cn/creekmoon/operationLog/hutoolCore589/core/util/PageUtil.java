@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.lang.DefaultSegment;
-import cn.hutool.core.lang.Segment;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.DefaultSegment;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Segment;
 
 /**
  * 分页工具类

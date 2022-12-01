@@ -1,14 +1,14 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.Alias;
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.annotation.CacheableSynthesizedAnnotationAttributeProcessor;
-import cn.hutool.core.annotation.SynthesizedAnnotationAttributeProcessor;
-import cn.hutool.core.annotation.scanner.AnnotationScanner;
-import cn.hutool.core.annotation.scanner.MetaAnnotationScanner;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.CacheableSynthesizedAnnotationAttributeProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationAttributeProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.AnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.MetaAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -32,7 +32,7 @@ import java.util.*;
  * <p>当扫描的注解对象经过{@link SynthesizedAnnotationSelector}处理后，
  * 将会被转为{@link MetaAnnotation}，并使用在实例化时指定的{@link AliasAnnotationPostProcessor}
  * 进行后置处理。<br>
- * 默认情况下，将注册以下后置处理器以对{@link cn.hutool.core.annotation.Alias}与{@link Link}和其扩展注解提供支持：
+ * 默认情况下，将注册以下后置处理器以对{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}与{@link Link}和其扩展注解提供支持：
  * <ul>
  *     <li>{@link AliasAnnotationPostProcessor}；</li>
  *     <li>{@link MirrorLinkAnnotationPostProcessor}；</li>
@@ -42,13 +42,13 @@ import java.util.*;
  *
  * <p>{@link GenericSynthesizedAggregateAnnotation}支持通过{@link #getAttributeValue(String, Class)}，
  * 或通过{@link #synthesize(Class)}获得注解代理对象后获取指定类型的注解属性值，
- * 返回的属性值将根据合成注解中对应原始注解属性上的{@link cn.hutool.core.annotation.Alias}与{@link Link}注解而有所变化。
+ * 返回的属性值将根据合成注解中对应原始注解属性上的{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}与{@link Link}注解而有所变化。
  * 通过当前实例获取属性值时，将经过{@link SynthesizedAnnotationAttributeProcessor}的处理。<br>
  * 默认情况下，实例将会注册{@link CacheableSynthesizedAnnotationAttributeProcessor}，
  * 该处理器将令元注解中与子注解类型与名称皆一致的属性被子注解的属性覆盖，并且缓存最终获取到的属性值。
  *
  * @author huangchengxing
- * @see cn.hutool.core.annotation.AnnotationUtil
+ * @see cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil
  * @see SynthesizedAnnotationProxy
  * @see SynthesizedAnnotationSelector
  * @see SynthesizedAnnotationAttributeProcessor
@@ -235,7 +235,7 @@ public class GenericSynthesizedAggregateAnnotation
     }
 
     /**
-     * 根据指定的属性名与属性类型获取对应的属性值，若存在{@link cn.hutool.core.annotation.Alias}则获取{@link Alias#value()}指定的别名属性的值
+     * 根据指定的属性名与属性类型获取对应的属性值，若存在{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}则获取{@link Alias#value()}指定的别名属性的值
      * <p>当不同层级的注解之间存在同名同类型属性时，将优先获取更接近根注解的属性
      *
      * @param attributeName 属性名

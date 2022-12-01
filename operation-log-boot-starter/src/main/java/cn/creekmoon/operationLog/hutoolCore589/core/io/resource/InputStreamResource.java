@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
 
 import java.io.InputStream;
 import java.io.Serializable;

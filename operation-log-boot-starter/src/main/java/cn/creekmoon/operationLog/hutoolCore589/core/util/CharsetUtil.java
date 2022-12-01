@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.io.CharsetDetector;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.CharsetDetector;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -62,7 +62,7 @@ public class CharsetUtil {
      * @throws UnsupportedCharsetException 编码不支持
      */
     public static Charset charset(String charsetName) throws UnsupportedCharsetException {
-        return cn.hutool.core.util.StrUtil.isBlank(charsetName) ? Charset.defaultCharset() : Charset.forName(charsetName);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(charsetName) ? Charset.defaultCharset() : Charset.forName(charsetName);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CharsetUtil {
      * @since 5.2.6
      */
     public static Charset parse(String charsetName, Charset defaultCharset) {
-        if (cn.hutool.core.util.StrUtil.isBlank(charsetName)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(charsetName)) {
             return defaultCharset;
         }
 

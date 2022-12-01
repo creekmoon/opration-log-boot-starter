@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.func.Func0;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReferenceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReferenceUtil;
 
 import java.io.Serializable;
 import java.lang.ref.Reference;

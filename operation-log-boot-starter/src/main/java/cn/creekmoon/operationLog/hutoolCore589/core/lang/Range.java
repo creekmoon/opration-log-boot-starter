@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.thread.lock.NoLock;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock;
 
 import java.io.Serializable;
 import java.util.Iterator;

@@ -1,16 +1,16 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.date.Month;
-import cn.hutool.core.date.Quarter;
-import cn.hutool.core.date.Week;
-import cn.hutool.core.date.format.DateParser;
-import cn.hutool.core.date.format.DatePrinter;
-import cn.hutool.core.date.format.FastDateFormat;
-import cn.hutool.core.date.format.GlobalCustomFormat;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.SystemPropsUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Month;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Quarter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Week;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DatePrinter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.SystemPropsUtil;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -58,7 +58,7 @@ public class DateTime extends Date {
     /**
      * 一周的第一天，默认是周一， 在设置或获得 WEEK_OF_MONTH 或 WEEK_OF_YEAR 字段时，Calendar 必须确定一个月或一年的第一个星期，以此作为参考点。
      */
-    private cn.hutool.core.date.Week firstDayOfWeek = cn.hutool.core.date.Week.MONDAY;
+    private cn.creekmoon.operationLog.hutoolCore589.core.date.Week firstDayOfWeek = cn.creekmoon.operationLog.hutoolCore589.core.date.Week.MONDAY;
     /**
      * 时区
      */
@@ -173,7 +173,7 @@ public class DateTime extends Date {
      */
     public DateTime(Calendar calendar) {
         this(calendar.getTime(), calendar.getTimeZone());
-        this.setFirstDayOfWeek(cn.hutool.core.date.Week.of(calendar.getFirstDayOfWeek()));
+        this.setFirstDayOfWeek(cn.creekmoon.operationLog.hutoolCore589.core.date.Week.of(calendar.getFirstDayOfWeek()));
     }
 
     /**
@@ -448,7 +448,7 @@ public class DateTime extends Date {
     /**
      * 获得当前日期所属季度，从1开始计数<br>
      *
-     * @return 第几个季度 {@link cn.hutool.core.date.Quarter}
+     * @return 第几个季度 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Quarter}
      */
     public int quarter() {
         return month() / 3 + 1;
@@ -457,9 +457,9 @@ public class DateTime extends Date {
     /**
      * 获得当前日期所属季度<br>
      *
-     * @return 第几个季度 {@link cn.hutool.core.date.Quarter}
+     * @return 第几个季度 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Quarter}
      */
-    public cn.hutool.core.date.Quarter quarterEnum() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.date.Quarter quarterEnum() {
         return Quarter.of(quarter());
     }
 
@@ -495,9 +495,9 @@ public class DateTime extends Date {
     /**
      * 获得月份
      *
-     * @return {@link cn.hutool.core.date.Month}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}
      */
-    public cn.hutool.core.date.Month monthEnum() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.date.Month monthEnum() {
         return Month.of(month());
     }
 
@@ -509,7 +509,7 @@ public class DateTime extends Date {
      * 跨年的那个星期得到的结果总是1
      *
      * @return 周
-     * @see #setFirstDayOfWeek(cn.hutool.core.date.Week)
+     * @see #setFirstDayOfWeek(cn.creekmoon.operationLog.hutoolCore589.core.date.Week)
      */
     public int weekOfYear() {
         return getField(DateField.WEEK_OF_YEAR);
@@ -522,7 +522,7 @@ public class DateTime extends Date {
      * 如果一周的第一天为周一，那这天是第一周（返回1）
      *
      * @return 周
-     * @see #setFirstDayOfWeek(cn.hutool.core.date.Week)
+     * @see #setFirstDayOfWeek(cn.creekmoon.operationLog.hutoolCore589.core.date.Week)
      */
     public int weekOfMonth() {
         return getField(DateField.WEEK_OF_MONTH);
@@ -568,10 +568,10 @@ public class DateTime extends Date {
     /**
      * 获得指定日期是星期几
      *
-     * @return {@link cn.hutool.core.date.Week}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Week}
      */
-    public cn.hutool.core.date.Week dayOfWeekEnum() {
-        return cn.hutool.core.date.Week.of(dayOfWeek());
+    public cn.creekmoon.operationLog.hutoolCore589.core.date.Week dayOfWeekEnum() {
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.Week.of(dayOfWeek());
     }
 
     /**
@@ -886,7 +886,7 @@ public class DateTime extends Date {
      *
      * @return 一周的第一天
      */
-    public cn.hutool.core.date.Week getFirstDayOfWeek() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.date.Week getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
@@ -900,7 +900,7 @@ public class DateTime extends Date {
      * @see #weekOfMonth()
      * @see #weekOfYear()
      */
-    public DateTime setFirstDayOfWeek(cn.hutool.core.date.Week firstDayOfWeek) {
+    public DateTime setFirstDayOfWeek(cn.creekmoon.operationLog.hutoolCore589.core.date.Week firstDayOfWeek) {
         this.firstDayOfWeek = firstDayOfWeek;
         return this;
     }

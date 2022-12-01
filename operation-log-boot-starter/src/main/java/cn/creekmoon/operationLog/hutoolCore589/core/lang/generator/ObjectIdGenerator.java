@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.generator;
 
-import cn.hutool.core.lang.ObjectId;
-import cn.hutool.core.lang.generator.Generator;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ObjectId;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.generator.Generator;
 
 /**
  * ObjectId生成器

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.ansi.AnsiElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement;
 
 /**
  * ANSI 8-bit前景或背景色（即8位编码，共256种颜色（2^8） ）<br>

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.hutool.core.map.multi.AbsCollValueMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.AbsCollValueMap;
 
 import java.util.Collection;
 import java.util.HashMap;

@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net.url;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.net.RFC3986;
-import cn.hutool.core.net.URLDecoder;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLDecoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 import java.util.LinkedList;

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.net.SSLContextBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.SSLContextBuilder;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;

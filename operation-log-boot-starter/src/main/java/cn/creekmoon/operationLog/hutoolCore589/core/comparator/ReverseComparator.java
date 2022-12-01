@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.hutool.core.comparator.ComparableComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.ComparableComparator;
 
 import java.io.Serializable;
 import java.util.Comparator;

@@ -1,16 +1,16 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.hutool.core.codec.Base64;
-import cn.hutool.core.img.Img;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base64;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.Img;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -121,7 +121,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static void scale(Image srcImg, File destFile, float scale) throws IORuntimeException {
-        cn.hutool.core.img.Img.from(srcImg).setTargetImageType(FileUtil.extName(destFile)).scale(scale).write(destFile);
+        cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).setTargetImageType(FileUtil.extName(destFile)).scale(scale).write(destFile);
     }
 
     /**
@@ -161,7 +161,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image scale(Image srcImg, float scale) {
-        return cn.hutool.core.img.Img.from(srcImg).scale(scale).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).scale(scale).getImg();
     }
 
     /**
@@ -175,7 +175,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image scale(Image srcImg, int width, int height) {
-        return cn.hutool.core.img.Img.from(srcImg).scale(width, height).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).scale(width, height).getImg();
     }
 
     /**
@@ -190,7 +190,7 @@ public class ImgUtil {
      * @throws IORuntimeException IO异常
      */
     public static void scale(File srcImageFile, File destImageFile, int width, int height, Color fixedColor) throws IORuntimeException {
-        cn.hutool.core.img.Img.from(srcImageFile)//
+        cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImageFile)//
                 .setTargetImageType(FileUtil.extName(destImageFile))//
                 .scale(width, height, fixedColor)//
                 .write(destImageFile);
@@ -252,7 +252,7 @@ public class ImgUtil {
      * @return {@link Image}
      */
     public static Image scale(Image srcImage, int width, int height, Color fixedColor) {
-        return cn.hutool.core.img.Img.from(srcImage).scale(width, height, fixedColor).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).scale(width, height, fixedColor).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- cut
@@ -341,7 +341,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image cut(Image srcImage, Rectangle rectangle) {
-        return cn.hutool.core.img.Img.from(srcImage).setPositionBaseCentre(false).cut(rectangle).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).setPositionBaseCentre(false).cut(rectangle).getImg();
     }
 
     /**
@@ -368,7 +368,7 @@ public class ImgUtil {
      * @since 4.1.15
      */
     public static Image cut(Image srcImage, int x, int y, int radius) {
-        return cn.hutool.core.img.Img.from(srcImage).cut(x, y, radius).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).cut(x, y, radius).getImg();
     }
 
     /**
@@ -661,7 +661,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image gray(Image srcImage) {
-        return cn.hutool.core.img.Img.from(srcImage).gray().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).gray().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- binary
@@ -748,7 +748,7 @@ public class ImgUtil {
      * @since 4.0.5
      */
     public static Image binary(Image srcImage) {
-        return cn.hutool.core.img.Img.from(srcImage).binary().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).binary().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- press
@@ -874,7 +874,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image pressText(Image srcImage, String pressText, Color color, Font font, int x, int y, float alpha) {
-        return cn.hutool.core.img.Img.from(srcImage).pressText(pressText, color, font, x, y, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressText(pressText, color, font, x, y, alpha).getImg();
     }
 
     /**
@@ -984,7 +984,7 @@ public class ImgUtil {
      * @return 结果图片
      */
     public static Image pressImage(Image srcImage, Image pressImg, int x, int y, float alpha) {
-        return cn.hutool.core.img.Img.from(srcImage).pressImage(pressImg, x, y, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressImage(pressImg, x, y, alpha).getImg();
     }
 
     /**
@@ -999,7 +999,7 @@ public class ImgUtil {
      * @since 4.1.14
      */
     public static Image pressImage(Image srcImage, Image pressImg, Rectangle rectangle, float alpha) {
-        return cn.hutool.core.img.Img.from(srcImage).pressImage(pressImg, rectangle, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressImage(pressImg, rectangle, alpha).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- rotate
@@ -1070,7 +1070,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image rotate(Image image, int degree) {
-        return cn.hutool.core.img.Img.from(image).rotate(degree).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(image).rotate(degree).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- flip
@@ -1131,7 +1131,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image flip(Image image) {
-        return cn.hutool.core.img.Img.from(image).flip().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(image).flip().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- compress

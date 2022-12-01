@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.AbstractLinkAnnotationPostProcessor;
-import cn.hutool.core.annotation.AbstractWrappedAnnotationAttribute;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AbstractLinkAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AbstractWrappedAnnotationAttribute;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.util.function.BinaryOperator;
 

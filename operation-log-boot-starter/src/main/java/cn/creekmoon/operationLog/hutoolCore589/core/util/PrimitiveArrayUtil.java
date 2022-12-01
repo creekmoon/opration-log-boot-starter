@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -815,7 +815,7 @@ public class PrimitiveArrayUtil {
     public static int indexOf(double[] array, double value) {
         if (null != array) {
             for (int i = 0; i < array.length; i++) {
-                if (cn.hutool.core.util.NumberUtil.equals(value, array[i])) {
+                if (cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.equals(value, array[i])) {
                     return i;
                 }
             }
@@ -834,7 +834,7 @@ public class PrimitiveArrayUtil {
     public static int lastIndexOf(double[] array, double value) {
         if (null != array) {
             for (int i = array.length - 1; i >= 0; i--) {
-                if (cn.hutool.core.util.NumberUtil.equals(value, array[i])) {
+                if (cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.equals(value, array[i])) {
                     return i;
                 }
             }
@@ -865,7 +865,7 @@ public class PrimitiveArrayUtil {
     public static int indexOf(float[] array, float value) {
         if (null != array) {
             for (int i = 0; i < array.length; i++) {
-                if (cn.hutool.core.util.NumberUtil.equals(value, array[i])) {
+                if (cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.equals(value, array[i])) {
                     return i;
                 }
             }
@@ -995,7 +995,7 @@ public class PrimitiveArrayUtil {
 
         final int[] array = new int[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], 0);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], 0);
         }
         return array;
     }
@@ -1039,7 +1039,7 @@ public class PrimitiveArrayUtil {
 
         final long[] array = new long[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], 0L);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], 0L);
         }
         return array;
     }
@@ -1083,7 +1083,7 @@ public class PrimitiveArrayUtil {
 
         char[] array = new char[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], Character.MIN_VALUE);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], Character.MIN_VALUE);
         }
         return array;
     }
@@ -1127,7 +1127,7 @@ public class PrimitiveArrayUtil {
 
         final byte[] array = new byte[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], (byte) 0);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], (byte) 0);
         }
         return array;
     }
@@ -1171,7 +1171,7 @@ public class PrimitiveArrayUtil {
 
         final short[] array = new short[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], (short) 0);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], (short) 0);
         }
         return array;
     }
@@ -1215,7 +1215,7 @@ public class PrimitiveArrayUtil {
 
         final float[] array = new float[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], 0F);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], 0F);
         }
         return array;
     }
@@ -1259,7 +1259,7 @@ public class PrimitiveArrayUtil {
 
         final double[] array = new double[length];
         for (int i = 0; i < length; i++) {
-            array[i] = cn.hutool.core.util.ObjectUtil.defaultIfNull(values[i], 0D);
+            array[i] = cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil.defaultIfNull(values[i], 0D);
         }
         return array;
     }
@@ -2416,7 +2416,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static int[] shuffle(int[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2449,7 +2449,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static long[] shuffle(long[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2482,7 +2482,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static double[] shuffle(double[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2515,7 +2515,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static float[] shuffle(float[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2548,7 +2548,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static boolean[] shuffle(boolean[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2581,7 +2581,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static byte[] shuffle(byte[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**
@@ -2614,7 +2614,7 @@ public class PrimitiveArrayUtil {
      * @since 5.5.2
      */
     public static char[] shuffle(char[] array) {
-        return shuffle(array, cn.hutool.core.util.RandomUtil.getRandom());
+        return shuffle(array, cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.getRandom());
     }
 
     /**

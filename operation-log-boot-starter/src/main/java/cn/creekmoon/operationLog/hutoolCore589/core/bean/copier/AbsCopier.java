@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.lang.copier.Copier;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.CopyOptions;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.copier.Copier;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 /**
  * 抽象的对象拷贝封装，提供来源对象、目标对象持有

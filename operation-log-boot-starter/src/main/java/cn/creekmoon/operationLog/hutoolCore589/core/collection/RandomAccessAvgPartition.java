@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.hutool.core.collection.AvgPartition;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.AvgPartition;
 
 import java.util.List;
 import java.util.RandomAccess;

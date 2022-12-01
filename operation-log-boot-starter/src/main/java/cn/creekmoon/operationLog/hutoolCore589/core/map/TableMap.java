@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -211,7 +211,7 @@ public class TableMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>, Ser
     public Set<Map.Entry<K, V>> entrySet() {
         final Set<Map.Entry<K, V>> hashSet = new LinkedHashSet<>();
         for (int i = 0; i < size(); i++) {
-            hashSet.add(cn.hutool.core.map.MapUtil.entry(keys.get(i), values.get(i)));
+            hashSet.add(cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil.entry(keys.get(i), values.get(i)));
         }
         return hashSet;
     }

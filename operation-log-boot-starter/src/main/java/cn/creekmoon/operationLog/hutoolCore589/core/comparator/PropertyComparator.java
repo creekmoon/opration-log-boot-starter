@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.comparator.FuncComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.FuncComparator;
 
 /**
  * Bean属性排序器<br>

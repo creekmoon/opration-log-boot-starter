@@ -71,7 +71,5 @@ public class ObjectUtils {
         }
         record.setEffectFieldsBefore(effectFieldsBefore);
         record.setEffectFieldsAfter(effectFieldsAfter);
-        /*设置操作时间*/
-        record.setOperationTime(new Date());
     }
 }

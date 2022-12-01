@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -21,10 +21,10 @@ import java.util.List;
  * @author looly
  * @since 4.1.0
  */
-public class MultiResource implements cn.hutool.core.io.resource.Resource, Iterable<cn.hutool.core.io.resource.Resource>, Iterator<cn.hutool.core.io.resource.Resource>, Serializable {
+public class MultiResource implements cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource, Iterable<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource>, Iterator<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final List<cn.hutool.core.io.resource.Resource> resources;
+    private final List<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource> resources;
     private int cursor;
 
     /**
@@ -32,7 +32,7 @@ public class MultiResource implements cn.hutool.core.io.resource.Resource, Itera
      *
      * @param resources 资源数组
      */
-    public MultiResource(cn.hutool.core.io.resource.Resource... resources) {
+    public MultiResource(cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource... resources) {
         this(CollUtil.newArrayList(resources));
     }
 
@@ -41,9 +41,9 @@ public class MultiResource implements cn.hutool.core.io.resource.Resource, Itera
      *
      * @param resources 资源列表
      */
-    public MultiResource(Collection<cn.hutool.core.io.resource.Resource> resources) {
+    public MultiResource(Collection<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource> resources) {
         if (resources instanceof List) {
-            this.resources = (List<cn.hutool.core.io.resource.Resource>) resources;
+            this.resources = (List<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource>) resources;
         } else {
             this.resources = CollUtil.newArrayList(resources);
         }
@@ -90,7 +90,7 @@ public class MultiResource implements cn.hutool.core.io.resource.Resource, Itera
     }
 
     @Override
-    public Iterator<cn.hutool.core.io.resource.Resource> iterator() {
+    public Iterator<cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource> iterator() {
         return resources.iterator();
     }
 
@@ -100,7 +100,7 @@ public class MultiResource implements cn.hutool.core.io.resource.Resource, Itera
     }
 
     @Override
-    public synchronized cn.hutool.core.io.resource.Resource next() {
+    public synchronized cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource next() {
         if (cursor >= resources.size()) {
             throw new ConcurrentModificationException();
         }

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.copier.Copier;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.copier.Copier;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

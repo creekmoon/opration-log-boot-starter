@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.hutool.core.lang.Chain;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Chain;
 
 import java.util.ArrayList;
 import java.util.Iterator;

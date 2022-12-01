@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.stream;
 
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.stream.SimpleCollector;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.stream.SimpleCollector;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

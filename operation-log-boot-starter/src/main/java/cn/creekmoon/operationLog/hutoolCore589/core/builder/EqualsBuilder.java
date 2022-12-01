@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.builder;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.lang.Pair;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pair;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -51,7 +51,7 @@ public class EqualsBuilder implements Builder<Boolean> {
      * A registry of objects used by reflection methods to detect cyclical object references and avoid infinite loops.
      * </p>
      */
-    private static final ThreadLocal<Set<Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey>>> REGISTRY = new ThreadLocal<>();
+    private static final ThreadLocal<Set<Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>>> REGISTRY = new ThreadLocal<>();
 
     /**
      * <p>
@@ -62,7 +62,7 @@ public class EqualsBuilder implements Builder<Boolean> {
      * @return Set the registry of objects being traversed
      * @since 3.0
      */
-    static Set<Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey>> getRegistry() {
+    static Set<Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> getRegistry() {
         return REGISTRY.get();
     }
 
@@ -75,9 +75,9 @@ public class EqualsBuilder implements Builder<Boolean> {
      * @param rhs the other object
      * @return the pair
      */
-    static Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey> getRegisterPair(final Object lhs, final Object rhs) {
-        final cn.hutool.core.builder.IDKey left = new cn.hutool.core.builder.IDKey(lhs);
-        final cn.hutool.core.builder.IDKey right = new cn.hutool.core.builder.IDKey(rhs);
+    static Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> getRegisterPair(final Object lhs, final Object rhs) {
+        final cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey left = new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(lhs);
+        final cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey right = new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(rhs);
         return new Pair<>(left, right);
     }
 
@@ -95,9 +95,9 @@ public class EqualsBuilder implements Builder<Boolean> {
      * @since 3.0
      */
     static boolean isRegistered(final Object lhs, final Object rhs) {
-        final Set<Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey>> registry = getRegistry();
-        final Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
-        final Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey> swappedPair = new Pair<>(pair.getKey(), pair.getValue());
+        final Set<Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> registry = getRegistry();
+        final Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
+        final Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> swappedPair = new Pair<>(pair.getKey(), pair.getValue());
 
         return registry != null
                 && (registry.contains(pair) || registry.contains(swappedPair));
@@ -119,8 +119,8 @@ public class EqualsBuilder implements Builder<Boolean> {
             }
         }
 
-        final Set<Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey>> registry = getRegistry();
-        final Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
+        final Set<Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> registry = getRegistry();
+        final Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
         registry.add(pair);
     }
 
@@ -137,9 +137,9 @@ public class EqualsBuilder implements Builder<Boolean> {
      * @since 3.0
      */
     static void unregister(final Object lhs, final Object rhs) {
-        Set<Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey>> registry = getRegistry();
+        Set<Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> registry = getRegistry();
         if (registry != null) {
-            final Pair<cn.hutool.core.builder.IDKey, cn.hutool.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
+            final Pair<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey, cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> pair = getRegisterPair(lhs, rhs);
             registry.remove(pair);
             synchronized (EqualsBuilder.class) {
                 //read again

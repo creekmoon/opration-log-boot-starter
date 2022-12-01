@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.hutool.core.text.csv.CsvConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvConfig;
 
 import java.io.Serializable;
 

@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.lang.func.Consumer3;
-import cn.hutool.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Consumer3;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;

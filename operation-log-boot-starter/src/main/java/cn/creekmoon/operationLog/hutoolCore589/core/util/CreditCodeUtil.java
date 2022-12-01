@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -103,11 +103,11 @@ public class CreditCodeUtil {
 
         //
         for (int i = 0; i < 2; i++) {
-            int num = cn.hutool.core.util.RandomUtil.randomInt(BASE_CODE_ARRAY.length - 1);
+            int num = cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.randomInt(BASE_CODE_ARRAY.length - 1);
             buf.append(Character.toUpperCase(BASE_CODE_ARRAY[num]));
         }
         for (int i = 2; i < 8; i++) {
-            int num = cn.hutool.core.util.RandomUtil.randomInt(10);
+            int num = cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil.randomInt(10);
             buf.append(BASE_CODE_ARRAY[num]);
         }
         for (int i = 8; i < 17; i++) {

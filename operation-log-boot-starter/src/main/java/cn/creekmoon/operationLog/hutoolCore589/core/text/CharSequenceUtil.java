@@ -1,27 +1,27 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.comparator.VersionComparator;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Filter;
-import cn.hutool.core.lang.Matcher;
-import cn.hutool.core.lang.func.Func1;
-import cn.hutool.core.text.NamingCase;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.text.StrFormatter;
-import cn.hutool.core.text.StrPool;
-import cn.hutool.core.text.StrSplitter;
-import cn.hutool.core.text.finder.CharFinder;
-import cn.hutool.core.text.finder.Finder;
-import cn.hutool.core.text.finder.StrFinder;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.DesensitizedUtil;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.VersionComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Matcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrFormatter;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.CharFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.Finder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.StrFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.DesensitizedUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -1739,7 +1739,7 @@ public class CharSequenceUtil {
             return new String[]{};
         }
 
-        return cn.hutool.core.text.StrSplitter.splitToArray(str.toString(), str(separator), 0, false, false);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter.splitToArray(str.toString(), str(separator), 0, false, false);
     }
 
     /**
@@ -1763,7 +1763,7 @@ public class CharSequenceUtil {
      */
     public static String[] splitToArray(CharSequence text, char separator, int limit) {
         Assert.notNull(text, "Text must be not null!");
-        return cn.hutool.core.text.StrSplitter.splitToArray(text.toString(), separator, limit, false, false);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter.splitToArray(text.toString(), separator, limit, false, false);
     }
 
     /**
@@ -1854,7 +1854,7 @@ public class CharSequenceUtil {
      * @since 3.0.8
      */
     public static List<String> split(CharSequence str, char separator, int limit, boolean isTrim, boolean ignoreEmpty) {
-        return cn.hutool.core.text.StrSplitter.split(str, separator, limit, isTrim, ignoreEmpty);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter.split(str, separator, limit, isTrim, ignoreEmpty);
     }
 
     /**
@@ -1870,7 +1870,7 @@ public class CharSequenceUtil {
      * @since 5.7.14
      */
     public static <R> List<R> split(CharSequence str, char separator, int limit, boolean ignoreEmpty, Function<String, R> mapping) {
-        return cn.hutool.core.text.StrSplitter.split(str, separator, limit, ignoreEmpty, mapping);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter.split(str, separator, limit, ignoreEmpty, mapping);
     }
 
     /**
@@ -1912,7 +1912,7 @@ public class CharSequenceUtil {
      */
     public static List<String> split(CharSequence str, CharSequence separator, int limit, boolean isTrim, boolean ignoreEmpty) {
         final String separatorStr = (null == separator) ? null : separator.toString();
-        return cn.hutool.core.text.StrSplitter.split(str, separatorStr, limit, isTrim, ignoreEmpty);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter.split(str, separatorStr, limit, isTrim, ignoreEmpty);
     }
 
     /**
@@ -1921,7 +1921,7 @@ public class CharSequenceUtil {
      * @param str 字符串
      * @param len 每一个小节的长度
      * @return 截取后的字符串数组
-     * @see cn.hutool.core.text.StrSplitter#splitByLength(CharSequence, int)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter#splitByLength(CharSequence, int)
      */
     public static String[] split(CharSequence str, int len) {
         return StrSplitter.splitByLength(str, len);
@@ -4200,10 +4200,10 @@ public class CharSequenceUtil {
      *
      * @param str 转换前的驼峰式命名的字符串，也可以为下划线形式
      * @return 转换后下划线方式命名的字符串
-     * @see cn.hutool.core.text.NamingCase#toUnderlineCase(CharSequence)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase#toUnderlineCase(CharSequence)
      */
     public static String toUnderlineCase(CharSequence str) {
-        return cn.hutool.core.text.NamingCase.toUnderlineCase(str);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase.toUnderlineCase(str);
     }
 
     /**
@@ -4212,11 +4212,11 @@ public class CharSequenceUtil {
      * @param str    转换前的驼峰式命名的字符串，也可以为符号连接形式
      * @param symbol 连接符
      * @return 转换后符号连接方式命名的字符串
-     * @see cn.hutool.core.text.NamingCase#toSymbolCase(CharSequence, char)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase#toSymbolCase(CharSequence, char)
      * @since 4.0.10
      */
     public static String toSymbolCase(CharSequence str, char symbol) {
-        return cn.hutool.core.text.NamingCase.toSymbolCase(str, symbol);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase.toSymbolCase(str, symbol);
     }
 
     /**
@@ -4225,10 +4225,10 @@ public class CharSequenceUtil {
      *
      * @param name 转换前的下划线大写方式命名的字符串
      * @return 转换后的驼峰式命名的字符串
-     * @see cn.hutool.core.text.NamingCase#toCamelCase(CharSequence)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase#toCamelCase(CharSequence)
      */
     public static String toCamelCase(CharSequence name) {
-        return cn.hutool.core.text.NamingCase.toCamelCase(name);
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase.toCamelCase(name);
     }
 
     /**
@@ -4238,7 +4238,7 @@ public class CharSequenceUtil {
      * @param name   转换前的下划线大写方式命名的字符串
      * @param symbol 连接符
      * @return 转换后的驼峰式命名的字符串
-     * @see cn.hutool.core.text.NamingCase#toCamelCase(CharSequence, char)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.text.NamingCase#toCamelCase(CharSequence, char)
      */
     public static String toCamelCase(CharSequence name, char symbol) {
         return NamingCase.toCamelCase(name, symbol);
@@ -4307,8 +4307,8 @@ public class CharSequenceUtil {
      * @param strs 初始字符串列表
      * @return StrBuilder对象
      */
-    public static cn.hutool.core.text.StrBuilder strBuilder(CharSequence... strs) {
-        return cn.hutool.core.text.StrBuilder.create(strs);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder strBuilder(CharSequence... strs) {
+        return cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder.create(strs);
     }
 
     // ------------------------------------------------------------------------ getter and setter
@@ -4368,7 +4368,7 @@ public class CharSequenceUtil {
      * @since 4.1.0
      */
     public static String concat(boolean isNullToEmpty, CharSequence... strs) {
-        final cn.hutool.core.text.StrBuilder sb = new StrBuilder();
+        final cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder sb = new StrBuilder();
         for (CharSequence str : strs) {
             sb.append(isNullToEmpty ? nullToEmpty(str) : str);
         }
@@ -4428,7 +4428,7 @@ public class CharSequenceUtil {
     /**
      * 以 conjunction 为分隔符将多个对象转换为字符串
      *
-     * @param conjunction 分隔符 {@link cn.hutool.core.text.StrPool#COMMA}
+     * @param conjunction 分隔符 {@link cn.creekmoon.operationLog.hutoolCore589.core.text.StrPool#COMMA}
      * @param objs        数组
      * @return 连接后的字符串
      * @see ArrayUtil#join(Object, CharSequence)

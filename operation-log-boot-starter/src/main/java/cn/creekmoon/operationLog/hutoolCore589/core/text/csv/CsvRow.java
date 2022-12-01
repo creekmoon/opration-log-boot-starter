@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.util.Collection;
 import java.util.Iterator;

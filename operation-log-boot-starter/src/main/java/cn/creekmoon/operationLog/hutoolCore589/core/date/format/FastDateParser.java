@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date.format;
 
-import cn.hutool.core.date.format.AbstractDateBasic;
-import cn.hutool.core.date.format.DateParser;
-import cn.hutool.core.date.format.FastDateFormat;
-import cn.hutool.core.date.format.FastDatePrinter;
-import cn.hutool.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.AbstractDateBasic;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDatePrinter;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,7 +59,7 @@ public class FastDateParser extends AbstractDateBasic implements DateParser {
      * Constructs a new FastDateParser.
      * </p>
      * <p>
-     * Use {@link cn.hutool.core.date.format.FastDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the factory methods of {@link FastDateFormat} to get a cached FastDateParser instance.
+     * Use {@link cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the factory methods of {@link FastDateFormat} to get a cached FastDateParser instance.
      *
      * @param pattern  non-null {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone non-null time zone to use

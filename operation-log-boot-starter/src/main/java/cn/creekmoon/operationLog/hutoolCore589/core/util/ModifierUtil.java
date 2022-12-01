@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -101,7 +101,7 @@ public class ModifierUtil {
      * @return 是否有指定修饰符，如果有返回true，否则false，如果提供参数为null返回false
      */
     public static boolean hasModifier(Class<?> clazz, ModifierType... modifierTypes) {
-        if (null == clazz || cn.hutool.core.util.ArrayUtil.isEmpty(modifierTypes)) {
+        if (null == clazz || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(modifierTypes)) {
             return false;
         }
         return 0 != (clazz.getModifiers() & modifiersToInt(modifierTypes));
@@ -115,7 +115,7 @@ public class ModifierUtil {
      * @return 是否有指定修饰符，如果有返回true，否则false，如果提供参数为null返回false
      */
     public static boolean hasModifier(Constructor<?> constructor, ModifierType... modifierTypes) {
-        if (null == constructor || cn.hutool.core.util.ArrayUtil.isEmpty(modifierTypes)) {
+        if (null == constructor || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(modifierTypes)) {
             return false;
         }
         return 0 != (constructor.getModifiers() & modifiersToInt(modifierTypes));
@@ -129,7 +129,7 @@ public class ModifierUtil {
      * @return 是否有指定修饰符，如果有返回true，否则false，如果提供参数为null返回false
      */
     public static boolean hasModifier(Method method, ModifierType... modifierTypes) {
-        if (null == method || cn.hutool.core.util.ArrayUtil.isEmpty(modifierTypes)) {
+        if (null == method || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(modifierTypes)) {
             return false;
         }
         return 0 != (method.getModifiers() & modifiersToInt(modifierTypes));

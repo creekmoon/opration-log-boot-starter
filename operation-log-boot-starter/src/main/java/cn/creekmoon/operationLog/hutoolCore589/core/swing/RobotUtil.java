@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.swing;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.swing.ScreenUtil;
-import cn.hutool.core.swing.clipboard.ClipboardUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.ScreenUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardUtil;
 
 import java.awt.AWTException;
 import java.awt.Rectangle;

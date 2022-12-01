@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.codec.PercentCodec;
-import cn.hutool.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.PercentCodec;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
 
 /**
  * application/x-www-form-urlencoded，遵循W3C HTML Form content types规范，如空格须转+，+须被编码<br>

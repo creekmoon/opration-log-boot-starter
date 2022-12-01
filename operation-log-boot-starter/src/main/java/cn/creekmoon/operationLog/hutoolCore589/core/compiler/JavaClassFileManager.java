@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
-import cn.hutool.core.io.resource.FileObjectResource;
-import cn.hutool.core.lang.ResourceClassLoader;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileObjectResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ResourceClassLoader;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
@@ -70,7 +70,7 @@ class JavaClassFileManager extends ForwardingJavaFileManager<JavaFileManager> {
      */
     @Override
     public JavaFileObject getJavaFileForOutput(final Location location, final String className, final Kind kind, final FileObject sibling) {
-        final JavaFileObject javaFileObject = new cn.hutool.core.compiler.JavaClassFileObject(className);
+        final JavaFileObject javaFileObject = new cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaClassFileObject(className);
         this.classFileObjectMap.put(className, new FileObjectResource(javaFileObject));
         return javaFileObject;
     }

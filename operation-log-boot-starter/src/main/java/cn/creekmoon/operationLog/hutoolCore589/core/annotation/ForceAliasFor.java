@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
 
 import java.lang.annotation.*;
 

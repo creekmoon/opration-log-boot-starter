@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.collection.ComputeIter;
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.collection.TransIter;
-import cn.hutool.core.map.AbsEntry;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.map.multi.AbsTable;
-import cn.hutool.core.map.multi.Table;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ComputeIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.TransIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.AbsEntry;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.AbsTable;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table;
 
 import java.util.AbstractMap;
 import java.util.AbstractSet;

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

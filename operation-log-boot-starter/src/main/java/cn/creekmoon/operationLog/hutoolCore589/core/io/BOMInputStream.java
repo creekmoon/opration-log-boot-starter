@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

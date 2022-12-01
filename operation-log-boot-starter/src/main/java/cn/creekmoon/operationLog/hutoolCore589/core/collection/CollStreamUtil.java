@@ -1,11 +1,11 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.stream.CollectorUtil;
-import cn.hutool.core.stream.StreamUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.stream.CollectorUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.stream.StreamUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class CollStreamUtil {
      * @return 转化后的map
      */
     public static <V, K> Map<K, V> toIdentityMap(Collection<V> collection, Function<V, K> key, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return toMap(collection, (v) -> Opt.ofNullable(v).map(key).get(), Function.identity(), isParallel);
@@ -88,7 +88,7 @@ public class CollStreamUtil {
      * @return 转化后的map
      */
     public static <E, K, V> Map<K, V> toMap(Collection<E> collection, Function<E, K> key, Function<E, V> value, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return StreamUtil.of(collection, isParallel)
@@ -122,7 +122,7 @@ public class CollStreamUtil {
      * @return 分组后的map
      */
     public static <E, K> Map<K, List<E>> groupByKey(Collection<E> collection, Function<E, K> key, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return groupBy(collection, key, Collectors.toList(), isParallel);
@@ -160,7 +160,7 @@ public class CollStreamUtil {
      */
     public static <E, K, U> Map<K, Map<U, List<E>>> groupBy2Key(Collection<E> collection, Function<E, K> key1,
                                                                 Function<E, U> key2, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return groupBy(collection, key1, CollectorUtil.groupingBy(key2, Collectors.toList()), isParallel);
@@ -197,7 +197,7 @@ public class CollStreamUtil {
      */
     public static <E, T, U> Map<T, Map<U, E>> group2Map(Collection<E> collection,
                                                         Function<E, T> key1, Function<E, U> key2, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection) || key1 == null || key2 == null) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection) || key1 == null || key2 == null) {
             return MapUtil.newHashMap(0);
         }
         return groupBy(collection, key1, CollectorUtil.toMap(key2, Function.identity(), (l, r) -> l), isParallel);
@@ -235,7 +235,7 @@ public class CollStreamUtil {
      */
     public static <E, K, V> Map<K, List<V>> groupKeyValue(Collection<E> collection, Function<E, K> key,
                                                           Function<E, V> value, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return groupBy(collection, key, Collectors.mapping(v -> Opt.ofNullable(v).map(value).orElse(null), Collectors.toList()), isParallel);
@@ -254,7 +254,7 @@ public class CollStreamUtil {
      * @since 5.7.18
      */
     public static <E, K, D> Map<K, D> groupBy(Collection<E> collection, Function<E, K> key, Collector<E, ?, D> downstream) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return groupBy(collection, key, downstream, false);
@@ -275,7 +275,7 @@ public class CollStreamUtil {
      * @since 5.7.18
      */
     public static <E, K, D> Map<K, D> groupBy(Collection<E> collection, Function<E, K> key, Collector<E, ?, D> downstream, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap(0);
         }
         return StreamUtil.of(collection, isParallel).collect(CollectorUtil.groupingBy(key, downstream));
@@ -307,8 +307,8 @@ public class CollStreamUtil {
      * @return 转化后的list
      */
     public static <E, T> List<T> toList(Collection<E> collection, Function<E, T> function, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
-            return cn.hutool.core.collection.CollUtil.newArrayList();
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.newArrayList();
         }
         return StreamUtil.of(collection, isParallel)
                 .map(function)
@@ -342,7 +342,7 @@ public class CollStreamUtil {
      * @return 转化后的Set
      */
     public static <E, T> Set<T> toSet(Collection<E> collection, Function<E, T> function, boolean isParallel) {
-        if (cn.hutool.core.collection.CollUtil.isEmpty(collection)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(collection)) {
             return CollUtil.newHashSet();
         }
         return StreamUtil.of(collection, isParallel)

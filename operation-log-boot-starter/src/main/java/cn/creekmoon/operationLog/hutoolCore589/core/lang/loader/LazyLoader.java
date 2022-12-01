@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.loader;
 
-import cn.hutool.core.lang.loader.Loader;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.loader.Loader;
 
 import java.io.Serializable;
 

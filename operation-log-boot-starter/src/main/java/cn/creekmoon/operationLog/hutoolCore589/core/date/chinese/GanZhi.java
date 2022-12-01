@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date.chinese;
 
-import cn.hutool.core.date.chinese.LunarInfo;
-import cn.hutool.core.date.chinese.SolarTerms;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.chinese.LunarInfo;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.chinese.SolarTerms;
 
 import java.time.LocalDate;
 

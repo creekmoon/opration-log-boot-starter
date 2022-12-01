@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.lang.RegexPool;
-import cn.hutool.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
 
 import java.util.regex.Pattern;
 
@@ -16,49 +16,49 @@ public class PatternPool {
     /**
      * 英文字母 、数字和下划线
      */
-    public final static Pattern GENERAL = Pattern.compile(cn.hutool.core.lang.RegexPool.GENERAL);
+    public final static Pattern GENERAL = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.GENERAL);
     /**
      * 数字
      */
-    public final static Pattern NUMBERS = Pattern.compile(cn.hutool.core.lang.RegexPool.NUMBERS);
+    public final static Pattern NUMBERS = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.NUMBERS);
     /**
      * 字母
      */
-    public final static Pattern WORD = Pattern.compile(cn.hutool.core.lang.RegexPool.WORD);
+    public final static Pattern WORD = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.WORD);
     /**
      * 单个中文汉字
      */
-    public final static Pattern CHINESE = Pattern.compile(cn.hutool.core.lang.RegexPool.CHINESE);
+    public final static Pattern CHINESE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CHINESE);
     /**
      * 中文汉字
      */
-    public final static Pattern CHINESES = Pattern.compile(cn.hutool.core.lang.RegexPool.CHINESES);
+    public final static Pattern CHINESES = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CHINESES);
     /**
      * 分组
      */
-    public final static Pattern GROUP_VAR = Pattern.compile(cn.hutool.core.lang.RegexPool.GROUP_VAR);
+    public final static Pattern GROUP_VAR = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.GROUP_VAR);
     /**
      * IP v4
      */
-    public final static Pattern IPV4 = Pattern.compile(cn.hutool.core.lang.RegexPool.IPV4);
+    public final static Pattern IPV4 = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.IPV4);
     /**
      * IP v6
      */
-    public final static Pattern IPV6 = Pattern.compile(cn.hutool.core.lang.RegexPool.IPV6);
+    public final static Pattern IPV6 = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.IPV6);
     /**
      * 货币
      */
-    public final static Pattern MONEY = Pattern.compile(cn.hutool.core.lang.RegexPool.MONEY);
+    public final static Pattern MONEY = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MONEY);
     /**
      * 邮件，符合RFC 5322规范，正则来自：<a href="http://emailregex.com/">http://emailregex.com/</a><br>
      * <a href="https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address/44317754">https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address/44317754</a>
      * 注意email 要宽松一点。比如 jetz.chong@hutool.cn、jetz-chong@ hutool.cn、jetz_chong@hutool.cn、dazhi.duan@hutool.cn 宽松一点把，都算是正常的邮箱
      */
-    public final static Pattern EMAIL = Pattern.compile(cn.hutool.core.lang.RegexPool.EMAIL, Pattern.CASE_INSENSITIVE);
+    public final static Pattern EMAIL = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.EMAIL, Pattern.CASE_INSENSITIVE);
     /**
      * 移动电话
      */
-    public final static Pattern MOBILE = Pattern.compile(cn.hutool.core.lang.RegexPool.MOBILE);
+    public final static Pattern MOBILE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MOBILE);
     /**
      * 中国香港移动电话
      * eg: 中国香港： +852 5100 4810， 三位区域码+10位数字, 中国香港手机号码8位数
@@ -68,77 +68,77 @@ public class PatternPool {
      * 中国澳门 +853 Macao
      * 中国台湾 +886 Taiwan
      */
-    public final static Pattern MOBILE_HK = Pattern.compile(cn.hutool.core.lang.RegexPool.MOBILE_HK);
+    public final static Pattern MOBILE_HK = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MOBILE_HK);
     /**
      * 中国台湾移动电话
      * eg: 中国台湾： +886 09 60 000000， 三位区域码+号码以数字09开头 + 8位数字, 中国台湾手机号码10位数
      * 中国台湾 +886 Taiwan 国际域名缩写：TW
      */
-    public final static Pattern MOBILE_TW = Pattern.compile(cn.hutool.core.lang.RegexPool.MOBILE_TW);
+    public final static Pattern MOBILE_TW = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MOBILE_TW);
     /**
      * 中国澳门移动电话
      * eg: 中国台湾： +853 68 00000， 三位区域码 +号码以数字6开头 + 7位数字, 中国台湾手机号码8位数
      * 中国澳门 +853 Macao 国际域名缩写：MO
      */
-    public final static Pattern MOBILE_MO = Pattern.compile(cn.hutool.core.lang.RegexPool.MOBILE_MO);
+    public final static Pattern MOBILE_MO = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MOBILE_MO);
     /**
      * 座机号码
      */
-    public final static Pattern TEL = Pattern.compile(cn.hutool.core.lang.RegexPool.TEL);
+    public final static Pattern TEL = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.TEL);
     /**
      * 座机号码+400+800电话
      *
      * @see <a href="https://baike.baidu.com/item/800">800</a>
      */
-    public final static Pattern TEL_400_800 = Pattern.compile(cn.hutool.core.lang.RegexPool.TEL_400_800);
+    public final static Pattern TEL_400_800 = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.TEL_400_800);
     /**
      * 18位身份证号码
      */
-    public final static Pattern CITIZEN_ID = Pattern.compile(cn.hutool.core.lang.RegexPool.CITIZEN_ID);
+    public final static Pattern CITIZEN_ID = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CITIZEN_ID);
     /**
      * 邮编，兼容港澳台
      */
-    public final static Pattern ZIP_CODE = Pattern.compile(cn.hutool.core.lang.RegexPool.ZIP_CODE);
+    public final static Pattern ZIP_CODE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.ZIP_CODE);
     /**
      * 生日
      */
-    public final static Pattern BIRTHDAY = Pattern.compile(cn.hutool.core.lang.RegexPool.BIRTHDAY);
+    public final static Pattern BIRTHDAY = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.BIRTHDAY);
     /**
      * URL
      */
-    public final static Pattern URL = Pattern.compile(cn.hutool.core.lang.RegexPool.URL);
+    public final static Pattern URL = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.URL);
     /**
      * Http URL
      */
-    public final static Pattern URL_HTTP = Pattern.compile(cn.hutool.core.lang.RegexPool.URL_HTTP, Pattern.CASE_INSENSITIVE);
+    public final static Pattern URL_HTTP = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.URL_HTTP, Pattern.CASE_INSENSITIVE);
     /**
      * 中文字、英文字母、数字和下划线
      */
-    public final static Pattern GENERAL_WITH_CHINESE = Pattern.compile(cn.hutool.core.lang.RegexPool.GENERAL_WITH_CHINESE);
+    public final static Pattern GENERAL_WITH_CHINESE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.GENERAL_WITH_CHINESE);
     /**
      * UUID
      */
-    public final static Pattern UUID = Pattern.compile(cn.hutool.core.lang.RegexPool.UUID, Pattern.CASE_INSENSITIVE);
+    public final static Pattern UUID = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.UUID, Pattern.CASE_INSENSITIVE);
     /**
      * 不带横线的UUID
      */
-    public final static Pattern UUID_SIMPLE = Pattern.compile(cn.hutool.core.lang.RegexPool.UUID_SIMPLE);
+    public final static Pattern UUID_SIMPLE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.UUID_SIMPLE);
     /**
      * MAC地址正则
      */
-    public static final Pattern MAC_ADDRESS = Pattern.compile(cn.hutool.core.lang.RegexPool.MAC_ADDRESS, Pattern.CASE_INSENSITIVE);
+    public static final Pattern MAC_ADDRESS = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.MAC_ADDRESS, Pattern.CASE_INSENSITIVE);
     /**
      * 16进制字符串
      */
-    public static final Pattern HEX = Pattern.compile(cn.hutool.core.lang.RegexPool.HEX);
+    public static final Pattern HEX = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.HEX);
     /**
      * 时间正则
      */
-    public static final Pattern TIME = Pattern.compile(cn.hutool.core.lang.RegexPool.TIME);
+    public static final Pattern TIME = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.TIME);
     /**
      * 中国车牌号码（兼容新能源车牌）
      */
-    public final static Pattern PLATE_NUMBER = Pattern.compile(cn.hutool.core.lang.RegexPool.PLATE_NUMBER);
+    public final static Pattern PLATE_NUMBER = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.PLATE_NUMBER);
 
     /**
      * 统一社会信用代码
@@ -150,7 +150,7 @@ public class PatternPool {
      * 第五部分：校验码1位 (数字或大写英文字母)
      * </pre>
      */
-    public static final Pattern CREDIT_CODE = Pattern.compile(cn.hutool.core.lang.RegexPool.CREDIT_CODE);
+    public static final Pattern CREDIT_CODE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CREDIT_CODE);
     /**
      * 车架号
      * 别名：车辆识别代号 车辆识别码
@@ -159,14 +159,14 @@ public class PatternPool {
      * 十七位码、车架号
      * 车辆的唯一标示
      */
-    public static final Pattern CAR_VIN = Pattern.compile(cn.hutool.core.lang.RegexPool.CAR_VIN);
+    public static final Pattern CAR_VIN = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CAR_VIN);
     /**
      * 驾驶证  别名：驾驶证档案编号、行驶证编号
      * eg:430101758218
      * 12位数字字符串
      * 仅限：中国驾驶证档案编号
      */
-    public static final Pattern CAR_DRIVING_LICENCE = Pattern.compile(cn.hutool.core.lang.RegexPool.CAR_DRIVING_LICENCE);
+    public static final Pattern CAR_DRIVING_LICENCE = Pattern.compile(cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool.CAR_DRIVING_LICENCE);
     /**
      * 中文姓名
      * 总结中国人姓名：2-60位，只能是中文和 ·

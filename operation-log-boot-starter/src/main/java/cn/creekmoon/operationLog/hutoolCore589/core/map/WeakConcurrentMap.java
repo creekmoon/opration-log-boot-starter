@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.map.ReferenceConcurrentMap;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.ReferenceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.ReferenceConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReferenceUtil;
 
 import java.lang.ref.Reference;
 import java.util.concurrent.ConcurrentMap;

@@ -1,11 +1,11 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.collection.ArrayIter;
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ArrayIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.IOException;
 import java.io.Serializable;

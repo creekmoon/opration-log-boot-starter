@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi;
 
-import cn.hutool.core.lang.ansi.AnsiColor;
-import cn.hutool.core.lang.ansi.AnsiElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement;
 
 /**
  * 生成ANSI格式的编码输出
@@ -17,7 +17,7 @@ public abstract class AnsiEncoder {
     private static final String RESET = "0;" + AnsiColor.DEFAULT;
 
     /**
-     * 创建ANSI字符串，参数中的{@link cn.hutool.core.lang.ansi.AnsiElement}会被转换为编码形式。
+     * 创建ANSI字符串，参数中的{@link cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement}会被转换为编码形式。
      *
      * @param elements 节点数组
      * @return ANSI字符串

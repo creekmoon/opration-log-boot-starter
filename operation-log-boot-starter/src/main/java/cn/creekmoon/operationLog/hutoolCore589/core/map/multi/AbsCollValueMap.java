@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapWrapper;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapWrapper;
 
 import java.util.Collection;
 import java.util.HashMap;

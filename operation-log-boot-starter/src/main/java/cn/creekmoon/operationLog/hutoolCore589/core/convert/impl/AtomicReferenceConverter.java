@@ -3,9 +3,9 @@ package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cn.hutool.core.convert.AbstractConverter;
-import cn.hutool.core.convert.ConverterRegistry;
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConverterRegistry;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 /**
  * {@link AtomicReference}转换器

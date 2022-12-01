@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.lang.hash.Hash32;
-import cn.hutool.core.util.HashUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Hash32;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.HashUtil;
 
 import java.io.Serializable;
 import java.util.Collection;

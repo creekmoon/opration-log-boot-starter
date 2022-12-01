@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.hutool.core.codec.Decoder;
-import cn.hutool.core.codec.Encoder;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Decoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Encoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Looly, Sebastian Ruhleder, sebastian@seruco.io
  * @since 4.5.9
  */
-public class Base62Codec implements cn.hutool.core.codec.Encoder<byte[], byte[]>, cn.hutool.core.codec.Decoder<byte[], byte[]>, Serializable {
+public class Base62Codec implements cn.creekmoon.operationLog.hutoolCore589.core.codec.Encoder<byte[], byte[]>, cn.creekmoon.operationLog.hutoolCore589.core.codec.Decoder<byte[], byte[]>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int STANDARD_BASE = 256;

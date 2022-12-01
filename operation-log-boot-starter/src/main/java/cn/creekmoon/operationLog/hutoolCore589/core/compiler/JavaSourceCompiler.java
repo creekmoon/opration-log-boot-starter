@@ -1,21 +1,21 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.compiler.CompilerException;
-import cn.hutool.core.compiler.CompilerUtil;
-import cn.hutool.core.compiler.DiagnosticUtil;
-import cn.hutool.core.compiler.JavaFileObjectUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.resource.FileResource;
-import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.io.resource.StringResource;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerException;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.DiagnosticUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaFileObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.StringResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -182,7 +182,7 @@ public class JavaSourceCompiler {
         }
 
         // 创建编译器
-        final JavaClassFileManager javaFileManager = new JavaClassFileManager(ucl, cn.hutool.core.compiler.CompilerUtil.getFileManager());
+        final JavaClassFileManager javaFileManager = new JavaClassFileManager(ucl, cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerUtil.getFileManager());
 
         // classpath
         final List<String> options = new ArrayList<>();
@@ -216,7 +216,7 @@ public class JavaSourceCompiler {
     private List<File> getClassPath() {
         List<File> classPathFileList = new ArrayList<>();
         for (File file : libraryFileList) {
-            List<File> jarOrZipFile = FileUtil.loopFiles(file, (subFile) -> cn.hutool.core.compiler.JavaFileObjectUtil.isJarOrZipFile(subFile.getName()));
+            List<File> jarOrZipFile = FileUtil.loopFiles(file, (subFile) -> cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaFileObjectUtil.isJarOrZipFile(subFile.getName()));
             classPathFileList.addAll(jarOrZipFile);
             if (file.isDirectory()) {
                 classPathFileList.add(file);

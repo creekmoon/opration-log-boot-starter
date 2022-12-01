@@ -1,14 +1,14 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Validator;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -129,7 +129,7 @@ public class IdcardUtil {
         if (idCard.length() != CHINA_ID_MIN_LENGTH) {
             return null;
         }
-        if (cn.hutool.core.util.ReUtil.isMatch(PatternPool.NUMBERS, idCard)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil.isMatch(PatternPool.NUMBERS, idCard)) {
             // 获取出生年月日
             String birthday = idCard.substring(6, 12);
             Date birthDate = DateUtil.parse(birthday, "yyMMdd");
@@ -139,7 +139,7 @@ public class IdcardUtil {
                 // 2000年之后不存在15位身份证号，此处用于修复此问题的判断
                 sYear -= 100;
             }
-            idCard18 = cn.hutool.core.util.StrUtil.builder().append(idCard, 0, 6).append(sYear).append(idCard.substring(8));
+            idCard18 = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.builder().append(idCard, 0, 6).append(sYear).append(idCard.substring(8));
             // 获取校验位
             char sVal = getCheckCode18(idCard18.toString());
             idCard18.append(sVal);
@@ -156,7 +156,7 @@ public class IdcardUtil {
      * @return 15位身份编码
      */
     public static String convert18To15(String idCard) {
-        if (cn.hutool.core.util.StrUtil.isNotBlank(idCard) && IdcardUtil.isValidCard18(idCard)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(idCard) && IdcardUtil.isValidCard18(idCard)) {
             return idCard.substring(0, 6) + idCard.substring(8, idCard.length() - 1);
         }
         return idCard;
@@ -170,7 +170,7 @@ public class IdcardUtil {
      * @return 是否有效
      */
     public static boolean isValidCard(String idCard) {
-        if (cn.hutool.core.util.StrUtil.isBlank(idCard)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(idCard)) {
             return false;
         }
 
@@ -291,7 +291,7 @@ public class IdcardUtil {
 
         // 前17位
         final String code17 = idcard.substring(0, 17);
-        if (cn.hutool.core.util.ReUtil.isMatch(PatternPool.NUMBERS, code17)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil.isMatch(PatternPool.NUMBERS, code17)) {
             // 获取校验位
             char val = getCheckCode18(code17);
             // 第18位
@@ -334,7 +334,7 @@ public class IdcardUtil {
      * </p>
      */
     public static String[] isValidCard10(String idcard) {
-        if (cn.hutool.core.util.StrUtil.isBlank(idcard)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(idcard)) {
             return null;
         }
         String[] info = new String[3];
@@ -589,7 +589,7 @@ public class IdcardUtil {
      */
     public static String getProvinceByIdCard(String idcard) {
         final String code = getProvinceCodeByIdCard(idcard);
-        if (cn.hutool.core.util.StrUtil.isNotBlank(code)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(code)) {
             return CITY_CODES.get(code);
         }
         return null;
@@ -633,11 +633,11 @@ public class IdcardUtil {
      * @param startInclude 开始位置（包含）
      * @param endExclude   结束位置（不包含）
      * @return 隐藏后的身份证号码
-     * @see cn.hutool.core.util.StrUtil#hide(CharSequence, int, int)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil#hide(CharSequence, int, int)
      * @since 3.2.2
      */
     public static String hide(String idcard, int startInclude, int endExclude) {
-        return cn.hutool.core.util.StrUtil.hide(idcard, startInclude, endExclude);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(idcard, startInclude, endExclude);
     }
 
     /**

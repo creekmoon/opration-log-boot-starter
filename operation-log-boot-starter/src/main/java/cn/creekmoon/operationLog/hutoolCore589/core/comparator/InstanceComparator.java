@@ -16,7 +16,7 @@
 
 package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.hutool.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.util.Comparator;
 

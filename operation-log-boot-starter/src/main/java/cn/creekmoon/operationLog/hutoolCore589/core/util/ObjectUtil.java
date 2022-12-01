@@ -1,16 +1,16 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.comparator.CompareUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.SerializeUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.SerializeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -60,7 +60,7 @@ public class ObjectUtil {
      */
     public static boolean equal(Object obj1, Object obj2) {
         if (obj1 instanceof BigDecimal && obj2 instanceof BigDecimal) {
-            return cn.hutool.core.util.NumberUtil.equals((BigDecimal) obj1, (BigDecimal) obj2);
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.equals((BigDecimal) obj1, (BigDecimal) obj2);
         }
         return Objects.equals(obj1, obj2);
     }
@@ -249,15 +249,15 @@ public class ObjectUtil {
         }
 
         if (obj instanceof CharSequence) {
-            return cn.hutool.core.util.StrUtil.isEmpty((CharSequence) obj);
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty((CharSequence) obj);
         } else if (obj instanceof Map) {
             return MapUtil.isEmpty((Map) obj);
         } else if (obj instanceof Iterable) {
             return IterUtil.isEmpty((Iterable) obj);
         } else if (obj instanceof Iterator) {
             return IterUtil.isEmpty((Iterator) obj);
-        } else if (cn.hutool.core.util.ArrayUtil.isArray(obj)) {
-            return cn.hutool.core.util.ArrayUtil.isEmpty(obj);
+        } else if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isArray(obj)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(obj);
         }
 
         return false;
@@ -387,7 +387,7 @@ public class ObjectUtil {
      */
     @Deprecated
     public static <T> T defaultIfEmpty(String str, Supplier<? extends T> handle, final T defaultValue) {
-        if (cn.hutool.core.util.StrUtil.isNotEmpty(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(str)) {
             return handle.get();
         }
         return defaultValue;
@@ -404,7 +404,7 @@ public class ObjectUtil {
      * @since 5.4.6
      */
     public static <T> T defaultIfEmpty(String str, Function<CharSequence, ? extends T> handle, final T defaultValue) {
-        if (cn.hutool.core.util.StrUtil.isNotEmpty(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(str)) {
             return handle.apply(str);
         }
         return defaultValue;
@@ -428,7 +428,7 @@ public class ObjectUtil {
      * @since 5.0.4
      */
     public static <T extends CharSequence> T defaultIfEmpty(final T str, final T defaultValue) {
-        return cn.hutool.core.util.StrUtil.isEmpty(str) ? defaultValue : str;
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(str) ? defaultValue : str;
     }
 
     /**
@@ -442,7 +442,7 @@ public class ObjectUtil {
      * @since 5.7.20
      */
     public static <T extends CharSequence> T defaultIfEmpty(T str, Supplier<? extends T> defaultValueSupplier) {
-        if (cn.hutool.core.util.StrUtil.isEmpty(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(str)) {
             return defaultValueSupplier.get();
         }
         return str;
@@ -459,7 +459,7 @@ public class ObjectUtil {
      * @since 5.7.20
      */
     public static <T extends CharSequence> T defaultIfEmpty(T str, Function<T, ? extends T> defaultValueSupplier) {
-        if (cn.hutool.core.util.StrUtil.isEmpty(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(str)) {
             return defaultValueSupplier.apply(null);
         }
         return str;
@@ -483,7 +483,7 @@ public class ObjectUtil {
      * @since 5.0.4
      */
     public static <T extends CharSequence> T defaultIfBlank(final T str, final T defaultValue) {
-        return cn.hutool.core.util.StrUtil.isBlank(str) ? defaultValue : str;
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(str) ? defaultValue : str;
     }
 
     /**
@@ -497,7 +497,7 @@ public class ObjectUtil {
      * @since 5.7.20
      */
     public static <T extends CharSequence> T defaultIfBlank(T str, Supplier<? extends T> defaultValueSupplier) {
-        if (cn.hutool.core.util.StrUtil.isBlank(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(str)) {
             return defaultValueSupplier.get();
         }
         return str;
@@ -514,7 +514,7 @@ public class ObjectUtil {
      * @since 5.7.20
      */
     public static <T extends CharSequence> T defaultIfBlank(T str, Function<T, ? extends T> defaultValueSupplier) {
-        if (cn.hutool.core.util.StrUtil.isBlank(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(str)) {
             return defaultValueSupplier.apply(null);
         }
         return str;
@@ -531,7 +531,7 @@ public class ObjectUtil {
      * @return 克隆后的对象
      */
     public static <T> T clone(T obj) {
-        T result = cn.hutool.core.util.ArrayUtil.clone(obj);
+        T result = cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.clone(obj);
         if (null == result) {
             if (obj instanceof Cloneable) {
                 result = ReflectUtil.invoke(obj, "clone");
@@ -605,13 +605,13 @@ public class ObjectUtil {
      *
      * @param object 被检查对象，{@code null}返回{@code false}
      * @return 是否为基本类型
-     * @see cn.hutool.core.util.ClassUtil#isBasicType(Class)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil#isBasicType(Class)
      */
     public static boolean isBasicType(Object object) {
         if (null == object) {
             return false;
         }
-        return cn.hutool.core.util.ClassUtil.isBasicType(object.getClass());
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil.isBasicType(object.getClass());
     }
 
     /**
@@ -711,7 +711,7 @@ public class ObjectUtil {
      * @return 存在{@code null}的数量
      */
     public static int emptyCount(Object... objs) {
-        return cn.hutool.core.util.ArrayUtil.emptyCount(objs);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.emptyCount(objs);
     }
 
     /**
@@ -719,11 +719,11 @@ public class ObjectUtil {
      *
      * @param objs 被检查对象
      * @return 是否存在
-     * @see cn.hutool.core.util.ArrayUtil#hasNull(Object[])
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#hasNull(Object[])
      * @since 5.5.3
      */
     public static boolean hasNull(Object... objs) {
-        return cn.hutool.core.util.ArrayUtil.hasNull(objs);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.hasNull(objs);
     }
 
     /**
@@ -731,10 +731,10 @@ public class ObjectUtil {
      *
      * @param objs 被检查对象
      * @return 是否存在
-     * @see cn.hutool.core.util.ArrayUtil#hasEmpty(Object...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#hasEmpty(Object...)
      */
     public static boolean hasEmpty(Object... objs) {
-        return cn.hutool.core.util.ArrayUtil.hasEmpty(objs);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.hasEmpty(objs);
     }
 
     /**
@@ -744,7 +744,7 @@ public class ObjectUtil {
      * @return 是否都为空
      */
     public static boolean isAllEmpty(Object... objs) {
-        return cn.hutool.core.util.ArrayUtil.isAllEmpty(objs);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isAllEmpty(objs);
     }
 
     /**

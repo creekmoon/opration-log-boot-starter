@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.caller;
 
-import cn.hutool.core.lang.caller.Caller;
-import cn.hutool.core.lang.caller.SecurityManagerCaller;
-import cn.hutool.core.lang.caller.StackTraceCaller;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.Caller;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.SecurityManagerCaller;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.StackTraceCaller;
 
 /**
  * 调用者。可以通过此类的方法获取调用者、多级调用者以及判断是否被调用
@@ -11,7 +11,7 @@ import cn.hutool.core.lang.caller.StackTraceCaller;
  * @since 4.1.6
  */
 public class CallerUtil {
-    private static final cn.hutool.core.lang.caller.Caller INSTANCE;
+    private static final cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.Caller INSTANCE;
 
     static {
         INSTANCE = tryCreateCaller();
@@ -81,11 +81,11 @@ public class CallerUtil {
     }
 
     /**
-     * 尝试创建{@link cn.hutool.core.lang.caller.Caller}实现
+     * 尝试创建{@link cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.Caller}实现
      *
-     * @return {@link cn.hutool.core.lang.caller.Caller}实现
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.Caller}实现
      */
-    private static cn.hutool.core.lang.caller.Caller tryCreateCaller() {
+    private static cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.Caller tryCreateCaller() {
         Caller caller;
         try {
             caller = new SecurityManagerCaller();

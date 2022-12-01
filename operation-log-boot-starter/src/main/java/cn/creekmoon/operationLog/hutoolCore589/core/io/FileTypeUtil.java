@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -136,7 +136,7 @@ public class FileTypeUtil {
      * @throws IORuntimeException 读取流引起的异常
      */
     public static String getType(InputStream in) throws IORuntimeException {
-        return getType(cn.hutool.core.io.IoUtil.readHex28Upper(in));
+        return getType(cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.readHex28Upper(in));
     }
 
 
@@ -161,10 +161,10 @@ public class FileTypeUtil {
 
         if (null == typeName) {
             // 未成功识别类型，扩展名辅助识别
-            typeName = cn.hutool.core.io.FileUtil.extName(filename);
+            typeName = cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil.extName(filename);
         } else if ("xls".equals(typeName)) {
             // xls、doc、msi的头一样，使用扩展名辅助判断
-            final String extName = cn.hutool.core.io.FileUtil.extName(filename);
+            final String extName = cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil.extName(filename);
             if ("doc".equalsIgnoreCase(extName)) {
                 typeName = "doc";
             } else if ("msi".equalsIgnoreCase(extName)) {
@@ -174,7 +174,7 @@ public class FileTypeUtil {
             }
         } else if ("zip".equals(typeName)) {
             // zip可能为docx、xlsx、pptx、jar、war、ofd等格式，扩展名辅助判断
-            final String extName = cn.hutool.core.io.FileUtil.extName(filename);
+            final String extName = cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil.extName(filename);
             if ("docx".equalsIgnoreCase(extName)) {
                 typeName = "docx";
             } else if ("xlsx".equalsIgnoreCase(extName)) {
@@ -192,7 +192,7 @@ public class FileTypeUtil {
             }
         } else if ("jar".equals(typeName)) {
             // wps编辑过的.xlsx文件与.jar的开头相同,通过扩展名判断
-            final String extName = cn.hutool.core.io.FileUtil.extName(filename);
+            final String extName = cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil.extName(filename);
             if ("xlsx".equalsIgnoreCase(extName)) {
                 typeName = "xlsx";
             } else if ("docx".equalsIgnoreCase(extName)) {
@@ -226,7 +226,7 @@ public class FileTypeUtil {
     public static String getType(File file) throws IORuntimeException {
         FileInputStream in = null;
         try {
-            in = cn.hutool.core.io.IoUtil.toStream(file);
+            in = cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.toStream(file);
             return getType(in, file.getName());
         } finally {
             IoUtil.close(in);

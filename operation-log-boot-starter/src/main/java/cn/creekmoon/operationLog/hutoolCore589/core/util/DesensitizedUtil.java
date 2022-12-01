@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 脱敏工具类，支持以下类型信息的脱敏自动处理：
@@ -74,8 +74,8 @@ public class DesensitizedUtil {
      * @since 5.6.2
      */
     public static String desensitized(CharSequence str, DesensitizedType desensitizedType) {
-        if (cn.hutool.core.util.StrUtil.isBlank(str)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(str)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
         String newStr = String.valueOf(str);
         switch (desensitizedType) {
@@ -130,10 +130,10 @@ public class DesensitizedUtil {
      * @return 脱敏后的姓名
      */
     public static String chineseName(String fullName) {
-        if (cn.hutool.core.util.StrUtil.isBlank(fullName)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(fullName)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        return cn.hutool.core.util.StrUtil.hide(fullName, 1, fullName.length());
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(fullName, 1, fullName.length());
     }
 
     /**
@@ -146,18 +146,18 @@ public class DesensitizedUtil {
      */
     public static String idCardNum(String idCardNum, int front, int end) {
         //身份证不能为空
-        if (cn.hutool.core.util.StrUtil.isBlank(idCardNum)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(idCardNum)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
         //需要截取的长度不能大于身份证号长度
         if ((front + end) > idCardNum.length()) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
         //需要截取的不能小于0
         if (front < 0 || end < 0) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        return cn.hutool.core.util.StrUtil.hide(idCardNum, front, idCardNum.length() - end);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(idCardNum, front, idCardNum.length() - end);
     }
 
     /**
@@ -167,10 +167,10 @@ public class DesensitizedUtil {
      * @return 脱敏后的固定电话；
      */
     public static String fixedPhone(String num) {
-        if (cn.hutool.core.util.StrUtil.isBlank(num)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(num)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        return cn.hutool.core.util.StrUtil.hide(num, 4, num.length() - 2);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(num, 4, num.length() - 2);
     }
 
     /**
@@ -180,10 +180,10 @@ public class DesensitizedUtil {
      * @return 脱敏后的移动电话；
      */
     public static String mobilePhone(String num) {
-        if (cn.hutool.core.util.StrUtil.isBlank(num)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(num)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        return cn.hutool.core.util.StrUtil.hide(num, 3, num.length() - 4);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(num, 3, num.length() - 4);
     }
 
     /**
@@ -194,11 +194,11 @@ public class DesensitizedUtil {
      * @return 脱敏后的家庭地址
      */
     public static String address(String address, int sensitiveSize) {
-        if (cn.hutool.core.util.StrUtil.isBlank(address)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(address)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
         int length = address.length();
-        return cn.hutool.core.util.StrUtil.hide(address, length - sensitiveSize, length);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(address, length - sensitiveSize, length);
     }
 
     /**
@@ -208,14 +208,14 @@ public class DesensitizedUtil {
      * @return 脱敏后的邮箱
      */
     public static String email(String email) {
-        if (cn.hutool.core.util.StrUtil.isBlank(email)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(email)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        int index = cn.hutool.core.util.StrUtil.indexOf(email, '@');
+        int index = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.indexOf(email, '@');
         if (index <= 1) {
             return email;
         }
-        return cn.hutool.core.util.StrUtil.hide(email, 1, index);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(email, 1, index);
     }
 
     /**
@@ -225,10 +225,10 @@ public class DesensitizedUtil {
      * @return 脱敏后的密码
      */
     public static String password(String password) {
-        if (cn.hutool.core.util.StrUtil.isBlank(password)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(password)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
-        return cn.hutool.core.util.StrUtil.repeat('*', password.length());
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.repeat('*', password.length());
     }
 
     /**
@@ -243,15 +243,15 @@ public class DesensitizedUtil {
      * @return 脱敏后的车牌
      */
     public static String carLicense(String carLicense) {
-        if (cn.hutool.core.util.StrUtil.isBlank(carLicense)) {
-            return cn.hutool.core.util.StrUtil.EMPTY;
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(carLicense)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY;
         }
         // 普通车牌
         if (carLicense.length() == 7) {
-            carLicense = cn.hutool.core.util.StrUtil.hide(carLicense, 3, 6);
+            carLicense = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(carLicense, 3, 6);
         } else if (carLicense.length() == 8) {
             // 新能源车牌
-            carLicense = cn.hutool.core.util.StrUtil.hide(carLicense, 3, 7);
+            carLicense = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(carLicense, 3, 7);
         }
         return carLicense;
     }
@@ -265,7 +265,7 @@ public class DesensitizedUtil {
      * @since 5.6.3
      */
     public static String bankCard(String bankCardNo) {
-        if (cn.hutool.core.util.StrUtil.isBlank(bankCardNo)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(bankCardNo)) {
             return bankCardNo;
         }
         bankCardNo = StrUtil.trim(bankCardNo);
@@ -280,7 +280,7 @@ public class DesensitizedUtil {
         buf.append(bankCardNo, 0, 4);
         for (int i = 0; i < midLength; ++i) {
             if (i % 4 == 0) {
-                buf.append(cn.hutool.core.util.CharUtil.SPACE);
+                buf.append(cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil.SPACE);
             }
             buf.append('*');
         }

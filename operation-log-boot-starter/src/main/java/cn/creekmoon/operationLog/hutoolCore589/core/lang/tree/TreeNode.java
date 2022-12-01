@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.tree;
 
 
-import cn.hutool.core.lang.tree.Node;
-import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Node;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.TreeNodeConfig;
 
 import java.util.Map;
 import java.util.Objects;

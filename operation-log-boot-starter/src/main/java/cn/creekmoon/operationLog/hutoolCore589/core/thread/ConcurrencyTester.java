@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.hutool.core.date.TimeInterval;
-import cn.hutool.core.thread.SyncFinisher;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.TimeInterval;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.SyncFinisher;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @author kwer
  */
 public class ConcurrencyTester implements Closeable {
-    private final cn.hutool.core.thread.SyncFinisher sf;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.thread.SyncFinisher sf;
     private final TimeInterval timeInterval;
     private long interval;
 

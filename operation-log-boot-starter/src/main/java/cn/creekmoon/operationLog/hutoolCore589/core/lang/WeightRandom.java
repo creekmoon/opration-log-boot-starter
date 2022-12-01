@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
 
 import java.io.Serializable;
 import java.util.Random;

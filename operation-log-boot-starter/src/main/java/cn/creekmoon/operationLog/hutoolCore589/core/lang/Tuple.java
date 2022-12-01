@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.clone.CloneSupport;
-import cn.hutool.core.collection.ArrayIter;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneSupport;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ArrayIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;

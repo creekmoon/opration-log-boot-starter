@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.replacer;
 
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.text.replacer.StrReplacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.StrReplacer;
 
 import java.util.HashMap;
 import java.util.HashSet;

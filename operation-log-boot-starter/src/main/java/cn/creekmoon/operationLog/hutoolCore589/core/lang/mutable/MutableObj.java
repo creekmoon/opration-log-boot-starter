@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable;
 
-import cn.hutool.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
 
 import java.io.Serializable;
 

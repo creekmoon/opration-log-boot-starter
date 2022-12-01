@@ -1,23 +1,23 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.PropDesc;
-import cn.hutool.core.bean.copier.AbsCopier;
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.bean.copier.ValueProvider;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.PropDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.AbsCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.CopyOptions;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.ValueProvider;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * {@link cn.hutool.core.bean.copier.ValueProvider}属性拷贝到Bean中的拷贝器
+ * {@link cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.ValueProvider}属性拷贝到Bean中的拷贝器
  *
  * @param <T> 目标Bean类型
  * @since 5.8.0
  */
-public class ValueProviderToBeanCopier<T> extends AbsCopier<cn.hutool.core.bean.copier.ValueProvider<String>, T> {
+public class ValueProviderToBeanCopier<T> extends AbsCopier<cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.ValueProvider<String>, T> {
 
     /**
      * 目标的类型（用于泛型类注入）

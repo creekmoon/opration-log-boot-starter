@@ -1,15 +1,15 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.TemporalAccessorUtil;
-import cn.hutool.core.date.TemporalUtil;
-import cn.hutool.core.date.Week;
-import cn.hutool.core.date.format.GlobalCustomFormat;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.TemporalAccessorUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.TemporalUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Week;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
@@ -24,7 +24,7 @@ import java.util.TimeZone;
  *
  * @author looly
  * @see DateUtil java7和以下版本，使用Date工具类
- * @see cn.hutool.core.date.DatePattern 常用格式工具类
+ * @see cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern 常用格式工具类
  * @since 5.3.9
  */
 public class LocalDateTimeUtil {
@@ -156,7 +156,7 @@ public class LocalDateTimeUtil {
             return null;
         }
 
-        if (date instanceof cn.hutool.core.date.DateTime) {
+        if (date instanceof cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) {
             return of(date.toInstant(), ((DateTime) date).getZoneId());
         }
         return of(date.toInstant());
@@ -269,14 +269,14 @@ public class LocalDateTimeUtil {
             // fix issue#1082
             //see https://stackoverflow.com/questions/22588051/is-java-time-failing-to-parse-fraction-of-second
             // jdk8 bug at: https://bugs.openjdk.java.net/browse/JDK-8031085
-            if (StrUtil.startWithIgnoreEquals(format, cn.hutool.core.date.DatePattern.PURE_DATETIME_PATTERN)) {
-                final String fraction = StrUtil.removePrefix(format, cn.hutool.core.date.DatePattern.PURE_DATETIME_PATTERN);
+            if (StrUtil.startWithIgnoreEquals(format, cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.PURE_DATETIME_PATTERN)) {
+                final String fraction = StrUtil.removePrefix(format, cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.PURE_DATETIME_PATTERN);
                 if (ReUtil.isMatch("[S]{1,2}", fraction)) {
                     //将yyyyMMddHHmmssS、yyyyMMddHHmmssSS的日期统一替换为yyyyMMddHHmmssSSS格式，用0补
                     text += StrUtil.repeat('0', 3 - fraction.length());
                 }
                 formatter = new DateTimeFormatterBuilder()
-                        .appendPattern(cn.hutool.core.date.DatePattern.PURE_DATETIME_PATTERN)
+                        .appendPattern(cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.PURE_DATETIME_PATTERN)
                         .appendValue(ChronoField.MILLI_OF_SECOND, 3)
                         .toFormatter();
             } else {
@@ -339,7 +339,7 @@ public class LocalDateTimeUtil {
      * @since 5.3.11
      */
     public static String formatNormal(LocalDateTime time) {
-        return format(time, cn.hutool.core.date.DatePattern.NORM_DATETIME_FORMATTER);
+        return format(time, cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.NORM_DATETIME_FORMATTER);
     }
 
     /**
@@ -372,14 +372,14 @@ public class LocalDateTimeUtil {
      * @since 5.3.11
      */
     public static String formatNormal(LocalDate date) {
-        return format(date, cn.hutool.core.date.DatePattern.NORM_DATE_FORMATTER);
+        return format(date, cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.NORM_DATE_FORMATTER);
     }
 
     /**
      * 格式化日期时间为指定格式
      *
      * @param date      {@link LocalDate}
-     * @param formatter 日期格式化器，预定义的格式见：{@link DateTimeFormatter}; 常量如： {@link cn.hutool.core.date.DatePattern#NORM_DATE_FORMATTER}, {@link cn.hutool.core.date.DatePattern#NORM_DATETIME_FORMATTER}
+     * @param formatter 日期格式化器，预定义的格式见：{@link DateTimeFormatter}; 常量如： {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern#NORM_DATE_FORMATTER}, {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern#NORM_DATETIME_FORMATTER}
      * @return 格式化后的字符串
      * @since 5.3.10
      */
@@ -391,7 +391,7 @@ public class LocalDateTimeUtil {
      * 格式化日期时间为指定格式
      *
      * @param date   {@link LocalDate}
-     * @param format 日期格式，类似于yyyy-MM-dd, 常量如 {@link cn.hutool.core.date.DatePattern#NORM_DATE_PATTERN}, {@link DatePattern#NORM_DATETIME_PATTERN}
+     * @param format 日期格式，类似于yyyy-MM-dd, 常量如 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern#NORM_DATE_PATTERN}, {@link DatePattern#NORM_DATETIME_PATTERN}
      * @return 格式化后的字符串
      * @since 5.3.10
      */
@@ -411,7 +411,7 @@ public class LocalDateTimeUtil {
      * @return 偏移后的日期时间
      */
     public static LocalDateTime offset(LocalDateTime time, long number, TemporalUnit field) {
-        return cn.hutool.core.date.TemporalUtil.offset(time, number, field);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.TemporalUtil.offset(time, number, field);
     }
 
     /**
@@ -422,10 +422,10 @@ public class LocalDateTimeUtil {
      * @param startTimeInclude 开始时间（包含）
      * @param endTimeExclude   结束时间（不包含）
      * @return 时间差 {@link Duration}对象
-     * @see cn.hutool.core.date.TemporalUtil#between(Temporal, Temporal)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.date.TemporalUtil#between(Temporal, Temporal)
      */
     public static Duration between(LocalDateTime startTimeInclude, LocalDateTime endTimeExclude) {
-        return cn.hutool.core.date.TemporalUtil.between(startTimeInclude, endTimeExclude);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.TemporalUtil.between(startTimeInclude, endTimeExclude);
     }
 
     /**
@@ -535,10 +535,10 @@ public class LocalDateTimeUtil {
      * 获取{@link LocalDate}对应的星期值
      *
      * @param localDate 日期{@link LocalDate}
-     * @return {@link cn.hutool.core.date.Week}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Week}
      * @since 5.7.14
      */
-    public static cn.hutool.core.date.Week dayOfWeek(LocalDate localDate) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.Week dayOfWeek(LocalDate localDate) {
         return Week.of(localDate.getDayOfWeek());
     }
 

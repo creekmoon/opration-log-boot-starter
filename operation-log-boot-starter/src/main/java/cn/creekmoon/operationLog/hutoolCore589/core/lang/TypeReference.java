@@ -2,7 +2,7 @@ package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
 import java.lang.reflect.Type;
 
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 /**
  * Type类型参考<br>

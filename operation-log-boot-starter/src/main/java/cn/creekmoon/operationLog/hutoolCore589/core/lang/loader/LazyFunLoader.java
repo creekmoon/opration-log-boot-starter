@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.loader;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.loader.LazyLoader;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.loader.LazyLoader;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -10,11 +10,11 @@ import java.util.function.Supplier;
  * 函数式懒加载加载器<br>
  * 传入用于生成对象的函数，在对象需要使用时调用生成对象，然后抛弃此生成对象的函数。<br>
  * 此加载器常用于对象比较庞大而不一定被使用的情况，用于减少启动时资源占用问题<br>
- * 继承自{@link cn.hutool.core.lang.loader.LazyLoader}，如何实现多线程安全，由LazyLoader完成。
+ * 继承自{@link cn.creekmoon.operationLog.hutoolCore589.core.lang.loader.LazyLoader}，如何实现多线程安全，由LazyLoader完成。
  *
  * @param <T> 被加载对象类型
  * @author Mr.Po
- * @see cn.hutool.core.lang.loader.LazyLoader
+ * @see cn.creekmoon.operationLog.hutoolCore589.core.lang.loader.LazyLoader
  * @since 5.6.1
  */
 public class LazyFunLoader<T> extends LazyLoader<T> {

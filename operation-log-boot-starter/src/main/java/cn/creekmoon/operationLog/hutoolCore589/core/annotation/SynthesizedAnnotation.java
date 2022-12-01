@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.AnnotationAttributeValueProvider;
-import cn.hutool.core.annotation.SynthesizedAggregateAnnotation;
-import cn.hutool.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationAttributeValueProvider;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

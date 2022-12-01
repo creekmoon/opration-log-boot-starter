@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.map.BiMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.BiMap;
 
 import java.util.HashMap;
 

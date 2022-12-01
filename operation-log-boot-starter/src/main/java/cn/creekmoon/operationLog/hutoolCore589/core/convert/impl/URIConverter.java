@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
-import cn.hutool.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
 
 /**
  * URI对象转换器

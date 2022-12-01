@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 检测密码强度<br>

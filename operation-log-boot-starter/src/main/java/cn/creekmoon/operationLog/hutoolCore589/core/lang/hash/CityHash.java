@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.hash;
 
-import cn.hutool.core.lang.hash.Number128;
-import cn.hutool.core.util.ByteUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Number128;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ByteUtil;
 
 import java.util.Arrays;
 

@@ -1,11 +1,11 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.provider;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.PropDesc;
-import cn.hutool.core.bean.copier.ValueProvider;
-import cn.hutool.core.lang.Editor;
-import cn.hutool.core.map.FuncKeyMap;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.PropDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.ValueProvider;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.FuncKeyMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

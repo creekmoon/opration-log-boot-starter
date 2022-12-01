@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
-import cn.hutool.core.convert.AbstractConverter;
-import cn.hutool.core.convert.ConvertException;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException;
 
 /**
  * 强转转换器

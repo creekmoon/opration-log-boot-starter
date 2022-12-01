@@ -1,11 +1,11 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.PropDesc;
-import cn.hutool.core.bean.copier.AbsCopier;
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.PropDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.AbsCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.CopyOptions;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.lang.reflect.Type;
 import java.util.Map;

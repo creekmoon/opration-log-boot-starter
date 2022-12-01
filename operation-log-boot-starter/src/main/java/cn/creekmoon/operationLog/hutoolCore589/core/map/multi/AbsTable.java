@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.collection.TransIter;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.TransIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.AbstractCollection;
@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * 抽象{@link cn.hutool.core.map.multi.Table}接口实现<br>
+ * 抽象{@link cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table}接口实现<br>
  * 默认实现了：
  * <ul>
  *     <li>{@link #equals(Object)}</li>
@@ -31,14 +31,14 @@ import java.util.Set;
  * @author Guava, Looly
  * @since 5.7.23
  */
-public abstract class AbsTable<R, C, V> implements cn.hutool.core.map.multi.Table<R, C, V> {
+public abstract class AbsTable<R, C, V> implements cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table<R, C, V> {
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof cn.hutool.core.map.multi.Table) {
-            final cn.hutool.core.map.multi.Table<?, ?, ?> that = (cn.hutool.core.map.multi.Table<?, ?, ?>) obj;
+        } else if (obj instanceof cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table) {
+            final cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table<?, ?, ?> that = (cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table<?, ?, ?>) obj;
             return this.cellSet().equals(that.cellSet());
         } else {
             return false;

@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi;
 
-import cn.hutool.core.img.LabColor;
-import cn.hutool.core.lang.ansi.Ansi8BitColor;
-import cn.hutool.core.lang.ansi.AnsiBackground;
-import cn.hutool.core.lang.ansi.AnsiColor;
-import cn.hutool.core.lang.ansi.AnsiColorWrapper;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.LabColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.Ansi8BitColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiBackground;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColorWrapper;
 
 import java.awt.Color;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 在 {@link Color AWT Colors} 的上下文中使用 {@link cn.hutool.core.lang.ansi.AnsiColor} 的实用程序
+ * 在 {@link Color AWT Colors} 的上下文中使用 {@link cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor} 的实用程序
  * <p>来自Spring Boot</p>
  *
  * @author Craig Burke,Ruben Dijkstra,Phillip Webb,Michael Simons,Tom Xin
@@ -23,27 +23,27 @@ public final class AnsiColors {
     private static final Map<AnsiColorWrapper, LabColor> ANSI_COLOR_MAP;
 
     /**
-     * @see cn.hutool.core.lang.ansi.AnsiColor#BRIGHT_WHITE
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor#BRIGHT_WHITE
      */
     private static final int CODE_OF_4_BIT_ANSI_COLOR_BRIGHT_WHITE = 97;
 
     static {
         Map<AnsiColorWrapper, LabColor> colorMap = new LinkedHashMap<>(16, 1);
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BLACK.getCode(), BitDepth.FOUR), new LabColor(0x000000));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.RED.getCode(), BitDepth.FOUR), new LabColor(0xAA0000));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.GREEN.getCode(), BitDepth.FOUR), new LabColor(0x00AA00));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.YELLOW.getCode(), BitDepth.FOUR), new LabColor(0xAA5500));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BLUE.getCode(), BitDepth.FOUR), new LabColor(0x0000AA));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.MAGENTA.getCode(), BitDepth.FOUR), new LabColor(0xAA00AA));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.CYAN.getCode(), BitDepth.FOUR), new LabColor(0x00AAAA));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.WHITE.getCode(), BitDepth.FOUR), new LabColor(0xAAAAAA));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_BLACK.getCode(), BitDepth.FOUR), new LabColor(0x555555));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_RED.getCode(), BitDepth.FOUR), new LabColor(0xFF5555));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_GREEN.getCode(), BitDepth.FOUR), new LabColor(0x55FF00));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_YELLOW.getCode(), BitDepth.FOUR), new LabColor(0xFFFF55));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_BLUE.getCode(), BitDepth.FOUR), new LabColor(0x5555FF));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_MAGENTA.getCode(), BitDepth.FOUR), new LabColor(0xFF55FF));
-        colorMap.put(new AnsiColorWrapper(cn.hutool.core.lang.ansi.AnsiColor.BRIGHT_CYAN.getCode(), BitDepth.FOUR), new LabColor(0x55FFFF));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BLACK.getCode(), BitDepth.FOUR), new LabColor(0x000000));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.RED.getCode(), BitDepth.FOUR), new LabColor(0xAA0000));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.GREEN.getCode(), BitDepth.FOUR), new LabColor(0x00AA00));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.YELLOW.getCode(), BitDepth.FOUR), new LabColor(0xAA5500));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BLUE.getCode(), BitDepth.FOUR), new LabColor(0x0000AA));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.MAGENTA.getCode(), BitDepth.FOUR), new LabColor(0xAA00AA));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.CYAN.getCode(), BitDepth.FOUR), new LabColor(0x00AAAA));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.WHITE.getCode(), BitDepth.FOUR), new LabColor(0xAAAAAA));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_BLACK.getCode(), BitDepth.FOUR), new LabColor(0x555555));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_RED.getCode(), BitDepth.FOUR), new LabColor(0xFF5555));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_GREEN.getCode(), BitDepth.FOUR), new LabColor(0x55FF00));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_YELLOW.getCode(), BitDepth.FOUR), new LabColor(0xFFFF55));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_BLUE.getCode(), BitDepth.FOUR), new LabColor(0x5555FF));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_MAGENTA.getCode(), BitDepth.FOUR), new LabColor(0xFF55FF));
+        colorMap.put(new AnsiColorWrapper(cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor.BRIGHT_CYAN.getCode(), BitDepth.FOUR), new LabColor(0x55FFFF));
         colorMap.put(new AnsiColorWrapper(CODE_OF_4_BIT_ANSI_COLOR_BRIGHT_WHITE, BitDepth.FOUR), new LabColor(0xFFFFFF));
         ANSI_COLOR_MAP = Collections.unmodifiableMap(colorMap);
     }

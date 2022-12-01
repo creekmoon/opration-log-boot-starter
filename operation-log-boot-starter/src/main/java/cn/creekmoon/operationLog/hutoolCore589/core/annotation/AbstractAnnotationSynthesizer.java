@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.SynthesizedAnnotationPostProcessor;
-import cn.hutool.core.annotation.SynthesizedAnnotationSelector;
-import cn.hutool.core.annotation.scanner.AnnotationScanner;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationSelector;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.AnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;

@@ -2,8 +2,8 @@ package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cn.hutool.core.convert.AbstractConverter;
-import cn.hutool.core.util.BooleanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.BooleanUtil;
 
 /**
  * {@link AtomicBoolean}转换器

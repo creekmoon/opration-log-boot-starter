@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.io.FastByteArrayOutputStream;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.StreamProgress;
-import cn.hutool.core.io.copy.ChannelCopier;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteArrayOutputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.StreamProgress;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.copy.ChannelCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

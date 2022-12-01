@@ -1,10 +1,10 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.hutool.core.collection.ComputeIter;
-import cn.hutool.core.collection.IterableIter;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ComputeIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterableIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

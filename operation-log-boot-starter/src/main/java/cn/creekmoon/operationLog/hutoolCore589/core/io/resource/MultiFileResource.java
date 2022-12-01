@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.io.resource.FileResource;
-import cn.hutool.core.io.resource.MultiResource;
-import cn.hutool.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.MultiResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
 
 import java.io.File;
 import java.util.Collection;
@@ -42,7 +42,7 @@ public class MultiFileResource extends MultiResource {
      */
     public MultiFileResource add(File... files) {
         for (File file : files) {
-            this.add(new cn.hutool.core.io.resource.FileResource(file));
+            this.add(new cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource(file));
         }
         return this;
     }

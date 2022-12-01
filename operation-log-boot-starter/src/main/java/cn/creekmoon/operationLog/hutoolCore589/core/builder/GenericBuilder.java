@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.builder;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.lang.func.Consumer3;
-import cn.hutool.core.lang.func.Supplier1;
-import cn.hutool.core.lang.func.Supplier2;
-import cn.hutool.core.lang.func.Supplier3;
-import cn.hutool.core.lang.func.Supplier4;
-import cn.hutool.core.lang.func.Supplier5;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Consumer3;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Supplier1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Supplier2;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Supplier3;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Supplier4;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Supplier5;
 
 import java.util.ArrayList;
 import java.util.List;

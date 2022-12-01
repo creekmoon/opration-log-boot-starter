@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 /**
  * <p>
@@ -105,7 +105,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      *
      * @since 2.3
      */
-    private static final ThreadLocal<Set<cn.hutool.core.builder.IDKey>> REGISTRY = new ThreadLocal<>();
+    private static final ThreadLocal<Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> REGISTRY = new ThreadLocal<>();
 
     /*
      * NOTE: we cannot store the actual objects in a HashSet, as that would use the very hashCode()
@@ -132,7 +132,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * @return Set the registry of objects being traversed
      * @since 2.3
      */
-    private static Set<cn.hutool.core.builder.IDKey> getRegistry() {
+    private static Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> getRegistry() {
         return REGISTRY.get();
     }
 
@@ -147,8 +147,8 @@ public class HashCodeBuilder implements Builder<Integer> {
      * @since 2.3
      */
     private static boolean isRegistered(final Object value) {
-        final Set<cn.hutool.core.builder.IDKey> registry = getRegistry();
-        return registry != null && registry.contains(new cn.hutool.core.builder.IDKey(value));
+        final Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> registry = getRegistry();
+        return registry != null && registry.contains(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
     }
 
     /**
@@ -438,10 +438,10 @@ public class HashCodeBuilder implements Builder<Integer> {
     static void register(final Object value) {
         synchronized (HashCodeBuilder.class) {
             if (getRegistry() == null) {
-                REGISTRY.set(new HashSet<cn.hutool.core.builder.IDKey>());
+                REGISTRY.set(new HashSet<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>());
             }
         }
-        getRegistry().add(new cn.hutool.core.builder.IDKey(value));
+        getRegistry().add(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
     }
 
     /**
@@ -456,9 +456,9 @@ public class HashCodeBuilder implements Builder<Integer> {
      * @since 2.3
      */
     static void unregister(final Object value) {
-        Set<cn.hutool.core.builder.IDKey> registry = getRegistry();
+        Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> registry = getRegistry();
         if (registry != null) {
-            registry.remove(new cn.hutool.core.builder.IDKey(value));
+            registry.remove(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
             synchronized (HashCodeBuilder.class) {
                 //read again
                 registry = getRegistry();

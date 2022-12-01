@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.watch.WatchAction;
-import cn.hutool.core.io.watch.WatchException;
-import cn.hutool.core.io.watch.WatchKind;
-import cn.hutool.core.io.watch.Watcher;
-import cn.hutool.core.lang.Filter;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchAction;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class WatchServer extends Thread implements Closeable, Serializable {
      * @param maxDepth 递归下层目录的最大深度
      */
     public void registerPath(Path path, int maxDepth) {
-        final WatchEvent.Kind<?>[] kinds = ArrayUtil.defaultIfEmpty(this.events, cn.hutool.core.io.watch.WatchKind.ALL);
+        final WatchEvent.Kind<?>[] kinds = ArrayUtil.defaultIfEmpty(this.events, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.ALL);
 
         try {
             final WatchKey key;
@@ -163,18 +163,18 @@ public class WatchServer extends Thread implements Closeable, Serializable {
     /**
      * 执行事件获取并处理
      *
-     * @param watcher     {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher     {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @param watchFilter 监听过滤接口，通过实现此接口过滤掉不需要监听的情况，null表示不过滤
      */
     public void watch(Watcher watcher, Filter<WatchEvent<?>> watchFilter) {
         watch((event, currentPath) -> {
             final WatchEvent.Kind<?> kind = event.kind();
 
-            if (kind == cn.hutool.core.io.watch.WatchKind.CREATE.getValue()) {
+            if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.CREATE.getValue()) {
                 watcher.onCreate(event, currentPath);
-            } else if (kind == cn.hutool.core.io.watch.WatchKind.MODIFY.getValue()) {
+            } else if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.MODIFY.getValue()) {
                 watcher.onModify(event, currentPath);
-            } else if (kind == cn.hutool.core.io.watch.WatchKind.DELETE.getValue()) {
+            } else if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.DELETE.getValue()) {
                 watcher.onDelete(event, currentPath);
             } else if (kind == WatchKind.OVERFLOW.getValue()) {
                 watcher.onOverflow(event, currentPath);

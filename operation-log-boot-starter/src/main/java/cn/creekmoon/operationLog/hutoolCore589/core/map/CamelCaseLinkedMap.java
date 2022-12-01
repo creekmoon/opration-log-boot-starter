@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.map.CamelCaseMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.CamelCaseMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

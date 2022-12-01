@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.compress;
 
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.IOException;
 import java.nio.file.CopyOption;

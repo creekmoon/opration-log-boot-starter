@@ -1,20 +1,20 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.UniqueKeySet;
-import cn.hutool.core.comparator.CompareUtil;
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Editor;
-import cn.hutool.core.lang.Filter;
-import cn.hutool.core.lang.Matcher;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.text.StrJoiner;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.PrimitiveArrayUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollectionUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.UniqueKeySet;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Matcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrJoiner;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.PrimitiveArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
@@ -721,7 +721,7 @@ public class ArrayUtil extends PrimitiveArrayUtil {
      * @since 3.2.2
      */
     public static <T extends CharSequence> T[] removeEmpty(T[] array) {
-        return filter(array, cn.hutool.core.util.StrUtil::isNotEmpty);
+        return filter(array, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil::isNotEmpty);
     }
 
     /**
@@ -733,7 +733,7 @@ public class ArrayUtil extends PrimitiveArrayUtil {
      * @since 3.2.2
      */
     public static <T extends CharSequence> T[] removeBlank(T[] array) {
-        return filter(array, cn.hutool.core.util.StrUtil::isNotBlank);
+        return filter(array, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil::isNotBlank);
     }
 
     /**
@@ -744,7 +744,7 @@ public class ArrayUtil extends PrimitiveArrayUtil {
      * @since 3.2.1
      */
     public static String[] nullToEmpty(String[] array) {
-        return edit(array, t -> null == t ? cn.hutool.core.util.StrUtil.EMPTY : t);
+        return edit(array, t -> null == t ? cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY : t);
     }
 
     /**
@@ -835,7 +835,7 @@ public class ArrayUtil extends PrimitiveArrayUtil {
     public static int indexOfIgnoreCase(CharSequence[] array, CharSequence value) {
         if (null != array) {
             for (int i = 0; i < array.length; i++) {
-                if (cn.hutool.core.util.StrUtil.equalsIgnoreCase(array[i], value)) {
+                if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.equalsIgnoreCase(array[i], value)) {
                     return i;
                 }
             }
@@ -982,7 +982,7 @@ public class ArrayUtil extends PrimitiveArrayUtil {
                 }
             }
         }
-        throw new UtilException(cn.hutool.core.util.StrUtil.format("[{}] is not Array!", obj.getClass()));
+        throw new UtilException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("[{}] is not Array!", obj.getClass()));
     }
 
     /**

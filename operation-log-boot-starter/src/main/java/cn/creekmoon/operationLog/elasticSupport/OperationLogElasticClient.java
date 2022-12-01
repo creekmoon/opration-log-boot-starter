@@ -2,13 +2,14 @@ package cn.creekmoon.operationLog.elasticSupport;
 
 import cn.creekmoon.operationLog.config.OperationLogConfig;
 import cn.creekmoon.operationLog.core.LogRecord;
-import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.UUID;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -54,7 +55,7 @@ public class OperationLogElasticClient {
      * @param logRecord  数据对象实体类
      * @param retryCount 重试次数（ 这个参数的意义在于,ES存在BUG 捕获I/O reactor的异常后会导致SSL中断， 此时再次请求就可以了）
      */
-    public void save2ElasticSearch(LogRecord logRecord, int retryCount) {
+    public void save2ElasticSearch(JSONObject logRecord, int retryCount) {
         try {
             elasticsearchClient.index(IndexRequest.of(
                     builder ->

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

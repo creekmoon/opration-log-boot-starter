@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.swing;
 
-import cn.hutool.core.swing.RobotUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -50,10 +50,10 @@ public class ScreenUtil {
      * 截取全屏
      *
      * @return 截屏的图片
-     * @see cn.hutool.core.swing.RobotUtil#captureScreen()
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil#captureScreen()
      */
     public static BufferedImage captureScreen() {
-        return cn.hutool.core.swing.RobotUtil.captureScreen();
+        return cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil.captureScreen();
     }
 
     /**
@@ -61,10 +61,10 @@ public class ScreenUtil {
      *
      * @param outFile 写出到的文件
      * @return 写出到的文件
-     * @see cn.hutool.core.swing.RobotUtil#captureScreen(File)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil#captureScreen(File)
      */
     public static File captureScreen(File outFile) {
-        return cn.hutool.core.swing.RobotUtil.captureScreen(outFile);
+        return cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil.captureScreen(outFile);
     }
 
     /**
@@ -72,10 +72,10 @@ public class ScreenUtil {
      *
      * @param screenRect 截屏的矩形区域
      * @return 截屏的图片
-     * @see cn.hutool.core.swing.RobotUtil#captureScreen(Rectangle)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil#captureScreen(Rectangle)
      */
     public static BufferedImage captureScreen(Rectangle screenRect) {
-        return cn.hutool.core.swing.RobotUtil.captureScreen(screenRect);
+        return cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil.captureScreen(screenRect);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ScreenUtil {
      * @param screenRect 截屏的矩形区域
      * @param outFile    写出到的文件
      * @return 写出到的文件
-     * @see cn.hutool.core.swing.RobotUtil#captureScreen(Rectangle, File)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.swing.RobotUtil#captureScreen(Rectangle, File)
      */
     public static File captureScreen(Rectangle screenRect, File outFile) {
         return RobotUtil.captureScreen(screenRect, outFile);

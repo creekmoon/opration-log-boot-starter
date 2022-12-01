@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.hutool.core.map.TransMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.TransMap;
 
 import java.util.Map;
 

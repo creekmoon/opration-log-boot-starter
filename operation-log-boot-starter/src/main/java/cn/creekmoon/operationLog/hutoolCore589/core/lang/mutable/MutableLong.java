@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable;
 
-import cn.hutool.core.lang.mutable.Mutable;
-import cn.hutool.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
 
 /**
  * 可变 {@code long} 类型

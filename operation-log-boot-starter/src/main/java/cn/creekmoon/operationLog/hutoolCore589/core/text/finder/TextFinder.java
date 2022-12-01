@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.finder;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.text.finder.Finder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.Finder;
 
 import java.io.Serializable;
 

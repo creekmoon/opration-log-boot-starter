@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.getter.OptNullBasicTypeGetter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.getter.OptNullBasicTypeGetter;
 
 /**
  * 基本类型的getter接口抽象实现，所有类型的值获取都是通过将String转换而来<br>

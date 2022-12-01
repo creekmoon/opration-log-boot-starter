@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.Month;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Month;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class Zodiac {
      * @return 星座名
      * @since 4.5.0
      */
-    public static String getZodiac(cn.hutool.core.date.Month month, int day) {
+    public static String getZodiac(cn.creekmoon.operationLog.hutoolCore589.core.date.Month month, int day) {
         return getZodiac(month.getValue(), day);
     }
 

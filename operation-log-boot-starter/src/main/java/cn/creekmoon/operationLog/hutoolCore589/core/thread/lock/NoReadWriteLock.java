@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.thread.lock;
 
-import cn.hutool.core.thread.lock.NoLock;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 public class NoReadWriteLock implements ReadWriteLock {
     @Override
     public Lock readLock() {
-        return cn.hutool.core.thread.lock.NoLock.INSTANCE;
+        return cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock.INSTANCE;
     }
 
     @Override

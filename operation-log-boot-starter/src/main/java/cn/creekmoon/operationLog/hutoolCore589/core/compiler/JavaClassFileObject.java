@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
 
-import cn.hutool.core.compiler.JavaClassFileManager;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaClassFileManager;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayInputStream;

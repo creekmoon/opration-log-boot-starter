@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.io.BOMInputStream;
-import cn.hutool.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.BOMInputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,10 +6,10 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.watch.WatchMonitor;
-import cn.hutool.core.io.watch.Watcher;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchMonitor;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 /**
  * 监听工具类<br>
@@ -140,10 +140,10 @@ public class WatchUtil {
      * 创建并初始化监听，监听所有事件
      *
      * @param url     URL
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(URL url, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(URL url, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(url, 0, watcher);
     }
 
@@ -152,10 +152,10 @@ public class WatchUtil {
      *
      * @param url      URL
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(URL url, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(URL url, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(URLUtil.toURI(url), maxDepth, watcher);
     }
 
@@ -163,10 +163,10 @@ public class WatchUtil {
      * 创建并初始化监听，监听所有事件
      *
      * @param uri     URI
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(URI uri, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(URI uri, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(uri, 0, watcher);
     }
 
@@ -175,10 +175,10 @@ public class WatchUtil {
      *
      * @param uri      URI
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(URI uri, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(URI uri, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(Paths.get(uri), maxDepth, watcher);
     }
 
@@ -186,10 +186,10 @@ public class WatchUtil {
      * 创建并初始化监听，监听所有事件
      *
      * @param file    被监听文件
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(File file, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(File file, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(file, 0, watcher);
     }
 
@@ -198,10 +198,10 @@ public class WatchUtil {
      *
      * @param file     被监听文件
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(File file, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(File file, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(file.toPath(), 0, watcher);
     }
 
@@ -209,10 +209,10 @@ public class WatchUtil {
      * 创建并初始化监听，监听所有事件
      *
      * @param path    路径
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(String path, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(String path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(path, 0, watcher);
     }
 
@@ -221,10 +221,10 @@ public class WatchUtil {
      *
      * @param path     路径
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(String path, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(String path, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(Paths.get(path), maxDepth, watcher);
     }
 
@@ -232,10 +232,10 @@ public class WatchUtil {
      * 创建并初始化监听，监听所有事件
      *
      * @param path    路径
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(Path path, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(Path path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(path, 0, watcher);
     }
 
@@ -244,10 +244,10 @@ public class WatchUtil {
      *
      * @param path     路径
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      */
-    public static WatchMonitor createAll(Path path, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createAll(Path path, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         final WatchMonitor watchMonitor = create(path, maxDepth, WatchMonitor.EVENTS_ALL);
         watchMonitor.setWatcher(watcher);
         return watchMonitor;
@@ -259,11 +259,11 @@ public class WatchUtil {
      * 创建并初始化监听，监听修改事件
      *
      * @param url     URL
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(URL url, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(URL url, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(url, 0, watcher);
     }
 
@@ -272,11 +272,11 @@ public class WatchUtil {
      *
      * @param url      URL
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(URL url, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(URL url, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(URLUtil.toURI(url), maxDepth, watcher);
     }
 
@@ -284,11 +284,11 @@ public class WatchUtil {
      * 创建并初始化监听，监听修改事件
      *
      * @param uri     URI
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(URI uri, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(URI uri, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(uri, 0, watcher);
     }
 
@@ -297,11 +297,11 @@ public class WatchUtil {
      *
      * @param uri      URI
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(URI uri, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(URI uri, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(Paths.get(uri), maxDepth, watcher);
     }
 
@@ -309,11 +309,11 @@ public class WatchUtil {
      * 创建并初始化监听，监听修改事件
      *
      * @param file    被监听文件
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(File file, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(File file, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(file, 0, watcher);
     }
 
@@ -322,11 +322,11 @@ public class WatchUtil {
      *
      * @param file     被监听文件
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(File file, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(File file, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(file.toPath(), 0, watcher);
     }
 
@@ -334,11 +334,11 @@ public class WatchUtil {
      * 创建并初始化监听，监听修改事件
      *
      * @param path    路径
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(String path, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(String path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(path, 0, watcher);
     }
 
@@ -347,11 +347,11 @@ public class WatchUtil {
      *
      * @param path     路径
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(String path, int maxDepth, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(String path, int maxDepth, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(Paths.get(path), maxDepth, watcher);
     }
 
@@ -359,11 +359,11 @@ public class WatchUtil {
      * 创建并初始化监听，监听修改事件
      *
      * @param path    路径
-     * @param watcher {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */
-    public static WatchMonitor createModify(Path path, cn.hutool.core.io.watch.Watcher watcher) {
+    public static WatchMonitor createModify(Path path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createModify(path, 0, watcher);
     }
 
@@ -372,7 +372,7 @@ public class WatchUtil {
      *
      * @param path     路径
      * @param maxDepth 当监听目录时，监听目录的最大深度，当设置值为1（或小于1）时，表示不递归监听子目录
-     * @param watcher  {@link cn.hutool.core.io.watch.Watcher}
+     * @param watcher  {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return {@link WatchMonitor}
      * @since 4.5.2
      */

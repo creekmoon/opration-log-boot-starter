@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileTypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -133,7 +133,7 @@ public class BackgroundRemoval {
             for (int x = image.getMinX(); x < image.getWidth(); x++) {
                 // 获取像素的16进制
                 int rgb = image.getRGB(x, y);
-                String hex = cn.hutool.core.img.ImgUtil.toHex((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, (rgb & 0xff));
+                String hex = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, (rgb & 0xff));
                 boolean isTrue = ArrayUtil.contains(removeRgb, hex) ||
                         areColorsWithinTolerance(hexToRgb(mainColor), new Color(Integer.parseInt(hex.substring(1), 16)), tolerance);
                 if (isTrue) {
@@ -182,28 +182,28 @@ public class BackgroundRemoval {
         int height = image.getHeight() - 1;
         // 左上
         int leftUpPixel = image.getRGB(1, 1);
-        String leftUp = cn.hutool.core.img.ImgUtil.toHex((leftUpPixel & 0xff0000) >> 16, (leftUpPixel & 0xff00) >> 8, (leftUpPixel & 0xff));
+        String leftUp = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((leftUpPixel & 0xff0000) >> 16, (leftUpPixel & 0xff00) >> 8, (leftUpPixel & 0xff));
         // 上中
         int upMiddlePixel = image.getRGB(width / 2, 1);
-        String upMiddle = cn.hutool.core.img.ImgUtil.toHex((upMiddlePixel & 0xff0000) >> 16, (upMiddlePixel & 0xff00) >> 8, (upMiddlePixel & 0xff));
+        String upMiddle = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((upMiddlePixel & 0xff0000) >> 16, (upMiddlePixel & 0xff00) >> 8, (upMiddlePixel & 0xff));
         // 右上
         int rightUpPixel = image.getRGB(width, 1);
-        String rightUp = cn.hutool.core.img.ImgUtil.toHex((rightUpPixel & 0xff0000) >> 16, (rightUpPixel & 0xff00) >> 8, (rightUpPixel & 0xff));
+        String rightUp = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((rightUpPixel & 0xff0000) >> 16, (rightUpPixel & 0xff00) >> 8, (rightUpPixel & 0xff));
         // 右中
         int rightMiddlePixel = image.getRGB(width, height / 2);
-        String rightMiddle = cn.hutool.core.img.ImgUtil.toHex((rightMiddlePixel & 0xff0000) >> 16, (rightMiddlePixel & 0xff00) >> 8, (rightMiddlePixel & 0xff));
+        String rightMiddle = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((rightMiddlePixel & 0xff0000) >> 16, (rightMiddlePixel & 0xff00) >> 8, (rightMiddlePixel & 0xff));
         // 右下
         int lowerRightPixel = image.getRGB(width, height);
-        String lowerRight = cn.hutool.core.img.ImgUtil.toHex((lowerRightPixel & 0xff0000) >> 16, (lowerRightPixel & 0xff00) >> 8, (lowerRightPixel & 0xff));
+        String lowerRight = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((lowerRightPixel & 0xff0000) >> 16, (lowerRightPixel & 0xff00) >> 8, (lowerRightPixel & 0xff));
         // 下中
         int lowerMiddlePixel = image.getRGB(width / 2, height);
-        String lowerMiddle = cn.hutool.core.img.ImgUtil.toHex((lowerMiddlePixel & 0xff0000) >> 16, (lowerMiddlePixel & 0xff00) >> 8, (lowerMiddlePixel & 0xff));
+        String lowerMiddle = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((lowerMiddlePixel & 0xff0000) >> 16, (lowerMiddlePixel & 0xff00) >> 8, (lowerMiddlePixel & 0xff));
         // 左下
         int leftLowerPixel = image.getRGB(1, height);
-        String leftLower = cn.hutool.core.img.ImgUtil.toHex((leftLowerPixel & 0xff0000) >> 16, (leftLowerPixel & 0xff00) >> 8, (leftLowerPixel & 0xff));
+        String leftLower = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((leftLowerPixel & 0xff0000) >> 16, (leftLowerPixel & 0xff00) >> 8, (leftLowerPixel & 0xff));
         // 左中
         int leftMiddlePixel = image.getRGB(1, height / 2);
-        String leftMiddle = cn.hutool.core.img.ImgUtil.toHex((leftMiddlePixel & 0xff0000) >> 16, (leftMiddlePixel & 0xff00) >> 8, (leftMiddlePixel & 0xff));
+        String leftMiddle = cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.toHex((leftMiddlePixel & 0xff0000) >> 16, (leftMiddlePixel & 0xff00) >> 8, (leftMiddlePixel & 0xff));
         // 需要删除的RGB元素
         return new String[]{leftUp, upMiddle, rightUp, rightMiddle, lowerRight, lowerMiddle, leftLower, leftMiddle};
     }

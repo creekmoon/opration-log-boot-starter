@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.exceptions;
 
-import cn.hutool.core.exceptions.StatefulException;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.StatefulException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 验证异常

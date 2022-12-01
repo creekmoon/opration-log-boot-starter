@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date.chinese;
 
-import cn.hutool.core.date.chinese.LunarInfo;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.chinese.LunarInfo;
 
 /**
  * 农历月份表示

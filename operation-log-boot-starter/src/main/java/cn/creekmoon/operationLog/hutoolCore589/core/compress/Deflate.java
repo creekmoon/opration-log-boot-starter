@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.compress;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
 
 import java.io.Closeable;
 import java.io.IOException;

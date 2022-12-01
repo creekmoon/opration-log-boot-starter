@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.ForceAliasFor;
-import cn.hutool.core.annotation.MirrorFor;
-import cn.hutool.core.annotation.RelationType;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.ForceAliasFor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.MirrorFor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.RelationType;
 
 import java.lang.annotation.*;
 

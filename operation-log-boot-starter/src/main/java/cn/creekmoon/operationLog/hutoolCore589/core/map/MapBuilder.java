@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -41,7 +41,7 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
      * @since 5.3.0
      */
     public static <K, V> MapBuilder<K, V> create(boolean isLinked) {
-        return create(cn.hutool.core.map.MapUtil.newHashMap(isLinked));
+        return create(cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil.newHashMap(isLinked));
     }
 
     /**
@@ -160,7 +160,7 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
      * @return 连接字符串
      */
     public String join(String separator, final String keyValueSeparator) {
-        return cn.hutool.core.map.MapUtil.join(this.map, separator, keyValueSeparator);
+        return cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil.join(this.map, separator, keyValueSeparator);
     }
 
     /**
@@ -171,7 +171,7 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
      * @return 连接后的字符串
      */
     public String joinIgnoreNull(String separator, final String keyValueSeparator) {
-        return cn.hutool.core.map.MapUtil.joinIgnoreNull(this.map, separator, keyValueSeparator);
+        return cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil.joinIgnoreNull(this.map, separator, keyValueSeparator);
     }
 
     /**

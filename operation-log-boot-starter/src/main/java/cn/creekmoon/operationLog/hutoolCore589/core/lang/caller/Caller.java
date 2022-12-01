@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.caller;
 
-import cn.hutool.core.lang.caller.CallerUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.caller.CallerUtil;
 
 /**
  * 调用者接口<br>

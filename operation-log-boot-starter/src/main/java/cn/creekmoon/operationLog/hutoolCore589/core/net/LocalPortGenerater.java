@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.net.NetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.NetUtil;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;

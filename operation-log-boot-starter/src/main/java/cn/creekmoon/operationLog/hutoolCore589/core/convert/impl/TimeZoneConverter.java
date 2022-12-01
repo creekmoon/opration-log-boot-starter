@@ -2,7 +2,7 @@ package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
 import java.util.TimeZone;
 
-import cn.hutool.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
 
 /**
  * TimeZone转换器

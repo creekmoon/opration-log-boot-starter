@@ -1,14 +1,14 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Pid;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pid;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class RuntimeUtil {
      * @throws IORuntimeException IO异常
      */
     public static String execForStr(String... cmds) throws IORuntimeException {
-        return execForStr(cn.hutool.core.util.CharsetUtil.systemCharset(), cmds);
+        return execForStr(cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil.systemCharset(), cmds);
     }
 
     /**
@@ -59,7 +59,7 @@ public class RuntimeUtil {
      * @throws IORuntimeException IO异常
      */
     public static List<String> execForLines(String... cmds) throws IORuntimeException {
-        return execForLines(cn.hutool.core.util.CharsetUtil.systemCharset(), cmds);
+        return execForLines(cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil.systemCharset(), cmds);
     }
 
     /**
@@ -132,7 +132,7 @@ public class RuntimeUtil {
      * @return 命令执行结果列表
      */
     public static List<String> getResultLines(Process process) {
-        return getResultLines(process, cn.hutool.core.util.CharsetUtil.systemCharset());
+        return getResultLines(process, cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil.systemCharset());
     }
 
     /**
@@ -162,7 +162,7 @@ public class RuntimeUtil {
      * @since 3.1.2
      */
     public static String getResult(Process process) {
-        return getResult(process, cn.hutool.core.util.CharsetUtil.systemCharset());
+        return getResult(process, cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil.systemCharset());
     }
 
     /**
@@ -321,7 +321,7 @@ public class RuntimeUtil {
         // 单条命令的情况
         if (1 == cmds.length) {
             final String cmd = cmds[0];
-            if (cn.hutool.core.util.StrUtil.isBlank(cmd)) {
+            if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(cmd)) {
                 throw new NullPointerException("Command is blank !");
             }
             cmds = cmdSplit(cmd);
@@ -347,8 +347,8 @@ public class RuntimeUtil {
         for (int i = 0; i < length; i++) {
             c = cmd.charAt(i);
             switch (c) {
-                case cn.hutool.core.util.CharUtil.SINGLE_QUOTE:
-                case cn.hutool.core.util.CharUtil.DOUBLE_QUOTES:
+                case cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil.SINGLE_QUOTE:
+                case cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil.DOUBLE_QUOTES:
                     if (inWrap) {
                         if (c == stack.peek()) {
                             //结束包装

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.builder;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;

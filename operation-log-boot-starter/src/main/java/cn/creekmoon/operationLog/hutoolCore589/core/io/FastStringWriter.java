@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.hutool.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
 
 import java.io.Writer;
 

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.hutool.core.collection.IterableIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterableIter;
 
 import java.io.Serializable;
 import java.util.Enumeration;

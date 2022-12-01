@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.text.StrPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrPool;
 
 /**
  * 常用字符常量

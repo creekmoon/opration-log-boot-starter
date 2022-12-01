@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
 
 import java.awt.Dimension;
 import java.awt.Font;

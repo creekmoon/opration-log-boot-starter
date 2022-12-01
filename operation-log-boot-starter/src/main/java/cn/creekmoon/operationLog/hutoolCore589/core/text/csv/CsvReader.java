@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.text.csv.CsvBaseReader;
-import cn.hutool.core.text.csv.CsvData;
-import cn.hutool.core.text.csv.CsvReadConfig;
-import cn.hutool.core.text.csv.CsvRow;
-import cn.hutool.core.text.csv.CsvRowHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvBaseReader;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvReadConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRowHandler;
 
 import java.io.Closeable;
 import java.io.File;
@@ -25,7 +25,7 @@ import java.util.stream.StreamSupport;
  * @author Looly
  * @since 4.0.1
  */
-public class CsvReader extends CsvBaseReader implements Iterable<cn.hutool.core.text.csv.CsvRow>, Closeable {
+public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow>, Closeable {
     private static final long serialVersionUID = 1L;
 
     private final Reader reader;
@@ -111,7 +111,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.hutool.core.
      * 读取CSV文件，此方法只能调用一次<br>
      * 调用此方法的前提是构造中传入文件路径或Reader
      *
-     * @return {@link cn.hutool.core.text.csv.CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
     public CsvData read() throws IORuntimeException {
@@ -136,7 +136,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.hutool.core.
      * @return {@link Stream}
      * @since 5.7.14
      */
-    public Stream<cn.hutool.core.text.csv.CsvRow> stream() {
+    public Stream<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> stream() {
         return StreamSupport.stream(spliterator(), false)
                 .onClose(() -> {
                     try {

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.date.GroupTimeInterval;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.GroupTimeInterval;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 计时器<br>

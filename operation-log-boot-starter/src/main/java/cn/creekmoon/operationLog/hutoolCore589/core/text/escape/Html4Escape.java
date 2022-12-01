@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.escape;
 
-import cn.hutool.core.text.escape.XmlEscape;
-import cn.hutool.core.text.replacer.LookupReplacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.XmlEscape;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.LookupReplacer;
 
 /**
  * HTML4的ESCAPE

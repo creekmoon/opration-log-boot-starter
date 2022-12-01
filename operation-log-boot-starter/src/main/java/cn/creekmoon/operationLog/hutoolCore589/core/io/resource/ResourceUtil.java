@@ -1,18 +1,18 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.collection.EnumerationIter;
-import cn.hutool.core.collection.IterUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.io.resource.FileResource;
-import cn.hutool.core.io.resource.NoResourceException;
-import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.lang.Filter;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.EnumerationIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.ClassPathResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.NoResourceException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -199,11 +199,11 @@ public class ResourceUtil {
     }
 
     /**
-     * 获取{@link cn.hutool.core.io.resource.Resource} 资源对象<br>
-     * 如果提供路径为绝对路径或路径以file:开头，返回{@link cn.hutool.core.io.resource.FileResource}，否则返回{@link ClassPathResource}
+     * 获取{@link cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource} 资源对象<br>
+     * 如果提供路径为绝对路径或路径以file:开头，返回{@link cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource}，否则返回{@link ClassPathResource}
      *
      * @param path 路径，可以是绝对路径，也可以是相对路径（相对ClassPath）
-     * @return {@link cn.hutool.core.io.resource.Resource} 资源对象
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource} 资源对象
      * @since 3.2.1
      */
     public static Resource getResourceObj(String path) {

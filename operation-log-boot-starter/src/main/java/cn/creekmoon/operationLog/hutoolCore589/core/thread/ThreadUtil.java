@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.hutool.core.util.RuntimeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RuntimeUtil;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.Callable;

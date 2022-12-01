@@ -1,18 +1,18 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.map.BiMap;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.EscapeUtil;
-import cn.hutool.core.util.JAXBUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.BiMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.EscapeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.JAXBUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -186,7 +186,7 @@ public class XmlUtil {
      * @since 3.0.9
      */
     public static Document readXML(String pathOrContent) {
-        if (cn.hutool.core.util.StrUtil.startWith(pathOrContent, '<')) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.startWith(pathOrContent, '<')) {
             return parseXml(pathOrContent);
         }
         return readXML(FileUtil.file(pathOrContent));
@@ -327,11 +327,11 @@ public class XmlUtil {
      * @return XML文档
      */
     public static Document parseXml(String xmlStr) {
-        if (cn.hutool.core.util.StrUtil.isBlank(xmlStr)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(xmlStr)) {
             throw new IllegalArgumentException("XML content string is empty !");
         }
         xmlStr = cleanInvalid(xmlStr);
-        return readXML(cn.hutool.core.util.StrUtil.getReader(xmlStr));
+        return readXML(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.getReader(xmlStr));
     }
 
     /**
@@ -354,7 +354,7 @@ public class XmlUtil {
      * @since 3.2.0
      */
     public static <T> T readObjectFromXml(String xmlStr) {
-        return readObjectFromXml(new InputSource(cn.hutool.core.util.StrUtil.getReader(xmlStr)));
+        return readObjectFromXml(new InputSource(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.getReader(xmlStr)));
     }
 
     /**
@@ -471,7 +471,7 @@ public class XmlUtil {
      * @since 5.1.2
      */
     public static String toStr(Node doc, String charset, boolean isPretty, boolean omitXmlDeclaration) {
-        final StringWriter writer = cn.hutool.core.util.StrUtil.getWriter();
+        final StringWriter writer = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.getWriter();
         try {
             write(doc, writer, charset, isPretty ? INDENT_DEFAULT : 0, omitXmlDeclaration);
         } catch (Exception e) {
@@ -521,10 +521,10 @@ public class XmlUtil {
      * @param charsetName 自定义XML文件的编码，如果为{@code null} 读取XML文档中的编码，否则默认UTF-8
      */
     public static void toFile(Document doc, String path, String charsetName) {
-        if (cn.hutool.core.util.StrUtil.isBlank(charsetName)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(charsetName)) {
             charsetName = doc.getXmlEncoding();
         }
-        if (cn.hutool.core.util.StrUtil.isBlank(charsetName)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(charsetName)) {
             charsetName = CharsetUtil.UTF_8;
         }
 
@@ -626,7 +626,7 @@ public class XmlUtil {
                 xformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "yes");
                 xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
             }
-            if (cn.hutool.core.util.StrUtil.isNotBlank(charset)) {
+            if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(charset)) {
                 xformer.setOutputProperty(OutputKeys.ENCODING, charset);
             }
             if (omitXmlDeclaration) {
@@ -678,7 +678,7 @@ public class XmlUtil {
      */
     public static DocumentBuilderFactory createDocumentBuilderFactory() {
         final DocumentBuilderFactory factory;
-        if (cn.hutool.core.util.StrUtil.isNotEmpty(defaultDocumentBuilderFactory)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(defaultDocumentBuilderFactory)) {
             factory = DocumentBuilderFactory.newInstance(defaultDocumentBuilderFactory, null);
         } else {
             factory = DocumentBuilderFactory.newInstance();
@@ -763,7 +763,7 @@ public class XmlUtil {
         if (xmlContent == null) {
             return null;
         }
-        return xmlContent.replaceAll(COMMENT_REGEX, cn.hutool.core.util.StrUtil.EMPTY);
+        return xmlContent.replaceAll(COMMENT_REGEX, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY);
     }
 
     /**
@@ -774,7 +774,7 @@ public class XmlUtil {
      * @return 节点列表
      */
     public static List<Element> getElements(Element element, String tagName) {
-        final NodeList nodeList = cn.hutool.core.util.StrUtil.isBlank(tagName) ? element.getChildNodes() : element.getElementsByTagName(tagName);
+        final NodeList nodeList = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(tagName) ? element.getChildNodes() : element.getElementsByTagName(tagName);
         return transElements(element, nodeList);
     }
 

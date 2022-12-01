@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.AnnotationAttributeValueProvider;
-import cn.hutool.core.annotation.GenericSynthesizedAggregateAnnotation;
-import cn.hutool.core.annotation.SynthesizedAnnotationAttributeProcessor;
-import cn.hutool.core.annotation.SynthesizedAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationAttributeValueProvider;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.GenericSynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationAttributeProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationPostProcessor;
 
 import java.lang.annotation.Annotation;
 

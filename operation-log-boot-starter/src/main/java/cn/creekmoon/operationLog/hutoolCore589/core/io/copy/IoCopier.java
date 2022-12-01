@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.copy;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.StreamProgress;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.StreamProgress;
 
 /**
  * IO拷贝抽象，可自定义包括缓存、进度条等信息<br>

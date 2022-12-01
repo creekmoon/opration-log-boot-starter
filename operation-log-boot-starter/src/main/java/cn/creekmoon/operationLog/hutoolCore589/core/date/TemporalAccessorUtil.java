@@ -1,10 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.date.Month;
-import cn.hutool.core.date.TemporalUtil;
-import cn.hutool.core.date.format.GlobalCustomFormat;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -49,7 +46,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * 格式化日期时间为指定格式<br>
-     * 如果为{@link cn.hutool.core.date.Month}，调用{@link cn.hutool.core.date.Month#toString()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#toString()}
      *
      * @param time      {@link TemporalAccessor}
      * @param formatter 日期格式化器，预定义的格式见：{@link DateTimeFormatter}
@@ -61,7 +58,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
             return null;
         }
 
-        if (time instanceof cn.hutool.core.date.Month) {
+        if (time instanceof Month) {
             return time.toString();
         }
 
@@ -88,7 +85,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * 格式化日期时间为指定格式<br>
-     * 如果为{@link cn.hutool.core.date.Month}，调用{@link cn.hutool.core.date.Month#toString()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#toString()}
      *
      * @param time   {@link TemporalAccessor}
      * @param format 日期格式
@@ -117,14 +114,14 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * {@link TemporalAccessor}转换为 时间戳（从1970-01-01T00:00:00Z开始的毫秒数）<br>
-     * 如果为{@link cn.hutool.core.date.Month}，调用{@link cn.hutool.core.date.Month#getValue()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#getValue()}
      *
      * @param temporalAccessor Date对象
      * @return {@link Instant}对象
      * @since 5.4.1
      */
     public static long toEpochMilli(TemporalAccessor temporalAccessor) {
-        if (temporalAccessor instanceof cn.hutool.core.date.Month) {
+        if (temporalAccessor instanceof Month) {
             return ((Month) temporalAccessor).getValue();
         } else if (temporalAccessor instanceof DayOfWeek) {
             return ((DayOfWeek) temporalAccessor).getValue();

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.lang.hash.MurmurHash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.MurmurHash;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.hutool.core.io.resource.CharSequenceResource;
-import cn.hutool.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.CharSequenceResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
 
 import java.nio.charset.Charset;
 

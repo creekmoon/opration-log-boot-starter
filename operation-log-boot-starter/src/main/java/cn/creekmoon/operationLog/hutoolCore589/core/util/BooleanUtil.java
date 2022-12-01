@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Set;
 
@@ -86,7 +86,7 @@ public class BooleanUtil {
      * @return boolean值
      */
     public static boolean toBoolean(String valueStr) {
-        if (cn.hutool.core.util.StrUtil.isNotBlank(valueStr)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(valueStr)) {
             valueStr = valueStr.trim().toLowerCase();
             return TRUE_SET.contains(valueStr);
         }
@@ -332,7 +332,7 @@ public class BooleanUtil {
      * @return 取与为真返回{@code true}
      */
     public static boolean and(boolean... array) {
-        if (cn.hutool.core.util.ArrayUtil.isEmpty(array)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException("The Array must not be empty !");
         }
         for (final boolean element : array) {
@@ -359,7 +359,7 @@ public class BooleanUtil {
      * @return 取与为真返回{@code true}
      */
     public static Boolean andOfWrap(Boolean... array) {
-        if (cn.hutool.core.util.ArrayUtil.isEmpty(array)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException("The Array must not be empty !");
         }
 
@@ -387,7 +387,7 @@ public class BooleanUtil {
      * @return 取或为真返回{@code true}
      */
     public static boolean or(boolean... array) {
-        if (cn.hutool.core.util.ArrayUtil.isEmpty(array)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException("The Array must not be empty !");
         }
         for (final boolean element : array) {
@@ -415,7 +415,7 @@ public class BooleanUtil {
      * @return 取或为真返回{@code true}
      */
     public static Boolean orOfWrap(Boolean... array) {
-        if (cn.hutool.core.util.ArrayUtil.isEmpty(array)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException("The Array must not be empty !");
         }
 
@@ -443,7 +443,7 @@ public class BooleanUtil {
      * @return 如果异或计算为true返回 {@code true}
      */
     public static boolean xor(boolean... array) {
-        if (cn.hutool.core.util.ArrayUtil.isEmpty(array)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException("The Array must not be empty");
         }
 

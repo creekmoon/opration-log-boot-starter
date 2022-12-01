@@ -1,16 +1,16 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.hutool.core.comparator.CompareUtil;
-import cn.hutool.core.convert.NumberChineseFormatter;
-import cn.hutool.core.date.DateField;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.Month;
-import cn.hutool.core.date.format.DateParser;
-import cn.hutool.core.date.format.FastDateParser;
-import cn.hutool.core.date.format.GlobalCustomFormat;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.NumberChineseFormatter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateField;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Month;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.text.ParsePosition;
 import java.time.Instant;
@@ -46,7 +46,7 @@ public class CalendarUtil {
      * @return Calendar对象
      */
     public static Calendar calendar(Date date) {
-        if (date instanceof cn.hutool.core.date.DateTime) {
+        if (date instanceof cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) {
             return ((DateTime) date).toCalendar();
         } else {
             return calendar(date.getTime());
@@ -101,10 +101,10 @@ public class CalendarUtil {
      * 修改日期为某个时间字段起始时间
      *
      * @param calendar  {@link Calendar}
-     * @param dateField 保留到的时间字段，如定义为 {@link cn.hutool.core.date.DateField#SECOND}，表示这个字段不变，这个字段以下字段全部归0
+     * @param dateField 保留到的时间字段，如定义为 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateField#SECOND}，表示这个字段不变，这个字段以下字段全部归0
      * @return 原{@link Calendar}
      */
-    public static Calendar truncate(Calendar calendar, cn.hutool.core.date.DateField dateField) {
+    public static Calendar truncate(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField) {
         return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.TRUNCATE);
     }
 
@@ -115,7 +115,7 @@ public class CalendarUtil {
      * @param dateField 时间字段
      * @return 原{@link Calendar}
      */
-    public static Calendar round(Calendar calendar, cn.hutool.core.date.DateField dateField) {
+    public static Calendar round(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField) {
         return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.ROUND);
     }
 
@@ -123,10 +123,10 @@ public class CalendarUtil {
      * 修改日期为某个时间字段结束时间
      *
      * @param calendar  {@link Calendar}
-     * @param dateField 保留到的时间字段，如定义为 {@link cn.hutool.core.date.DateField#SECOND}，表示这个字段不变，这个字段以下字段全部取最大值
+     * @param dateField 保留到的时间字段，如定义为 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateField#SECOND}，表示这个字段不变，这个字段以下字段全部取最大值
      * @return 原{@link Calendar}
      */
-    public static Calendar ceiling(Calendar calendar, cn.hutool.core.date.DateField dateField) {
+    public static Calendar ceiling(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField) {
         return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.CEILING);
     }
 
@@ -143,7 +143,7 @@ public class CalendarUtil {
      * @param truncateMillisecond 是否毫秒归零
      * @return 原{@link Calendar}
      */
-    public static Calendar ceiling(Calendar calendar, cn.hutool.core.date.DateField dateField, boolean truncateMillisecond) {
+    public static Calendar ceiling(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField, boolean truncateMillisecond) {
         return DateModifier.modify(calendar, dateField.getValue(), DateModifier.ModifyType.CEILING, truncateMillisecond);
     }
 
@@ -155,7 +155,7 @@ public class CalendarUtil {
      * @since 4.6.2
      */
     public static Calendar beginOfSecond(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.SECOND);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.SECOND);
     }
 
     /**
@@ -166,7 +166,7 @@ public class CalendarUtil {
      * @since 4.6.2
      */
     public static Calendar endOfSecond(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.SECOND);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.SECOND);
     }
 
     /**
@@ -176,7 +176,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar beginOfHour(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.HOUR_OF_DAY);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.HOUR_OF_DAY);
     }
 
     /**
@@ -186,7 +186,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar endOfHour(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.HOUR_OF_DAY);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.HOUR_OF_DAY);
     }
 
     /**
@@ -196,7 +196,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar beginOfMinute(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.MINUTE);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MINUTE);
     }
 
     /**
@@ -206,7 +206,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar endOfMinute(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.MINUTE);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MINUTE);
     }
 
     /**
@@ -216,7 +216,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar beginOfDay(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.DAY_OF_MONTH);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.DAY_OF_MONTH);
     }
 
     /**
@@ -226,7 +226,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar endOfDay(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.DAY_OF_MONTH);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.DAY_OF_MONTH);
     }
 
     /**
@@ -250,7 +250,7 @@ public class CalendarUtil {
     public static Calendar beginOfWeek(Calendar calendar, boolean isMondayAsFirstDay) {
         calendar.setFirstDayOfWeek(isMondayAsFirstDay ? Calendar.MONDAY : Calendar.SUNDAY);
         // WEEK_OF_MONTH为上限的字段（不包括），实际调整的为DAY_OF_MONTH
-        return truncate(calendar, cn.hutool.core.date.DateField.WEEK_OF_MONTH);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.WEEK_OF_MONTH);
     }
 
     /**
@@ -273,7 +273,7 @@ public class CalendarUtil {
     public static Calendar endOfWeek(Calendar calendar, boolean isSundayAsLastDay) {
         calendar.setFirstDayOfWeek(isSundayAsLastDay ? Calendar.MONDAY : Calendar.SUNDAY);
         // WEEK_OF_MONTH为上限的字段（不包括），实际调整的为DAY_OF_MONTH
-        return ceiling(calendar, cn.hutool.core.date.DateField.WEEK_OF_MONTH);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.WEEK_OF_MONTH);
     }
 
     /**
@@ -283,7 +283,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar beginOfMonth(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.MONTH);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MONTH);
     }
 
     /**
@@ -293,7 +293,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar endOfMonth(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.MONTH);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MONTH);
     }
 
     /**
@@ -305,7 +305,7 @@ public class CalendarUtil {
      */
     public static Calendar beginOfQuarter(Calendar calendar) {
         //noinspection MagicConstant
-        calendar.set(Calendar.MONTH, calendar.get(cn.hutool.core.date.DateField.MONTH.getValue()) / 3 * 3);
+        calendar.set(Calendar.MONTH, calendar.get(cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MONTH.getValue()) / 3 * 3);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         return beginOfDay(calendar);
     }
@@ -320,7 +320,7 @@ public class CalendarUtil {
     @SuppressWarnings({"MagicConstant", "ConstantConditions"})
     public static Calendar endOfQuarter(Calendar calendar) {
         final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(cn.hutool.core.date.DateField.MONTH.getValue()) / 3 * 3 + 2;
+        final int month = calendar.get(cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.MONTH.getValue()) / 3 * 3 + 2;
 
         final Calendar resultCal = Calendar.getInstance(calendar.getTimeZone());
         resultCal.set(year, month, Month.of(month).getLastDay(DateUtil.isLeapYear(year)));
@@ -335,7 +335,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar beginOfYear(Calendar calendar) {
-        return truncate(calendar, cn.hutool.core.date.DateField.YEAR);
+        return truncate(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.YEAR);
     }
 
     /**
@@ -345,7 +345,7 @@ public class CalendarUtil {
      * @return {@link Calendar}
      */
     public static Calendar endOfYear(Calendar calendar) {
-        return ceiling(calendar, cn.hutool.core.date.DateField.YEAR);
+        return ceiling(calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField.YEAR);
     }
 
     /**
@@ -472,12 +472,12 @@ public class CalendarUtil {
      * 获取指定日期字段的最小值，例如分钟的最小值是0
      *
      * @param calendar  {@link Calendar}
-     * @param dateField {@link cn.hutool.core.date.DateField}
+     * @param dateField {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateField}
      * @return 字段最小值
      * @see Calendar#getActualMinimum(int)
      * @since 5.4.2
      */
-    public static int getBeginValue(Calendar calendar, cn.hutool.core.date.DateField dateField) {
+    public static int getBeginValue(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField) {
         return getBeginValue(calendar, dateField.getValue());
     }
 
@@ -485,7 +485,7 @@ public class CalendarUtil {
      * 获取指定日期字段的最小值，例如分钟的最小值是0
      *
      * @param calendar  {@link Calendar}
-     * @param dateField {@link cn.hutool.core.date.DateField}
+     * @param dateField {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateField}
      * @return 字段最小值
      * @see Calendar#getActualMinimum(int)
      * @since 4.5.7
@@ -501,12 +501,12 @@ public class CalendarUtil {
      * 获取指定日期字段的最大值，例如分钟的最大值是59
      *
      * @param calendar  {@link Calendar}
-     * @param dateField {@link cn.hutool.core.date.DateField}
+     * @param dateField {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateField}
      * @return 字段最大值
      * @see Calendar#getActualMaximum(int)
      * @since 5.4.2
      */
-    public static int getEndValue(Calendar calendar, cn.hutool.core.date.DateField dateField) {
+    public static int getEndValue(Calendar calendar, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField dateField) {
         return getEndValue(calendar, dateField.getValue());
     }
 

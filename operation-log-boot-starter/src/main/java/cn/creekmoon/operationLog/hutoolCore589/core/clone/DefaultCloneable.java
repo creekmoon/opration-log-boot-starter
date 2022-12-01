@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.clone;
 
 
-import cn.hutool.core.clone.CloneRuntimeException;
-import cn.hutool.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneRuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 
 /**
  * 克隆默认实现接口，用于实现返回指定泛型类型的克隆方法

@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.escape;
 
-import cn.hutool.core.text.escape.NumericEntityUnescaper;
-import cn.hutool.core.text.escape.XmlEscape;
-import cn.hutool.core.text.replacer.LookupReplacer;
-import cn.hutool.core.text.replacer.ReplacerChain;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.NumericEntityUnescaper;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.XmlEscape;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.LookupReplacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.ReplacerChain;
 
 /**
  * XML的UNESCAPE

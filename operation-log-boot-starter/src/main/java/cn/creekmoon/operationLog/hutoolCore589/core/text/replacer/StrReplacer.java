@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text.replacer;
 
-import cn.hutool.core.lang.Replacer;
-import cn.hutool.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Replacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
 
 import java.io.Serializable;
 

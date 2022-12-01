@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.hutool.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.awt.Color;
 import java.awt.color.ColorSpace;

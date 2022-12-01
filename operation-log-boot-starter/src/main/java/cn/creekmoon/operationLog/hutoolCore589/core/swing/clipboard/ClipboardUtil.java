@@ -10,10 +10,10 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.swing.clipboard.ClipboardListener;
-import cn.hutool.core.swing.clipboard.ClipboardMonitor;
-import cn.hutool.core.swing.clipboard.ImageSelection;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardListener;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardMonitor;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ImageSelection;
 
 /**
  * 系统剪贴板工具类

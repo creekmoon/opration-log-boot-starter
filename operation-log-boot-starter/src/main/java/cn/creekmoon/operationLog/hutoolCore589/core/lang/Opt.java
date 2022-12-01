@@ -24,10 +24,10 @@
  */
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.lang.func.Func0;
-import cn.hutool.core.lang.func.VoidFunc0;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollectionUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.VoidFunc0;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;

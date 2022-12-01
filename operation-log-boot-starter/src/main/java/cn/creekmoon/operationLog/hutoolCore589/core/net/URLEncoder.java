@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.net.RFC3986;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.HexUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.BitSet;
  * </pre>
  *
  * @author looly
- * @see cn.hutool.core.codec.PercentCodec
+ * @see cn.creekmoon.operationLog.hutoolCore589.core.codec.PercentCodec
  * @deprecated 此类中的方法并不规范，请使用 {@link RFC3986}
  */
 @Deprecated

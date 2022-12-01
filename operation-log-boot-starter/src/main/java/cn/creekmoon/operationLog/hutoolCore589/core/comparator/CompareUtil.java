@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.hutool.core.comparator.ComparableComparator;
-import cn.hutool.core.comparator.IndexedComparator;
-import cn.hutool.core.comparator.PinyinComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.ComparableComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.IndexedComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PinyinComparator;
 
 import java.util.Comparator;
 import java.util.Objects;

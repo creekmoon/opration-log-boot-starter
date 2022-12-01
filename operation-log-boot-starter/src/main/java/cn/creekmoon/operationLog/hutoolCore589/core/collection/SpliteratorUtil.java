@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.hutool.core.collection.TransSpliterator;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.TransSpliterator;
 
 import java.util.Spliterator;
 import java.util.function.Function;

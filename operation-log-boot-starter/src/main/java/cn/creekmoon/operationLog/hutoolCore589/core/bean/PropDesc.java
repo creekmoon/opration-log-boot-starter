@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.annotation.PropIgnore;
-import cn.hutool.core.bean.BeanException;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ModifierUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.PropIgnore;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanException;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ModifierUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.beans.Transient;
 import java.lang.reflect.Field;

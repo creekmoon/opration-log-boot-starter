@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.intern;
 
-import cn.hutool.core.lang.intern.Interner;
-import cn.hutool.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.intern.Interner;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
 
 /**
  * 使用WeakHashMap(线程安全)存储对象的规范化对象，注意此对象需单例使用！<br>

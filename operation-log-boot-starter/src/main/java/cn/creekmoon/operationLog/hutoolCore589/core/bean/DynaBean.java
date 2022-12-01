@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.hutool.core.bean.BeanException;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.PropDesc;
-import cn.hutool.core.clone.CloneSupport;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanException;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.PropDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneSupport;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -105,7 +105,7 @@ public class DynaBean extends CloneSupport<DynaBean> implements Serializable {
         if (Map.class.isAssignableFrom(beanClass)) {
             return (T) ((Map<?, ?>) bean).get(fieldName);
         } else {
-            final PropDesc prop = cn.hutool.core.bean.BeanUtil.getBeanDesc(beanClass).getProp(fieldName);
+            final PropDesc prop = cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil.getBeanDesc(beanClass).getProp(fieldName);
             if (null == prop) {
                 throw new BeanException("No public field or get method for {}", fieldName);
             }
@@ -124,7 +124,7 @@ public class DynaBean extends CloneSupport<DynaBean> implements Serializable {
         if (Map.class.isAssignableFrom(beanClass)) {
             return ((Map<?, ?>) bean).containsKey(fieldName);
         } else {
-            return null != cn.hutool.core.bean.BeanUtil.getBeanDesc(beanClass).getProp(fieldName);
+            return null != cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil.getBeanDesc(beanClass).getProp(fieldName);
         }
     }
 

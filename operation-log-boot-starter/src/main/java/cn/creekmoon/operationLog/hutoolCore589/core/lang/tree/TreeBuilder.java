@@ -1,13 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.tree;
 
-import cn.hutool.core.builder.Builder;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.lang.tree.TreeNodeConfig;
-import cn.hutool.core.lang.tree.parser.NodeParser;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.TreeNodeConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.parser.NodeParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,11 +19,11 @@ import java.util.Map;
  *
  * @param <E> ID类型
  */
-public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>> {
+public class TreeBuilder<E> implements Builder<cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> {
     private static final long serialVersionUID = 1L;
 
-    private final cn.hutool.core.lang.tree.Tree<E> root;
-    private final Map<E, cn.hutool.core.lang.tree.Tree<E>> idTreeMap;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> root;
+    private final Map<E, cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> idTreeMap;
     private boolean isBuild;
 
     /**
@@ -56,7 +56,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
      * @param config 配置
      */
     public TreeBuilder(E rootId, TreeNodeConfig config) {
-        root = new cn.hutool.core.lang.tree.Tree<>(config);
+        root = new cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<>(config);
         root.setId(rootId);
         this.idTreeMap = new HashMap<>();
     }
@@ -129,7 +129,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
      * @param map 节点列表
      * @return this
      */
-    public TreeBuilder<E> append(Map<E, cn.hutool.core.lang.tree.Tree<E>> map) {
+    public TreeBuilder<E> append(Map<E, cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> map) {
         checkBuilt();
 
         this.idTreeMap.putAll(map);
@@ -142,10 +142,10 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
      * @param trees 节点列表
      * @return this
      */
-    public TreeBuilder<E> append(Iterable<cn.hutool.core.lang.tree.Tree<E>> trees) {
+    public TreeBuilder<E> append(Iterable<cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> trees) {
         checkBuilt();
 
-        for (cn.hutool.core.lang.tree.Tree<E> tree : trees) {
+        for (cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> tree : trees) {
             this.idTreeMap.put(tree.getId(), tree);
         }
         return this;
@@ -177,10 +177,10 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
         checkBuilt();
 
         final TreeNodeConfig config = this.root.getConfig();
-        final Map<E, cn.hutool.core.lang.tree.Tree<E>> map = new LinkedHashMap<>(list.size(), 1);
-        cn.hutool.core.lang.tree.Tree<E> node;
+        final Map<E, cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> map = new LinkedHashMap<>(list.size(), 1);
+        cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> node;
         for (T t : list) {
-            node = new cn.hutool.core.lang.tree.Tree<>(config);
+            node = new cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<>(config);
             nodeParser.parse(t, node);
             if (null != rootId && false == rootId.getClass().equals(node.getId().getClass())) {
                 throw new IllegalArgumentException("rootId type is node.getId().getClass()!");
@@ -203,7 +203,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
     }
 
     @Override
-    public cn.hutool.core.lang.tree.Tree<E> build() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> build() {
         checkBuilt();
 
         buildFromMap();
@@ -229,7 +229,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
      *
      * @return 树列表
      */
-    public List<cn.hutool.core.lang.tree.Tree<E>> buildList() {
+    public List<cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> buildList() {
         if (isBuild) {
             // 已经构建过了
             return this.root.getChildren();
@@ -245,9 +245,9 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
             return;
         }
 
-        final Map<E, cn.hutool.core.lang.tree.Tree<E>> eTreeMap = MapUtil.sortByValue(this.idTreeMap, false);
+        final Map<E, cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> eTreeMap = MapUtil.sortByValue(this.idTreeMap, false);
         E parentId;
-        for (cn.hutool.core.lang.tree.Tree<E> node : eTreeMap.values()) {
+        for (cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> node : eTreeMap.values()) {
             if (null == node) {
                 continue;
             }
@@ -257,7 +257,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
                 continue;
             }
 
-            final cn.hutool.core.lang.tree.Tree<E> parentNode = eTreeMap.get(parentId);
+            final cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> parentNode = eTreeMap.get(parentId);
             if (null != parentNode) {
                 parentNode.addChildren(node);
             }
@@ -283,7 +283,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
      * @param currentDepp 当前层级
      * @param maxDeep     最大层级
      */
-    private void cutTree(cn.hutool.core.lang.tree.Tree<E> tree, int currentDepp, int maxDeep) {
+    private void cutTree(cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E> tree, int currentDepp, int maxDeep) {
         if (null == tree) {
             return;
         }
@@ -293,7 +293,7 @@ public class TreeBuilder<E> implements Builder<cn.hutool.core.lang.tree.Tree<E>>
             return;
         }
 
-        final List<cn.hutool.core.lang.tree.Tree<E>> children = tree.getChildren();
+        final List<cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree<E>> children = tree.getChildren();
         if (CollUtil.isNotEmpty(children)) {
             for (Tree<E> child : children) {
                 cutTree(child, currentDepp + 1, maxDeep);

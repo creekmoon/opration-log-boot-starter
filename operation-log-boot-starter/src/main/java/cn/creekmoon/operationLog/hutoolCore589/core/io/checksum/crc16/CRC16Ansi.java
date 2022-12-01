@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16;
 
-import cn.hutool.core.io.checksum.crc16.CRC16Checksum;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16.CRC16Checksum;
 
 /**
  * CRC16_ANSI

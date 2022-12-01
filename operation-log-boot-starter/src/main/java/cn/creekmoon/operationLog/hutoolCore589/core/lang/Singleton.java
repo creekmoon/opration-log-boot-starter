@@ -1,12 +1,12 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.func.Func0;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +35,7 @@ public final class Singleton {
      * @return 单例对象
      */
     public static <T> T get(Class<T> clazz, Object... params) {
-        cn.hutool.core.lang.Assert.notNull(clazz, "Class must be not null !");
+        cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.notNull(clazz, "Class must be not null !");
         final String key = buildKey(clazz.getName(), params);
         return get(key, () -> ReflectUtil.newInstance(clazz, params));
     }
@@ -66,7 +66,7 @@ public final class Singleton {
      * @return 单例对象
      */
     public static <T> T get(String className, Object... params) {
-        cn.hutool.core.lang.Assert.notBlank(className, "Class name must be not blank !");
+        cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.notBlank(className, "Class name must be not blank !");
         final Class<T> clazz = ClassUtil.loadClass(className);
         return get(clazz, params);
     }

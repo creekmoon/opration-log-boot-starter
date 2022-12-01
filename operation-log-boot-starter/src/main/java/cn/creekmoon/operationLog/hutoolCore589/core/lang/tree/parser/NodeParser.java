@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.parser;
 
-import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.lang.tree.parser.DefaultNodeParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Tree;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.parser.DefaultNodeParser;
 
 /**
  * 树节点解析器 可以参考{@link DefaultNodeParser}

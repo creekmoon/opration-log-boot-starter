@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.hutool.core.lang.Chain;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Chain;
 
 import java.io.Serializable;
 import java.util.ArrayList;

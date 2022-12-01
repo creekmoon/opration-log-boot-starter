@@ -1,9 +1,9 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.net.RFC3986;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 
@@ -37,7 +37,7 @@ public class URLEncodeUtil {
      * @throws UtilException UnsupportedEncodingException
      */
     public static String encodeAll(String url, Charset charset) throws UtilException {
-        return cn.hutool.core.net.RFC3986.UNRESERVED.encode(url, charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986.UNRESERVED.encode(url, charset);
     }
 
     /**
@@ -65,7 +65,7 @@ public class URLEncodeUtil {
      * @since 4.4.1
      */
     public static String encode(String url, Charset charset) {
-        return cn.hutool.core.net.RFC3986.PATH.encode(url, charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986.PATH.encode(url, charset);
     }
 
     /**
@@ -93,7 +93,7 @@ public class URLEncodeUtil {
      * @since 4.4.1
      */
     public static String encodeQuery(String url, Charset charset) {
-        return cn.hutool.core.net.RFC3986.QUERY.encode(url, charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986.QUERY.encode(url, charset);
     }
 
     /**
@@ -136,7 +136,7 @@ public class URLEncodeUtil {
         if (StrUtil.isEmpty(url)) {
             return url;
         }
-        return cn.hutool.core.net.RFC3986.SEGMENT.encode(url, charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986.SEGMENT.encode(url, charset);
     }
 
     /**

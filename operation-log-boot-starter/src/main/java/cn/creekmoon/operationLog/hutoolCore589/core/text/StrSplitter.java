@@ -1,14 +1,14 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.text.finder.CharFinder;
-import cn.hutool.core.text.finder.CharMatcherFinder;
-import cn.hutool.core.text.finder.LengthFinder;
-import cn.hutool.core.text.finder.PatternFinder;
-import cn.hutool.core.text.finder.StrFinder;
-import cn.hutool.core.text.split.SplitIter;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.CharFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.CharMatcherFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.LengthFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.PatternFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.StrFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.split.SplitIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.ArrayList;
 import java.util.List;

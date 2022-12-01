@@ -1,8 +1,8 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
 
 import java.lang.reflect.Type;
 
@@ -35,7 +35,7 @@ public interface Segment<T extends Number> {
      * @return 片段长度
      */
     default T length() {
-        final T start = cn.hutool.core.lang.Assert.notNull(getStartIndex(), "Start index must be not null!");
+        final T start = cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.notNull(getStartIndex(), "Start index must be not null!");
         final T end = Assert.notNull(getEndIndex(), "End index must be not null!");
         return Convert.convert((Type) start.getClass(), NumberUtil.sub(end, start).abs());
     }

@@ -1,6 +1,6 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.exceptions;
 
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 未初始化异常

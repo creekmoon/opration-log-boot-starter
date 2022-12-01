@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.AbstractWrappedAnnotationAttribute;
-import cn.hutool.core.annotation.AliasLinkAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AbstractWrappedAnnotationAttribute;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AliasLinkAnnotationPostProcessor;
 
 /**
  * 表示一个被指定了强制别名的注解属性。

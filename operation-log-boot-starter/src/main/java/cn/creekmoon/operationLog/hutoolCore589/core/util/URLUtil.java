@@ -1,18 +1,18 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.net.URLDecoder;
-import cn.hutool.core.net.URLEncodeUtil;
-import cn.hutool.core.net.url.UrlQuery;
-import cn.hutool.core.util.CharUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ClassLoaderUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.ResourceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLDecoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLEncodeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -171,7 +171,7 @@ public class URLUtil extends URLEncodeUtil {
         if (null == content) {
             return null;
         }
-        final String contentStr = cn.hutool.core.util.StrUtil.addPrefixIfNot(content, "string:///");
+        final String contentStr = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.addPrefixIfNot(content, "string:///");
         return URI.create(contentStr);
     }
 
@@ -319,7 +319,7 @@ public class URLUtil extends URLEncodeUtil {
      */
     public static String completeUrl(String baseUrl, String relativePath) {
         baseUrl = normalize(baseUrl, false);
-        if (cn.hutool.core.util.StrUtil.isBlank(baseUrl)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(baseUrl)) {
             return null;
         }
 
@@ -384,7 +384,7 @@ public class URLUtil extends URLEncodeUtil {
      * @throws UtilException UnsupportedEncodingException
      */
     public static String decode(String content, String charset) throws UtilException {
-        return decode(content, cn.hutool.core.util.StrUtil.isEmpty(charset) ? null : CharsetUtil.charset(charset));
+        return decode(content, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(charset) ? null : CharsetUtil.charset(charset));
     }
 
     /**
@@ -475,7 +475,7 @@ public class URLUtil extends URLEncodeUtil {
             location = encode(location);
         }
         try {
-            return new URI(cn.hutool.core.util.StrUtil.trim(location));
+            return new URI(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.trim(location));
         } catch (URISyntaxException e) {
             throw new UtilException(e);
         }
@@ -620,31 +620,31 @@ public class URLUtil extends URLEncodeUtil {
      * @since 5.5.5
      */
     public static String normalize(String url, boolean isEncodePath, boolean replaceSlash) {
-        if (cn.hutool.core.util.StrUtil.isBlank(url)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(url)) {
             return url;
         }
         final int sepIndex = url.indexOf("://");
         String protocol;
         String body;
         if (sepIndex > 0) {
-            protocol = cn.hutool.core.util.StrUtil.subPre(url, sepIndex + 3);
-            body = cn.hutool.core.util.StrUtil.subSuf(url, sepIndex + 3);
+            protocol = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(url, sepIndex + 3);
+            body = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(url, sepIndex + 3);
         } else {
             protocol = "http://";
             body = url;
         }
 
-        final int paramsSepIndex = cn.hutool.core.util.StrUtil.indexOf(body, '?');
+        final int paramsSepIndex = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.indexOf(body, '?');
         String params = null;
         if (paramsSepIndex > 0) {
-            params = cn.hutool.core.util.StrUtil.subSuf(body, paramsSepIndex);
-            body = cn.hutool.core.util.StrUtil.subPre(body, paramsSepIndex);
+            params = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(body, paramsSepIndex);
+            body = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(body, paramsSepIndex);
         }
 
-        if (cn.hutool.core.util.StrUtil.isNotEmpty(body)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(body)) {
             // 去除开头的\或者/
             //noinspection ConstantConditions
-            body = body.replaceAll("^[\\\\/]+", cn.hutool.core.util.StrUtil.EMPTY);
+            body = body.replaceAll("^[\\\\/]+", cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY);
             // 替换\为/
             body = body.replace("\\", "/");
             if (replaceSlash) {
@@ -653,17 +653,17 @@ public class URLUtil extends URLEncodeUtil {
             }
         }
 
-        final int pathSepIndex = cn.hutool.core.util.StrUtil.indexOf(body, '/');
+        final int pathSepIndex = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.indexOf(body, '/');
         String domain = body;
         String path = null;
         if (pathSepIndex > 0) {
-            domain = cn.hutool.core.util.StrUtil.subPre(body, pathSepIndex);
-            path = cn.hutool.core.util.StrUtil.subSuf(body, pathSepIndex);
+            domain = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(body, pathSepIndex);
+            path = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(body, pathSepIndex);
         }
         if (isEncodePath) {
             path = encode(path);
         }
-        return protocol + domain + cn.hutool.core.util.StrUtil.nullToEmpty(path) + cn.hutool.core.util.StrUtil.nullToEmpty(params);
+        return protocol + domain + cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.nullToEmpty(path) + cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.nullToEmpty(params);
     }
 
     /**
@@ -766,8 +766,8 @@ public class URLUtil extends URLEncodeUtil {
      * @since 5.3.6
      */
     public static String getDataUri(String mimeType, Charset charset, String encoding, String data) {
-        final StringBuilder builder = cn.hutool.core.util.StrUtil.builder("data:");
-        if (cn.hutool.core.util.StrUtil.isNotBlank(mimeType)) {
+        final StringBuilder builder = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.builder("data:");
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(mimeType)) {
             builder.append(mimeType);
         }
         if (null != charset) {

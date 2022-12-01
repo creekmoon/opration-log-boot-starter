@@ -1,19 +1,19 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.hutool.core.annotation.CombinationAnnotationElement;
-import cn.hutool.core.annotation.GenericSynthesizedAggregateAnnotation;
-import cn.hutool.core.annotation.SynthesizedAggregateAnnotation;
-import cn.hutool.core.annotation.SynthesizedAnnotationProxy;
-import cn.hutool.core.annotation.scanner.AnnotationScanner;
-import cn.hutool.core.annotation.scanner.MetaAnnotationScanner;
-import cn.hutool.core.annotation.scanner.MethodAnnotationScanner;
-import cn.hutool.core.annotation.scanner.TypeAnnotationScanner;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.lang.Opt;
-import cn.hutool.core.lang.func.Func1;
-import cn.hutool.core.lang.func.LambdaUtil;
-import cn.hutool.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.CombinationAnnotationElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.GenericSynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationProxy;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.AnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.MetaAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.MethodAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.TypeAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.LambdaUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.*;
 
 import java.lang.annotation.*;
 import java.lang.invoke.SerializedLambda;

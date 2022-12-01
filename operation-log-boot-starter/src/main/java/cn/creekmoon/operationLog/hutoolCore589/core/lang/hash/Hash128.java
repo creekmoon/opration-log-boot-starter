@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang.hash;
 
-import cn.hutool.core.lang.hash.Hash;
-import cn.hutool.core.lang.hash.Number128;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Hash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Number128;
 
 /**
  * Hash计算接口

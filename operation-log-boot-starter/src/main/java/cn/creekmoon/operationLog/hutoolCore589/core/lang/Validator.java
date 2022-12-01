@@ -1,16 +1,13 @@
 package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.exceptions.ValidateException;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Matcher;
-import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.util.CreditCodeUtil;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.IdcardUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.ValidateException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CreditCodeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.IdcardUtil;
 
 import java.net.MalformedURLException;
 import java.util.regex.Matcher;
@@ -1102,8 +1099,8 @@ public class Validator {
      * @since 4.1.10
      */
     public static boolean isBetween(Number value, Number min, Number max) {
-        cn.hutool.core.lang.Assert.notNull(value);
-        cn.hutool.core.lang.Assert.notNull(min);
+        cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.notNull(value);
+        cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.notNull(min);
         Assert.notNull(max);
         final double doubleValue = value.doubleValue();
         return (doubleValue >= min.doubleValue()) && (doubleValue <= max.doubleValue());
