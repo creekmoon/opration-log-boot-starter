@@ -1,10 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.ansi;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.ansi.Ansi8BitColor;
-import cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiColor;
-import cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiElement;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.Ansi8BitColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiBackground;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Objects;
 
@@ -36,22 +37,22 @@ public class AnsiColorWrapper {
     }
 
     /**
-     * 转换为 {@link cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiElement} 实例
+     * 转换为 {@link cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement} 实例
      *
      * @param foreOrBack 区分前景还是背景
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiElement} 实例
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement} 实例
      */
     public AnsiElement toAnsiElement(ForeOrBack foreOrBack) {
         if (bitDepth == AnsiColors.BitDepth.FOUR) {
             if (foreOrBack == ForeOrBack.FORE) {
-                for (cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiColor item : AnsiColor.values()) {
+                for (cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiColor item : AnsiColor.values()) {
                     if (item.getCode() == this.code) {
                         return item;
                     }
                 }
                 throw new IllegalArgumentException(StrUtil.format("No matched AnsiColor instance,code={}", this.code));
             }
-            for (AnsiBackground item : AnsiBackground.values()) {
+            for (cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiBackground item : AnsiBackground.values()) {
                 if (item.getCode() == this.code + 10) {
                     return item;
                 }
@@ -59,7 +60,7 @@ public class AnsiColorWrapper {
             throw new IllegalArgumentException(StrUtil.format("No matched AnsiBackground instance,code={}", this.code));
         }
         if (foreOrBack == ForeOrBack.FORE) {
-            return cn.creekmoon.operationLog.hutool589.core.lang.ansi.Ansi8BitColor.foreground(this.code);
+            return cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.Ansi8BitColor.foreground(this.code);
         }
         return Ansi8BitColor.background(this.code);
     }

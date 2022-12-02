@@ -1,14 +1,14 @@
-package cn.creekmoon.operationLog.hutool589.core.math;
+package cn.creekmoon.operationLog.hutoolCore589.core.math;
 
-import cn.creekmoon.operationLog.hutool589.core.math.Arrangement;
-import cn.creekmoon.operationLog.hutool589.core.math.Combination;
-import cn.creekmoon.operationLog.hutool589.core.math.Money;
+import cn.creekmoon.operationLog.hutoolCore589.core.math.Arrangement;
+import cn.creekmoon.operationLog.hutoolCore589.core.math.Combination;
+import cn.creekmoon.operationLog.hutoolCore589.core.math.Money;
 
 import java.util.List;
 
 /**
  * 数学相关方法工具类<br>
- * 此工具类与{@link cn.creekmoon.operationLog.hutool589.core.util.NumberUtil}属于一类工具，NumberUtil偏向于简单数学计算的封装，MathUtil偏向复杂数学计算
+ * 此工具类与{@link cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil}属于一类工具，NumberUtil偏向于简单数学计算的封装，MathUtil偏向复杂数学计算
  *
  * @author looly
  * @since 4.0.7
@@ -69,7 +69,7 @@ public class MathUtil {
      * @return 组合数
      */
     public static long combinationCount(int n, int m) {
-        return cn.creekmoon.operationLog.hutool589.core.math.Combination.count(n, m);
+        return Combination.count(n, m);
     }
 
     /**
@@ -91,7 +91,7 @@ public class MathUtil {
      * @since 5.7.11
      */
     public static long yuanToCent(double yuan) {
-        return new cn.creekmoon.operationLog.hutool589.core.math.Money(yuan).getCent();
+        return new cn.creekmoon.operationLog.hutoolCore589.core.math.Money(yuan).getCent();
     }
 
     /**

@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.ansi;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.ansi.AnsiElement;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ansi.AnsiElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * ANSI文本样式风格枚举

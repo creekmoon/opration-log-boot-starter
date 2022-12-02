@@ -1,15 +1,22 @@
-package cn.creekmoon.operationLog.hutool589.core.io.file;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.file;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileWrapper;
-import cn.creekmoon.operationLog.hutool589.core.io.file.LineSeparator;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileWrapper;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.LineSeparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;

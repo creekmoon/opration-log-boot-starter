@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ThreadUtil;
 
 import java.io.Closeable;
 import java.io.IOException;

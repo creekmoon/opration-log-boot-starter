@@ -1,15 +1,19 @@
-package cn.creekmoon.operationLog.hutool589.core.net.url;
+package cn.creekmoon.operationLog.hutoolCore589.core.net.url;
 
-import cn.creekmoon.operationLog.hutool589.core.builder.Builder;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.net.RFC3986;
-import cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath;
-import cn.creekmoon.operationLog.hutool589.core.net.url.UrlQuery;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.RFC3986;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 
 /**
@@ -43,11 +47,11 @@ public final class UrlBuilder implements Builder<String> {
     /**
      * 路径，例如/aa/bb/cc
      */
-    private cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath path;
+    private cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath path;
     /**
      * 查询语句，例如a=1&amp;b=2
      */
-    private UrlQuery query;
+    private cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery query;
     /**
      * 标识符，例如#后边的部分
      */
@@ -161,8 +165,8 @@ public final class UrlBuilder implements Builder<String> {
      */
     public static UrlBuilder of(String scheme, String host, int port, String path, String query, String fragment, Charset charset) {
         return of(scheme, host, port,
-                cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath.of(path, charset),
-                UrlQuery.of(query, charset, false), fragment, charset);
+                cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath.of(path, charset),
+                cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery.of(query, charset, false), fragment, charset);
     }
 
     /**
@@ -177,7 +181,7 @@ public final class UrlBuilder implements Builder<String> {
      * @param charset  编码，用于URLEncode和URLDecode
      * @return UrlBuilder
      */
-    public static UrlBuilder of(String scheme, String host, int port, cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath path, UrlQuery query, String fragment, Charset charset) {
+    public static UrlBuilder of(String scheme, String host, int port, cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath path, cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery query, String fragment, Charset charset) {
         return new UrlBuilder(scheme, host, port, path, query, fragment, charset);
     }
 
@@ -219,7 +223,7 @@ public final class UrlBuilder implements Builder<String> {
      * @param fragment 标识符例如#后边的部分
      * @param charset  编码，用于URLEncode和URLDecode，{@code null}表示不编码
      */
-    public UrlBuilder(String scheme, String host, int port, cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath path, UrlQuery query, String fragment, Charset charset) {
+    public UrlBuilder(String scheme, String host, int port, cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath path, cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery query, String fragment, Charset charset) {
         this.charset = charset;
         this.scheme = scheme;
         this.host = host;
@@ -328,7 +332,7 @@ public final class UrlBuilder implements Builder<String> {
      *
      * @return 路径，例如/aa/bb/cc
      */
-    public cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath getPath() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath getPath() {
         return path;
     }
 
@@ -350,7 +354,7 @@ public final class UrlBuilder implements Builder<String> {
      */
     public UrlBuilder setWithEndTag(boolean withEngTag) {
         if (null == this.path) {
-            this.path = new cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath();
+            this.path = new cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath();
         }
 
         this.path.setWithEndTag(withEngTag);
@@ -363,7 +367,7 @@ public final class UrlBuilder implements Builder<String> {
      * @param path 路径，例如/aa/bb/cc
      * @return this
      */
-    public UrlBuilder setPath(cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath path) {
+    public UrlBuilder setPath(cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath path) {
         this.path = path;
         return this;
     }
@@ -375,7 +379,7 @@ public final class UrlBuilder implements Builder<String> {
      * @return this
      */
     public UrlBuilder addPath(CharSequence path) {
-        cn.creekmoon.operationLog.hutool589.core.net.url.UrlPath.of(path, this.charset).getSegments().forEach(this::addPathSegment);
+        cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlPath.of(path, this.charset).getSegments().forEach(this::addPathSegment);
         return this;
     }
 
@@ -415,7 +419,7 @@ public final class UrlBuilder implements Builder<String> {
      *
      * @return 查询语句，例如a=1&amp;b=2，可能为{@code null}
      */
-    public UrlQuery getQuery() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery getQuery() {
         return query;
     }
 
@@ -434,7 +438,7 @@ public final class UrlBuilder implements Builder<String> {
      * @param query 查询语句，例如a=1&amp;b=2
      * @return this
      */
-    public UrlBuilder setQuery(UrlQuery query) {
+    public UrlBuilder setQuery(cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery query) {
         this.query = query;
         return this;
     }

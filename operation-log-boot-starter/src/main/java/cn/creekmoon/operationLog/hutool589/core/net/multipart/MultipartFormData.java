@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.net.multipart;
+package cn.creekmoon.operationLog.hutoolCore589.core.net.multipart;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.map.multi.ListValueMap;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.MultipartRequestInputStream;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFileHeader;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadSetting;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.ListValueMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.MultipartRequestInputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadSetting;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,11 +30,11 @@ public class MultipartFormData {
     /**
      * 请求文件
      */
-    private final ListValueMap<String, cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile> requestFiles = new ListValueMap<>();
+    private final ListValueMap<String, cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile> requestFiles = new ListValueMap<>();
     /**
      * 上传选项
      */
-    private final cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadSetting setting;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadSetting setting;
 
     /**
      * 是否解析完毕
@@ -55,7 +55,7 @@ public class MultipartFormData {
      *
      * @param uploadSetting 上传设定
      */
-    public MultipartFormData(cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadSetting uploadSetting) {
+    public MultipartFormData(cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadSetting uploadSetting) {
         this.setting = uploadSetting == null ? new UploadSetting() : uploadSetting;
     }
     // --------------------------------------------------------------------- Constructor end
@@ -70,7 +70,7 @@ public class MultipartFormData {
     public void parseRequestStream(InputStream inputStream, Charset charset) throws IOException {
         setLoaded();
 
-        cn.creekmoon.operationLog.hutool589.core.net.multipart.MultipartRequestInputStream input = new MultipartRequestInputStream(inputStream);
+        MultipartRequestInputStream input = new MultipartRequestInputStream(inputStream);
         input.readBoundary();
         while (true) {
             UploadFileHeader header = input.readDataHeader(charset);
@@ -84,7 +84,7 @@ public class MultipartFormData {
                 if (fileName.length() > 0 && header.contentType.contains("application/x-macbinary")) {
                     input.skipBytes(128);
                 }
-                final cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile newFile = new cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile(header, setting);
+                final cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile newFile = new cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile(header, setting);
                 if (newFile.processStream(input)) {
                     putFile(header.formFieldName, newFile);
                 }
@@ -180,8 +180,8 @@ public class MultipartFormData {
      * @param paramName 文件参数名称
      * @return 上传的文件， 如果无为null
      */
-    public cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile getFile(String paramName) {
-        cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile[] values = getFiles(paramName);
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile getFile(String paramName) {
+        cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile[] values = getFiles(paramName);
         if ((values != null) && (values.length > 0)) {
             return values[0];
         }
@@ -195,10 +195,10 @@ public class MultipartFormData {
      * @param paramName 属性名
      * @return 上传的文件列表
      */
-    public cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile[] getFiles(String paramName) {
-        final List<cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile> fileList = getFileList(paramName);
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile[] getFiles(String paramName) {
+        final List<cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile> fileList = getFileList(paramName);
         if (null != fileList) {
-            return fileList.toArray(new cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile[0]);
+            return fileList.toArray(new cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile[0]);
         }
         return null;
     }
@@ -211,7 +211,7 @@ public class MultipartFormData {
      * @return 上传的文件列表
      * @since 5.3.0
      */
-    public List<cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile> getFileList(String paramName) {
+    public List<cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile> getFileList(String paramName) {
         return requestFiles.get(paramName);
     }
 
@@ -229,8 +229,8 @@ public class MultipartFormData {
      *
      * @return 文件映射
      */
-    public Map<String, cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile[]> getFileMap() {
-        return Convert.toMap(String.class, cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile[].class, getFileListValueMap());
+    public Map<String, cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile[]> getFileMap() {
+        return Convert.toMap(String.class, cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile[].class, getFileListValueMap());
     }
 
     /**
@@ -238,7 +238,7 @@ public class MultipartFormData {
      *
      * @return 文件映射
      */
-    public ListValueMap<String, cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFile> getFileListValueMap() {
+    public ListValueMap<String, cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFile> getFileListValueMap() {
         return this.requestFiles;
     }
 

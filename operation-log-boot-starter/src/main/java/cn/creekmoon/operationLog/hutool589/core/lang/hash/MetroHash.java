@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.hash;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.hash;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128;
-import cn.creekmoon.operationLog.hutool589.core.util.ByteUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Number128;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ByteUtil;
 
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class MetroHash {
         return hash64(data, 1337);
     }
 
-    public static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 hash128(byte[] data) {
+    public static Number128 hash128(byte[] data) {
         return hash128(data, 1337);
     }
 
@@ -115,7 +115,7 @@ public class MetroHash {
         return hash;
     }
 
-    public static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 hash128(byte[] data, long seed) {
+    public static Number128 hash128(byte[] data, long seed) {
         byte[] buffer = data;
 
         long v0, v1, v2, v3;

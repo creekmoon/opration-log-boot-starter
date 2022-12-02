@@ -1,14 +1,14 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.BasicType;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.JarClassLoader;
-import cn.creekmoon.operationLog.hutool589.core.lang.Pair;
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
-import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
-import cn.creekmoon.operationLog.hutool589.core.text.CharPool;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.BasicType;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.JarClassLoader;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pair;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -41,7 +41,7 @@ public class ClassLoaderUtil {
     /**
      * 包名分界符: '.'
      */
-    private static final char PACKAGE_SEPARATOR = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.C_DOT;
+    private static final char PACKAGE_SEPARATOR = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.C_DOT;
     /**
      * 内部类分界符: '$'
      */

@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.img;
+package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RandomUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;

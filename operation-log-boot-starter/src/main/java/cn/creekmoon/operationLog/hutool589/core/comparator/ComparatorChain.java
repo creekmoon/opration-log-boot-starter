@@ -1,9 +1,15 @@
-package cn.creekmoon.operationLog.hutool589.core.comparator;
+package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Chain;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Chain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 比较器链。此链包装了多个比较器，最终比较结果按照比较器顺序综合多个比较器结果。<br>

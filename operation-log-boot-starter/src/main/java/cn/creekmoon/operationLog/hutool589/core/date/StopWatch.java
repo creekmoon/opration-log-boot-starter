@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -294,7 +294,7 @@ public class StopWatch {
      * @see #getTotalTimeMillis()
      */
     public double getTotalTimeSeconds() {
-        return cn.creekmoon.operationLog.hutool589.core.date.DateUtil.nanosToSeconds(this.totalTimeNanos);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.nanosToSeconds(this.totalTimeNanos);
     }
 
     /**
@@ -344,7 +344,7 @@ public class StopWatch {
             unit = TimeUnit.NANOSECONDS;
         }
         return StrUtil.format("StopWatch '{}': running time = {} {}",
-                this.id, getTotal(unit), cn.creekmoon.operationLog.hutool589.core.date.DateUtil.getShotName(unit));
+                this.id, getTotal(unit), cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.getShotName(unit));
     }
 
     /**
@@ -374,7 +374,7 @@ public class StopWatch {
             sb.append("No task info kept");
         } else {
             sb.append("---------------------------------------------").append(FileUtil.getLineSeparator());
-            sb.append(cn.creekmoon.operationLog.hutool589.core.date.DateUtil.getShotName(unit)).append("         %     Task name").append(FileUtil.getLineSeparator());
+            sb.append(cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.getShotName(unit)).append("         %     Task name").append(FileUtil.getLineSeparator());
             sb.append("---------------------------------------------").append(FileUtil.getLineSeparator());
 
             final NumberFormat nf = NumberFormat.getNumberInstance();

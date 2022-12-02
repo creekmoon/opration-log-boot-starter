@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.compiler;
+package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
 
-import cn.creekmoon.operationLog.hutool589.core.compiler.JavaClassFileManager;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaClassFileManager;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayInputStream;
@@ -28,7 +28,7 @@ class JavaClassFileObject extends SimpleJavaFileObject {
      * 构造
      *
      * @param className 编译后的class文件的类名
-     * @see JavaClassFileManager#getJavaFileForOutput(javax.tools.JavaFileManager.Location, String, Kind, javax.tools.FileObject)
+     * @see JavaClassFileManager#getJavaFileForOutput(javax.tools.JavaFileManager.Location, java.lang.String, javax.tools.JavaFileObject.Kind, javax.tools.FileObject)
      */
     protected JavaClassFileObject(String className) {
         super(URLUtil.getStringURI(className.replace(CharUtil.DOT, CharUtil.SLASH) + Kind.CLASS.extension), Kind.CLASS);

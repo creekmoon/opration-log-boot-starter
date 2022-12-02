@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
-
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * {@link ParameterizedType} 接口实现，用于重新定义泛型类型

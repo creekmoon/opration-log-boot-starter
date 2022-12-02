@@ -1,9 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.io.BOMInputStream;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.BOMInputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 读取带BOM头的流内容的Reader，如果非bom的流或无法识别的编码，则默认UTF-8<br>

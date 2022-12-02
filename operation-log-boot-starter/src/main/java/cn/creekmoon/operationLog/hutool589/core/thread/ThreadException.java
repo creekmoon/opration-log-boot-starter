@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.ExceptionUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.ExceptionUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 工具类异常

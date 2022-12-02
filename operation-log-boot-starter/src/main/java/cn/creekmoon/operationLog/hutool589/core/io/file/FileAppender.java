@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io.file;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.file;
 
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileWriter;
-import cn.creekmoon.operationLog.hutool589.core.thread.lock.LockUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileWriter;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.LockUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -25,7 +25,7 @@ import java.util.concurrent.locks.Lock;
 public class FileAppender implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final FileWriter writer;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileWriter writer;
     /**
      * 内存中持有的字符串数
      */

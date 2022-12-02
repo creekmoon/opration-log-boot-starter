@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.text;
+package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 文本相似度计算<br>

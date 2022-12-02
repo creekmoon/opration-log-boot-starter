@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.text;
+package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.creekmoon.operationLog.hutool589.core.text.StrBuilder;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 命名规则封装，主要是针对驼峰风格命名、连接符命名等的封装
@@ -72,7 +72,7 @@ public class NamingCase {
         }
 
         final int length = str.length();
-        final cn.creekmoon.operationLog.hutool589.core.text.StrBuilder sb = new StrBuilder();
+        final StrBuilder sb = new StrBuilder();
         char c;
         for (int i = 0; i < length; i++) {
             c = str.charAt(i);

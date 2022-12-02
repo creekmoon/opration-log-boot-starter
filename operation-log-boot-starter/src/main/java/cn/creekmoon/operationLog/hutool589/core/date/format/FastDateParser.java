@@ -1,17 +1,29 @@
-package cn.creekmoon.operationLog.hutool589.core.date.format;
+package cn.creekmoon.operationLog.hutoolCore589.core.date.format;
 
-import cn.creekmoon.operationLog.hutool589.core.date.format.AbstractDateBasic;
-import cn.creekmoon.operationLog.hutool589.core.date.format.DateParser;
-import cn.creekmoon.operationLog.hutool589.core.date.format.FastDateFormat;
-import cn.creekmoon.operationLog.hutool589.core.date.format.FastDatePrinter;
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.AbstractDateBasic;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDatePrinter;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.ParsePosition;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +59,7 @@ public class FastDateParser extends AbstractDateBasic implements DateParser {
      * Constructs a new FastDateParser.
      * </p>
      * <p>
-     * Use {@link cn.creekmoon.operationLog.hutool589.core.date.format.FastDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the factory methods of {@link FastDateFormat} to get a cached FastDateParser instance.
+     * Use {@link cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the factory methods of {@link FastDateFormat} to get a cached FastDateParser instance.
      *
      * @param pattern  non-null {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone non-null time zone to use
@@ -91,7 +103,7 @@ public class FastDateParser extends AbstractDateBasic implements DateParser {
     /**
      * Initialize derived fields from defining fields. This is called from constructor and from readObject (de-serialization)
      *
-     * @param definingCalendar the {@link Calendar} instance used to initialize this FastDateParser
+     * @param definingCalendar the {@link java.util.Calendar} instance used to initialize this FastDateParser
      */
     private void init(final Calendar definingCalendar) {
         patterns = new ArrayList<>();

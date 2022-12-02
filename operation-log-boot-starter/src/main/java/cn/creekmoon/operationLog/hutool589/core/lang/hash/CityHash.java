@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.hash;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.hash;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128;
-import cn.creekmoon.operationLog.hutool589.core.util.ByteUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Number128;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ByteUtil;
 
 import java.util.Arrays;
 
@@ -135,8 +135,8 @@ public class CityHash {
         long x = fetch64(data, len - 40);
         long y = fetch64(data, len - 16) + fetch64(data, len - 56);
         long z = hashLen16(fetch64(data, len - 48) + len, fetch64(data, len - 24));
-        cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 v = weakHashLen32WithSeeds(data, len - 64, len, z);
-        cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 w = weakHashLen32WithSeeds(data, len - 32, y + k1, x);
+        Number128 v = weakHashLen32WithSeeds(data, len - 64, len, z);
+        Number128 w = weakHashLen32WithSeeds(data, len - 32, y + k1, x);
         x = x * k1 + fetch64(data, 0);
 
         // Decrease len to the nearest multiple of 64, and operate on 64-byte chunks.
@@ -190,12 +190,12 @@ public class CityHash {
      * @param data 数据
      * @return hash值
      */
-    public static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 hash128(byte[] data) {
+    public static Number128 hash128(byte[] data) {
         int len = data.length;
         return len >= 16 ?
                 hash128(data, 16,
-                        new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(fetch64(data, 0), fetch64(data, 8) + k0)) :
-                hash128(data, 0, new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(k0, k1));
+                        new Number128(fetch64(data, 0), fetch64(data, 8) + k0)) :
+                hash128(data, 0, new Number128(k0, k1));
     }
 
     /**
@@ -205,12 +205,12 @@ public class CityHash {
      * @param seed 种子
      * @return hash值
      */
-    public static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 hash128(byte[] data, cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 seed) {
+    public static Number128 hash128(byte[] data, Number128 seed) {
         return hash128(data, 0, seed);
     }
 
     //------------------------------------------------------------------------------------------------------- Private method start
-    private static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 hash128(final byte[] byteArray, int start, final cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 seed) {
+    private static Number128 hash128(final byte[] byteArray, int start, final Number128 seed) {
         int len = byteArray.length - start;
 
         if (len < 128) {
@@ -219,8 +219,8 @@ public class CityHash {
 
         // We expect len >= 128 to be the common case.  Keep 56 bytes of state:
         // v, w, x, y, and z.
-        cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 v = new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(0L, 0L);
-        cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 w = new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(0L, 0L);
+        Number128 v = new Number128(0L, 0L);
+        Number128 w = new Number128(0L, 0L);
         long x = seed.getLowValue();
         long y = seed.getHighValue();
         long z = len * k1;
@@ -279,7 +279,7 @@ public class CityHash {
         // different 56-byte-to-8-byte hashes to get a 16-byte final result.
         x = hashLen16(x, v.getLowValue());
         y = hashLen16(y + z, w.getLowValue());
-        return new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(hashLen16(x + v.getHighValue(), w.getHighValue()) + y,
+        return new Number128(hashLen16(x + v.getHighValue(), w.getHighValue()) + y,
                 hashLen16(x + w.getHighValue(), y + v.getHighValue()));
 
     }
@@ -407,10 +407,10 @@ public class CityHash {
     }
 
     private static long hashLen16(long u, long v) {
-        return hash128to64(new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(u, v));
+        return hash128to64(new Number128(u, v));
     }
 
-    private static long hash128to64(final cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 number128) {
+    private static long hash128to64(final Number128 number128) {
         // Murmur-inspired hashing.
         long a = (number128.getLowValue() ^ number128.getHighValue()) * kMul;
         a ^= (a >>> 47);
@@ -443,7 +443,7 @@ public class CityHash {
         return h * 5 + 0xe6546b64;
     }
 
-    private static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 weakHashLen32WithSeeds(
+    private static Number128 weakHashLen32WithSeeds(
             long w, long x, long y, long z, long a, long b) {
         a += w;
         b = rotate64(b + a + z, 21);
@@ -451,11 +451,11 @@ public class CityHash {
         a += x;
         a += y;
         b += rotate64(a, 44);
-        return new cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128(a + z, b + c);
+        return new Number128(a + z, b + c);
     }
 
     // Return a 16-byte hash for s[0] ... s[31], a, and b.  Quick and dirty.
-    private static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 weakHashLen32WithSeeds(
+    private static Number128 weakHashLen32WithSeeds(
             byte[] byteArray, int start, long a, long b) {
         return weakHashLen32WithSeeds(fetch64(byteArray, start),
                 fetch64(byteArray, start + 8),
@@ -465,7 +465,7 @@ public class CityHash {
                 b);
     }
 
-    private static cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 cityMurmur(final byte[] byteArray, cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128 seed) {
+    private static Number128 cityMurmur(final byte[] byteArray, Number128 seed) {
         int len = byteArray.length;
         long a = seed.getLowValue();
         long b = seed.getHighValue();

@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchKind;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind;
 
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;

@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.copier;
-
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.lang.copier.Copier;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.copier;
 
 import java.io.Serializable;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.copier.Copier;
 
 /**
  * 复制器抽象类<br>

@@ -1,9 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.text;
+package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.MurmurHash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.MurmurHash;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.StampedLock;
 
 /**

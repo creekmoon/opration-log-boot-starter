@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Segment;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Segment;
 
 /**
  * 片段默认实现

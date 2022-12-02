@@ -1,23 +1,65 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileReader;
-import cn.creekmoon.operationLog.hutool589.core.io.file.*;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileWriter;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileReader.ReaderHandler;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.ResourceUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.unit.DataSizeUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.BOMInputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileTypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.LineHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileMode;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileNameUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileReader;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileReader.ReaderHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileWriter;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.LineSeparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.PathUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.Tailer;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.ResourceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSizeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ThreadUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ZipUtil;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
@@ -259,7 +301,7 @@ public class FileUtil extends PathUtil {
         } catch (IOException e) {
             throw new IORuntimeException(StrUtil.format("Can not read file path of [{}]", path), e);
         } finally {
-            IoUtil.close(jarFile);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(jarFile);
         }
     }
 
@@ -1390,11 +1432,11 @@ public class FileUtil extends PathUtil {
         try {
             input1 = getInputStream(file1);
             input2 = getInputStream(file2);
-            return IoUtil.contentEquals(input1, input2);
+            return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.contentEquals(input1, input2);
 
         } finally {
-            IoUtil.close(input1);
-            IoUtil.close(input2);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(input1);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(input2);
         }
     }
 
@@ -1438,10 +1480,10 @@ public class FileUtil extends PathUtil {
         try {
             input1 = getReader(file1, charset);
             input2 = getReader(file2, charset);
-            return IoUtil.contentEqualsIgnoreEOL(input1, input2);
+            return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.contentEqualsIgnoreEOL(input1, input2);
         } finally {
-            IoUtil.close(input1);
-            IoUtil.close(input2);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(input1);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(input2);
         }
     }
 
@@ -1857,7 +1899,7 @@ public class FileUtil extends PathUtil {
      * @throws IORuntimeException 文件未找到
      */
     public static BufferedInputStream getInputStream(File file) throws IORuntimeException {
-        return IoUtil.toBuffered(IoUtil.toStream(file));
+        return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.toBuffered(cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.toStream(file));
     }
 
     /**
@@ -1894,7 +1936,7 @@ public class FileUtil extends PathUtil {
      * @since 5.5.8
      */
     public static BufferedReader getBOMReader(File file) {
-        return IoUtil.getReader(getBOMInputStream(file));
+        return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.getReader(getBOMInputStream(file));
     }
 
     /**
@@ -1930,7 +1972,7 @@ public class FileUtil extends PathUtil {
      */
     @Deprecated
     public static BufferedReader getReader(File file, String charsetName) throws IORuntimeException {
-        return IoUtil.getReader(getInputStream(file), CharsetUtil.charset(charsetName));
+        return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.getReader(getInputStream(file), CharsetUtil.charset(charsetName));
     }
 
     /**
@@ -1942,7 +1984,7 @@ public class FileUtil extends PathUtil {
      * @throws IORuntimeException IO异常
      */
     public static BufferedReader getReader(File file, Charset charset) throws IORuntimeException {
-        return IoUtil.getReader(getInputStream(file), charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.getReader(getInputStream(file), charset);
     }
 
     /**
@@ -2103,11 +2145,11 @@ public class FileUtil extends PathUtil {
         InputStream in = null;
         try {
             in = url.openStream();
-            return IoUtil.read(in, charset);
+            return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.read(in, charset);
         } catch (IOException e) {
             throw new IORuntimeException(e);
         } finally {
-            IoUtil.close(in);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(in);
         }
     }
 
@@ -2239,11 +2281,11 @@ public class FileUtil extends PathUtil {
         InputStream in = null;
         try {
             in = url.openStream();
-            return IoUtil.readLines(in, charset, collection);
+            return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.readLines(in, charset, collection);
         } catch (IOException e) {
             throw new IORuntimeException(e);
         } finally {
-            IoUtil.close(in);
+            cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.close(in);
         }
     }
 
@@ -2528,7 +2570,7 @@ public class FileUtil extends PathUtil {
         } catch (IOException e) {
             throw new IORuntimeException(e);
         }
-        return IoUtil.toBuffered(out);
+        return cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.toBuffered(out);
     }
 
     /**

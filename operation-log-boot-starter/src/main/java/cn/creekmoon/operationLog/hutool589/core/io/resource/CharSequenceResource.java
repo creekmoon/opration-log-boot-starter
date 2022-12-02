@@ -1,12 +1,16 @@
-package cn.creekmoon.operationLog.hutool589.core.io.resource;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 

@@ -1,15 +1,15 @@
-package cn.creekmoon.operationLog.hutool589.core.io.file;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.file;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUnit;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.LineHandler;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileMode;
-import cn.creekmoon.operationLog.hutool589.core.io.file.LineReadWatcher;
-import cn.creekmoon.operationLog.hutool589.core.lang.Console;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.LineHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileMode;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.LineReadWatcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Console;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,11 @@ import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Stack;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 文件内容跟随器，实现类似Linux下"tail -f"命令功能
@@ -121,7 +125,7 @@ public class Tailer implements Serializable {
             throw new IORuntimeException(e);
         }
 
-        final cn.creekmoon.operationLog.hutool589.core.io.file.LineReadWatcher lineReadWatcher = new LineReadWatcher(this.randomAccessFile, this.charset, this.lineHandler);
+        final LineReadWatcher lineReadWatcher = new LineReadWatcher(this.randomAccessFile, this.charset, this.lineHandler);
         final ScheduledFuture<?> scheduledFuture = this.executorService.scheduleAtFixedRate(//
                 lineReadWatcher, //
                 0, //

@@ -1,24 +1,31 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.ResourceUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.net.URLDecoder;
-import cn.creekmoon.operationLog.hutool589.core.net.URLEncodeUtil;
-import cn.creekmoon.operationLog.hutool589.core.net.url.UrlQuery;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassLoaderUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.ResourceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLDecoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.URLEncodeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.url.UrlQuery;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.jar.JarFile;
@@ -164,7 +171,7 @@ public class URLUtil extends URLEncodeUtil {
         if (null == content) {
             return null;
         }
-        final String contentStr = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.addPrefixIfNot(content, "string:///");
+        final String contentStr = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.addPrefixIfNot(content, "string:///");
         return URI.create(contentStr);
     }
 
@@ -312,7 +319,7 @@ public class URLUtil extends URLEncodeUtil {
      */
     public static String completeUrl(String baseUrl, String relativePath) {
         baseUrl = normalize(baseUrl, false);
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(baseUrl)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(baseUrl)) {
             return null;
         }
 
@@ -377,7 +384,7 @@ public class URLUtil extends URLEncodeUtil {
      * @throws UtilException UnsupportedEncodingException
      */
     public static String decode(String content, String charset) throws UtilException {
-        return decode(content, cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(charset) ? null : CharsetUtil.charset(charset));
+        return decode(content, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(charset) ? null : CharsetUtil.charset(charset));
     }
 
     /**
@@ -468,7 +475,7 @@ public class URLUtil extends URLEncodeUtil {
             location = encode(location);
         }
         try {
-            return new URI(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.trim(location));
+            return new URI(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.trim(location));
         } catch (URISyntaxException e) {
             throw new UtilException(e);
         }
@@ -613,31 +620,31 @@ public class URLUtil extends URLEncodeUtil {
      * @since 5.5.5
      */
     public static String normalize(String url, boolean isEncodePath, boolean replaceSlash) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(url)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(url)) {
             return url;
         }
         final int sepIndex = url.indexOf("://");
         String protocol;
         String body;
         if (sepIndex > 0) {
-            protocol = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subPre(url, sepIndex + 3);
-            body = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subSuf(url, sepIndex + 3);
+            protocol = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(url, sepIndex + 3);
+            body = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(url, sepIndex + 3);
         } else {
             protocol = "http://";
             body = url;
         }
 
-        final int paramsSepIndex = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.indexOf(body, '?');
+        final int paramsSepIndex = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.indexOf(body, '?');
         String params = null;
         if (paramsSepIndex > 0) {
-            params = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subSuf(body, paramsSepIndex);
-            body = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subPre(body, paramsSepIndex);
+            params = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(body, paramsSepIndex);
+            body = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(body, paramsSepIndex);
         }
 
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotEmpty(body)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(body)) {
             // 去除开头的\或者/
             //noinspection ConstantConditions
-            body = body.replaceAll("^[\\\\/]+", cn.creekmoon.operationLog.hutool589.core.util.StrUtil.EMPTY);
+            body = body.replaceAll("^[\\\\/]+", cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.EMPTY);
             // 替换\为/
             body = body.replace("\\", "/");
             if (replaceSlash) {
@@ -646,17 +653,17 @@ public class URLUtil extends URLEncodeUtil {
             }
         }
 
-        final int pathSepIndex = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.indexOf(body, '/');
+        final int pathSepIndex = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.indexOf(body, '/');
         String domain = body;
         String path = null;
         if (pathSepIndex > 0) {
-            domain = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subPre(body, pathSepIndex);
-            path = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subSuf(body, pathSepIndex);
+            domain = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subPre(body, pathSepIndex);
+            path = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.subSuf(body, pathSepIndex);
         }
         if (isEncodePath) {
             path = encode(path);
         }
-        return protocol + domain + cn.creekmoon.operationLog.hutool589.core.util.StrUtil.nullToEmpty(path) + cn.creekmoon.operationLog.hutool589.core.util.StrUtil.nullToEmpty(params);
+        return protocol + domain + cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.nullToEmpty(path) + cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.nullToEmpty(params);
     }
 
     /**
@@ -759,8 +766,8 @@ public class URLUtil extends URLEncodeUtil {
      * @since 5.3.6
      */
     public static String getDataUri(String mimeType, Charset charset, String encoding, String data) {
-        final StringBuilder builder = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.builder("data:");
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotBlank(mimeType)) {
+        final StringBuilder builder = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.builder("data:");
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(mimeType)) {
             builder.append(mimeType);
         }
         if (null != charset) {

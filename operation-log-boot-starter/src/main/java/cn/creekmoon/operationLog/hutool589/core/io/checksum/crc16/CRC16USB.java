@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.io.checksum.crc16;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16;
 
-import cn.creekmoon.operationLog.hutool589.core.io.checksum.crc16.CRC16Checksum;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16.CRC16Checksum;
 
 /**
  * CRC16_USB：多项式x16+x15+x2+1（0x8005），初始值0xFFFF，低位在前，高位在后，结果与0xFFFF异或

@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.text.escape.Html4Escape;
-import cn.creekmoon.operationLog.hutool589.core.text.escape.Html4Unescape;
-import cn.creekmoon.operationLog.hutool589.core.text.escape.XmlEscape;
-import cn.creekmoon.operationLog.hutool589.core.text.escape.XmlUnescape;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.Html4Escape;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.Html4Unescape;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.XmlEscape;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.escape.XmlUnescape;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 转义和反转义工具类Escape / Unescape<br>
@@ -25,7 +25,7 @@ public class EscapeUtil {
             Character.isDigit(c)
                     || Character.isLowerCase(c)
                     || Character.isUpperCase(c)
-                    || StrUtil.contains(NOT_ESCAPE_CHARS, c)
+                    || cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.contains(NOT_ESCAPE_CHARS, c)
     );
 
     /**
@@ -115,8 +115,8 @@ public class EscapeUtil {
      * @return 编码后的字符串
      */
     public static String escape(CharSequence content, Filter<Character> filter) {
-        if (StrUtil.isEmpty(content)) {
-            return StrUtil.str(content);
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(content)) {
+            return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.str(content);
         }
 
         final StringBuilder tmp = new StringBuilder(content.length() * 6);

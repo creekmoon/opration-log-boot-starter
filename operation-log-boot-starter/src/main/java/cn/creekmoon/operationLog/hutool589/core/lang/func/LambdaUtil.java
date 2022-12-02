@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.func;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.func;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandleInfo;
@@ -56,7 +56,7 @@ public class LambdaUtil {
      * @author VampireAchao
      * @since 5.8.0
      */
-    public static <R> Class<R> getRealClass(Func0<?> func) {
+    public static <R> Class<R> getRealClass(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0<?> func) {
         final SerializedLambda lambda = resolve(func);
         checkLambdaTypeCanGetClass(lambda.getImplMethodKind());
         return ClassUtil.loadClass(lambda.getImplClass());
@@ -70,7 +70,7 @@ public class LambdaUtil {
      * @param func 需要解析的 lambda 对象（无参方法）
      * @return 返回解析后的结果
      */
-    public static <T> SerializedLambda resolve(Func1<T, ?> func) {
+    public static <T> SerializedLambda resolve(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1<T, ?> func) {
         return _resolve(func);
     }
 
@@ -83,7 +83,7 @@ public class LambdaUtil {
      * @return 返回解析后的结果
      * @since 5.7.23
      */
-    public static <R> SerializedLambda resolve(Func0<R> func) {
+    public static <R> SerializedLambda resolve(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0<R> func) {
         return _resolve(func);
     }
 
@@ -94,7 +94,7 @@ public class LambdaUtil {
      * @param func 函数（无参方法）
      * @return 函数名称
      */
-    public static <P> String getMethodName(Func1<P, ?> func) {
+    public static <P> String getMethodName(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1<P, ?> func) {
         return resolve(func).getImplMethodName();
     }
 
@@ -106,7 +106,7 @@ public class LambdaUtil {
      * @return 函数名称
      * @since 5.7.23
      */
-    public static <R> String getMethodName(Func0<R> func) {
+    public static <R> String getMethodName(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0<R> func) {
         return resolve(func).getImplMethodName();
     }
 
@@ -132,7 +132,7 @@ public class LambdaUtil {
      * @author VampireAchao
      * @since 5.8.0
      */
-    public static <P, R> Class<P> getRealClass(Func1<P, R> func) {
+    public static <P, R> Class<P> getRealClass(cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1<P, R> func) {
         final SerializedLambda lambda = resolve(func);
         checkLambdaTypeCanGetClass(lambda.getImplMethodKind());
         final String instantiatedMethodType = lambda.getInstantiatedMethodType();

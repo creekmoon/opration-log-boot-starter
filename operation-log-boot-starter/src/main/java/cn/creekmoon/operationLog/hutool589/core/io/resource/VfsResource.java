@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io.resource;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassLoaderUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;

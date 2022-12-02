@@ -13,6 +13,6 @@ public class Push2ElasticSearchOperationLogHandler implements OperationLogHandle
     OperationLogElasticClient operationLogElasticClient;
     @Override
     public void handle(LogRecord logRecord) {
-        operationLogElasticClient.save2ElasticSearch(logRecord,2);
+        operationLogElasticClient.save2ElasticSearch(logRecord.toFlatJson(), 2);
     }
 }

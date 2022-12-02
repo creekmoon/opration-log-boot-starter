@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io.file;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.file;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.LineHandler;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.SimpleWatcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.LineHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.SimpleWatcher;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

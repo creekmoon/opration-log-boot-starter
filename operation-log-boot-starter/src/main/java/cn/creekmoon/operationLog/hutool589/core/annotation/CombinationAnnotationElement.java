@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.AnnotationUtil;
-import cn.creekmoon.operationLog.hutool589.core.map.TableMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.TableMap;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -122,7 +122,7 @@ public class CombinationAnnotationElement implements AnnotatedElement, Serializa
         for (Annotation annotation : annotations) {
             annotationType = annotation.annotationType();
             // issue#I5FQGW@Gitee：跳过元注解和已经处理过的注解，防止递归调用
-            if (cn.creekmoon.operationLog.hutool589.core.annotation.AnnotationUtil.isNotJdkMateAnnotation(annotationType)
+            if (cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil.isNotJdkMateAnnotation(annotationType)
                     && false == declaredAnnotationMap.containsKey(annotationType)) {
                 if (test(annotation)) {
                     declaredAnnotationMap.put(annotationType, annotation);

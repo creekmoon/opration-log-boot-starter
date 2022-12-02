@@ -1,24 +1,38 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.EnumerationIter;
-import cn.creekmoon.operationLog.hutool589.core.compress.*;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileSystemUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.file.PathUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.EnumerationIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.compress.Deflate;
+import cn.creekmoon.operationLog.hutoolCore589.core.compress.Gzip;
+import cn.creekmoon.operationLog.hutoolCore589.core.compress.ZipCopyVisitor;
+import cn.creekmoon.operationLog.hutoolCore589.core.compress.ZipReader;
+import cn.creekmoon.operationLog.hutoolCore589.core.compress.ZipWriter;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteArrayOutputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileSystemUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.PathUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.CopyOption;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -41,13 +55,13 @@ public class ZipUtil {
     /**
      * 默认编码，使用平台相关编码
      */
-    private static final Charset DEFAULT_CHARSET = cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil.defaultCharset();
+    private static final Charset DEFAULT_CHARSET = CharsetUtil.defaultCharset();
 
     /**
      * 将Zip文件转换为{@link ZipFile}
      *
      * @param file    zip文件
-     * @param charset 解析zip文件的编码，null表示{@link cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil#CHARSET_UTF_8}
+     * @param charset 解析zip文件的编码，null表示{@link CharsetUtil#CHARSET_UTF_8}
      * @return {@link ZipFile}
      */
     public static ZipFile toZipFile(File file, Charset charset) {
@@ -556,7 +570,7 @@ public class ZipUtil {
     public static File unzip(ZipFile zipFile, File outFile, long limit) throws IORuntimeException {
         if (outFile.exists() && outFile.isFile()) {
             throw new IllegalArgumentException(
-                    cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Target path [{}] exist!", outFile.getAbsolutePath()));
+                    cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Target path [{}] exist!", outFile.getAbsolutePath()));
         }
 
         // pr#726@Gitee
@@ -731,7 +745,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static byte[] gzip(String content, String charset) throws UtilException {
-        return gzip(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.bytes(content, charset));
+        return gzip(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.bytes(content, charset));
     }
 
     /**
@@ -798,7 +812,7 @@ public class ZipUtil {
      * @throws UtilException IO异常
      */
     public static String unGzip(byte[] buf, String charset) throws UtilException {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(unGzip(buf), charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.str(unGzip(buf), charset);
     }
 
     /**
@@ -850,7 +864,7 @@ public class ZipUtil {
      * @since 4.1.4
      */
     public static byte[] zlib(String content, String charset, int level) {
-        return zlib(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.bytes(content, charset), level);
+        return zlib(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.bytes(content, charset), level);
     }
 
     /**
@@ -919,7 +933,7 @@ public class ZipUtil {
      * @since 4.1.4
      */
     public static String unZlib(byte[] buf, String charset) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(unZlib(buf), charset);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.str(unZlib(buf), charset);
     }
 
     /**
@@ -968,18 +982,18 @@ public class ZipUtil {
      * @since 4.6.6
      */
     public static List<String> listFileNames(ZipFile zipFile, String dir) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotBlank(dir)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(dir)) {
             // 目录尾部添加"/"
-            dir = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.addSuffixIfNot(dir, cn.creekmoon.operationLog.hutool589.core.util.StrUtil.SLASH);
+            dir = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.addSuffixIfNot(dir, cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.SLASH);
         }
 
         final List<String> fileNames = new ArrayList<>();
         String name;
         for (ZipEntry entry : new EnumerationIter<>(zipFile.entries())) {
             name = entry.getName();
-            if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(dir) || name.startsWith(dir)) {
-                final String nameSuffix = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.removePrefix(name, dir);
-                if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotEmpty(nameSuffix) && false == cn.creekmoon.operationLog.hutool589.core.util.StrUtil.contains(nameSuffix, CharUtil.SLASH)) {
+            if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(dir) || name.startsWith(dir)) {
+                final String nameSuffix = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.removePrefix(name, dir);
+                if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotEmpty(nameSuffix) && false == cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.contains(nameSuffix, CharUtil.SLASH)) {
                     fileNames.add(nameSuffix);
                 }
             }

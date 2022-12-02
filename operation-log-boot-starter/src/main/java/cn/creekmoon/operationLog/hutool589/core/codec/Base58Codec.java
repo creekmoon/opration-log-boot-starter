@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Decoder;
-import cn.creekmoon.operationLog.hutool589.core.codec.Encoder;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Decoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Encoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Arrays;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author lin， looly
  * @since 5.7.22
  */
-public class Base58Codec implements Encoder<byte[], String>, Decoder<CharSequence, byte[]> {
+public class Base58Codec implements cn.creekmoon.operationLog.hutoolCore589.core.codec.Encoder<byte[], String>, cn.creekmoon.operationLog.hutoolCore589.core.codec.Decoder<CharSequence, byte[]> {
 
     public static Base58Codec INSTANCE = new Base58Codec();
 

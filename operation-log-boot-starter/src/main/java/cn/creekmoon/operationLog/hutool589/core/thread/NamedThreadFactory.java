@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
-
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ThreadUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 线程创建工厂类，此工厂可选配置：

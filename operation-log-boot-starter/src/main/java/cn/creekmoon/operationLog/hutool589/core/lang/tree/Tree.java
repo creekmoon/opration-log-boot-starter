@@ -1,15 +1,15 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.tree;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.tree;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.lang.tree.Node;
-import cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeNodeConfig;
-import cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.Node;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.TreeNodeConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.tree.TreeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
     private static final long serialVersionUID = 1L;
 
-    private final cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeNodeConfig treeNodeConfig;
+    private final TreeNodeConfig treeNodeConfig;
     private Tree<T> parent;
 
     public Tree() {
@@ -40,9 +40,9 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      *
      * @param treeNodeConfig TreeNode配置
      */
-    public Tree(cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeNodeConfig treeNodeConfig) {
+    public Tree(TreeNodeConfig treeNodeConfig) {
         this.treeNodeConfig = ObjectUtil.defaultIfNull(
-                treeNodeConfig, cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeNodeConfig.DEFAULT_CONFIG);
+                treeNodeConfig, TreeNodeConfig.DEFAULT_CONFIG);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @since 5.2.4
      */
     public Tree<T> getNode(T id) {
-        return cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeUtil.getNode(this, id);
+        return TreeUtil.getNode(this, id);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Tree<T> extends LinkedHashMap<String, Object> implements Node<T> {
      * @since 5.2.4
      */
     public List<CharSequence> getParentsName(T id, boolean includeCurrentNode) {
-        return cn.creekmoon.operationLog.hutool589.core.lang.tree.TreeUtil.getParentsName(getNode(id), includeCurrentNode);
+        return TreeUtil.getParentsName(getNode(id), includeCurrentNode);
     }
 
     /**

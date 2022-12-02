@@ -1,16 +1,21 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReferenceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReferenceUtil;
 
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;

@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.text.split;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.split;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.ComputeIter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.text.finder.TextFinder;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ComputeIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.TextFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

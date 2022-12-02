@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Map;
 import java.util.function.Supplier;

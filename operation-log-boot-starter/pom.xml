@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.creekmoon</groupId>
         <artifactId>operation-log-parent</artifactId>
-        <version>1.2.5</version>
+        <version>1.3.2</version>
     </parent>
 
     <name>operation-log-boot-starter</name>
@@ -36,11 +36,6 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-        </dependency>
-        <!--hutool工具类-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

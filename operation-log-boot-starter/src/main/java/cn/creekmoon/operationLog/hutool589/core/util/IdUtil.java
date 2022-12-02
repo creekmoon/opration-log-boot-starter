@@ -1,10 +1,14 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.*;
-import cn.creekmoon.operationLog.hutool589.core.lang.id.NanoId;
-import cn.creekmoon.operationLog.hutool589.core.net.NetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RuntimeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.ObjectId;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Singleton;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Snowflake;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.UUID;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.id.NanoId;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.NetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RuntimeUtil;
 
 /**
  * ID生成器工具类，此工具类中主要封装：

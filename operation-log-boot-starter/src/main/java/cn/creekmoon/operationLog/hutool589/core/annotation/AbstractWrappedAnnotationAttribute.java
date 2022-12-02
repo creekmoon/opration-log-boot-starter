@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +42,8 @@ public abstract class AbstractWrappedAnnotationAttribute implements WrappedAnnot
 		AnnotationAttribute curr = null;
 		AnnotationAttribute next = original;
 		while (next != null) {
-            curr = next;
-            next = next.isWrapped() ? ((WrappedAnnotationAttribute) curr).getOriginal() : null;
+			curr = next;
+			next = next.isWrapped() ? ((WrappedAnnotationAttribute) curr).getOriginal() : null;
 		}
 		return curr;
 	}
@@ -63,7 +63,7 @@ public abstract class AbstractWrappedAnnotationAttribute implements WrappedAnnot
 			leafAttributes.add(curr);
 			return;
 		}
-        WrappedAnnotationAttribute wrappedAttribute = (WrappedAnnotationAttribute) curr;
+		WrappedAnnotationAttribute wrappedAttribute = (WrappedAnnotationAttribute) curr;
 		collectLeafAttribute(wrappedAttribute.getOriginal(), leafAttributes);
 		collectLeafAttribute(wrappedAttribute.getLinked(), leafAttributes);
 	}

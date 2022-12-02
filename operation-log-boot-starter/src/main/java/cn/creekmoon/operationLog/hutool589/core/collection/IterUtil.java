@@ -1,28 +1,31 @@
-package cn.creekmoon.operationLog.hutool589.core.collection;
+package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.ArrayIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.EnumerationIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.FilterIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.NodeListIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.TransIter;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Editor;
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Matcher;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.text.StrJoiner;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Matcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrJoiner;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -527,7 +530,7 @@ public class IterUtil {
      * @return {@link Iterator}
      */
     public static <E> Iterator<E> asIterator(Enumeration<E> e) {
-        return new cn.creekmoon.operationLog.hutool589.core.collection.EnumerationIter<>(e);
+        return new EnumerationIter<>(e);
     }
 
     /**
@@ -1012,15 +1015,15 @@ public class IterUtil {
      * <ul>
      *   <li>null - null</li>
      *   <li>Iterator - 直接返回</li>
-     *   <li>Enumeration - {@link cn.creekmoon.operationLog.hutool589.core.collection.EnumerationIter}</li>
+     *   <li>Enumeration - {@link EnumerationIter}</li>
      *   <li>Collection - 调用{@link Collection#iterator()}</li>
      *   <li>Map - Entry的{@link Iterator}</li>
      *   <li>Dictionary - values (elements) enumeration returned as iterator</li>
-     *   <li>array - {@link cn.creekmoon.operationLog.hutool589.core.collection.ArrayIter}</li>
-     *   <li>NodeList - {@link cn.creekmoon.operationLog.hutool589.core.collection.NodeListIter}</li>
+     *   <li>array - {@link ArrayIter}</li>
+     *   <li>NodeList - {@link NodeListIter}</li>
      *   <li>Node - 子节点</li>
      *   <li>object with iterator() public method，通过反射访问</li>
-     *   <li>object - 单对象的{@link cn.creekmoon.operationLog.hutool589.core.collection.ArrayIter}</li>
+     *   <li>object - 单对象的{@link ArrayIter}</li>
      * </ul>
      *
      * @param obj 可以获取{@link Iterator}的对象
@@ -1034,13 +1037,13 @@ public class IterUtil {
         } else if (obj instanceof Iterable) {
             return ((Iterable<?>) obj).iterator();
         } else if (ArrayUtil.isArray(obj)) {
-            return new cn.creekmoon.operationLog.hutool589.core.collection.ArrayIter<>(obj);
+            return new ArrayIter<>(obj);
         } else if (obj instanceof Enumeration) {
-            return new cn.creekmoon.operationLog.hutool589.core.collection.EnumerationIter<>((Enumeration<?>) obj);
+            return new EnumerationIter<>((Enumeration<?>) obj);
         } else if (obj instanceof Map) {
             return ((Map<?, ?>) obj).entrySet().iterator();
         } else if (obj instanceof NodeList) {
-            return new cn.creekmoon.operationLog.hutool589.core.collection.NodeListIter((NodeList) obj);
+            return new NodeListIter((NodeList) obj);
         } else if (obj instanceof Node) {
             // 遍历子节点
             return new NodeListIter(((Node) obj).getChildNodes());

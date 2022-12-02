@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.thread.BlockPolicy;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.BlockPolicy;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;

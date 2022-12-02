@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateField;
-import cn.creekmoon.operationLog.hutool589.core.date.DateTime;
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Range;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateField;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Range;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import java.util.Date;
  * @author looly
  * @since 4.1.0
  */
-public class DateRange extends Range<DateTime> {
+public class DateRange extends Range<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -23,7 +23,7 @@ public class DateRange extends Range<DateTime> {
      * @param end   结束日期时间（包括）
      * @param unit  步进单位
      */
-    public DateRange(Date start, Date end, DateField unit) {
+    public DateRange(Date start, Date end, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField unit) {
         this(start, end, unit, 1);
     }
 
@@ -35,7 +35,7 @@ public class DateRange extends Range<DateTime> {
      * @param unit  步进单位
      * @param step  步进数
      */
-    public DateRange(Date start, Date end, DateField unit, int step) {
+    public DateRange(Date start, Date end, cn.creekmoon.operationLog.hutoolCore589.core.date.DateField unit, int step) {
         this(start, end, unit, step, true, true);
     }
 
@@ -50,7 +50,7 @@ public class DateRange extends Range<DateTime> {
      * @param isIncludeEnd   是否包含结束的时间
      */
     public DateRange(Date start, Date end, DateField unit, int step, boolean isIncludeStart, boolean isIncludeEnd) {
-        super(cn.creekmoon.operationLog.hutool589.core.date.DateUtil.date(start), cn.creekmoon.operationLog.hutool589.core.date.DateUtil.date(end), (current, end1, index) -> {
+        super(cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.date(start), cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.date(end), (current, end1, index) -> {
             final DateTime dt = DateUtil.date(start).offsetNew(unit, (index + 1) * step);
             if (dt.isAfter(end1)) {
                 return null;

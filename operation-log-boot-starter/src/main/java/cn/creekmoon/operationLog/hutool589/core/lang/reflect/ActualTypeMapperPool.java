@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.reflect;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.reflect;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
-import cn.creekmoon.operationLog.hutool589.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

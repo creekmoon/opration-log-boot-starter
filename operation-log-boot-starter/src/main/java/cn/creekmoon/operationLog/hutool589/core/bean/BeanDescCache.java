@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.bean;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanDesc;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
 
 /**
  * Bean属性缓存<br>
@@ -13,17 +13,17 @@ import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
 public enum BeanDescCache {
     INSTANCE;
 
-    private final WeakConcurrentMap<Class<?>, BeanDesc> bdCache = new WeakConcurrentMap<>();
+    private final WeakConcurrentMap<Class<?>, cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc> bdCache = new WeakConcurrentMap<>();
 
     /**
-     * 获得属性名和{@link BeanDesc}Map映射
+     * 获得属性名和{@link cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc}Map映射
      *
      * @param beanClass Bean的类
      * @param supplier  对象不存在时创建对象的函数
      * @return 属性名和{@link BeanDesc}映射
      * @since 5.4.2
      */
-    public BeanDesc getBeanDesc(Class<?> beanClass, Func0<BeanDesc> supplier) {
+    public cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc getBeanDesc(Class<?> beanClass, Func0<BeanDesc> supplier) {
         return bdCache.computeIfAbsent(beanClass, (key) -> supplier.callWithRuntimeException());
     }
 

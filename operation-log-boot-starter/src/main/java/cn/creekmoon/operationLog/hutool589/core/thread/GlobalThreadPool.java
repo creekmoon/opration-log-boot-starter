@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
-
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.thread.ExecutorBuilder;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ExecutorBuilder;
 
 /**
  * 全局公共线程池<br>

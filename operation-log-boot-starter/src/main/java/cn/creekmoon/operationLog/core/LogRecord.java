@@ -1,10 +1,14 @@
 package cn.creekmoon.operationLog.core;
 
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
 import com.alibaba.fastjson.JSONArray;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import java.util.*;
+
+import static cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.UTC_MS_PATTERN;
 
 @Data
 public class LogRecord {
@@ -23,9 +27,9 @@ public class LogRecord {
     /*可能改变的值*/
     Set<String> effectFields;
     /*改变的值之前*/
-    Map<String, Object> effectFieldsBefore;
+    JSONObject effectFieldsBefore;
     /*改变的值之后*/
-    Map<String, Object> effectFieldsAfter;
+    JSONObject effectFieldsAfter;
     /*操作之前的值*/
     Object preValue;
     /*操作之后的值*/
@@ -35,10 +39,37 @@ public class LogRecord {
     /*操作参数*/
     JSONArray requestParams;
     /*操作时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    Date operationTime;
+    Date operationTime = new Date();
     /*记录标签 可以用标签进行索引查找 */
     List<String> tags = new LinkedList();
     /*备注 可以手动为此次操作添加备注*/
     List<String> remarks = new LinkedList();
+
+
+    /**
+     * 内置方法, 转换为打平的JSON对象(即所有第一级属性都转为简单的String或String[]类型)
+     *
+     * @return
+     */
+    public JSONObject toFlatJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userId", userId != null ? String.valueOf(userId) : null);
+        jsonObject.put("orgId", orgId != null ? String.valueOf(orgId) : null);
+        jsonObject.put("userName", userName);
+        jsonObject.put("projectName", projectName);
+        jsonObject.put("operationName", operationName);
+        jsonObject.put("methodName", methodName);
+        jsonObject.put("effectFields", effectFields);
+        jsonObject.put("preValue", preValue != null ? JSONObject.toJSONString(preValue) : null);
+        jsonObject.put("afterValue", afterValue != null ? JSONObject.toJSONString(afterValue) : null);
+        jsonObject.put("effectFieldsBefore", effectFieldsBefore != null ? JSONObject.toJSONString(effectFieldsBefore) : null);
+        jsonObject.put("effectFieldsAfter", effectFieldsAfter != null ? JSONObject.toJSONString(effectFieldsAfter) : null);
+        jsonObject.put("requestResult", requestResult);
+        jsonObject.put("requestParams", requestParams != null ? requestParams.toJSONString() : null);
+        jsonObject.put("operationTime", operationTime != null ? DateUtil.format(operationTime, FastDateFormat.getInstance(UTC_MS_PATTERN, TimeZone.getTimeZone("GMT+:08:00"))) : null);
+        jsonObject.put("tags", tags);
+        jsonObject.put("remarks", remarks);
+        return jsonObject;
+    }
+
 }

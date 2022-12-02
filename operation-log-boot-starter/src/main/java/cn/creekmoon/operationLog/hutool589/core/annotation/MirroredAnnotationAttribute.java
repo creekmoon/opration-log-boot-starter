@@ -1,6 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AbstractWrappedAnnotationAttribute;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.MirrorLinkAnnotationPostProcessor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 /**
  * 表示存在对应镜像属性的注解属性，当获取值时将根据{@link RelationType#MIRROR_FOR}的规则进行处理

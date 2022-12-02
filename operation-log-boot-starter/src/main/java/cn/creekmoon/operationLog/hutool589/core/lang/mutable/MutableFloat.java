@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.mutable;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.Mutable;
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
 
 /**
  * 可变 <code>float</code> 类型

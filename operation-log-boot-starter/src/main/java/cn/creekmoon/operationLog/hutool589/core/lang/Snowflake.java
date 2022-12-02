@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.date.SystemClock;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.IdUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RandomUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.SystemClock;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.IdUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -162,8 +162,8 @@ public class Snowflake implements Serializable {
     public Snowflake(Date epochDate, long workerId, long dataCenterId,
                      boolean isUseSystemClock, long timeOffset, long randomSequenceLimit) {
         this.twepoch = (null != epochDate) ? epochDate.getTime() : DEFAULT_TWEPOCH;
-        this.workerId = Assert.checkBetween(workerId, 0, MAX_WORKER_ID);
-        this.dataCenterId = Assert.checkBetween(dataCenterId, 0, MAX_DATA_CENTER_ID);
+        this.workerId = cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.checkBetween(workerId, 0, MAX_WORKER_ID);
+        this.dataCenterId = cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert.checkBetween(dataCenterId, 0, MAX_DATA_CENTER_ID);
         this.useSystemClock = isUseSystemClock;
         this.timeOffset = timeOffset;
         this.randomSequenceLimit = Assert.checkBetween(randomSequenceLimit, 0, SEQUENCE_MASK);

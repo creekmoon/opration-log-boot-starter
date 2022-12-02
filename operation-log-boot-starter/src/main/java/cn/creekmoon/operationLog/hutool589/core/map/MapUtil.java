@@ -1,24 +1,33 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Editor;
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Pair;
-import cn.creekmoon.operationLog.hutool589.core.lang.TypeReference;
-import cn.creekmoon.operationLog.hutool589.core.map.CamelCaseLinkedMap;
-import cn.creekmoon.operationLog.hutool589.core.map.CamelCaseMap;
-import cn.creekmoon.operationLog.hutool589.core.map.MapBuilder;
-import cn.creekmoon.operationLog.hutool589.core.map.MapProxy;
-import cn.creekmoon.operationLog.hutool589.core.map.MapWrapper;
-import cn.creekmoon.operationLog.hutool589.core.stream.CollectorUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pair;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.TypeReference;
+import cn.creekmoon.operationLog.hutoolCore589.core.stream.CollectorUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -309,9 +318,9 @@ public class MapUtil {
      * @since 5.8.0
      */
     @SafeVarargs
-    public static <K, V> Map<K, V> ofEntries(Entry<K, V>... entries) {
+    public static <K, V> Map<K, V> ofEntries(Map.Entry<K, V>... entries) {
         final Map<K, V> map = new HashMap<>();
-        for (Entry<K, V> pair : entries) {
+        for (Map.Entry<K, V> pair : entries) {
             map.put(pair.getKey(), pair.getValue());
         }
         return map;
@@ -350,7 +359,7 @@ public class MapUtil {
         for (int i = 0; i < array.length; i++) {
             final Object object = array[i];
             if (object instanceof Map.Entry) {
-                Entry entry = (Entry) object;
+                Map.Entry entry = (Map.Entry) object;
                 map.put(entry.getKey(), entry.getValue());
             } else if (object instanceof Object[]) {
                 final Object[] entry = (Object[]) object;
@@ -509,12 +518,12 @@ public class MapUtil {
      * @param entries entry列表
      * @return entries
      */
-    public static <K, V> Map<K, List<V>> grouping(Iterable<Entry<K, V>> entries) {
+    public static <K, V> Map<K, List<V>> grouping(Iterable<Map.Entry<K, V>> entries) {
         final Map<K, List<V>> map = new HashMap<>();
         if (CollUtil.isEmpty(entries)) {
             return map;
         }
-        for (final Entry<K, V> pair : entries) {
+        for (final Map.Entry<K, V> pair : entries) {
             final List<V> values = map.computeIfAbsent(pair.getKey(), k -> new ArrayList<>());
             values.add(pair.getValue());
         }
@@ -726,7 +735,7 @@ public class MapUtil {
         if (null == map || null == biFunction) {
             return MapUtil.newHashMap();
         }
-        return map.entrySet().stream().collect(CollectorUtil.toMap(Entry::getKey, m -> biFunction.apply(m.getKey(), m.getValue()), (l, r) -> l));
+        return map.entrySet().stream().collect(CollectorUtil.toMap(Map.Entry::getKey, m -> biFunction.apply(m.getKey(), m.getValue()), (l, r) -> l));
     }
 
     /**
@@ -872,27 +881,27 @@ public class MapUtil {
 
     /**
      * 创建代理Map<br>
-     * {@link cn.creekmoon.operationLog.hutool589.core.map.MapProxy}对Map做一次包装，提供各种getXXX方法
+     * {@link MapProxy}对Map做一次包装，提供各种getXXX方法
      *
      * @param map 被代理的Map
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.map.MapProxy}
+     * @return {@link MapProxy}
      * @since 3.2.0
      */
-    public static cn.creekmoon.operationLog.hutool589.core.map.MapProxy createProxy(Map<?, ?> map) {
+    public static MapProxy createProxy(Map<?, ?> map) {
         return MapProxy.create(map);
     }
 
     /**
      * 创建Map包装类MapWrapper<br>
-     * {@link cn.creekmoon.operationLog.hutool589.core.map.MapWrapper}对Map做一次包装
+     * {@link MapWrapper}对Map做一次包装
      *
      * @param <K> key的类型
      * @param <V> value的类型
      * @param map 被代理的Map
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.map.MapWrapper}
+     * @return {@link MapWrapper}
      * @since 4.5.4
      */
-    public static <K, V> cn.creekmoon.operationLog.hutool589.core.map.MapWrapper<K, V> wrap(Map<K, V> map) {
+    public static <K, V> MapWrapper<K, V> wrap(Map<K, V> map) {
         return new MapWrapper<>(map);
     }
 
@@ -918,7 +927,7 @@ public class MapUtil {
      * @param <V> Value类型
      * @return map创建类
      */
-    public static <K, V> cn.creekmoon.operationLog.hutool589.core.map.MapBuilder<K, V> builder() {
+    public static <K, V> MapBuilder<K, V> builder() {
         return builder(new HashMap<>());
     }
 
@@ -930,8 +939,8 @@ public class MapUtil {
      * @param map 实际使用的map
      * @return map创建类
      */
-    public static <K, V> cn.creekmoon.operationLog.hutool589.core.map.MapBuilder<K, V> builder(Map<K, V> map) {
-        return new cn.creekmoon.operationLog.hutool589.core.map.MapBuilder<>(map);
+    public static <K, V> MapBuilder<K, V> builder(Map<K, V> map) {
+        return new MapBuilder<>(map);
     }
 
     /**
@@ -1433,7 +1442,7 @@ public class MapUtil {
      * @return {@link AbstractMap.SimpleImmutableEntry}
      * @since 5.8.0
      */
-    public static <K, V> Entry<K, V> entry(K key, V value) {
+    public static <K, V> Map.Entry<K, V> entry(K key, V value) {
         return entry(key, value, true);
     }
 
@@ -1448,7 +1457,7 @@ public class MapUtil {
      * @return {@link AbstractMap.SimpleEntry} 或者 {@link AbstractMap.SimpleImmutableEntry}
      * @since 5.8.0
      */
-    public static <K, V> Entry<K, V> entry(K key, V value, boolean isImmutable) {
+    public static <K, V> Map.Entry<K, V> entry(K key, V value, boolean isImmutable) {
         return isImmutable ?
                 new AbstractMap.SimpleImmutableEntry<>(key, value) :
                 new AbstractMap.SimpleEntry<>(key, value);

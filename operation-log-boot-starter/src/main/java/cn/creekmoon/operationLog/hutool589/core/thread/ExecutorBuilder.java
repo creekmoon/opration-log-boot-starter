@@ -1,12 +1,21 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.builder.Builder;
-import cn.creekmoon.operationLog.hutool589.core.thread.FinalizableDelegatedExecutorService;
-import cn.creekmoon.operationLog.hutool589.core.thread.RejectPolicy;
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.FinalizableDelegatedExecutorService;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.RejectPolicy;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ThreadFactoryBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link ThreadPoolExecutor} 建造者
@@ -171,11 +180,11 @@ public class ExecutorBuilder implements Builder<ThreadPoolExecutor> {
     /**
      * 设置当线程阻塞（block）时的异常处理器，所谓线程阻塞即线程池和等待队列已满，无法处理线程时采取的策略
      * <p>
-     * 此处可以使用JDK预定义的几种策略，见{@link RejectPolicy}枚举
+     * 此处可以使用JDK预定义的几种策略，见{@link cn.creekmoon.operationLog.hutoolCore589.core.thread.RejectPolicy}枚举
      *
      * @param handler {@link RejectedExecutionHandler}
      * @return this
-     * @see RejectPolicy
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.thread.RejectPolicy
      */
     public ExecutorBuilder setHandler(RejectedExecutionHandler handler) {
         this.handler = handler;

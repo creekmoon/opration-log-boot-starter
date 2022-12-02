@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.comparator;
+package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.creekmoon.operationLog.hutool589.core.comparator.ComparableComparator;
-import cn.creekmoon.operationLog.hutool589.core.comparator.IndexedComparator;
-import cn.creekmoon.operationLog.hutool589.core.comparator.PinyinComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.ComparableComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.IndexedComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PinyinComparator;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class CompareUtil {
      * @param c2         对象2
      * @param comparator 比较器
      * @return 比较结果
-     * @see Comparator#compare(Object, Object)
+     * @see java.util.Comparator#compare(Object, Object)
      * @since 4.6.9
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -57,7 +57,7 @@ public class CompareUtil {
      * @param c1  对象1，可以为{@code null}
      * @param c2  对象2，可以为{@code null}
      * @return 比较结果，如果c1 &lt; c2，返回数小于0，c1==c2返回0，c1 &gt; c2 大于0
-     * @see Comparator#compare(Object, Object)
+     * @see java.util.Comparator#compare(Object, Object)
      */
     public static <T extends Comparable<? super T>> int compare(T c1, T c2) {
         return compare(c1, c2, false);
@@ -71,7 +71,7 @@ public class CompareUtil {
      * @param c2            对象2，可以为{@code null}
      * @param isNullGreater 当被比较对象为null时是否排在后面，true表示null大于任何对象，false反之
      * @return 比较结果，如果c1 &lt; c2，返回数小于0，c1==c2返回0，c1 &gt; c2 大于0
-     * @see Comparator#compare(Object, Object)
+     * @see java.util.Comparator#compare(Object, Object)
      */
     public static <T extends Comparable<? super T>> int compare(T c1, T c2, boolean isNullGreater) {
         if (c1 == c2) {
@@ -150,7 +150,7 @@ public class CompareUtil {
      */
     public static <T> Comparator<T> comparingPinyin(Function<T, String> keyExtractor, boolean reverse) {
         Objects.requireNonNull(keyExtractor);
-        cn.creekmoon.operationLog.hutool589.core.comparator.PinyinComparator pinyinComparator = new PinyinComparator();
+        PinyinComparator pinyinComparator = new PinyinComparator();
         if (reverse) {
             return (o1, o2) -> pinyinComparator.compare(keyExtractor.apply(o2), keyExtractor.apply(o1));
         }
@@ -188,7 +188,7 @@ public class CompareUtil {
     @SuppressWarnings("unchecked")
     public static <T, U> Comparator<T> comparingIndexed(Function<? super T, ? extends U> keyExtractor, boolean atEndIfMiss, U... objs) {
         Objects.requireNonNull(keyExtractor);
-        cn.creekmoon.operationLog.hutool589.core.comparator.IndexedComparator<U> indexedComparator = new IndexedComparator<>(atEndIfMiss, objs);
+        IndexedComparator<U> indexedComparator = new IndexedComparator<>(atEndIfMiss, objs);
         return (o1, o2) -> indexedComparator.compare(keyExtractor.apply(o1), keyExtractor.apply(o2));
     }
 }

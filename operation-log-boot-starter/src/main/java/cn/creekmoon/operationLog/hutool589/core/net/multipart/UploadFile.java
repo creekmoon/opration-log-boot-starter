@@ -1,13 +1,17 @@
-package cn.creekmoon.operationLog.hutool589.core.net.multipart;
+package cn.creekmoon.operationLog.hutoolCore589.core.net.multipart;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.MultipartRequestInputStream;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFileHeader;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadSetting;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.MultipartRequestInputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadSetting;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
 
 /**

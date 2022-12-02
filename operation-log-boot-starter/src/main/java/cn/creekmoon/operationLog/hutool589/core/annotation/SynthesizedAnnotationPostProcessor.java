@@ -1,6 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
 
 import java.util.Comparator;
 

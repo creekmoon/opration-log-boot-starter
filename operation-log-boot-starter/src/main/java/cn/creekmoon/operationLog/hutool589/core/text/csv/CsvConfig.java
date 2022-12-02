@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.text.csv;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvWriter;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvWriter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;

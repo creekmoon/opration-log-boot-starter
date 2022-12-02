@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.compiler;
+package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
-import cn.creekmoon.operationLog.hutool589.core.io.file.FileNameUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ZipUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.file.FileNameUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ZipUtil;
 
 import javax.tools.JavaFileObject;
 import java.io.File;
@@ -28,7 +28,7 @@ public class JavaFileObjectUtil {
         final String fileName = file.getName();
 
         if (isJavaFile(fileName)) {
-            result.add(new cn.creekmoon.operationLog.hutool589.core.compiler.JavaSourceFileObject(file.toURI()));
+            result.add(new JavaSourceFileObject(file.toURI()));
         } else if (isJarOrZipFile(fileName)) {
             result.addAll(getJavaFileObjectByZipOrJarFile(file));
         }
@@ -67,7 +67,7 @@ public class JavaFileObjectUtil {
         ZipUtil.read(zipFile, (zipEntry) -> {
             final String name = zipEntry.getName();
             if (isJavaFile(name)) {
-                collection.add(new cn.creekmoon.operationLog.hutool589.core.compiler.JavaSourceFileObject(name, ZipUtil.getStream(zipFile, zipEntry)));
+                collection.add(new JavaSourceFileObject(name, ZipUtil.getStream(zipFile, zipEntry)));
             }
         });
         return collection;

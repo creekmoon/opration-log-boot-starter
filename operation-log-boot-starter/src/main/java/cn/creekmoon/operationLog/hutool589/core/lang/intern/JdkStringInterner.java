@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.intern;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.intern;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.intern.Interner;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.intern.Interner;
 
 /**
  * JDK中默认的字符串规范化实现

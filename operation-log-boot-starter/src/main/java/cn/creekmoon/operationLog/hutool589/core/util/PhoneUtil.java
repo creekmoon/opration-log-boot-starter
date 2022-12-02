@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.PatternPool;
-import cn.creekmoon.operationLog.hutool589.core.lang.Validator;
-import cn.creekmoon.operationLog.hutool589.core.util.ReUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Validator;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 
 /**
@@ -109,7 +109,7 @@ public class PhoneUtil {
      * @since 5.3.11
      */
     public static CharSequence hideBefore(CharSequence phone) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hide(phone, 0, 7);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(phone, 0, 7);
     }
 
     /**
@@ -120,7 +120,7 @@ public class PhoneUtil {
      * @since 5.3.11
      */
     public static CharSequence hideBetween(CharSequence phone) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hide(phone, 3, 7);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(phone, 3, 7);
     }
 
     /**
@@ -131,7 +131,7 @@ public class PhoneUtil {
      * @since 5.3.11
      */
     public static CharSequence hideAfter(CharSequence phone) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hide(phone, 7, 11);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.hide(phone, 7, 11);
     }
 
     /**
@@ -142,7 +142,7 @@ public class PhoneUtil {
      * @since 5.3.11
      */
     public static CharSequence subBefore(CharSequence phone) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.sub(phone, 0, 3);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.sub(phone, 0, 3);
     }
 
     /**
@@ -153,7 +153,7 @@ public class PhoneUtil {
      * @since 5.3.11
      */
     public static CharSequence subBetween(CharSequence phone) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.sub(phone, 3, 7);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.sub(phone, 3, 7);
     }
 
     /**
@@ -175,7 +175,7 @@ public class PhoneUtil {
      * @since 5.7.7
      */
     public static CharSequence subTelBefore(CharSequence value) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ReUtil.getGroup1(PatternPool.TEL, value);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil.getGroup1(PatternPool.TEL, value);
     }
 
     /**

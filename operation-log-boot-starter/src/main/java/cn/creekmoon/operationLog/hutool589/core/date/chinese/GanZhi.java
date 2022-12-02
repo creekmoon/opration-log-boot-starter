@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.date.chinese;
+package cn.creekmoon.operationLog.hutoolCore589.core.date.chinese;
 
-import cn.creekmoon.operationLog.hutool589.core.date.chinese.LunarInfo;
-import cn.creekmoon.operationLog.hutool589.core.date.chinese.SolarTerms;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.chinese.LunarInfo;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.chinese.SolarTerms;
 
 import java.time.LocalDate;
 
@@ -43,7 +43,7 @@ public class GanZhi {
      */
     public static String getGanzhiOfYear(int year) {
         // 1864年（1900 - 36）是甲子年，用于计算基准的干支年
-        return cyclicalm(year - cn.creekmoon.operationLog.hutool589.core.date.chinese.LunarInfo.BASE_YEAR + 36);
+        return cyclicalm(year - LunarInfo.BASE_YEAR + 36);
     }
 
     /**
@@ -59,7 +59,7 @@ public class GanZhi {
         //返回当月「节」为几日开始
         int firstNode = SolarTerms.getTerm(year, (month * 2 - 1));
         // 依据12节气修正干支月
-        int monthOffset = (year - cn.creekmoon.operationLog.hutool589.core.date.chinese.LunarInfo.BASE_YEAR) * 12 + month + 11;
+        int monthOffset = (year - LunarInfo.BASE_YEAR) * 12 + month + 11;
         if (day >= firstNode) {
             monthOffset++;
         }

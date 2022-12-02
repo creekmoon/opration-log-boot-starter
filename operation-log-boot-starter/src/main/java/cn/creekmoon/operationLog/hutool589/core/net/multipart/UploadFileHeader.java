@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.net.multipart;
+package cn.creekmoon.operationLog.hutoolCore589.core.net.multipart;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 上传的文件的头部信息<br>

@@ -1,17 +1,27 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchAction;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchKind;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.Watcher;
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchAction;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.*;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.ClosedWatchServiceException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,14 +64,14 @@ public class WatchServer extends Thread implements Closeable, Serializable {
      * 2、创建{@link WatchService} 对象
      * </pre>
      *
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException 监听异常，IO异常时抛出此异常
+     * @throws WatchException 监听异常，IO异常时抛出此异常
      */
-    public void init() throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException {
+    public void init() throws WatchException {
         //初始化监听
         try {
             watchService = FileSystems.getDefault().newWatchService();
         } catch (IOException e) {
-            throw new cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException(e);
+            throw new WatchException(e);
         }
 
         isClosed = false;
@@ -88,7 +98,7 @@ public class WatchServer extends Thread implements Closeable, Serializable {
      * @param maxDepth 递归下层目录的最大深度
      */
     public void registerPath(Path path, int maxDepth) {
-        final WatchEvent.Kind<?>[] kinds = ArrayUtil.defaultIfEmpty(this.events, WatchKind.ALL);
+        final WatchEvent.Kind<?>[] kinds = ArrayUtil.defaultIfEmpty(this.events, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.ALL);
 
         try {
             final WatchKey key;
@@ -153,18 +163,18 @@ public class WatchServer extends Thread implements Closeable, Serializable {
     /**
      * 执行事件获取并处理
      *
-     * @param watcher     {@link cn.creekmoon.operationLog.hutool589.core.io.watch.Watcher}
+     * @param watcher     {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @param watchFilter 监听过滤接口，通过实现此接口过滤掉不需要监听的情况，null表示不过滤
      */
     public void watch(Watcher watcher, Filter<WatchEvent<?>> watchFilter) {
         watch((event, currentPath) -> {
             final WatchEvent.Kind<?> kind = event.kind();
 
-            if (kind == WatchKind.CREATE.getValue()) {
+            if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.CREATE.getValue()) {
                 watcher.onCreate(event, currentPath);
-            } else if (kind == WatchKind.MODIFY.getValue()) {
+            } else if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.MODIFY.getValue()) {
                 watcher.onModify(event, currentPath);
-            } else if (kind == WatchKind.DELETE.getValue()) {
+            } else if (kind == cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.DELETE.getValue()) {
                 watcher.onDelete(event, currentPath);
             } else if (kind == WatchKind.OVERFLOW.getValue()) {
                 watcher.onOverflow(event, currentPath);

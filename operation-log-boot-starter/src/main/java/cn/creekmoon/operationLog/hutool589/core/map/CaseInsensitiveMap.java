@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.map.FuncKeyMap;
-import cn.creekmoon.operationLog.hutool589.core.map.MapBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.FuncKeyMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapBuilder;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class CaseInsensitiveMap<K, V> extends FuncKeyMap<K, V> {
      * @param loadFactor      加载因子
      */
     public CaseInsensitiveMap(int initialCapacity, float loadFactor) {
-        this(MapBuilder.create(new HashMap<>(initialCapacity, loadFactor)));
+        this(cn.creekmoon.operationLog.hutoolCore589.core.map.MapBuilder.create(new HashMap<>(initialCapacity, loadFactor)));
     }
 
     /**

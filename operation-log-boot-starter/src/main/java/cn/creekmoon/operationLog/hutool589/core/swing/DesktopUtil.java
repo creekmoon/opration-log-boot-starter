@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.swing;
+package cn.creekmoon.operationLog.hutoolCore589.core.swing;
 
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.util.URLUtil;
-
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 /**
  * 桌面相关工具（平台相关）<br>

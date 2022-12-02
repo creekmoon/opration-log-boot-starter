@@ -1,11 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.swing;
+package cn.creekmoon.operationLog.hutoolCore589.core.swing;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.img.ImgUtil;
-import cn.creekmoon.operationLog.hutool589.core.swing.ScreenUtil;
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.ScreenUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardUtil;
 
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -111,7 +113,7 @@ public class RobotUtil {
      * 模拟键盘点击<br>
      * 包括键盘的按下和释放
      *
-     * @param keyCodes 按键码列表，见{@link KeyEvent}
+     * @param keyCodes 按键码列表，见{@link java.awt.event.KeyEvent}
      * @since 4.5.7
      */
     public static void keyClick(int... keyCodes) {

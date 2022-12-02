@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.thread.lock;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread.lock;
 
-import cn.creekmoon.operationLog.hutool589.core.thread.lock.NoLock;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.StampedLock;
@@ -13,7 +13,7 @@ import java.util.concurrent.locks.StampedLock;
  */
 public class LockUtil {
 
-    private static final cn.creekmoon.operationLog.hutool589.core.thread.lock.NoLock NO_LOCK = new cn.creekmoon.operationLog.hutool589.core.thread.lock.NoLock();
+    private static final cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock NO_LOCK = new cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock();
 
     /**
      * 创建{@link StampedLock}锁
@@ -37,7 +37,7 @@ public class LockUtil {
     /**
      * 获取单例的无锁对象
      *
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.thread.lock.NoLock}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.thread.lock.NoLock}
      */
     public static NoLock getNoLock() {
         return NO_LOCK;

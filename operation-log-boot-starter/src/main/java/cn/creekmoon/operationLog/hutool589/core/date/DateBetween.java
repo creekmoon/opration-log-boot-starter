@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.BetweenFormatter;
-import cn.creekmoon.operationLog.hutool589.core.date.DateUnit;
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.BetweenFormatter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -91,10 +91,10 @@ public class DateBetween implements Serializable {
      * 判断两个日期相差的时长<br>
      * 返回 给定单位的时长差
      *
-     * @param unit 相差的单位：相差 天{@link cn.creekmoon.operationLog.hutool589.core.date.DateUnit#DAY}、小时{@link cn.creekmoon.operationLog.hutool589.core.date.DateUnit#HOUR} 等
+     * @param unit 相差的单位：相差 天{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#DAY}、小时{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#HOUR} 等
      * @return 时长差
      */
-    public long between(cn.creekmoon.operationLog.hutool589.core.date.DateUnit unit) {
+    public long between(cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit unit) {
         long diff = end.getTime() - begin.getTime();
         return diff / unit.getMillis();
     }
@@ -108,8 +108,8 @@ public class DateBetween implements Serializable {
      * @since 3.0.8
      */
     public long betweenMonth(boolean isReset) {
-        final Calendar beginCal = cn.creekmoon.operationLog.hutool589.core.date.DateUtil.calendar(begin);
-        final Calendar endCal = cn.creekmoon.operationLog.hutool589.core.date.DateUtil.calendar(end);
+        final Calendar beginCal = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.calendar(begin);
+        final Calendar endCal = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.calendar(end);
 
         final int betweenYear = endCal.get(Calendar.YEAR) - beginCal.get(Calendar.YEAR);
         final int betweenMonthOfYear = endCal.get(Calendar.MONTH) - beginCal.get(Calendar.MONTH);
@@ -135,8 +135,8 @@ public class DateBetween implements Serializable {
      * @since 3.0.8
      */
     public long betweenYear(boolean isReset) {
-        final Calendar beginCal = cn.creekmoon.operationLog.hutool589.core.date.DateUtil.calendar(begin);
-        final Calendar endCal = cn.creekmoon.operationLog.hutool589.core.date.DateUtil.calendar(end);
+        final Calendar beginCal = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.calendar(begin);
+        final Calendar endCal = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.calendar(end);
 
         int result = endCal.get(Calendar.YEAR) - beginCal.get(Calendar.YEAR);
         if (false == isReset) {
@@ -167,7 +167,7 @@ public class DateBetween implements Serializable {
      * @return 字符串
      * @since 5.7.17
      */
-    public String toString(cn.creekmoon.operationLog.hutool589.core.date.DateUnit unit, BetweenFormatter.Level level) {
+    public String toString(cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit unit, BetweenFormatter.Level level) {
         return DateUtil.formatBetween(between(unit), level);
     }
 

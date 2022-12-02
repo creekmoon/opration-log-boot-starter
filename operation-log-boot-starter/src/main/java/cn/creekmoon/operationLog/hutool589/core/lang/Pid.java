@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.lang.management.ManagementFactory;
 

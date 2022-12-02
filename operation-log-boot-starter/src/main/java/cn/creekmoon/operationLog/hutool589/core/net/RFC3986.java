@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.net;
+package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.PercentCodec;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.PercentCodec;
 
 /**
  * <a href="https://www.ietf.org/rfc/rfc3986.html">RFC3986</a> 编码实现<br>

@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.comparator;
+package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;

@@ -1,19 +1,27 @@
-package cn.creekmoon.operationLog.hutool589.core.collection;
+package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.AvgPartition;
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.Partition;
-import cn.creekmoon.operationLog.hutool589.core.collection.RandomAccessAvgPartition;
-import cn.creekmoon.operationLog.hutool589.core.collection.RandomAccessPartition;
-import cn.creekmoon.operationLog.hutool589.core.comparator.PinyinComparator;
-import cn.creekmoon.operationLog.hutool589.core.comparator.PropertyComparator;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Matcher;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.PageUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.AvgPartition;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.Partition;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.RandomAccessAvgPartition;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.RandomAccessPartition;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PinyinComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PropertyComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Matcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.PageUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.RandomAccess;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -241,7 +249,7 @@ public class ListUtil {
      * @since 4.1.20
      */
     public static <T> List<T> page(int pageNo, int pageSize, List<T> list) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isEmpty(list)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(list)) {
             return new ArrayList<>(0);
         }
 
@@ -282,7 +290,7 @@ public class ListUtil {
      * @since 5.7.10
      */
     public static <T> void page(List<T> list, int pageSize, Consumer<List<T>> pageListConsumer) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isEmpty(list) || pageSize <= 0) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(list) || pageSize <= 0) {
             return;
         }
 
@@ -310,7 +318,7 @@ public class ListUtil {
      * @see Collections#sort(List, Comparator)
      */
     public static <T> List<T> sort(List<T> list, Comparator<? super T> c) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isEmpty(list)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(list)) {
             return list;
         }
         list.sort(c);
@@ -532,7 +540,7 @@ public class ListUtil {
      * @since 5.2.5
      */
     public static <T> int[] indexOfAll(List<T> list, Matcher<T> matcher) {
-        return cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.indexOfAll(list, matcher);
+        return cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.indexOfAll(list, matcher);
     }
 
     /**
@@ -578,7 +586,7 @@ public class ListUtil {
      * @since 5.4.5
      */
     public static <T> List<List<T>> partition(List<T> list, int size) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isEmpty(list)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(list)) {
             return empty();
         }
 
@@ -624,7 +632,7 @@ public class ListUtil {
      * @since 5.7.10
      */
     public static <T> List<List<T>> splitAvg(List<T> list, int limit) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isEmpty(list)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isEmpty(list)) {
             return empty();
         }
 
@@ -645,7 +653,7 @@ public class ListUtil {
      * @since 5.7.13
      */
     public static <T> void swapTo(List<T> list, T element, Integer targetIndex) {
-        if (cn.creekmoon.operationLog.hutool589.core.collection.CollUtil.isNotEmpty(list)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil.isNotEmpty(list)) {
             final int index = list.indexOf(element);
             if (index >= 0) {
                 Collections.swap(list, index, targetIndex);

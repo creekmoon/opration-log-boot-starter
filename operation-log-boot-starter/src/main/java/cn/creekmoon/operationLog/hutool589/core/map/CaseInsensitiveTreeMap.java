@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.map.CaseInsensitiveMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.CaseInsensitiveMap;
 
 import java.util.Comparator;
 import java.util.Map;

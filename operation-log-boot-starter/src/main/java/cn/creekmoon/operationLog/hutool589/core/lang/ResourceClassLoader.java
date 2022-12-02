@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassLoaderUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.security.SecureClassLoader;
 import java.util.HashMap;

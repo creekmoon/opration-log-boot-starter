@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.date.format;
+package cn.creekmoon.operationLog.hutoolCore589.core.date.format;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Tuple;
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Tuple;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
 
 import java.text.DateFormat;
 import java.text.Format;
@@ -40,7 +40,7 @@ abstract class FormatCache<F extends Format> {
     /**
      * 使用 pattern, time zone and locale 获得对应的 格式化器
      *
-     * @param pattern  非空日期格式，使用与 {@link SimpleDateFormat}相同格式
+     * @param pattern  非空日期格式，使用与 {@link java.text.SimpleDateFormat}相同格式
      * @param timeZone 时区，默认当前时区
      * @param locale   地区，默认使用当前地区
      * @return 格式化器
@@ -71,7 +71,7 @@ abstract class FormatCache<F extends Format> {
     /**
      * 创建格式化器
      *
-     * @param pattern  非空日期格式，使用与 {@link SimpleDateFormat}相同格式
+     * @param pattern  非空日期格式，使用与 {@link java.text.SimpleDateFormat}相同格式
      * @param timeZone 时区，默认当前时区
      * @param locale   地区，默认使用当前地区
      * @return 格式化器

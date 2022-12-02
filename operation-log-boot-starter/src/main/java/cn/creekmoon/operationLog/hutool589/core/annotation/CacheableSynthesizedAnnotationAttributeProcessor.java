@@ -1,9 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.map.multi.RowKeyTable;
-import cn.creekmoon.operationLog.hutool589.core.map.multi.Table;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.RowKeyTable;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.util.Collection;
 import java.util.Comparator;

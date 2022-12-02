@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

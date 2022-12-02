@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.exceptions;
+package cn.creekmoon.operationLog.hutoolCore589.core.exceptions;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
 
 /**
  * InvocationTargetException的运行时异常

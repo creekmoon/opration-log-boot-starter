@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.id;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.id;
 
-import cn.creekmoon.operationLog.hutool589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
 
 import java.security.SecureRandom;
 import java.util.Random;

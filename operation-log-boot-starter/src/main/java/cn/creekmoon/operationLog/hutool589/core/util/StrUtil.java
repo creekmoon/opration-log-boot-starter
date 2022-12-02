@@ -1,9 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.text.*;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.IdUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharSequenceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrFormatter;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.TextSimilarity;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.IdUtil;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -435,7 +439,7 @@ public class StrUtil extends CharSequenceUtil implements StrPool {
      * 生成随机UUID
      *
      * @return UUID字符串
-     * @see IdUtil#randomUUID()
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.IdUtil#randomUUID()
      * @since 4.0.10
      */
     public static String uuid() {

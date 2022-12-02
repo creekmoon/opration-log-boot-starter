@@ -1,13 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.bean;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.AnnotationUtil;
-import cn.creekmoon.operationLog.hutool589.core.annotation.PropIgnore;
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanException;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ModifierUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.PropIgnore;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanException;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ModifierUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.beans.Transient;
 import java.lang.reflect.Field;
@@ -177,7 +177,7 @@ public class PropDesc {
             result = getValue(bean);
         } catch (Exception e) {
             if (false == ignoreError) {
-                throw new cn.creekmoon.operationLog.hutool589.core.bean.BeanException(e, "Get value of [{}] error!", getFieldName());
+                throw new BeanException(e, "Get value of [{}] error!", getFieldName());
             }
         }
 

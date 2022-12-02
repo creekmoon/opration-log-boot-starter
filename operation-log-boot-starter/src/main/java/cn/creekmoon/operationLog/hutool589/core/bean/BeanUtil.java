@@ -1,24 +1,39 @@
-package cn.creekmoon.operationLog.hutool589.core.bean;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanDesc;
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanDescCache;
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanInfoCache;
-import cn.creekmoon.operationLog.hutool589.core.bean.DynaBean;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.BeanCopier;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.ValueProvider;
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Editor;
-import cn.creekmoon.operationLog.hutool589.core.map.CaseInsensitiveMap;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanPath;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.BeanCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.CopyOptions;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.ValueProvider;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.CaseInsensitiveMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ModifierUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.beans.*;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -133,10 +148,10 @@ public class BeanUtil {
      * 创建动态Bean
      *
      * @param bean 普通Bean或Map
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.bean.DynaBean}
+     * @return {@link DynaBean}
      * @since 3.0.7
      */
-    public static cn.creekmoon.operationLog.hutool589.core.bean.DynaBean createDynaBean(Object bean) {
+    public static DynaBean createDynaBean(Object bean) {
         return new DynaBean(bean);
     }
 
@@ -151,13 +166,13 @@ public class BeanUtil {
     }
 
     /**
-     * 获取{@link cn.creekmoon.operationLog.hutool589.core.bean.BeanDesc} Bean描述信息
+     * 获取{@link cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc} Bean描述信息
      *
      * @param clazz Bean类
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.bean.BeanDesc}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc}
      * @since 3.1.2
      */
-    public static cn.creekmoon.operationLog.hutool589.core.bean.BeanDesc getBeanDesc(Class<?> clazz) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanDesc getBeanDesc(Class<?> clazz) {
         return BeanDescCache.INSTANCE.getBeanDesc(clazz, () -> new BeanDesc(clazz));
     }
 
@@ -195,7 +210,7 @@ public class BeanUtil {
     }
 
     /**
-     * 获得字段名和字段描述Map，获得的结果会缓存在 {@link cn.creekmoon.operationLog.hutool589.core.bean.BeanInfoCache}中
+     * 获得字段名和字段描述Map，获得的结果会缓存在 {@link BeanInfoCache}中
      *
      * @param clazz      Bean类
      * @param ignoreCase 是否忽略大小写
@@ -320,7 +335,7 @@ public class BeanUtil {
      * @param bean       Bean对象，支持Map、List、Collection、Array
      * @param expression 表达式，例如：person.friend[5].name
      * @return Bean属性值，bean为{@code null}或者express为空，返回{@code null}
-     * @see BeanPath#get(Object)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanPath#get(Object)
      * @since 3.0.7
      */
     @SuppressWarnings("unchecked")
@@ -328,7 +343,7 @@ public class BeanUtil {
         if (null == bean || StrUtil.isBlank(expression)) {
             return null;
         }
-        return (T) BeanPath.create(expression).get(bean);
+        return (T) cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanPath.create(expression).get(bean);
     }
 
     /**
@@ -337,7 +352,7 @@ public class BeanUtil {
      * @param bean       Bean对象，支持Map、List、Collection、Array
      * @param expression 表达式，例如：person.friend[5].name
      * @param value      属性值
-     * @see BeanPath#get(Object)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanPath#get(Object)
      * @since 4.0.6
      */
     public static void setProperty(Object bean, String expression, Object value) {

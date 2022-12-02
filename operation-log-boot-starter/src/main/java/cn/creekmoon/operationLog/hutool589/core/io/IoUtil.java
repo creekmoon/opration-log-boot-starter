@@ -1,20 +1,39 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.LineIter;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.io.BomReader;
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.io.NullOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream;
-import cn.creekmoon.operationLog.hutool589.core.io.copy.ReaderWriterCopier;
-import cn.creekmoon.operationLog.hutool589.core.io.copy.StreamCopier;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.HexUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.LineIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.copy.ReaderWriterCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.copy.StreamCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.HexUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PushbackInputStream;
+import java.io.PushbackReader;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -207,13 +226,13 @@ public class IoUtil extends NioUtil {
     }
 
     /**
-     * 从{@link InputStream}中获取{@link cn.creekmoon.operationLog.hutool589.core.io.BomReader}
+     * 从{@link InputStream}中获取{@link BomReader}
      *
      * @param in {@link InputStream}
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.io.BomReader}
+     * @return {@link BomReader}
      * @since 5.7.14
      */
-    public static cn.creekmoon.operationLog.hutool589.core.io.BomReader getBomReader(InputStream in) {
+    public static BomReader getBomReader(InputStream in) {
         return new BomReader(in);
     }
 
@@ -337,7 +356,7 @@ public class IoUtil extends NioUtil {
      */
     @Deprecated
     public static String read(InputStream in, String charsetName) throws IORuntimeException {
-        final cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream out = read(in);
+        final FastByteArrayOutputStream out = read(in);
         return StrUtil.isBlank(charsetName) ? out.toString() : out.toString(charsetName);
     }
 
@@ -360,7 +379,7 @@ public class IoUtil extends NioUtil {
      * @return 输出流
      * @throws IORuntimeException IO异常
      */
-    public static cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream read(InputStream in) throws IORuntimeException {
+    public static FastByteArrayOutputStream read(InputStream in) throws IORuntimeException {
         return read(in, true);
     }
 
@@ -373,17 +392,17 @@ public class IoUtil extends NioUtil {
      * @throws IORuntimeException IO异常
      * @since 5.5.3
      */
-    public static cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream read(InputStream in, boolean isClose) throws IORuntimeException {
-        final cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream out;
+    public static FastByteArrayOutputStream read(InputStream in, boolean isClose) throws IORuntimeException {
+        final FastByteArrayOutputStream out;
         if (in instanceof FileInputStream) {
             // 文件流的长度是可预见的，此时直接读取效率更高
             try {
-                out = new cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream(in.available());
+                out = new FastByteArrayOutputStream(in.available());
             } catch (IOException e) {
                 throw new IORuntimeException(e);
             }
         } else {
-            out = new cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream();
+            out = new FastByteArrayOutputStream();
         }
         try {
             copy(in, out);
@@ -492,7 +511,7 @@ public class IoUtil extends NioUtil {
             return new byte[0];
         }
 
-        final cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream out = new FastByteArrayOutputStream(length);
+        final FastByteArrayOutputStream out = new FastByteArrayOutputStream(length);
         copy(in, out, DEFAULT_BUFFER_SIZE, length, null);
         return out.toByteArray();
     }
@@ -565,8 +584,8 @@ public class IoUtil extends NioUtil {
      */
     public static <T> T readObj(InputStream in, Class<T> clazz) throws IORuntimeException, UtilException {
         try {
-            return readObj((in instanceof cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream) ?
-                            (cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream) in : new cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream(in),
+            return readObj((in instanceof ValidateObjectInputStream) ?
+                            (ValidateObjectInputStream) in : new ValidateObjectInputStream(in),
                     clazz);
         } catch (IOException e) {
             throw new IORuntimeException(e);
@@ -577,13 +596,13 @@ public class IoUtil extends NioUtil {
      * 从流中读取对象，即对象的反序列化，读取后不关闭流
      *
      * <p>
-     * 此方法使用了{@link cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream}中的黑白名单方式过滤类，用于避免反序列化漏洞<br>
-     * 通过构造{@link cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream}，调用{@link cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream#accept(Class[])}
-     * 或者{@link cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream#refuse(Class[])}方法添加可以被序列化的类或者禁止序列化的类。
+     * 此方法使用了{@link ValidateObjectInputStream}中的黑白名单方式过滤类，用于避免反序列化漏洞<br>
+     * 通过构造{@link ValidateObjectInputStream}，调用{@link ValidateObjectInputStream#accept(Class[])}
+     * 或者{@link ValidateObjectInputStream#refuse(Class[])}方法添加可以被序列化的类或者禁止序列化的类。
      * </p>
      *
      * @param <T>   读取对象的类型
-     * @param in    输入流，使用{@link cn.creekmoon.operationLog.hutool589.core.io.ValidateObjectInputStream}中的黑白名单方式过滤类，用于避免反序列化漏洞
+     * @param in    输入流，使用{@link ValidateObjectInputStream}中的黑白名单方式过滤类，用于避免反序列化漏洞
      * @param clazz 读取对象类型
      * @return 输出流
      * @throws IORuntimeException IO异常

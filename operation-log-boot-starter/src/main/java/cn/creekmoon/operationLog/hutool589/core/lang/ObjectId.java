@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassLoaderUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RandomUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RuntimeUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RuntimeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.net.NetworkInterface;
 import java.nio.ByteBuffer;

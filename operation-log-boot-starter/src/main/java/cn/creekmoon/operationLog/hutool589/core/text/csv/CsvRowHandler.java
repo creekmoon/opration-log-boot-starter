@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.text.csv;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
 
 /**
  * CSV的行处理器，实现此接口用于按照行处理数据

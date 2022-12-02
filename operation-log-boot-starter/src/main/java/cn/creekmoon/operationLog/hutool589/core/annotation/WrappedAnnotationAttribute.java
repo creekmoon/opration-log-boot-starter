@@ -1,4 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.ForceAliasedAnnotationAttribute;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.MirroredAnnotationAttribute;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

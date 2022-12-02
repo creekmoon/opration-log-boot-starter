@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.text.finder;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.finder;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.text.CharSequenceUtil;
-import cn.creekmoon.operationLog.hutool589.core.text.finder.TextFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharSequenceUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.TextFinder;
 
 /**
  * 字符串查找器

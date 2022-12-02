@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.math;
-
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.math;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
 
 /**
  * 排列A(n, m)<br>

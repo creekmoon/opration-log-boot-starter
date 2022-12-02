@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.Alias;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * 注解代理<br>
- * 通过代理指定注解，可以自定义调用注解的方法逻辑，如支持{@link Alias} 注解
+ * 通过代理指定注解，可以自定义调用注解的方法逻辑，如支持{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias} 注解
  *
  * @param <T> 注解类型
  * @since 5.7.23
@@ -46,19 +46,19 @@ public class AnnotationProxy<T extends Annotation> implements Annotation, Invoca
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        // 注解别名
-        Alias alias = method.getAnnotation(Alias.class);
-        if (null != alias) {
-            final String name = alias.value();
-            if (StrUtil.isNotBlank(name)) {
-                if (false == attributes.containsKey(name)) {
-                    throw new IllegalArgumentException(StrUtil.format("No method for alias: [{}]", name));
-                }
-                return attributes.get(name);
-            }
-        }
+		// 注解别名
+		cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias alias = method.getAnnotation(Alias.class);
+		if (null != alias) {
+			final String name = alias.value();
+			if (StrUtil.isNotBlank(name)) {
+				if (false == attributes.containsKey(name)) {
+					throw new IllegalArgumentException(StrUtil.format("No method for alias: [{}]", name));
+				}
+				return attributes.get(name);
+			}
+		}
 
-        final Object value = attributes.get(method.getName());
+		final Object value = attributes.get(method.getName());
 		if (value != null) {
 			return value;
 		}

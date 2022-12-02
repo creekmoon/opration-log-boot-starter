@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.hash;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.hash;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Hash32;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Hash64;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Hash32;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Hash64;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

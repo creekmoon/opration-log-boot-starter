@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.convert.impl;
+package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.AbstractConverter;
-import cn.creekmoon.operationLog.hutool589.core.convert.ConverterRegistry;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.TypeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConverterRegistry;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;

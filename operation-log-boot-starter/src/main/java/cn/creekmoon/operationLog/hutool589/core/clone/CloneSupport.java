@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.clone;
+package cn.creekmoon.operationLog.hutoolCore589.core.clone;
 
-import cn.creekmoon.operationLog.hutool589.core.clone.CloneRuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.clone.Cloneable;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneRuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.Cloneable;
 
 /**
  * 克隆支持类，提供默认的克隆方法

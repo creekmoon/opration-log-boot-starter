@@ -1,10 +1,20 @@
-package cn.creekmoon.operationLog.hutool589.core.img;
+package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.creekmoon.operationLog.hutool589.core.img.FontUtil;
-import cn.creekmoon.operationLog.hutool589.core.img.ImgUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.FontUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 /**
@@ -107,7 +117,7 @@ public class GraphicsUtil {
         for (int i = 0; i < len; i++) {
             if (null == color) {
                 // 产生随机的颜色值，让输出的每个字符的颜色值都将不同。
-                g.setColor(cn.creekmoon.operationLog.hutool589.core.img.ImgUtil.randomColor());
+                g.setColor(cn.creekmoon.operationLog.hutoolCore589.core.img.ImgUtil.randomColor());
             }
             g.drawString(String.valueOf(str.charAt(i)), i * charWidth, midY);
         }

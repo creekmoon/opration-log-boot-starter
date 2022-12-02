@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Base64Decoder;
-import cn.creekmoon.operationLog.hutool589.core.codec.Base64Encoder;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base64Decoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base64Encoder;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public class Base64 {
      */
     @Deprecated
     public static byte[] encodeUrlSafe(byte[] arr, boolean lineSep) {
-        return cn.creekmoon.operationLog.hutool589.core.codec.Base64Encoder.encodeUrlSafe(arr, lineSep);
+        return Base64Encoder.encodeUrlSafe(arr, lineSep);
     }
 
     /**

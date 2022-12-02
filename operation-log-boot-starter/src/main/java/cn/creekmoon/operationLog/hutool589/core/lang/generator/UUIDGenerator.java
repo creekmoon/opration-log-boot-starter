@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.generator;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.generator;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.generator.Generator;
-import cn.creekmoon.operationLog.hutool589.core.util.IdUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.generator.Generator;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.IdUtil;
 
 /**
  * UUID生成器

@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.comparator;
+package cn.creekmoon.operationLog.hutoolCore589.core.comparator;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.util.Comparator;
 

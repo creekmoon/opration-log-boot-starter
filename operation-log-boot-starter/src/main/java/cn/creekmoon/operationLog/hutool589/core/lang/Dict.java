@@ -1,20 +1,26 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanPath;
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.getter.BasicTypeGetter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Pair;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.LambdaUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanPath;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.getter.BasicTypeGetter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pair;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.LambdaUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -64,7 +70,7 @@ public class Dict extends LinkedHashMap<String, Object> implements BasicTypeGett
      * @since 5.4.1
      */
     @SafeVarargs
-    public static Dict of(cn.creekmoon.operationLog.hutool589.core.lang.Pair<String, Object>... pairs) {
+    public static Dict of(Pair<String, Object>... pairs) {
         final Dict dict = create();
         for (Pair<String, Object> pair : pairs) {
             dict.put(pair.getKey(), pair.getValue());
@@ -256,7 +262,7 @@ public class Dict extends LinkedHashMap<String, Object> implements BasicTypeGett
      * @return 自己
      */
     public <T> Dict parseBean(T bean) {
-        cn.creekmoon.operationLog.hutool589.core.lang.Assert.notNull(bean, "Bean class must be not null");
+        Assert.notNull(bean, "Bean class must be not null");
         this.putAll(BeanUtil.beanToMap(bean));
         return this;
     }

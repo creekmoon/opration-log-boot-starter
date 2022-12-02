@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
-
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 莫尔斯电码的编码和解码实现<br>

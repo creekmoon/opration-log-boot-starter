@@ -1,21 +1,26 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchKind;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.WatchServer;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.Watcher;
-import cn.creekmoon.operationLog.hutool589.core.io.watch.watchers.WatcherChain;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchServer;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.watchers.WatcherChain;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchService;
 
 /**
  * 路径监听器
@@ -33,19 +38,19 @@ public class WatchMonitor extends WatchServer {
     /**
      * 事件丢失
      */
-    public static final WatchEvent.Kind<?> OVERFLOW = WatchKind.OVERFLOW.getValue();
+    public static final WatchEvent.Kind<?> OVERFLOW = cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.OVERFLOW.getValue();
     /**
      * 修改事件
      */
-    public static final WatchEvent.Kind<?> ENTRY_MODIFY = WatchKind.MODIFY.getValue();
+    public static final WatchEvent.Kind<?> ENTRY_MODIFY = cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.MODIFY.getValue();
     /**
      * 创建事件
      */
-    public static final WatchEvent.Kind<?> ENTRY_CREATE = WatchKind.CREATE.getValue();
+    public static final WatchEvent.Kind<?> ENTRY_CREATE = cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.CREATE.getValue();
     /**
      * 删除事件
      */
-    public static final WatchEvent.Kind<?> ENTRY_DELETE = WatchKind.DELETE.getValue();
+    public static final WatchEvent.Kind<?> ENTRY_DELETE = cn.creekmoon.operationLog.hutoolCore589.core.io.watch.WatchKind.DELETE.getValue();
     /**
      * 全部事件
      */
@@ -67,7 +72,7 @@ public class WatchMonitor extends WatchServer {
     /**
      * 监听器
      */
-    private Watcher watcher;
+    private cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher;
     //------------------------------------------------------ Static method start
 
     /**
@@ -191,10 +196,10 @@ public class WatchMonitor extends WatchServer {
      * 创建并初始化监听，监听所有事件
      *
      * @param uri     URI
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return WatchMonitor
      */
-    public static WatchMonitor createAll(URI uri, Watcher watcher) {
+    public static WatchMonitor createAll(URI uri, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(Paths.get(uri), watcher);
     }
 
@@ -202,14 +207,14 @@ public class WatchMonitor extends WatchServer {
      * 创建并初始化监听，监听所有事件
      *
      * @param url     URL
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return WatchMonitor
      */
-    public static WatchMonitor createAll(URL url, Watcher watcher) {
+    public static WatchMonitor createAll(URL url, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         try {
             return createAll(Paths.get(url.toURI()), watcher);
         } catch (URISyntaxException e) {
-            throw new cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException(e);
+            throw new WatchException(e);
         }
     }
 
@@ -217,10 +222,10 @@ public class WatchMonitor extends WatchServer {
      * 创建并初始化监听，监听所有事件
      *
      * @param file    被监听文件
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return WatchMonitor
      */
-    public static WatchMonitor createAll(File file, Watcher watcher) {
+    public static WatchMonitor createAll(File file, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(file.toPath(), watcher);
     }
 
@@ -228,10 +233,10 @@ public class WatchMonitor extends WatchServer {
      * 创建并初始化监听，监听所有事件
      *
      * @param path    路径
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return WatchMonitor
      */
-    public static WatchMonitor createAll(String path, Watcher watcher) {
+    public static WatchMonitor createAll(String path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         return createAll(Paths.get(path), watcher);
     }
 
@@ -239,10 +244,10 @@ public class WatchMonitor extends WatchServer {
      * 创建并初始化监听，监听所有事件
      *
      * @param path    路径
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      * @return WatchMonitor
      */
-    public static WatchMonitor createAll(Path path, Watcher watcher) {
+    public static WatchMonitor createAll(Path path, cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         final WatchMonitor watchMonitor = create(path, EVENTS_ALL);
         watchMonitor.setWatcher(watcher);
         return watchMonitor;
@@ -310,10 +315,10 @@ public class WatchMonitor extends WatchServer {
      * 2、创建{@link WatchService} 对象
      * </pre>
      *
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException 监听异常，IO异常时抛出此异常
+     * @throws WatchException 监听异常，IO异常时抛出此异常
      */
     @Override
-    public void init() throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException {
+    public void init() throws WatchException {
         //获取目录或文件路径
         if (false == Files.exists(this.path, LinkOption.NOFOLLOW_LINKS)) {
             // 不存在的路径
@@ -349,7 +354,7 @@ public class WatchMonitor extends WatchServer {
      * @param watcher 监听
      * @return WatchMonitor
      */
-    public WatchMonitor setWatcher(Watcher watcher) {
+    public WatchMonitor setWatcher(cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) {
         this.watcher = watcher;
         return this;
     }
@@ -370,9 +375,9 @@ public class WatchMonitor extends WatchServer {
      * 开始监听事件，阻塞当前进程
      *
      * @param watcher 监听
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException 监听异常，如果监听关闭抛出此异常
+     * @throws WatchException 监听异常，如果监听关闭抛出此异常
      */
-    public void watch(Watcher watcher) throws cn.creekmoon.operationLog.hutool589.core.io.watch.WatchException {
+    public void watch(cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher watcher) throws WatchException {
         if (isClosed) {
             throw new WatchException("Watch Monitor is closed !");
         }
@@ -409,7 +414,7 @@ public class WatchMonitor extends WatchServer {
     /**
      * 执行事件获取并处理
      *
-     * @param watcher {@link Watcher}
+     * @param watcher {@link cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher}
      */
     private void doTakeAndWatch(Watcher watcher) {
         super.watch(watcher, watchEvent -> null == filePath || filePath.endsWith(watchEvent.context().toString()));

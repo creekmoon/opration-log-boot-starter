@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.math;
+package cn.creekmoon.operationLog.hutoolCore589.core.math;
 
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.Serializable;

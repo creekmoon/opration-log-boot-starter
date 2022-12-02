@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.text;
+package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.HexUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.HexUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 提供Unicode字符串和普通字符串之间的转换

@@ -1,16 +1,20 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.thread.BlockPolicy;
-import cn.creekmoon.operationLog.hutool589.core.thread.ConcurrencyTester;
-import cn.creekmoon.operationLog.hutool589.core.thread.ExecutorBuilder;
-import cn.creekmoon.operationLog.hutool589.core.thread.GlobalThreadPool;
-import cn.creekmoon.operationLog.hutool589.core.thread.NamedThreadFactory;
-import cn.creekmoon.operationLog.hutool589.core.thread.RejectPolicy;
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder;
-import cn.creekmoon.operationLog.hutool589.core.util.RuntimeUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RuntimeUtil;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -138,7 +142,7 @@ public class ThreadUtil {
      *
      * @param nThreads         线程池大小
      * @param threadNamePrefix 线程名称前缀
-     * @param isBlocked        是否使用{@link cn.creekmoon.operationLog.hutool589.core.thread.BlockPolicy}策略
+     * @param isBlocked        是否使用{@link BlockPolicy}策略
      * @return ExecutorService
      * @author luozongle
      * @since 5.8.0
@@ -201,7 +205,7 @@ public class ThreadUtil {
      * @param runnable 可运行对象
      */
     public static void execute(Runnable runnable) {
-        cn.creekmoon.operationLog.hutool589.core.thread.GlobalThreadPool.execute(runnable);
+        GlobalThreadPool.execute(runnable);
     }
 
     /**
@@ -228,7 +232,7 @@ public class ThreadUtil {
      * @return Future
      */
     public static <T> Future<T> execAsync(Callable<T> task) {
-        return cn.creekmoon.operationLog.hutool589.core.thread.GlobalThreadPool.submit(task);
+        return GlobalThreadPool.submit(task);
     }
 
     /**
@@ -240,7 +244,7 @@ public class ThreadUtil {
      * @since 3.0.5
      */
     public static Future<?> execAsync(Runnable runnable) {
-        return cn.creekmoon.operationLog.hutool589.core.thread.GlobalThreadPool.submit(runnable);
+        return GlobalThreadPool.submit(runnable);
     }
 
     /**
@@ -449,11 +453,11 @@ public class ThreadUtil {
      * 创建ThreadFactoryBuilder
      *
      * @return ThreadFactoryBuilder
-     * @see cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder#build()
+     * @see ThreadFactoryBuilder#build()
      * @since 4.1.13
      */
-    public static cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder createThreadFactoryBuilder() {
-        return cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder.create();
+    public static ThreadFactoryBuilder createThreadFactoryBuilder() {
+        return ThreadFactoryBuilder.create();
     }
 
     /**
@@ -461,7 +465,7 @@ public class ThreadUtil {
      *
      * @param threadNamePrefix 线程名称前缀
      * @return {@link ThreadFactory}
-     * @see cn.creekmoon.operationLog.hutool589.core.thread.ThreadFactoryBuilder#build()
+     * @see ThreadFactoryBuilder#build()
      * @since 5.8.0
      */
     public static ThreadFactory createThreadFactory(String threadNamePrefix) {
@@ -571,7 +575,7 @@ public class ThreadUtil {
      * @since 4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, boolean isDaemon) {
-        return new cn.creekmoon.operationLog.hutool589.core.thread.NamedThreadFactory(prefix, isDaemon);
+        return new NamedThreadFactory(prefix, isDaemon);
     }
 
     /**
@@ -584,7 +588,7 @@ public class ThreadUtil {
      * @since 4.0.0
      */
     public static ThreadFactory newNamedThreadFactory(String prefix, ThreadGroup threadGroup, boolean isDaemon) {
-        return new cn.creekmoon.operationLog.hutool589.core.thread.NamedThreadFactory(prefix, threadGroup, isDaemon);
+        return new NamedThreadFactory(prefix, threadGroup, isDaemon);
     }
 
     /**
@@ -622,15 +626,15 @@ public class ThreadUtil {
      * 并发测试<br>
      * 此方法用于测试多线程下执行某些逻辑的并发性能<br>
      * 调用此方法会导致当前线程阻塞。<br>
-     * 结束后可调用{@link cn.creekmoon.operationLog.hutool589.core.thread.ConcurrencyTester#getInterval()} 方法获取执行时间
+     * 结束后可调用{@link ConcurrencyTester#getInterval()} 方法获取执行时间
      *
      * @param threadSize 并发线程数
      * @param runnable   执行的逻辑实现
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.thread.ConcurrencyTester}
+     * @return {@link ConcurrencyTester}
      * @since 4.5.8
      */
     @SuppressWarnings("resource")
-    public static cn.creekmoon.operationLog.hutool589.core.thread.ConcurrencyTester concurrencyTest(int threadSize, Runnable runnable) {
+    public static ConcurrencyTester concurrencyTest(int threadSize, Runnable runnable) {
         return (new ConcurrencyTester(threadSize)).test(runnable);
     }
 

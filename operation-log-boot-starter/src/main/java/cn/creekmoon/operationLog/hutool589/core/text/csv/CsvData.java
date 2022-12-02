@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.text.csv;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -12,11 +12,11 @@ import java.util.List;
  *
  * @author Looly
  */
-public class CsvData implements Iterable<CsvRow>, Serializable {
+public class CsvData implements Iterable<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow>, Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<String> header;
-    private final List<CsvRow> rows;
+    private final List<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> rows;
 
     /**
      * 构造
@@ -24,7 +24,7 @@ public class CsvData implements Iterable<CsvRow>, Serializable {
      * @param header 头信息, 可以为null
      * @param rows   行
      */
-    public CsvData(final List<String> header, final List<CsvRow> rows) {
+    public CsvData(final List<String> header, final List<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> rows) {
         this.header = header;
         this.rows = rows;
     }
@@ -57,7 +57,7 @@ public class CsvData implements Iterable<CsvRow>, Serializable {
      * @return 行数据
      * @throws IndexOutOfBoundsException if index is out of range
      */
-    public CsvRow getRow(final int index) {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow getRow(final int index) {
         return this.rows.get(index);
     }
 
@@ -66,7 +66,7 @@ public class CsvData implements Iterable<CsvRow>, Serializable {
      *
      * @return 所有行
      */
-    public List<CsvRow> getRows() {
+    public List<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> getRows() {
         return this.rows;
     }
 

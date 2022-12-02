@@ -1,6 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAggregateAnnotation;
 
 /**
  * <p>注解属性的关系类型 <br>
@@ -10,7 +11,7 @@ import cn.creekmoon.operationLog.hutool589.core.annotation.Alias;
  *
  * <p>当一个注解中的所有属性同时具备多种关系时，将依次按下述顺序处理：
  * <ol>
- *     <li>属性上的{@link cn.creekmoon.operationLog.hutool589.core.annotation.Alias}注解；</li>
+ *     <li>属性上的{@link cn.creekmoon.operationLog.hutoolCore589.core.annotation.Alias}注解；</li>
  *     <li>属性上的{@link Link}注解，且{@link Link#type()}为{@link #MIRROR_FOR}；</li>
  *     <li>属性上的{@link Link}注解，且{@link Link#type()}为{@link #FORCE_ALIAS_FOR}；</li>
  *     <li>属性上的{@link Link}注解，且{@link Link#type()}为{@link #ALIAS_FOR}；</li>

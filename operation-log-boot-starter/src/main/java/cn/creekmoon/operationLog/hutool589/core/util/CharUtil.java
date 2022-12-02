@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.text.ASCIIStrCache;
-import cn.creekmoon.operationLog.hutool589.core.text.CharPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.ASCIIStrCache;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharPool;
 
 /**
  * 字符工具类<br>

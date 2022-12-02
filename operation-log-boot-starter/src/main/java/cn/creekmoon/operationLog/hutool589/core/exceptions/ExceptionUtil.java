@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.exceptions;
+package cn.creekmoon.operationLog.hutoolCore589.core.exceptions;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteArrayOutputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;

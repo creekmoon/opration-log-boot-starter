@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.math;
-
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.math;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 组合，即C(n, m)<br>

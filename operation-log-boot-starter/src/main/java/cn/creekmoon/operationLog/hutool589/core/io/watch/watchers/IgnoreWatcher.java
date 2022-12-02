@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch.watchers;
-
-import cn.creekmoon.operationLog.hutool589.core.io.watch.Watcher;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch.watchers;
 
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.Watcher;
 
 /**
  * 跳过所有事件处理Watcher<br>

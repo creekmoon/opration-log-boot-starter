@@ -1,17 +1,23 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.comparator.CompareUtil;
-import cn.creekmoon.operationLog.hutool589.core.date.format.DateParser;
-import cn.creekmoon.operationLog.hutool589.core.date.format.DatePrinter;
-import cn.creekmoon.operationLog.hutool589.core.date.format.FastDateFormat;
-import cn.creekmoon.operationLog.hutool589.core.date.format.GlobalCustomFormat;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.PatternPool;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Month;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Quarter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Week;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.Zodiac;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DatePrinter;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,82 +52,82 @@ public class DateUtil extends CalendarUtil {
     };
 
     /**
-     * 当前时间，转换为{@link DateTime}对象
+     * 当前时间，转换为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象
      *
      * @return 当前时间
      */
-    public static DateTime date() {
-        return new DateTime();
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date() {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime();
     }
 
     /**
-     * 当前时间，转换为{@link DateTime}对象，忽略毫秒部分
+     * 当前时间，转换为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象，忽略毫秒部分
      *
      * @return 当前时间
      * @since 4.6.2
      */
-    public static DateTime dateSecond() {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime dateSecond() {
         return beginOfSecond(date());
     }
 
     /**
-     * {@link Date}类型时间转为{@link DateTime}<br>
+     * {@link Date}类型时间转为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}<br>
      * 如果date本身为DateTime对象，则返回强转后的对象，否则新建一个DateTime对象
      *
      * @param date Long类型Date（Unix时间戳）
      * @return 时间对象
      * @since 3.0.7
      */
-    public static DateTime date(Date date) {
-        if (date instanceof DateTime) {
-            return (DateTime) date;
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date(Date date) {
+        if (date instanceof cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) {
+            return (cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) date;
         }
         return dateNew(date);
     }
 
     /**
-     * 根据已有{@link Date} 产生新的{@link DateTime}对象
+     * 根据已有{@link Date} 产生新的{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象
      *
      * @param date Date对象
-     * @return {@link DateTime}对象
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象
      * @since 4.3.1
      */
-    public static DateTime dateNew(Date date) {
-        return new DateTime(date);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime dateNew(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(date);
     }
 
     /**
-     * Long类型时间转为{@link DateTime}<br>
+     * Long类型时间转为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}<br>
      * 只支持毫秒级别时间戳，如果需要秒级别时间戳，请自行×1000
      *
      * @param date Long类型Date（Unix时间戳）
      * @return 时间对象
      */
-    public static DateTime date(long date) {
-        return new DateTime(date);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date(long date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(date);
     }
 
     /**
-     * {@link Calendar}类型时间转为{@link DateTime}<br>
-     * 始终根据已有{@link Calendar} 产生新的{@link DateTime}对象
+     * {@link Calendar}类型时间转为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}<br>
+     * 始终根据已有{@link Calendar} 产生新的{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象
      *
      * @param calendar {@link Calendar}
      * @return 时间对象
      */
-    public static DateTime date(Calendar calendar) {
-        return new DateTime(calendar);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date(Calendar calendar) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(calendar);
     }
 
     /**
-     * {@link TemporalAccessor}类型时间转为{@link DateTime}<br>
-     * 始终根据已有{@link TemporalAccessor} 产生新的{@link DateTime}对象
+     * {@link TemporalAccessor}类型时间转为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}<br>
+     * 始终根据已有{@link TemporalAccessor} 产生新的{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象
      *
      * @param temporalAccessor {@link TemporalAccessor},常用子类： {@link LocalDateTime}、 LocalDate
      * @return 时间对象
      * @since 5.0.0
      */
-    public static DateTime date(TemporalAccessor temporalAccessor) {
-        return new DateTime(temporalAccessor);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date(TemporalAccessor temporalAccessor) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(temporalAccessor);
     }
 
     /**
@@ -149,7 +155,7 @@ public class DateUtil extends CalendarUtil {
      * @return 当前时间的标准形式字符串
      */
     public static String now() {
-        return formatDateTime(new DateTime());
+        return formatDateTime(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime());
     }
 
     /**
@@ -158,7 +164,7 @@ public class DateUtil extends CalendarUtil {
      * @return 当前日期的标准形式字符串
      */
     public static String today() {
-        return formatDate(new DateTime());
+        return formatDate(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime());
     }
 
     // -------------------------------------------------------------- Part of Date start
@@ -170,7 +176,7 @@ public class DateUtil extends CalendarUtil {
      * @return 年的部分
      */
     public static int year(Date date) {
-        return DateTime.of(date).year();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).year();
     }
 
     /**
@@ -181,7 +187,7 @@ public class DateUtil extends CalendarUtil {
      * @since 4.1.0
      */
     public static int quarter(Date date) {
-        return DateTime.of(date).quarter();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).quarter();
     }
 
     /**
@@ -192,7 +198,7 @@ public class DateUtil extends CalendarUtil {
      * @since 4.1.0
      */
     public static Quarter quarterEnum(Date date) {
-        return DateTime.of(date).quarterEnum();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).quarterEnum();
     }
 
     /**
@@ -202,17 +208,17 @@ public class DateUtil extends CalendarUtil {
      * @return 月份，从0开始计数
      */
     public static int month(Date date) {
-        return DateTime.of(date).month();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).month();
     }
 
     /**
      * 获得月份
      *
      * @param date 日期
-     * @return {@link Month}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}
      */
-    public static Month monthEnum(Date date) {
-        return DateTime.of(date).monthEnum();
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.Month monthEnum(Date date) {
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).monthEnum();
     }
 
     /**
@@ -224,10 +230,10 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date 日期
      * @return 周
-     * @see DateTime#setFirstDayOfWeek(Week)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime#setFirstDayOfWeek(cn.creekmoon.operationLog.hutoolCore589.core.date.Week)
      */
     public static int weekOfYear(Date date) {
-        return DateTime.of(date).weekOfYear();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).weekOfYear();
     }
 
     /**
@@ -237,7 +243,7 @@ public class DateUtil extends CalendarUtil {
      * @return 周
      */
     public static int weekOfMonth(Date date) {
-        return DateTime.of(date).weekOfMonth();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).weekOfMonth();
     }
 
     /**
@@ -247,7 +253,7 @@ public class DateUtil extends CalendarUtil {
      * @return 天
      */
     public static int dayOfMonth(Date date) {
-        return DateTime.of(date).dayOfMonth();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).dayOfMonth();
     }
 
     /**
@@ -258,7 +264,7 @@ public class DateUtil extends CalendarUtil {
      * @since 5.3.6
      */
     public static int dayOfYear(Date date) {
-        return DateTime.of(date).dayOfYear();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).dayOfYear();
     }
 
     /**
@@ -268,17 +274,17 @@ public class DateUtil extends CalendarUtil {
      * @return 天
      */
     public static int dayOfWeek(Date date) {
-        return DateTime.of(date).dayOfWeek();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).dayOfWeek();
     }
 
     /**
      * 获得指定日期是星期几
      *
      * @param date 日期
-     * @return {@link Week}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Week}
      */
-    public static Week dayOfWeekEnum(Date date) {
-        return DateTime.of(date).dayOfWeekEnum();
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.Week dayOfWeekEnum(Date date) {
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).dayOfWeekEnum();
     }
 
     /**
@@ -289,8 +295,8 @@ public class DateUtil extends CalendarUtil {
      * @since 5.7.6
      */
     public static boolean isWeekend(Date date) {
-        final Week week = dayOfWeekEnum(date);
-        return Week.SATURDAY == week || Week.SUNDAY == week;
+        final cn.creekmoon.operationLog.hutoolCore589.core.date.Week week = dayOfWeekEnum(date);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.Week.SATURDAY == week || cn.creekmoon.operationLog.hutoolCore589.core.date.Week.SUNDAY == week;
     }
 
     /**
@@ -301,7 +307,7 @@ public class DateUtil extends CalendarUtil {
      * @return 小时数
      */
     public static int hour(Date date, boolean is24HourClock) {
-        return DateTime.of(date).hour(is24HourClock);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).hour(is24HourClock);
     }
 
     /**
@@ -312,7 +318,7 @@ public class DateUtil extends CalendarUtil {
      * @return 分钟数
      */
     public static int minute(Date date) {
-        return DateTime.of(date).minute();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).minute();
     }
 
     /**
@@ -322,7 +328,7 @@ public class DateUtil extends CalendarUtil {
      * @return 秒数
      */
     public static int second(Date date) {
-        return DateTime.of(date).second();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).second();
     }
 
     /**
@@ -332,7 +338,7 @@ public class DateUtil extends CalendarUtil {
      * @return 毫秒数
      */
     public static int millisecond(Date date) {
-        return DateTime.of(date).millisecond();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).millisecond();
     }
 
     /**
@@ -342,7 +348,7 @@ public class DateUtil extends CalendarUtil {
      * @return 是否为上午
      */
     public static boolean isAM(Date date) {
-        return DateTime.of(date).isAM();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).isAM();
     }
 
     /**
@@ -352,7 +358,7 @@ public class DateUtil extends CalendarUtil {
      * @return 是否为下午
      */
     public static boolean isPM(Date date) {
-        return DateTime.of(date).isPM();
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime.of(date).isPM();
     }
 
     /**
@@ -370,7 +376,7 @@ public class DateUtil extends CalendarUtil {
     }
 
     /**
-     * @return 当前月份 {@link Month}
+     * @return 当前月份 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}
      */
     public static Month thisMonthEnum() {
         return monthEnum(date());
@@ -405,7 +411,7 @@ public class DateUtil extends CalendarUtil {
     }
 
     /**
-     * @return 当前日期是星期几 {@link Week}
+     * @return 当前日期是星期几 {@link cn.creekmoon.operationLog.hutoolCore589.core.date.Week}
      */
     public static Week thisDayOfWeekEnum() {
         return dayOfWeekEnum(date());
@@ -507,8 +513,8 @@ public class DateUtil extends CalendarUtil {
         }
 
         TimeZone timeZone = null;
-        if (date instanceof DateTime) {
-            timeZone = ((DateTime) date).getTimeZone();
+        if (date instanceof cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) {
+            timeZone = ((cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) date).getTimeZone();
         }
         return format(date, newSimpleFormat(format, null, timeZone));
     }
@@ -668,8 +674,8 @@ public class DateUtil extends CalendarUtil {
      * @param dateFormat 格式化器 {@link SimpleDateFormat}
      * @return DateTime对象
      */
-    public static DateTime parse(CharSequence dateStr, DateFormat dateFormat) {
-        return new DateTime(dateStr, dateFormat);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, DateFormat dateFormat) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, dateFormat);
     }
 
     /**
@@ -679,8 +685,8 @@ public class DateUtil extends CalendarUtil {
      * @param parser  格式化器,{@link FastDateFormat}
      * @return DateTime对象
      */
-    public static DateTime parse(CharSequence dateStr, DateParser parser) {
-        return new DateTime(dateStr, parser);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, DateParser parser) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, parser);
     }
 
     /**
@@ -692,8 +698,8 @@ public class DateUtil extends CalendarUtil {
      * @return DateTime对象
      * @since 5.7.14
      */
-    public static DateTime parse(CharSequence dateStr, DateParser parser, boolean lenient) {
-        return new DateTime(dateStr, parser, lenient);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, DateParser parser, boolean lenient) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, parser, lenient);
     }
 
     /**
@@ -704,8 +710,8 @@ public class DateUtil extends CalendarUtil {
      * @return DateTime对象
      * @since 5.0.0
      */
-    public static DateTime parse(CharSequence dateStr, DateTimeFormatter formatter) {
-        return new DateTime(dateStr, formatter);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, DateTimeFormatter formatter) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, formatter);
     }
 
     /**
@@ -715,8 +721,8 @@ public class DateUtil extends CalendarUtil {
      * @param format  格式，例如yyyy-MM-dd
      * @return 日期对象
      */
-    public static DateTime parse(CharSequence dateStr, String format) {
-        return new DateTime(dateStr, format);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, String format) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, format);
     }
 
     /**
@@ -728,17 +734,17 @@ public class DateUtil extends CalendarUtil {
      * @return 日期对象
      * @since 4.5.18
      */
-    public static DateTime parse(CharSequence dateStr, String format, Locale locale) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateStr, String format, Locale locale) {
         if (GlobalCustomFormat.isCustomFormat(format)) {
             // 自定义格式化器忽略Locale
-            return new DateTime(GlobalCustomFormat.parse(dateStr, format));
+            return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(GlobalCustomFormat.parse(dateStr, format));
         }
-        return new DateTime(dateStr, DateUtil.newSimpleFormat(format, locale, null));
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(dateStr, DateUtil.newSimpleFormat(format, locale, null));
     }
 
     /**
      * 通过给定的日期格式解析日期时间字符串。<br>
-     * 传入的日期格式会逐个尝试，直到解析成功，返回{@link DateTime}对象，否则抛出{@link DateException}异常。
+     * 传入的日期格式会逐个尝试，直到解析成功，返回{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象，否则抛出{@link DateException}异常。
      *
      * @param str           日期时间字符串，非空
      * @param parsePatterns 需要尝试的日期时间格式数组，非空, 见SimpleDateFormat
@@ -747,8 +753,8 @@ public class DateUtil extends CalendarUtil {
      * @throws DateException            if none of the date patterns were suitable
      * @since 5.3.11
      */
-    public static DateTime parse(String str, String... parsePatterns) throws DateException {
-        return new DateTime(CalendarUtil.parseByPatterns(str, parsePatterns));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(String str, String... parsePatterns) throws DateException {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(CalendarUtil.parseByPatterns(str, parsePatterns));
     }
 
     /**
@@ -764,7 +770,7 @@ public class DateUtil extends CalendarUtil {
      * @param dateString 标准形式的时间字符串
      * @return 日期对象
      */
-    public static DateTime parseDateTime(CharSequence dateString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseDateTime(CharSequence dateString) {
         dateString = normalize(dateString);
         return parse(dateString, DatePattern.NORM_DATETIME_FORMAT);
     }
@@ -781,7 +787,7 @@ public class DateUtil extends CalendarUtil {
      * @param dateString 标准形式的日期字符串
      * @return 日期对象
      */
-    public static DateTime parseDate(CharSequence dateString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseDate(CharSequence dateString) {
         dateString = normalize(dateString);
         return parse(dateString, DatePattern.NORM_DATE_FORMAT);
     }
@@ -792,7 +798,7 @@ public class DateUtil extends CalendarUtil {
      * @param timeString 标准形式的日期字符串
      * @return 日期对象
      */
-    public static DateTime parseTime(CharSequence timeString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseTime(CharSequence timeString) {
         timeString = normalize(timeString);
         return parse(timeString, DatePattern.NORM_TIME_FORMAT);
     }
@@ -804,7 +810,7 @@ public class DateUtil extends CalendarUtil {
      * @return 日期对象
      * @since 3.1.1
      */
-    public static DateTime parseTimeToday(CharSequence timeString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseTimeToday(CharSequence timeString) {
         timeString = StrUtil.format("{} {}", today(), timeString);
         if (1 == StrUtil.count(timeString, ':')) {
             // 时间格式为 HH:mm
@@ -830,7 +836,7 @@ public class DateUtil extends CalendarUtil {
      * @return 日期对象
      * @since 4.1.14
      */
-    public static DateTime parseUTC(String utcString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseUTC(String utcString) {
         if (utcString == null) {
             return null;
         }
@@ -878,10 +884,10 @@ public class DateUtil extends CalendarUtil {
 
             if (StrUtil.contains(utcString, CharUtil.DOT)) {
                 // 带毫秒，格式类似：2018-09-13T05:34:31.999-08:00
-                return new DateTime(utcString, DatePattern.UTC_MS_WITH_XXX_OFFSET_FORMAT);
+                return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(utcString, DatePattern.UTC_MS_WITH_XXX_OFFSET_FORMAT);
             } else {
                 // 格式类似：2018-09-13T05:34:31-08:00
-                return new DateTime(utcString, DatePattern.UTC_WITH_XXX_OFFSET_FORMAT);
+                return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(utcString, DatePattern.UTC_WITH_XXX_OFFSET_FORMAT);
             }
         } else {
             if (length == DatePattern.UTC_SIMPLE_PATTERN.length() - 2) {
@@ -909,7 +915,7 @@ public class DateUtil extends CalendarUtil {
      * @return 日期对象
      * @since 4.6.9
      */
-    public static DateTime parseCST(CharSequence cstString) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parseCST(CharSequence cstString) {
         if (cstString == null) {
             return null;
         }
@@ -918,7 +924,7 @@ public class DateUtil extends CalendarUtil {
     }
 
     /**
-     * 将日期字符串转换为{@link DateTime}对象，格式：<br>
+     * 将日期字符串转换为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}对象，格式：<br>
      * <ol>
      * <li>yyyy-MM-dd HH:mm:ss</li>
      * <li>yyyy/MM/dd HH:mm:ss</li>
@@ -946,7 +952,7 @@ public class DateUtil extends CalendarUtil {
      * @param dateCharSequence 日期字符串
      * @return 日期
      */
-    public static DateTime parse(CharSequence dateCharSequence) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime parse(CharSequence dateCharSequence) {
         if (StrUtil.isBlank(dateCharSequence)) {
             return null;
         }
@@ -1020,11 +1026,11 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date      {@link Date}
      * @param dateField 保留到的时间字段，如定义为 {@link DateField#SECOND}，表示这个字段不变，这个字段以下字段全部归0
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.5.7
      */
-    public static DateTime truncate(Date date, DateField dateField) {
-        return new DateTime(truncate(calendar(date), dateField));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime truncate(Date date, DateField dateField) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(truncate(calendar(date), dateField));
     }
 
     /**
@@ -1032,11 +1038,11 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date      {@link Date}
      * @param dateField 时间字段
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.5.7
      */
-    public static DateTime round(Date date, DateField dateField) {
-        return new DateTime(round(calendar(date), dateField));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime round(Date date, DateField dateField) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(round(calendar(date), dateField));
     }
 
     /**
@@ -1044,11 +1050,11 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date      {@link Date}
      * @param dateField 保留到的时间字段，如定义为 {@link DateField#SECOND}，表示这个字段不变，这个字段以下字段全部取最大值
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.5.7
      */
-    public static DateTime ceiling(Date date, DateField dateField) {
-        return new DateTime(ceiling(calendar(date), dateField));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime ceiling(Date date, DateField dateField) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(ceiling(calendar(date), dateField));
     }
 
     /**
@@ -1062,103 +1068,103 @@ public class DateUtil extends CalendarUtil {
      * @param date                {@link Date}
      * @param dateField           时间字段
      * @param truncateMillisecond 是否毫秒归零
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.5.7
      */
-    public static DateTime ceiling(Date date, DateField dateField, boolean truncateMillisecond) {
-        return new DateTime(ceiling(calendar(date), dateField, truncateMillisecond));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime ceiling(Date date, DateField dateField, boolean truncateMillisecond) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(ceiling(calendar(date), dateField, truncateMillisecond));
     }
 
     /**
      * 获取秒级别的开始时间，即毫秒部分设置为0
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.6.2
      */
-    public static DateTime beginOfSecond(Date date) {
-        return new DateTime(beginOfSecond(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfSecond(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfSecond(calendar(date)));
     }
 
     /**
      * 获取秒级别的结束时间，即毫秒设置为999
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 4.6.2
      */
-    public static DateTime endOfSecond(Date date) {
-        return new DateTime(endOfSecond(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfSecond(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfSecond(calendar(date)));
     }
 
     /**
      * 获取某小时的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfHour(Date date) {
-        return new DateTime(beginOfHour(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfHour(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfHour(calendar(date)));
     }
 
     /**
      * 获取某小时的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfHour(Date date) {
-        return new DateTime(endOfHour(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfHour(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfHour(calendar(date)));
     }
 
     /**
      * 获取某分钟的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfMinute(Date date) {
-        return new DateTime(beginOfMinute(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfMinute(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfMinute(calendar(date)));
     }
 
     /**
      * 获取某分钟的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfMinute(Date date) {
-        return new DateTime(endOfMinute(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfMinute(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfMinute(calendar(date)));
     }
 
     /**
      * 获取某天的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfDay(Date date) {
-        return new DateTime(beginOfDay(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfDay(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfDay(calendar(date)));
     }
 
     /**
      * 获取某天的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfDay(Date date) {
-        return new DateTime(endOfDay(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfDay(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfDay(calendar(date)));
     }
 
     /**
      * 获取某周的开始时间，周一定为一周的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfWeek(Date date) {
-        return new DateTime(beginOfWeek(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfWeek(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfWeek(calendar(date)));
     }
 
     /**
@@ -1166,21 +1172,21 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date               日期
      * @param isMondayAsFirstDay 是否周一做为一周的第一天（false表示周日做为第一天）
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 5.4.0
      */
-    public static DateTime beginOfWeek(Date date, boolean isMondayAsFirstDay) {
-        return new DateTime(beginOfWeek(calendar(date), isMondayAsFirstDay));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfWeek(Date date, boolean isMondayAsFirstDay) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfWeek(calendar(date), isMondayAsFirstDay));
     }
 
     /**
      * 获取某周的结束时间，周日定为一周的结束
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfWeek(Date date) {
-        return new DateTime(endOfWeek(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfWeek(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfWeek(calendar(date)));
     }
 
     /**
@@ -1188,71 +1194,71 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date              日期
      * @param isSundayAsLastDay 是否周日做为一周的最后一天（false表示周六做为最后一天）
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 5.4.0
      */
-    public static DateTime endOfWeek(Date date, boolean isSundayAsLastDay) {
-        return new DateTime(endOfWeek(calendar(date), isSundayAsLastDay));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfWeek(Date date, boolean isSundayAsLastDay) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfWeek(calendar(date), isSundayAsLastDay));
     }
 
     /**
      * 获取某月的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfMonth(Date date) {
-        return new DateTime(beginOfMonth(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfMonth(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfMonth(calendar(date)));
     }
 
     /**
      * 获取某月的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfMonth(Date date) {
-        return new DateTime(endOfMonth(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfMonth(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfMonth(calendar(date)));
     }
 
     /**
      * 获取某季度的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfQuarter(Date date) {
-        return new DateTime(beginOfQuarter(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfQuarter(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfQuarter(calendar(date)));
     }
 
     /**
      * 获取某季度的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfQuarter(Date date) {
-        return new DateTime(endOfQuarter(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfQuarter(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfQuarter(calendar(date)));
     }
 
     /**
      * 获取某年的开始时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime beginOfYear(Date date) {
-        return new DateTime(beginOfYear(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime beginOfYear(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(beginOfYear(calendar(date)));
     }
 
     /**
      * 获取某年的结束时间
      *
      * @param date 日期
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      */
-    public static DateTime endOfYear(Date date) {
-        return new DateTime(endOfYear(calendar(date)));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime endOfYear(Date date) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(endOfYear(calendar(date)));
     }
     // --------------------------------------------------- Offset for now
 
@@ -1261,8 +1267,8 @@ public class DateUtil extends CalendarUtil {
      *
      * @return 昨天
      */
-    public static DateTime yesterday() {
-        return offsetDay(new DateTime(), -1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime yesterday() {
+        return offsetDay(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), -1);
     }
 
     /**
@@ -1271,8 +1277,8 @@ public class DateUtil extends CalendarUtil {
      * @return 明天
      * @since 3.0.1
      */
-    public static DateTime tomorrow() {
-        return offsetDay(new DateTime(), 1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime tomorrow() {
+        return offsetDay(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), 1);
     }
 
     /**
@@ -1280,8 +1286,8 @@ public class DateUtil extends CalendarUtil {
      *
      * @return 上周
      */
-    public static DateTime lastWeek() {
-        return offsetWeek(new DateTime(), -1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime lastWeek() {
+        return offsetWeek(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), -1);
     }
 
     /**
@@ -1290,8 +1296,8 @@ public class DateUtil extends CalendarUtil {
      * @return 下周
      * @since 3.0.1
      */
-    public static DateTime nextWeek() {
-        return offsetWeek(new DateTime(), 1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime nextWeek() {
+        return offsetWeek(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), 1);
     }
 
     /**
@@ -1299,8 +1305,8 @@ public class DateUtil extends CalendarUtil {
      *
      * @return 上个月
      */
-    public static DateTime lastMonth() {
-        return offsetMonth(new DateTime(), -1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime lastMonth() {
+        return offsetMonth(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), -1);
     }
 
     /**
@@ -1309,8 +1315,8 @@ public class DateUtil extends CalendarUtil {
      * @return 下个月
      * @since 3.0.1
      */
-    public static DateTime nextMonth() {
-        return offsetMonth(new DateTime(), 1);
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime nextMonth() {
+        return offsetMonth(new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(), 1);
     }
 
     /**
@@ -1320,7 +1326,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移毫秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMillisecond(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetMillisecond(Date date, int offset) {
         return offset(date, DateField.MILLISECOND, offset);
     }
 
@@ -1331,7 +1337,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetSecond(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetSecond(Date date, int offset) {
         return offset(date, DateField.SECOND, offset);
     }
 
@@ -1342,7 +1348,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移分钟数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMinute(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetMinute(Date date, int offset) {
         return offset(date, DateField.MINUTE, offset);
     }
 
@@ -1353,7 +1359,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移小时数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetHour(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetHour(Date date, int offset) {
         return offset(date, DateField.HOUR_OF_DAY, offset);
     }
 
@@ -1365,7 +1371,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移天数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetDay(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetDay(Date date, int offset) {
         return offset(date, DateField.DAY_OF_YEAR, offset);
     }
 
@@ -1376,7 +1382,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移周数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetWeek(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetWeek(Date date, int offset) {
         return offset(date, DateField.WEEK_OF_YEAR, offset);
     }
 
@@ -1387,7 +1393,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset 偏移月数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMonth(Date date, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offsetMonth(Date date, int offset) {
         return offset(date, DateField.MONTH, offset);
     }
 
@@ -1399,7 +1405,7 @@ public class DateUtil extends CalendarUtil {
      * @param offset    偏移量，正数为向后偏移，负数为向前偏移
      * @return 偏移后的日期
      */
-    public static DateTime offset(Date date, DateField dateField, int offset) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime offset(Date date, DateField dateField, int offset) {
         return dateNew(date).offset(dateField, offset);
     }
 
@@ -1410,10 +1416,10 @@ public class DateUtil extends CalendarUtil {
      *
      * @param beginDate 起始日期
      * @param endDate   结束日期
-     * @param unit      相差的单位：相差 天{@link DateUnit#DAY}、小时{@link DateUnit#HOUR} 等
+     * @param unit      相差的单位：相差 天{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#DAY}、小时{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#HOUR} 等
      * @return 日期差
      */
-    public static long between(Date beginDate, Date endDate, DateUnit unit) {
+    public static long between(Date beginDate, Date endDate, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit unit) {
         return between(beginDate, endDate, unit, true);
     }
 
@@ -1422,12 +1428,12 @@ public class DateUtil extends CalendarUtil {
      *
      * @param beginDate 起始日期
      * @param endDate   结束日期
-     * @param unit      相差的单位：相差 天{@link DateUnit#DAY}、小时{@link DateUnit#HOUR} 等
+     * @param unit      相差的单位：相差 天{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#DAY}、小时{@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit#HOUR} 等
      * @param isAbs     日期间隔是否只保留绝对值正数
      * @return 日期差
      * @since 3.3.1
      */
-    public static long between(Date beginDate, Date endDate, DateUnit unit, boolean isAbs) {
+    public static long between(Date beginDate, Date endDate, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit unit, boolean isAbs) {
         return new DateBetween(beginDate, endDate, isAbs).between(unit);
     }
 
@@ -1440,7 +1446,7 @@ public class DateUtil extends CalendarUtil {
      * @since 3.0.1
      */
     public static long betweenMs(Date beginDate, Date endDate) {
-        return new DateBetween(beginDate, endDate).between(DateUnit.MS);
+        return new DateBetween(beginDate, endDate).between(cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MS);
     }
 
     /**
@@ -1464,7 +1470,7 @@ public class DateUtil extends CalendarUtil {
             beginDate = beginOfDay(beginDate);
             endDate = beginOfDay(endDate);
         }
-        return between(beginDate, endDate, DateUnit.DAY);
+        return between(beginDate, endDate, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.DAY);
     }
 
     /**
@@ -1480,7 +1486,7 @@ public class DateUtil extends CalendarUtil {
             beginDate = beginOfDay(beginDate);
             endDate = beginOfDay(endDate);
         }
-        return between(beginDate, endDate, DateUnit.WEEK);
+        return between(beginDate, endDate, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.WEEK);
     }
 
     /**
@@ -1520,7 +1526,7 @@ public class DateUtil extends CalendarUtil {
      * @return XX天XX小时XX分XX秒
      */
     public static String formatBetween(Date beginDate, Date endDate, BetweenFormatter.Level level) {
-        return formatBetween(between(beginDate, endDate, DateUnit.MS), level);
+        return formatBetween(between(beginDate, endDate, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MS), level);
     }
 
     /**
@@ -1568,10 +1574,10 @@ public class DateUtil extends CalendarUtil {
      * @since 3.0.8
      */
     public static boolean isIn(Date date, Date beginDate, Date endDate) {
-        if (date instanceof DateTime) {
-            return ((DateTime) date).isIn(beginDate, endDate);
+        if (date instanceof cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) {
+            return ((cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime) date).isIn(beginDate, endDate);
         } else {
-            return new DateTime(date).isIn(beginDate, endDate);
+            return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(date).isIn(beginDate, endDate);
         }
     }
 
@@ -1911,9 +1917,9 @@ public class DateUtil extends CalendarUtil {
      * @author handy
      * @since 5.7.21
      */
-    public static List<DateTime> rangeContains(DateRange start, DateRange end) {
-        List<DateTime> startDateTimes = CollUtil.newArrayList((Iterable<DateTime>) start);
-        List<DateTime> endDateTimes = CollUtil.newArrayList((Iterable<DateTime>) end);
+    public static List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> rangeContains(DateRange start, DateRange end) {
+        List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> startDateTimes = CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) start);
+        List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> endDateTimes = CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) end);
         return startDateTimes.stream().filter(endDateTimes::contains).collect(Collectors.toList());
     }
 
@@ -1926,9 +1932,9 @@ public class DateUtil extends CalendarUtil {
      * @author handy
      * @since 5.7.21
      */
-    public static List<DateTime> rangeNotContains(DateRange start, DateRange end) {
-        List<DateTime> startDateTimes = CollUtil.newArrayList((Iterable<DateTime>) start);
-        List<DateTime> endDateTimes = CollUtil.newArrayList((Iterable<DateTime>) end);
+    public static List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> rangeNotContains(DateRange start, DateRange end) {
+        List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> startDateTimes = CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) start);
+        List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> endDateTimes = CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) end);
         return endDateTimes.stream().filter(item -> !startDateTimes.contains(item)).collect(Collectors.toList());
     }
 
@@ -1948,7 +1954,7 @@ public class DateUtil extends CalendarUtil {
             return Collections.emptyList();
         }
         ArrayList<T> list = new ArrayList<>();
-        for (DateTime date : range(start, end, unit)) {
+        for (cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime date : range(start, end, unit)) {
             list.add(func.apply(date));
         }
         return list;
@@ -1978,8 +1984,8 @@ public class DateUtil extends CalendarUtil {
      * @param unit  步进单位
      * @return {@link DateRange}
      */
-    public static List<DateTime> rangeToList(Date start, Date end, DateField unit) {
-        return CollUtil.newArrayList((Iterable<DateTime>) range(start, end, unit));
+    public static List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> rangeToList(Date start, Date end, DateField unit) {
+        return CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) range(start, end, unit));
     }
 
     /**
@@ -1992,8 +1998,8 @@ public class DateUtil extends CalendarUtil {
      * @return {@link DateRange}
      * @since 5.7.16
      */
-    public static List<DateTime> rangeToList(Date start, Date end, final DateField unit, int step) {
-        return CollUtil.newArrayList((Iterable<DateTime>) new DateRange(start, end, unit, step));
+    public static List<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime> rangeToList(Date start, Date end, final DateField unit, int step) {
+        return CollUtil.newArrayList((Iterable<cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime>) new DateRange(start, end, unit, step));
     }
 
     /**
@@ -2005,7 +2011,7 @@ public class DateUtil extends CalendarUtil {
      * @since 4.4.3
      */
     public static String getZodiac(int month, int day) {
-        return Zodiac.getZodiac(month, day);
+        return cn.creekmoon.operationLog.hutoolCore589.core.date.Zodiac.getZodiac(month, day);
     }
 
     /**
@@ -2126,11 +2132,11 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date   {@link Date}
      * @param zoneId {@link ZoneId}
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 5.8.3
      */
-    public static DateTime convertTimeZone(Date date, ZoneId zoneId) {
-        return new DateTime(date, ZoneUtil.toTimeZone(zoneId));
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime convertTimeZone(Date date, ZoneId zoneId) {
+        return new cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime(date, ZoneUtil.toTimeZone(zoneId));
     }
 
     /**
@@ -2138,10 +2144,10 @@ public class DateUtil extends CalendarUtil {
      *
      * @param date     {@link Date}
      * @param timeZone {@link TimeZone}
-     * @return {@link DateTime}
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime}
      * @since 5.8.3
      */
-    public static DateTime convertTimeZone(Date date, TimeZone timeZone) {
+    public static cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime convertTimeZone(Date date, TimeZone timeZone) {
         return new DateTime(date, timeZone);
     }
 

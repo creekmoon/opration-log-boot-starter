@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.util.Calendar;
 
@@ -63,7 +63,7 @@ public class DateModifier {
     public static Calendar modify(Calendar calendar, int dateField, ModifyType modifyType, boolean truncateMillisecond) {
         // AM_PM上下午特殊处理
         if (Calendar.AM_PM == dateField) {
-            boolean isAM = DateUtil.isAM(calendar);
+            boolean isAM = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.isAM(calendar);
             switch (modifyType) {
                 case TRUNCATE:
                     calendar.set(Calendar.HOUR_OF_DAY, isAM ? 0 : 12);
@@ -130,13 +130,13 @@ public class DateModifier {
 
         switch (modifyType) {
             case TRUNCATE:
-                calendar.set(field, DateUtil.getBeginValue(calendar, field));
+                calendar.set(field, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.getBeginValue(calendar, field));
                 break;
             case CEILING:
-                calendar.set(field, DateUtil.getEndValue(calendar, field));
+                calendar.set(field, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.getEndValue(calendar, field));
                 break;
             case ROUND:
-                int min = DateUtil.getBeginValue(calendar, field);
+                int min = cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil.getBeginValue(calendar, field);
                 int max = DateUtil.getEndValue(calendar, field);
                 int href;
                 if (Calendar.DAY_OF_WEEK == field) {

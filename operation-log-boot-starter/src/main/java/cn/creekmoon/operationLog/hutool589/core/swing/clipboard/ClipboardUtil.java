@@ -1,13 +1,19 @@
-package cn.creekmoon.operationLog.hutool589.core.swing.clipboard;
+package cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardListener;
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor;
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ImageSelection;
-
-import java.awt.*;
-import java.awt.datatransfer.*;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardListener;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardMonitor;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ImageSelection;
 
 /**
  * 系统剪贴板工具类
@@ -135,10 +141,10 @@ public class ClipboardUtil {
      * 监听剪贴板修改事件
      *
      * @param listener 监听处理接口
-     * @see cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor#listen(boolean)
+     * @see ClipboardMonitor#listen(boolean)
      * @since 4.5.6
      */
-    public static void listen(cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardListener listener) {
+    public static void listen(ClipboardListener listener) {
         listen(listener, true);
     }
 
@@ -147,11 +153,11 @@ public class ClipboardUtil {
      *
      * @param listener 监听处理接口
      * @param sync     是否同步阻塞
-     * @see cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor#listen(boolean)
+     * @see ClipboardMonitor#listen(boolean)
      * @since 4.5.6
      */
-    public static void listen(cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardListener listener, boolean sync) {
-        listen(cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor.DEFAULT_TRY_COUNT, cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor.DEFAULT_DELAY, listener, sync);
+    public static void listen(ClipboardListener listener, boolean sync) {
+        listen(ClipboardMonitor.DEFAULT_TRY_COUNT, ClipboardMonitor.DEFAULT_DELAY, listener, sync);
     }
 
     /**
@@ -161,7 +167,7 @@ public class ClipboardUtil {
      * @param delay    响应延迟，当从第二次开始，延迟一定毫秒数等待剪贴板可以获取
      * @param listener 监听处理接口
      * @param sync     是否同步阻塞
-     * @see cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardMonitor#listen(boolean)
+     * @see ClipboardMonitor#listen(boolean)
      * @since 4.5.6
      */
     public static void listen(int tryCount, long delay, ClipboardListener listener, boolean sync) {

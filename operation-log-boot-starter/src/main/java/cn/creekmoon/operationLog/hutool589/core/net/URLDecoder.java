@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.net;
+package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;

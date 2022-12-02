@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.collection;
+package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
 
 import java.util.Iterator;
 import java.util.function.Function;

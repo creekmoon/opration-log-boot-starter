@@ -22,12 +22,12 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollectionUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.VoidFunc0;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollectionUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.VoidFunc0;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  *
  * @param <T> 包裹里元素的类型
  * @author VampireAchao
- * @see Optional
+ * @see java.util.Optional
  */
 public class Opt<T> {
     /**
@@ -143,7 +143,7 @@ public class Opt<T> {
     }
 
     /**
-     * 返回包裹里的元素，取不到则为{@code null}，注意！！！此处和{@link Optional#get()}不同的一点是本方法并不会抛出{@code NoSuchElementException}
+     * 返回包裹里的元素，取不到则为{@code null}，注意！！！此处和{@link java.util.Optional#get()}不同的一点是本方法并不会抛出{@code NoSuchElementException}
      * 如果元素为空，则返回{@code null}，如果需要一个绝对不能为{@code null}的值，则使用{@link #orElseThrow()}
      *
      * <p>
@@ -161,7 +161,7 @@ public class Opt<T> {
      * 判断包裹里元素的值是否不存在，不存在为 {@code true}，否则为{@code false}
      *
      * @return 包裹里元素的值不存在 则为 {@code true}，否则为{@code false}
-     * @since 11 这是jdk11{@link Optional}中的新函数
+     * @since 11 这是jdk11{@link java.util.Optional}中的新函数
      */
     public boolean isEmpty() {
         return value == null;

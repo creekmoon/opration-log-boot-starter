@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 

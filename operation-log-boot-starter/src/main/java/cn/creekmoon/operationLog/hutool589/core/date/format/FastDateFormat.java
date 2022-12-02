@@ -1,9 +1,14 @@
-package cn.creekmoon.operationLog.hutool589.core.date.format;
+package cn.creekmoon.operationLog.hutoolCore589.core.date.format;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DatePattern;
-import cn.creekmoon.operationLog.hutool589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DateParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.DatePrinter;
 
-import java.text.*;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,7 +52,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      */
     public static final int SHORT = DateFormat.SHORT;
 
-    private static final FormatCache<FastDateFormat> CACHE = new FormatCache<FastDateFormat>() {
+    private static final cn.creekmoon.operationLog.hutoolCore589.core.date.format.FormatCache<FastDateFormat> CACHE = new cn.creekmoon.operationLog.hutoolCore589.core.date.format.FormatCache<FastDateFormat>() {
         @Override
         protected FastDateFormat createInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
             return new FastDateFormat(pattern, timeZone, locale);

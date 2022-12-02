@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation.scanner;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -54,7 +54,7 @@ public class TypeAnnotationScanner extends AbstractTypeAnnotationScanner<TypeAnn
 	 */
 	@Override
 	protected Class<?> getClassFormAnnotatedElement(AnnotatedElement annotatedEle) {
-        return (Class<?>) annotatedEle;
+		return (Class<?>) annotatedEle;
 	}
 
 	/**

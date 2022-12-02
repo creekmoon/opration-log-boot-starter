@@ -1,8 +1,4 @@
-package cn.creekmoon.operationLog.hutool589.core.builder;
-
-import cn.creekmoon.operationLog.hutool589.core.builder.Builder;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.builder;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -10,6 +6,10 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 /**
  * <p>
@@ -78,9 +78,10 @@ import java.util.Set;
  *   return HashCodeBuilder.reflectionHashCode(this);
  * }
  * </pre>
- *
+ * <p>
  * TODO 待整理
  * 来自于Apache-Commons-Lang3
+ *
  * @author looly，Apache-Commons
  * @since 4.2.2
  */
@@ -104,7 +105,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      *
      * @since 2.3
      */
-    private static final ThreadLocal<Set<cn.creekmoon.operationLog.hutool589.core.builder.IDKey>> REGISTRY = new ThreadLocal<>();
+    private static final ThreadLocal<Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>> REGISTRY = new ThreadLocal<>();
 
     /*
      * NOTE: we cannot store the actual objects in a HashSet, as that would use the very hashCode()
@@ -131,7 +132,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * @return Set the registry of objects being traversed
      * @since 2.3
      */
-    private static Set<cn.creekmoon.operationLog.hutool589.core.builder.IDKey> getRegistry() {
+    private static Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> getRegistry() {
         return REGISTRY.get();
     }
 
@@ -146,8 +147,8 @@ public class HashCodeBuilder implements Builder<Integer> {
      * @since 2.3
      */
     private static boolean isRegistered(final Object value) {
-        final Set<cn.creekmoon.operationLog.hutool589.core.builder.IDKey> registry = getRegistry();
-        return registry != null && registry.contains(new cn.creekmoon.operationLog.hutool589.core.builder.IDKey(value));
+        final Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> registry = getRegistry();
+        return registry != null && registry.contains(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
     }
 
     /**
@@ -155,16 +156,11 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Appends the fields and values defined by the given object of the given <code>Class</code>.
      * </p>
      *
-     * @param object
-     *            the object to append details of
-     * @param clazz
-     *            the class to append details of
-     * @param builder
-     *            the builder to append to
-     * @param useTransients
-     *            whether to use transient fields
-     * @param excludeFields
-     *            Collection of String field names to exclude from use in calculation of hash code
+     * @param object        the object to append details of
+     * @param clazz         the class to append details of
+     * @param builder       the builder to append to
+     * @param useTransients whether to use transient fields
+     * @param excludeFields Collection of String field names to exclude from use in calculation of hash code
      */
     private static void reflectionAppend(final Object object, final Class<?> clazz, final HashCodeBuilder builder, final boolean useTransients,
                                          final String[] excludeFields) {
@@ -220,18 +216,13 @@ public class HashCodeBuilder implements Builder<Integer> {
      * however this is not vital. Prime numbers are preferred, especially for the multiplier.
      * </p>
      *
-     * @param initialNonZeroOddNumber
-     *            a non-zero, odd number used as the initial value. This will be the returned
-     *            value if no fields are found to include in the hash code
-     * @param multiplierNonZeroOddNumber
-     *            a non-zero, odd number used as the multiplier
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
+     * @param initialNonZeroOddNumber    a non-zero, odd number used as the initial value. This will be the returned
+     *                                   value if no fields are found to include in the hash code
+     * @param multiplierNonZeroOddNumber a non-zero, odd number used as the multiplier
+     * @param object                     the Object to create a <code>hashCode</code> for
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the Object is <code>null</code>
-     * @throws IllegalArgumentException
-     *             if the number is zero or even
+     * @throws IllegalArgumentException if the Object is <code>null</code>
+     * @throws IllegalArgumentException if the number is zero or even
      */
     public static int reflectionHashCode(final int initialNonZeroOddNumber, final int multiplierNonZeroOddNumber, final Object object) {
         return reflectionHashCode(initialNonZeroOddNumber, multiplierNonZeroOddNumber, object, false, null);
@@ -262,20 +253,14 @@ public class HashCodeBuilder implements Builder<Integer> {
      * however this is not vital. Prime numbers are preferred, especially for the multiplier.
      * </p>
      *
-     * @param initialNonZeroOddNumber
-     *            a non-zero, odd number used as the initial value. This will be the returned
-     *            value if no fields are found to include in the hash code
-     * @param multiplierNonZeroOddNumber
-     *            a non-zero, odd number used as the multiplier
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
-     * @param testTransients
-     *            whether to include transient fields
+     * @param initialNonZeroOddNumber    a non-zero, odd number used as the initial value. This will be the returned
+     *                                   value if no fields are found to include in the hash code
+     * @param multiplierNonZeroOddNumber a non-zero, odd number used as the multiplier
+     * @param object                     the Object to create a <code>hashCode</code> for
+     * @param testTransients             whether to include transient fields
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the Object is <code>null</code>
-     * @throws IllegalArgumentException
-     *             if the number is zero or even
+     * @throws IllegalArgumentException if the Object is <code>null</code>
+     * @throws IllegalArgumentException if the number is zero or even
      */
     public static int reflectionHashCode(final int initialNonZeroOddNumber, final int multiplierNonZeroOddNumber, final Object object,
                                          final boolean testTransients) {
@@ -308,26 +293,17 @@ public class HashCodeBuilder implements Builder<Integer> {
      * however this is not vital. Prime numbers are preferred, especially for the multiplier.
      * </p>
      *
-     * @param <T>
-     *            the type of the object involved
-     * @param initialNonZeroOddNumber
-     *            a non-zero, odd number used as the initial value. This will be the returned
-     *            value if no fields are found to include in the hash code
-     * @param multiplierNonZeroOddNumber
-     *            a non-zero, odd number used as the multiplier
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
-     * @param testTransients
-     *            whether to include transient fields
-     * @param reflectUpToClass
-     *            the superclass to reflect up to (inclusive), may be <code>null</code>
-     * @param excludeFields
-     *            array of field names to exclude from use in calculation of hash code
+     * @param <T>                        the type of the object involved
+     * @param initialNonZeroOddNumber    a non-zero, odd number used as the initial value. This will be the returned
+     *                                   value if no fields are found to include in the hash code
+     * @param multiplierNonZeroOddNumber a non-zero, odd number used as the multiplier
+     * @param object                     the Object to create a <code>hashCode</code> for
+     * @param testTransients             whether to include transient fields
+     * @param reflectUpToClass           the superclass to reflect up to (inclusive), may be <code>null</code>
+     * @param excludeFields              array of field names to exclude from use in calculation of hash code
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the Object is <code>null</code>
-     * @throws IllegalArgumentException
-     *             if the number is zero or even
+     * @throws IllegalArgumentException if the Object is <code>null</code>
+     * @throws IllegalArgumentException if the number is zero or even
      * @since 2.0
      */
     public static <T> int reflectionHashCode(final int initialNonZeroOddNumber, final int multiplierNonZeroOddNumber, final T object,
@@ -371,13 +347,10 @@ public class HashCodeBuilder implements Builder<Integer> {
      * in the hash code, the result of this method will be constant.
      * </p>
      *
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
-     * @param testTransients
-     *            whether to include transient fields
+     * @param object         the Object to create a <code>hashCode</code> for
+     * @param testTransients whether to include transient fields
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the object is <code>null</code>
+     * @throws IllegalArgumentException if the object is <code>null</code>
      */
     public static int reflectionHashCode(final Object object, final boolean testTransients) {
         return reflectionHashCode(DEFAULT_INITIAL_VALUE, DEFAULT_MULTIPLIER_VALUE, object,
@@ -409,13 +382,10 @@ public class HashCodeBuilder implements Builder<Integer> {
      * in the hash code, the result of this method will be constant.
      * </p>
      *
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
-     * @param excludeFields
-     *            Collection of String field names to exclude from use in calculation of hash code
+     * @param object        the Object to create a <code>hashCode</code> for
+     * @param excludeFields Collection of String field names to exclude from use in calculation of hash code
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the object is <code>null</code>
+     * @throws IllegalArgumentException if the object is <code>null</code>
      */
     public static int reflectionHashCode(final Object object, final Collection<String> excludeFields) {
         return reflectionHashCode(object, ArrayUtil.toArray(excludeFields, String.class));
@@ -448,13 +418,10 @@ public class HashCodeBuilder implements Builder<Integer> {
      * in the hash code, the result of this method will be constant.
      * </p>
      *
-     * @param object
-     *            the Object to create a <code>hashCode</code> for
-     * @param excludeFields
-     *            array of field names to exclude from use in calculation of hash code
+     * @param object        the Object to create a <code>hashCode</code> for
+     * @param excludeFields array of field names to exclude from use in calculation of hash code
      * @return int hash code
-     * @throws IllegalArgumentException
-     *             if the object is <code>null</code>
+     * @throws IllegalArgumentException if the object is <code>null</code>
      */
     public static int reflectionHashCode(final Object object, final String... excludeFields) {
         return reflectionHashCode(DEFAULT_INITIAL_VALUE, DEFAULT_MULTIPLIER_VALUE, object, false,
@@ -466,16 +433,15 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Registers the given object. Used by the reflection methods to avoid infinite loops.
      * </p>
      *
-     * @param value
-     *            The object to register.
+     * @param value The object to register.
      */
     static void register(final Object value) {
         synchronized (HashCodeBuilder.class) {
             if (getRegistry() == null) {
-                REGISTRY.set(new HashSet<cn.creekmoon.operationLog.hutool589.core.builder.IDKey>());
+                REGISTRY.set(new HashSet<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey>());
             }
         }
-        getRegistry().add(new cn.creekmoon.operationLog.hutool589.core.builder.IDKey(value));
+        getRegistry().add(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
     }
 
     /**
@@ -486,14 +452,13 @@ public class HashCodeBuilder implements Builder<Integer> {
      * <p>
      * Used by the reflection methods to avoid infinite loops.
      *
-     * @param value
-     *            The object to unregister.
+     * @param value The object to unregister.
      * @since 2.3
      */
     static void unregister(final Object value) {
-        Set<cn.creekmoon.operationLog.hutool589.core.builder.IDKey> registry = getRegistry();
+        Set<cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey> registry = getRegistry();
         if (registry != null) {
-            registry.remove(new cn.creekmoon.operationLog.hutool589.core.builder.IDKey(value));
+            registry.remove(new cn.creekmoon.operationLog.hutoolCore589.core.builder.IDKey(value));
             synchronized (HashCodeBuilder.class) {
                 //read again
                 registry = getRegistry();
@@ -534,12 +499,9 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Prime numbers are preferred, especially for the multiplier.
      * </p>
      *
-     * @param initialOddNumber
-     *            an odd number used as the initial value
-     * @param multiplierOddNumber
-     *            an odd number used as the multiplier
-     * @throws IllegalArgumentException
-     *             if the number is even
+     * @param initialOddNumber    an odd number used as the initial value
+     * @param multiplierOddNumber an odd number used as the multiplier
+     * @throws IllegalArgumentException if the number is even
      */
     public HashCodeBuilder(final int initialOddNumber, final int multiplierOddNumber) {
         Assert.isTrue(initialOddNumber % 2 != 0, "HashCodeBuilder requires an odd initial value");
@@ -565,8 +527,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * This is in accordance with the <i>Effective Java</i> design.
      * </p>
      *
-     * @param value
-     *            the boolean to add to the <code>hashCode</code>
+     * @param value the boolean to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final boolean value) {
@@ -579,8 +540,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>boolean</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final boolean[] array) {
@@ -601,8 +561,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>byte</code>.
      * </p>
      *
-     * @param value
-     *            the byte to add to the <code>hashCode</code>
+     * @param value the byte to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final byte value) {
@@ -617,8 +576,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>byte</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final byte[] array) {
@@ -637,8 +595,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>char</code>.
      * </p>
      *
-     * @param value
-     *            the char to add to the <code>hashCode</code>
+     * @param value the char to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final char value) {
@@ -651,8 +608,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>char</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final char[] array) {
@@ -671,8 +627,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>double</code>.
      * </p>
      *
-     * @param value
-     *            the double to add to the <code>hashCode</code>
+     * @param value the double to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final double value) {
@@ -684,8 +639,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>double</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final double[] array) {
@@ -704,8 +658,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>float</code>.
      * </p>
      *
-     * @param value
-     *            the float to add to the <code>hashCode</code>
+     * @param value the float to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final float value) {
@@ -718,8 +671,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>float</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final float[] array) {
@@ -738,8 +690,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for an <code>int</code>.
      * </p>
      *
-     * @param value
-     *            the int to add to the <code>hashCode</code>
+     * @param value the int to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final int value) {
@@ -752,8 +703,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for an <code>int</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final int[] array) {
@@ -772,8 +722,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>long</code>.
      * </p>
      *
-     * @param value
-     *            the long to add to the <code>hashCode</code>
+     * @param value the long to add to the <code>hashCode</code>
      * @return this
      */
     // NOTE: This method uses >> and not >>> as Effective Java and
@@ -790,8 +739,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>long</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final long[] array) {
@@ -810,8 +758,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for an <code>Object</code>.
      * </p>
      *
-     * @param object
-     *            the Object to add to the <code>hashCode</code>
+     * @param object the Object to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final Object object) {
@@ -819,7 +766,7 @@ public class HashCodeBuilder implements Builder<Integer> {
             iTotal = iTotal * iConstant;
 
         } else {
-            if(object.getClass().isArray()) {
+            if (object.getClass().isArray()) {
                 // 'Switch' on type of array, to dispatch to the correct handler
                 // This handles multi dimensional arrays
                 if (object instanceof long[]) {
@@ -854,8 +801,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for an <code>Object</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final Object[] array) {
@@ -874,8 +820,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>short</code>.
      * </p>
      *
-     * @param value
-     *            the short to add to the <code>hashCode</code>
+     * @param value the short to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final short value) {
@@ -888,8 +833,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Append a <code>hashCode</code> for a <code>short</code> array.
      * </p>
      *
-     * @param array
-     *            the array to add to the <code>hashCode</code>
+     * @param array the array to add to the <code>hashCode</code>
      * @return this
      */
     public HashCodeBuilder append(final short[] array) {
@@ -908,8 +852,7 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Adds the result of super.hashCode() to this builder.
      * </p>
      *
-     * @param superHashCode
-     *            the result of calling <code>super.hashCode()</code>
+     * @param superHashCode the result of calling <code>super.hashCode()</code>
      * @return this HashCodeBuilder, used to chain calls.
      * @since 2.0
      */
@@ -933,7 +876,6 @@ public class HashCodeBuilder implements Builder<Integer> {
      * Returns the computed <code>hashCode</code>.
      *
      * @return <code>hashCode</code> based on the fields appended
-     *
      * @since 3.0
      */
     @Override

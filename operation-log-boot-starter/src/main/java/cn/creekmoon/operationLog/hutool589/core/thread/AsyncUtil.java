@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.thread;
+package cn.creekmoon.operationLog.hutoolCore589.core.thread;
 
-import cn.creekmoon.operationLog.hutool589.core.thread.ThreadException;
+import cn.creekmoon.operationLog.hutoolCore589.core.thread.ThreadException;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +25,7 @@ public class AsyncUtil {
         try {
             CompletableFuture.allOf(tasks).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new cn.creekmoon.operationLog.hutool589.core.thread.ThreadException(e);
+            throw new ThreadException(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class AsyncUtil {
         try {
             return (T) CompletableFuture.anyOf(tasks).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new cn.creekmoon.operationLog.hutool589.core.thread.ThreadException(e);
+            throw new ThreadException(e);
         }
     }
 

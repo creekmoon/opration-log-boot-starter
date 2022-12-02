@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.io.resource;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
-import cn.creekmoon.operationLog.hutool589.core.io.resource.CharSequenceResource;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.CharSequenceResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
 
 import java.nio.charset.Charset;
 
@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
  * 字符串资源，字符串做为资源
  *
  * @author looly
- * @see cn.creekmoon.operationLog.hutool589.core.io.resource.CharSequenceResource
+ * @see CharSequenceResource
  * @since 4.1.0
  */
 public class StringResource extends CharSequenceResource {

@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.bean.copier;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions;
-import cn.creekmoon.operationLog.hutool589.core.lang.copier.Copier;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.copier.CopyOptions;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.copier.Copier;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 /**
  * 抽象的对象拷贝封装，提供来源对象、目标对象持有
@@ -19,9 +19,9 @@ public abstract class AbsCopier<S, T> implements Copier<T> {
     /**
      * 拷贝选项
      */
-    protected final cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions copyOptions;
+    protected final CopyOptions copyOptions;
 
-    public AbsCopier(S source, T target, cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions copyOptions) {
+    public AbsCopier(S source, T target, CopyOptions copyOptions) {
         this.source = source;
         this.target = target;
         this.copyOptions = ObjectUtil.defaultIfNull(copyOptions, CopyOptions::create);

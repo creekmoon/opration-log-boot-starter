@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.io.file;
-
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.file;
 
 import java.io.File;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
 
 /**
  * 文件包装器，扩展文件对象

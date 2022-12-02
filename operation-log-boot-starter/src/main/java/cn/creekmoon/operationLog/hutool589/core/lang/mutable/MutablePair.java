@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.mutable;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Pair;
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Pair;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
 
 /**
  * 可变{@link Pair}实现，可以修改键和值

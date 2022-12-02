@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.text.finder;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.finder;
 
-import cn.creekmoon.operationLog.hutool589.core.text.finder.TextFinder;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.finder.TextFinder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author looly
  * @since 5.7.14
  */
-public class PatternFinder extends cn.creekmoon.operationLog.hutool589.core.text.finder.TextFinder {
+public class PatternFinder extends cn.creekmoon.operationLog.hutoolCore589.core.text.finder.TextFinder {
     private static final long serialVersionUID = 1L;
 
     private final Pattern pattern;
@@ -38,7 +38,7 @@ public class PatternFinder extends cn.creekmoon.operationLog.hutool589.core.text
     }
 
     @Override
-    public cn.creekmoon.operationLog.hutool589.core.text.finder.TextFinder setText(CharSequence text) {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.finder.TextFinder setText(CharSequence text) {
         this.matcher = pattern.matcher(text);
         return super.setText(text);
     }

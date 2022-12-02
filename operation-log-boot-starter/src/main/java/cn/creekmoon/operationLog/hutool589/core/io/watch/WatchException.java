@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.ExceptionUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.ExceptionUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 监听异常

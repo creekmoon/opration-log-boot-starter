@@ -1,12 +1,19 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.LocalDateTimeUtil;
-import cn.creekmoon.operationLog.hutool589.core.date.TemporalUtil;
-import cn.creekmoon.operationLog.hutool589.core.date.format.GlobalCustomFormat;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.GlobalCustomFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
-import java.time.*;
+import java.time.MonthDay;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.chrono.Era;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -39,7 +46,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * 格式化日期时间为指定格式<br>
-     * 如果为{@link Month}，调用{@link Month#toString()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#toString()}
      *
      * @param time      {@link TemporalAccessor}
      * @param formatter 日期格式化器，预定义的格式见：{@link DateTimeFormatter}
@@ -78,7 +85,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * 格式化日期时间为指定格式<br>
-     * 如果为{@link Month}，调用{@link Month#toString()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#toString()}
      *
      * @param time   {@link TemporalAccessor}
      * @param format 日期格式
@@ -90,7 +97,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
             return null;
         }
 
-        if (time instanceof DayOfWeek || time instanceof Month || time instanceof Era || time instanceof MonthDay) {
+        if (time instanceof DayOfWeek || time instanceof java.time.Month || time instanceof Era || time instanceof MonthDay) {
             return time.toString();
         }
 
@@ -107,7 +114,7 @@ public class TemporalAccessorUtil extends TemporalUtil {
 
     /**
      * {@link TemporalAccessor}转换为 时间戳（从1970-01-01T00:00:00Z开始的毫秒数）<br>
-     * 如果为{@link Month}，调用{@link Month#getValue()}
+     * 如果为{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month}，调用{@link cn.creekmoon.operationLog.hutoolCore589.core.date.Month#getValue()}
      *
      * @param temporalAccessor Date对象
      * @return {@link Instant}对象

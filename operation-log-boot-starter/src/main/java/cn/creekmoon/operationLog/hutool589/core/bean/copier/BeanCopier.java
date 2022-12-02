@@ -1,14 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.bean.copier;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.BeanToBeanCopier;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.BeanToMapCopier;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.MapToBeanCopier;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.MapToMapCopier;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.ValueProvider;
-import cn.creekmoon.operationLog.hutool589.core.bean.copier.ValueProviderToBeanCopier;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.copier.Copier;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.copier.Copier;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -42,7 +35,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param copyOptions 拷贝属性选项
      * @return BeanCopier
      */
-    public static <T> BeanCopier<T> create(Object source, T target, cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions copyOptions) {
+    public static <T> BeanCopier<T> create(Object source, T target, CopyOptions copyOptions) {
         return create(source, target, target.getClass(), copyOptions);
     }
 
@@ -56,7 +49,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
      * @param copyOptions 拷贝属性选项
      * @return BeanCopier
      */
-    public static <T> BeanCopier<T> create(Object source, T target, Type destType, cn.creekmoon.operationLog.hutool589.core.bean.copier.CopyOptions copyOptions) {
+    public static <T> BeanCopier<T> create(Object source, T target, Type destType, CopyOptions copyOptions) {
         return new BeanCopier<>(source, target, destType, copyOptions);
     }
 
@@ -79,7 +72,7 @@ public class BeanCopier<T> implements Copier<T>, Serializable {
             } else {
                 copier = new MapToBeanCopier<>((Map<?, ?>) source, target, targetType, copyOptions);
             }
-        } else if (source instanceof cn.creekmoon.operationLog.hutool589.core.bean.copier.ValueProvider) {
+        } else if (source instanceof ValueProvider) {
             //noinspection unchecked
             copier = new ValueProviderToBeanCopier<>((ValueProvider<String>) source, target, targetType, copyOptions);
         } else {

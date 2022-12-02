@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.collection;
+package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.IterableIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.ResettableIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterableIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ResettableIter;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;

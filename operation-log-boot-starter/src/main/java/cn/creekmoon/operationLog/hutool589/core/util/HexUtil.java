@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Base16Codec;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base16Codec;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.awt.*;
+import java.awt.Color;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 
@@ -64,7 +64,7 @@ public class HexUtil {
      * @return 十六进制char[]
      */
     public static char[] encodeHex(String str, Charset charset) {
-        return encodeHex(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.bytes(str, charset), true);
+        return encodeHex(StrUtil.bytes(str, charset), true);
     }
 
     /**
@@ -96,7 +96,7 @@ public class HexUtil {
      * @return 十六进制String
      */
     public static String encodeHexStr(String data, Charset charset) {
-        return encodeHexStr(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.bytes(data, charset), true);
+        return encodeHexStr(StrUtil.bytes(data, charset), true);
     }
 
     /**
@@ -106,7 +106,7 @@ public class HexUtil {
      * @return 十六进制String
      */
     public static String encodeHexStr(String data) {
-        return encodeHexStr(data, cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil.CHARSET_UTF_8);
+        return encodeHexStr(data, CharsetUtil.CHARSET_UTF_8);
     }
 
     /**
@@ -140,10 +140,10 @@ public class HexUtil {
      * @return 字符串
      */
     public static String decodeHexStr(String hexStr, Charset charset) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(hexStr)) {
+        if (StrUtil.isEmpty(hexStr)) {
             return hexStr;
         }
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(decodeHex(hexStr), charset);
+        return StrUtil.str(decodeHex(hexStr), charset);
     }
 
     /**
@@ -154,7 +154,7 @@ public class HexUtil {
      * @return 字符串
      */
     public static String decodeHexStr(char[] hexData, Charset charset) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(decodeHex(hexData), charset);
+        return StrUtil.str(decodeHex(hexData), charset);
     }
 
     /**

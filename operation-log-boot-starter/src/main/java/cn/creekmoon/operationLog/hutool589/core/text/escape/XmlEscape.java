@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.text.escape;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.escape;
 
-import cn.creekmoon.operationLog.hutool589.core.text.replacer.LookupReplacer;
-import cn.creekmoon.operationLog.hutool589.core.text.replacer.ReplacerChain;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.LookupReplacer;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.replacer.ReplacerChain;
 
 /**
  * XML特殊字符转义<br>

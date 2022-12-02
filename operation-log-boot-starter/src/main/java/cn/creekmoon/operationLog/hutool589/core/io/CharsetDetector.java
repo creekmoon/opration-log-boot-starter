@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class CharsetDetector {
      * @return 编码
      */
     public static Charset detect(InputStream in, Charset... charsets) {
-        return detect(IoUtil.DEFAULT_LARGE_BUFFER_SIZE, in, charsets);
+        return detect(cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil.DEFAULT_LARGE_BUFFER_SIZE, in, charsets);
     }
 
     /**

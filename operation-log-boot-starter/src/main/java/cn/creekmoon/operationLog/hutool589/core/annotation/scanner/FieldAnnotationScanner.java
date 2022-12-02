@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation.scanner;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.AnnotationUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.AnnotationUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;

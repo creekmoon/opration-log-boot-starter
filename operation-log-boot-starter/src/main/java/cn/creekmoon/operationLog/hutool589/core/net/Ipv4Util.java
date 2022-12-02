@@ -1,13 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.net;
+package cn.creekmoon.operationLog.hutoolCore589.core.net;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.PatternPool;
-import cn.creekmoon.operationLog.hutool589.core.lang.Validator;
-import cn.creekmoon.operationLog.hutool589.core.net.MaskBit;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Validator;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.MaskBit;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +223,7 @@ public class Ipv4Util {
      * @throws IllegalArgumentException 子网掩码非法
      */
     public static int getMaskBitByMask(String mask) {
-        Integer maskBit = MaskBit.getMaskBit(mask);
+        Integer maskBit = cn.creekmoon.operationLog.hutoolCore589.core.net.MaskBit.getMaskBit(mask);
         if (maskBit == null) {
             throw new IllegalArgumentException("Invalid netmask " + mask);
         }
@@ -254,7 +254,7 @@ public class Ipv4Util {
      * @return 掩码
      */
     public static String getMaskByMaskBit(int maskBit) {
-        return MaskBit.get(maskBit);
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.MaskBit.get(maskBit);
     }
 
     /**
@@ -307,7 +307,7 @@ public class Ipv4Util {
      * @return true：掩码合法；false：掩码不合法
      */
     public static boolean isMaskValid(String mask) {
-        return MaskBit.getMaskBit(mask) != null;
+        return cn.creekmoon.operationLog.hutoolCore589.core.net.MaskBit.getMaskBit(mask) != null;
     }
 
     /**

@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation.scanner;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -78,7 +78,7 @@ public class MethodAnnotationScanner extends AbstractTypeAnnotationScanner<Metho
 	 */
 	@Override
 	protected Class<?> getClassFormAnnotatedElement(AnnotatedElement annotatedElement) {
-        return ((Method) annotatedElement).getDeclaringClass();
+		return ((Method) annotatedElement).getDeclaringClass();
 	}
 
 	/**
@@ -92,12 +92,12 @@ public class MethodAnnotationScanner extends AbstractTypeAnnotationScanner<Metho
 	@Override
 	protected Annotation[] getAnnotationsFromTargetClass(AnnotatedElement source, int index, Class<?> targetClass) {
 		final Method sourceMethod = (Method) source;
-        return Stream.of(ClassUtil.getDeclaredMethods(targetClass))
-                .filter(superMethod -> !superMethod.isBridge())
-                .filter(superMethod -> hasSameSignature(sourceMethod, superMethod))
-                .map(AnnotatedElement::getAnnotations)
-                .flatMap(Stream::of)
-                .toArray(Annotation[]::new);
+		return Stream.of(ClassUtil.getDeclaredMethods(targetClass))
+				.filter(superMethod -> !superMethod.isBridge())
+				.filter(superMethod -> hasSameSignature(sourceMethod, superMethod))
+				.map(AnnotatedElement::getAnnotations)
+				.flatMap(Stream::of)
+				.toArray(Annotation[]::new);
 	}
 
 	/**

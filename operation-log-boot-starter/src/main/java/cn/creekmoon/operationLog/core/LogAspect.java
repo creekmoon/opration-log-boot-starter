@@ -1,9 +1,8 @@
 package cn.creekmoon.operationLog.core;
 
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
 import cn.creekmoon.operationLog.utils.ObjectUtils;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -74,58 +73,45 @@ public class LogAspect implements ApplicationContextAware, Ordered {
 
         try {
             /*处理传递过来的参数*/
-            List<Object> argList = Arrays
+            List<Object> paramList = Arrays
                     .stream(Optional.ofNullable(pjp.getArgs()).orElse(new Object[]{}))
-                    .map(currentParams -> {
+                    .map(currentParam -> {
                         /*对不能进行序列化的类进行额外处理*/
-                        if (currentParams instanceof ServletRequest) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("servletRequest", "无法序列化");
-                            return jsonObject;
-                        } else if (currentParams instanceof ServletResponse) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("servletResponse", "无法序列化");
-                            return jsonObject;
-                        } else if (currentParams instanceof MultipartFile) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("multipartFile", "无法序列化");
-                            return jsonObject;
-                        } else if (currentParams instanceof InputStreamSource) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            jsonObject.put("inputStreamSource", "无法序列化");
-                            return jsonObject;
+                        if (currentParam instanceof ServletRequest) {
+                            return "ServletRequest";
+                        } else if (currentParam instanceof ServletResponse) {
+                            return "ServletResponse";
+                        } else if (currentParam instanceof MultipartFile) {
+                            return "MultipartFile";
+                        } else if (currentParam instanceof MultipartFile[]) {
+                            return "MultipartFile[]";
+                        } else if (currentParam instanceof InputStreamSource) {
+                            return "InputStreamSource";
                         }
                         /*如果是基本类型的参数，则将其转为JSON形式。 如果是对象类型参数，则不需要处理*/
-                        if (currentParams.getClass().isPrimitive()
-                                || currentParams instanceof Boolean
-                                || currentParams instanceof Character
-                                || currentParams instanceof Byte
-                                || currentParams instanceof Short
-                                || currentParams instanceof Integer
-                                || currentParams instanceof Long
-                                || currentParams instanceof Float
-                                || currentParams instanceof Double
-                                || currentParams instanceof BigDecimal
-                                || currentParams instanceof String
+                        if (currentParam.getClass().isPrimitive()
+                                || currentParam instanceof Boolean
+                                || currentParam instanceof Character
+                                || currentParam instanceof Byte
+                                || currentParam instanceof Short
+                                || currentParam instanceof Integer
+                                || currentParam instanceof Long
+                                || currentParam instanceof Float
+                                || currentParam instanceof Double
+                                || currentParam instanceof BigDecimal
+                                || currentParam instanceof String
                         ) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            /* 这里value加一个前缀 arg= 强制让ES识别成字符串 否则可能会错误识别成Date类型*/
-                            jsonObject.put("arg", "arg=" + String.valueOf(currentParams));
-                            return jsonObject;
+                            return String.valueOf(currentParam);
                         }
                         /*如果是数组类型的参数，则将其转为JSON形式。*/
-                        if (currentParams instanceof List
-                                || currentParams.getClass().isArray()
+                        if (currentParam instanceof List || currentParam.getClass().isArray()
                         ) {
-                            JSONObject jsonObject = new JSONObject(1);
-                            /* 这里value加一个前缀 arg= 强制让ES识别成字符串 否则可能会错误识别成Date类型*/
-                            jsonObject.put("arg", "arg=" + ArrayUtil.toString(currentParams));
-                            return jsonObject;
+                            return ArrayUtil.toString(currentParam);
                         }
-                        return currentParams;
+                        return currentParam;
                     })
                     .collect(Collectors.toList());
-            logRecord.setRequestParams(new JSONArray(argList));
+            logRecord.setRequestParams(new JSONArray(paramList));
         } catch (Exception e) {
             log.error("[日志推送]获取方法参数出错！可能入参含有无法转换为JSON的值! 本次参数保存空值！", e);
             logRecord.setRequestParams(new JSONArray());

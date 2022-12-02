@@ -1,31 +1,56 @@
-package cn.creekmoon.operationLog.hutool589.core.img;
+package cn.creekmoon.operationLog.hutoolCore589.core.img;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Base64;
-import cn.creekmoon.operationLog.hutool589.core.img.BackgroundRemoval;
-import cn.creekmoon.operationLog.hutool589.core.img.FontUtil;
-import cn.creekmoon.operationLog.hutool589.core.img.GraphicsUtil;
-import cn.creekmoon.operationLog.hutool589.core.img.Img;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.URLUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base64;
+import cn.creekmoon.operationLog.hutoolCore589.core.img.Img;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
-import javax.imageio.*;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
-import java.io.*;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.ColorModel;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
@@ -96,7 +121,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static void scale(Image srcImg, File destFile, float scale) throws IORuntimeException {
-        cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImg).setTargetImageType(FileUtil.extName(destFile)).scale(scale).write(destFile);
+        cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).setTargetImageType(FileUtil.extName(destFile)).scale(scale).write(destFile);
     }
 
     /**
@@ -136,7 +161,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image scale(Image srcImg, float scale) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImg).scale(scale).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).scale(scale).getImg();
     }
 
     /**
@@ -150,7 +175,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image scale(Image srcImg, int width, int height) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImg).scale(width, height).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImg).scale(width, height).getImg();
     }
 
     /**
@@ -165,7 +190,7 @@ public class ImgUtil {
      * @throws IORuntimeException IO异常
      */
     public static void scale(File srcImageFile, File destImageFile, int width, int height, Color fixedColor) throws IORuntimeException {
-        cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImageFile)//
+        cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImageFile)//
                 .setTargetImageType(FileUtil.extName(destImageFile))//
                 .scale(width, height, fixedColor)//
                 .write(destImageFile);
@@ -227,7 +252,7 @@ public class ImgUtil {
      * @return {@link Image}
      */
     public static Image scale(Image srcImage, int width, int height, Color fixedColor) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).scale(width, height, fixedColor).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).scale(width, height, fixedColor).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- cut
@@ -316,7 +341,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image cut(Image srcImage, Rectangle rectangle) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).setPositionBaseCentre(false).cut(rectangle).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).setPositionBaseCentre(false).cut(rectangle).getImg();
     }
 
     /**
@@ -343,7 +368,7 @@ public class ImgUtil {
      * @since 4.1.15
      */
     public static Image cut(Image srcImage, int x, int y, int radius) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).cut(x, y, radius).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).cut(x, y, radius).getImg();
     }
 
     /**
@@ -636,7 +661,7 @@ public class ImgUtil {
      * @since 3.1.0
      */
     public static Image gray(Image srcImage) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).gray().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).gray().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- binary
@@ -723,7 +748,7 @@ public class ImgUtil {
      * @since 4.0.5
      */
     public static Image binary(Image srcImage) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).binary().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).binary().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- press
@@ -849,7 +874,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image pressText(Image srcImage, String pressText, Color color, Font font, int x, int y, float alpha) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).pressText(pressText, color, font, x, y, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressText(pressText, color, font, x, y, alpha).getImg();
     }
 
     /**
@@ -959,7 +984,7 @@ public class ImgUtil {
      * @return 结果图片
      */
     public static Image pressImage(Image srcImage, Image pressImg, int x, int y, float alpha) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).pressImage(pressImg, x, y, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressImage(pressImg, x, y, alpha).getImg();
     }
 
     /**
@@ -974,7 +999,7 @@ public class ImgUtil {
      * @since 4.1.14
      */
     public static Image pressImage(Image srcImage, Image pressImg, Rectangle rectangle, float alpha) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(srcImage).pressImage(pressImg, rectangle, alpha).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(srcImage).pressImage(pressImg, rectangle, alpha).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- rotate
@@ -1045,7 +1070,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image rotate(Image image, int degree) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(image).rotate(degree).getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(image).rotate(degree).getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- flip
@@ -1106,7 +1131,7 @@ public class ImgUtil {
      * @since 3.2.2
      */
     public static Image flip(Image image) {
-        return cn.creekmoon.operationLog.hutool589.core.img.Img.from(image).flip().getImg();
+        return cn.creekmoon.operationLog.hutoolCore589.core.img.Img.from(image).flip().getImg();
     }
 
     // ---------------------------------------------------------------------------------------------------------------------- compress
@@ -2069,7 +2094,7 @@ public class ImgUtil {
      * @return 返回处理结果 true:图片处理完成 false:图片处理失败
      */
     public static boolean backgroundRemoval(String inputPath, String outputPath, int tolerance) {
-        return cn.creekmoon.operationLog.hutool589.core.img.BackgroundRemoval.backgroundRemoval(inputPath, outputPath, tolerance);
+        return BackgroundRemoval.backgroundRemoval(inputPath, outputPath, tolerance);
     }
 
     /**
@@ -2087,7 +2112,7 @@ public class ImgUtil {
      * @return 返回处理结果 true:图片处理完成 false:图片处理失败
      */
     public static boolean backgroundRemoval(File input, File output, int tolerance) {
-        return cn.creekmoon.operationLog.hutool589.core.img.BackgroundRemoval.backgroundRemoval(input, output, tolerance);
+        return BackgroundRemoval.backgroundRemoval(input, output, tolerance);
     }
 
     /**
@@ -2106,7 +2131,7 @@ public class ImgUtil {
      * @return 返回处理结果 true:图片处理完成 false:图片处理失败
      */
     public static boolean backgroundRemoval(File input, File output, Color override, int tolerance) {
-        return cn.creekmoon.operationLog.hutool589.core.img.BackgroundRemoval.backgroundRemoval(input, output, override, tolerance);
+        return BackgroundRemoval.backgroundRemoval(input, output, override, tolerance);
     }
 
     /**
@@ -2124,7 +2149,7 @@ public class ImgUtil {
      * @return 返回处理好的图片流
      */
     public static BufferedImage backgroundRemoval(BufferedImage bufferedImage, Color override, int tolerance) {
-        return cn.creekmoon.operationLog.hutool589.core.img.BackgroundRemoval.backgroundRemoval(bufferedImage, override, tolerance);
+        return BackgroundRemoval.backgroundRemoval(bufferedImage, override, tolerance);
     }
 
     /**

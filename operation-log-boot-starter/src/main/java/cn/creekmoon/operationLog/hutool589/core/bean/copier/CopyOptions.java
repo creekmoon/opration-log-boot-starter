@@ -1,13 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.bean.copier;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean.copier;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.convert.TypeConverter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Editor;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.LambdaUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.TypeConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.LambdaUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

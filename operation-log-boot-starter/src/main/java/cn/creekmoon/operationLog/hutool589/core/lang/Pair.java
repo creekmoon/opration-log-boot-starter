@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.clone.CloneSupport;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneSupport;
 
 import java.io.Serializable;
 import java.util.Objects;

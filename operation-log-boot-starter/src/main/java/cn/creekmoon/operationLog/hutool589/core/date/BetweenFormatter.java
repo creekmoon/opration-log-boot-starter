@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUnit;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 
@@ -63,9 +63,9 @@ public class BetweenFormatter implements Serializable {
     public String format() {
         final StringBuilder sb = new StringBuilder();
         if (betweenMs > 0) {
-            long day = betweenMs / cn.creekmoon.operationLog.hutool589.core.date.DateUnit.DAY.getMillis();
-            long hour = betweenMs / cn.creekmoon.operationLog.hutool589.core.date.DateUnit.HOUR.getMillis() - day * 24;
-            long minute = betweenMs / cn.creekmoon.operationLog.hutool589.core.date.DateUnit.MINUTE.getMillis() - day * 24 * 60 - hour * 60;
+            long day = betweenMs / cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.DAY.getMillis();
+            long hour = betweenMs / cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.HOUR.getMillis() - day * 24;
+            long minute = betweenMs / cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MINUTE.getMillis() - day * 24 * 60 - hour * 60;
 
             final long BetweenOfSecond = ((day * 24 + hour) * 60 + minute) * 60;
             long second = betweenMs / DateUnit.SECOND.getMillis() - BetweenOfSecond;

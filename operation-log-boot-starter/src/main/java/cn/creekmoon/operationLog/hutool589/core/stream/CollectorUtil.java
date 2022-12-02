@@ -1,10 +1,18 @@
-package cn.creekmoon.operationLog.hutool589.core.stream;
+package cn.creekmoon.operationLog.hutoolCore589.core.stream;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.Opt;
-import cn.creekmoon.operationLog.hutool589.core.stream.SimpleCollector;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.stream.SimpleCollector;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -68,7 +76,7 @@ public class CollectorUtil {
                                                       CharSequence prefix,
                                                       CharSequence suffix,
                                                       Function<T, ? extends CharSequence> toStringFunc) {
-        return new cn.creekmoon.operationLog.hutool589.core.stream.SimpleCollector<>(
+        return new SimpleCollector<>(
                 () -> new StringJoiner(delimiter, prefix, suffix),
                 (joiner, ele) -> joiner.add(toStringFunc.apply(ele)),
                 StringJoiner::merge,
@@ -105,7 +113,7 @@ public class CollectorUtil {
         @SuppressWarnings("unchecked") final Supplier<Map<K, A>> mangledFactory = (Supplier<Map<K, A>>) mapFactory;
 
         if (downstream.characteristics().contains(Collector.Characteristics.IDENTITY_FINISH)) {
-            return new cn.creekmoon.operationLog.hutool589.core.stream.SimpleCollector<>(mangledFactory, accumulator, merger, CH_ID);
+            return new SimpleCollector<>(mangledFactory, accumulator, merger, CH_ID);
         } else {
             @SuppressWarnings("unchecked") final Function<A, A> downstreamFinisher = (Function<A, A>) downstream.finisher();
             final Function<Map<K, A>, M> finisher = intermediate -> {
@@ -113,7 +121,7 @@ public class CollectorUtil {
                 @SuppressWarnings("unchecked") final M castResult = (M) intermediate;
                 return castResult;
             };
-            return new cn.creekmoon.operationLog.hutool589.core.stream.SimpleCollector<>(mangledFactory, accumulator, merger, finisher, CH_NOID);
+            return new SimpleCollector<>(mangledFactory, accumulator, merger, finisher, CH_NOID);
         }
     }
 

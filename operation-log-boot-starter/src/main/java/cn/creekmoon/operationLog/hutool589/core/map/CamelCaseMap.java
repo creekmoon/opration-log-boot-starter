@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.map.FuncKeyMap;
-import cn.creekmoon.operationLog.hutool589.core.map.MapBuilder;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.FuncKeyMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapBuilder;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class CamelCaseMap<K, V> extends FuncKeyMap<K, V> {
      * @param loadFactor      加载因子
      */
     public CamelCaseMap(int initialCapacity, float loadFactor) {
-        this(cn.creekmoon.operationLog.hutool589.core.map.MapBuilder.create(new HashMap<>(initialCapacity, loadFactor)));
+        this(cn.creekmoon.operationLog.hutoolCore589.core.map.MapBuilder.create(new HashMap<>(initialCapacity, loadFactor)));
     }
 
     /**

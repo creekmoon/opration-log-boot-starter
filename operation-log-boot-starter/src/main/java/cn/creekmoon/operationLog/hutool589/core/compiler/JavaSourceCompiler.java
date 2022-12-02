@@ -1,13 +1,21 @@
-package cn.creekmoon.operationLog.hutool589.core.compiler;
+package cn.creekmoon.operationLog.hutoolCore589.core.compiler;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.FileResource;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.Resource;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.StringResource;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerException;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.DiagnosticUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaFileObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.Resource;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.StringResource;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassLoaderUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.URLUtil;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -16,7 +24,12 @@ import javax.tools.StandardLocation;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -169,7 +182,7 @@ public class JavaSourceCompiler {
         }
 
         // 创建编译器
-        final JavaClassFileManager javaFileManager = new JavaClassFileManager(ucl, CompilerUtil.getFileManager());
+        final JavaClassFileManager javaFileManager = new JavaClassFileManager(ucl, cn.creekmoon.operationLog.hutoolCore589.core.compiler.CompilerUtil.getFileManager());
 
         // classpath
         final List<String> options = new ArrayList<>();
@@ -203,7 +216,7 @@ public class JavaSourceCompiler {
     private List<File> getClassPath() {
         List<File> classPathFileList = new ArrayList<>();
         for (File file : libraryFileList) {
-            List<File> jarOrZipFile = FileUtil.loopFiles(file, (subFile) -> JavaFileObjectUtil.isJarOrZipFile(subFile.getName()));
+            List<File> jarOrZipFile = FileUtil.loopFiles(file, (subFile) -> cn.creekmoon.operationLog.hutoolCore589.core.compiler.JavaFileObjectUtil.isJarOrZipFile(subFile.getName()));
             classPathFileList.addAll(jarOrZipFile);
             if (file.isDirectory()) {
                 classPathFileList.add(file);

@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.StreamProgress;
-import cn.creekmoon.operationLog.hutool589.core.io.copy.ChannelCopier;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteArrayOutputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.StreamProgress;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.copy.ChannelCopier;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,9 +53,9 @@ public class NioUtil {
      * @param bufferSize     缓存大小
      * @param streamProgress 进度条
      * @return 传输的byte数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, cn.creekmoon.operationLog.hutool589.core.io.StreamProgress streamProgress) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, StreamProgress streamProgress) throws IORuntimeException {
         return copyByNIO(in, out, bufferSize, -1, streamProgress);
     }
 
@@ -69,10 +69,10 @@ public class NioUtil {
      * @param count          最大长度
      * @param streamProgress 进度条
      * @return 传输的byte数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 5.7.8
      */
-    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, long count, cn.creekmoon.operationLog.hutool589.core.io.StreamProgress streamProgress) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, long count, StreamProgress streamProgress) throws IORuntimeException {
         return copy(Channels.newChannel(in), Channels.newChannel(out), bufferSize, count, streamProgress);
     }
 
@@ -82,17 +82,17 @@ public class NioUtil {
      * @param inChannel  {@link FileChannel}
      * @param outChannel {@link FileChannel}
      * @return 拷贝的字节数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 5.5.3
      */
-    public static long copy(FileChannel inChannel, FileChannel outChannel) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copy(FileChannel inChannel, FileChannel outChannel) throws IORuntimeException {
         Assert.notNull(inChannel, "In channel is null!");
         Assert.notNull(outChannel, "Out channel is null!");
 
         try {
             return copySafely(inChannel, outChannel);
         } catch (IOException e) {
-            throw new cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException(e);
+            throw new IORuntimeException(e);
         }
     }
 
@@ -139,10 +139,10 @@ public class NioUtil {
      * @param in  {@link ReadableByteChannel}
      * @param out {@link WritableByteChannel}
      * @return 拷贝的字节数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 4.5.0
      */
-    public static long copy(ReadableByteChannel in, WritableByteChannel out) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copy(ReadableByteChannel in, WritableByteChannel out) throws IORuntimeException {
         return copy(in, out, DEFAULT_BUFFER_SIZE);
     }
 
@@ -153,10 +153,10 @@ public class NioUtil {
      * @param out        {@link WritableByteChannel}
      * @param bufferSize 缓冲大小，如果小于等于0，使用默认
      * @return 拷贝的字节数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 4.5.0
      */
-    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize) throws IORuntimeException {
         return copy(in, out, bufferSize, null);
     }
 
@@ -166,11 +166,11 @@ public class NioUtil {
      * @param in             {@link ReadableByteChannel}
      * @param out            {@link WritableByteChannel}
      * @param bufferSize     缓冲大小，如果小于等于0，使用默认
-     * @param streamProgress {@link cn.creekmoon.operationLog.hutool589.core.io.StreamProgress}进度处理器
+     * @param streamProgress {@link StreamProgress}进度处理器
      * @return 拷贝的字节数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize, cn.creekmoon.operationLog.hutool589.core.io.StreamProgress streamProgress) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize, StreamProgress streamProgress) throws IORuntimeException {
         return copy(in, out, bufferSize, -1, streamProgress);
     }
 
@@ -181,12 +181,12 @@ public class NioUtil {
      * @param out            {@link WritableByteChannel}
      * @param bufferSize     缓冲大小，如果小于等于0，使用默认
      * @param count          读取总长度
-     * @param streamProgress {@link cn.creekmoon.operationLog.hutool589.core.io.StreamProgress}进度处理器
+     * @param streamProgress {@link StreamProgress}进度处理器
      * @return 拷贝的字节数
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 5.7.8
      */
-    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize, long count, StreamProgress streamProgress) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize, long count, StreamProgress streamProgress) throws IORuntimeException {
         return new ChannelCopier(bufferSize, count, streamProgress).copy(in, out);
     }
 
@@ -196,11 +196,11 @@ public class NioUtil {
      * @param channel 可读通道，读取完毕后并不关闭通道
      * @param charset 字符集
      * @return 内容
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      * @since 4.5.0
      */
-    public static String read(ReadableByteChannel channel, Charset charset) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
-        cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream out = read(channel);
+    public static String read(ReadableByteChannel channel, Charset charset) throws IORuntimeException {
+        FastByteArrayOutputStream out = read(channel);
         return null == charset ? out.toString() : out.toString(charset);
     }
 
@@ -209,10 +209,10 @@ public class NioUtil {
      *
      * @param channel 可读通道，读取完毕后并不关闭通道
      * @return 输出流
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream read(ReadableByteChannel channel) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
-        final cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream out = new FastByteArrayOutputStream();
+    public static FastByteArrayOutputStream read(ReadableByteChannel channel) throws IORuntimeException {
+        final FastByteArrayOutputStream out = new FastByteArrayOutputStream();
         copy(channel, Channels.newChannel(out));
         return out;
     }
@@ -222,9 +222,9 @@ public class NioUtil {
      *
      * @param fileChannel 文件管道
      * @return 内容
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static String readUtf8(FileChannel fileChannel) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static String readUtf8(FileChannel fileChannel) throws IORuntimeException {
         return read(fileChannel, CharsetUtil.CHARSET_UTF_8);
     }
 
@@ -234,9 +234,9 @@ public class NioUtil {
      * @param fileChannel 文件管道
      * @param charsetName 字符集
      * @return 内容
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static String read(FileChannel fileChannel, String charsetName) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static String read(FileChannel fileChannel, String charsetName) throws IORuntimeException {
         return read(fileChannel, CharsetUtil.charset(charsetName));
     }
 
@@ -246,9 +246,9 @@ public class NioUtil {
      * @param fileChannel 文件管道
      * @param charset     字符集
      * @return 内容
-     * @throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException IO异常
+     * @throws IORuntimeException IO异常
      */
-    public static String read(FileChannel fileChannel, Charset charset) throws cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException {
+    public static String read(FileChannel fileChannel, Charset charset) throws IORuntimeException {
         MappedByteBuffer buffer;
         try {
             buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size()).load();

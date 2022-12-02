@@ -1,13 +1,21 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -168,7 +176,7 @@ public class TableMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>, Ser
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+        for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
             this.put(entry.getKey(), entry.getValue());
         }
     }
@@ -200,17 +208,17 @@ public class TableMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>, Ser
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
-        final Set<Entry<K, V>> hashSet = new LinkedHashSet<>();
+    public Set<Map.Entry<K, V>> entrySet() {
+        final Set<Map.Entry<K, V>> hashSet = new LinkedHashSet<>();
         for (int i = 0; i < size(); i++) {
-            hashSet.add(MapUtil.entry(keys.get(i), values.get(i)));
+            hashSet.add(cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil.entry(keys.get(i), values.get(i)));
         }
         return hashSet;
     }
 
     @Override
-    public Iterator<Entry<K, V>> iterator() {
-        return new Iterator<Entry<K, V>>() {
+    public Iterator<Map.Entry<K, V>> iterator() {
+        return new Iterator<Map.Entry<K, V>>() {
             private final Iterator<K> keysIter = keys.iterator();
             private final Iterator<V> valuesIter = values.iterator();
 
@@ -220,7 +228,7 @@ public class TableMap<K, V> implements Map<K, V>, Iterable<Map.Entry<K, V>>, Ser
             }
 
             @Override
-            public Entry<K, V> next() {
+            public Map.Entry<K, V> next() {
                 return MapUtil.entry(keysIter.next(), valuesIter.next());
             }
 

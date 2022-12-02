@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.convert.impl;
+package cn.creekmoon.operationLog.hutoolCore589.core.convert.impl;
 
-import cn.creekmoon.operationLog.hutool589.core.convert.AbstractConverter;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.convert.ConvertException;
-import cn.creekmoon.operationLog.hutool589.core.convert.impl.NumberConverter;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.AbstractConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConvertException;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.function.Function;
 
@@ -72,15 +72,15 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
      */
     protected static Object convert(Object value, Class<?> primitiveClass, Function<Object, String> toStringFunc) {
         if (byte.class == primitiveClass) {
-            return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Byte.class, toStringFunc), 0);
+            return ObjectUtil.defaultIfNull(cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter.convert(value, Byte.class, toStringFunc), 0);
         } else if (short.class == primitiveClass) {
-            return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Short.class, toStringFunc), 0);
+            return ObjectUtil.defaultIfNull(cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter.convert(value, Short.class, toStringFunc), 0);
         } else if (int.class == primitiveClass) {
-            return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Integer.class, toStringFunc), 0);
+            return ObjectUtil.defaultIfNull(cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter.convert(value, Integer.class, toStringFunc), 0);
         } else if (long.class == primitiveClass) {
-            return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Long.class, toStringFunc), 0);
+            return ObjectUtil.defaultIfNull(cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter.convert(value, Long.class, toStringFunc), 0);
         } else if (float.class == primitiveClass) {
-            return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Float.class, toStringFunc), 0);
+            return ObjectUtil.defaultIfNull(cn.creekmoon.operationLog.hutoolCore589.core.convert.impl.NumberConverter.convert(value, Float.class, toStringFunc), 0);
         } else if (double.class == primitiveClass) {
             return ObjectUtil.defaultIfNull(NumberConverter.convert(value, Double.class, toStringFunc), 0);
         } else if (char.class == primitiveClass) {

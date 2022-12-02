@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.DateUnit;
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -90,9 +90,9 @@ public class GroupTimeInterval implements Serializable {
      * @param dateUnit 时间单位
      * @return 从开始到当前的间隔时间（毫秒数）
      */
-    public long interval(String id, DateUnit dateUnit) {
+    public long interval(String id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit dateUnit) {
         final long intervalMs = isNano ? interval(id) / 1000000L : interval(id);
-        if (DateUnit.MS == dateUnit) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MS == dateUnit) {
             return intervalMs;
         }
         return intervalMs / dateUnit.getMillis();
@@ -105,7 +105,7 @@ public class GroupTimeInterval implements Serializable {
      * @return 从开始到当前的间隔时间（毫秒数）
      */
     public long intervalMs(String id) {
-        return interval(id, DateUnit.MS);
+        return interval(id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MS);
     }
 
     /**
@@ -115,7 +115,7 @@ public class GroupTimeInterval implements Serializable {
      * @return 从开始到当前的间隔秒数，取绝对值
      */
     public long intervalSecond(String id) {
-        return interval(id, DateUnit.SECOND);
+        return interval(id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.SECOND);
     }
 
     /**
@@ -125,7 +125,7 @@ public class GroupTimeInterval implements Serializable {
      * @return 从开始到当前的间隔分钟数，取绝对值
      */
     public long intervalMinute(String id) {
-        return interval(id, DateUnit.MINUTE);
+        return interval(id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.MINUTE);
     }
 
     /**
@@ -135,7 +135,7 @@ public class GroupTimeInterval implements Serializable {
      * @return 从开始到当前的间隔小时数，取绝对值
      */
     public long intervalHour(String id) {
-        return interval(id, DateUnit.HOUR);
+        return interval(id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.HOUR);
     }
 
     /**
@@ -145,7 +145,7 @@ public class GroupTimeInterval implements Serializable {
      * @return 从开始到当前的间隔天数，取绝对值
      */
     public long intervalDay(String id) {
-        return interval(id, DateUnit.DAY);
+        return interval(id, cn.creekmoon.operationLog.hutoolCore589.core.date.DateUnit.DAY);
     }
 
     /**

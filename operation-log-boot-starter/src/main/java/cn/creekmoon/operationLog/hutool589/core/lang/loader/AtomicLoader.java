@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.lang.loader;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang.loader;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.loader.Loader;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.loader.Loader;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;

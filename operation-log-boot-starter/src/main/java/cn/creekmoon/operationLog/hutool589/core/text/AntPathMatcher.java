@@ -1,12 +1,16 @@
-package cn.creekmoon.operationLog.hutool589.core.text;
+package cn.creekmoon.operationLog.hutoolCore589.core.text;
 
 
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
-import cn.creekmoon.operationLog.hutool589.core.text.CharPool;
-import cn.creekmoon.operationLog.hutool589.core.text.StrSplitter;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.CharPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.StrSplitter;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -161,7 +165,7 @@ public class AntPathMatcher {
             if (c == '*' || c == '?') {
                 return true;
             }
-            if (c == CharPool.DELIM_START) {
+            if (c == cn.creekmoon.operationLog.hutoolCore589.core.text.CharPool.DELIM_START) {
                 uriVar = true;
                 continue;
             }

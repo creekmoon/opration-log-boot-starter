@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.io.unit;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.unit;
 
-import cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 数据单位封装<p>
@@ -23,36 +23,36 @@ public enum DataUnit {
     /**
      * Bytes, 后缀表示为： {@code B}.
      */
-    BYTES("B", cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize.ofBytes(1)),
+    BYTES("B", cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize.ofBytes(1)),
 
     /**
      * Kilobytes, 后缀表示为： {@code KB}.
      */
-    KILOBYTES("KB", cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize.ofKilobytes(1)),
+    KILOBYTES("KB", cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize.ofKilobytes(1)),
 
     /**
      * Megabytes, 后缀表示为： {@code MB}.
      */
-    MEGABYTES("MB", cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize.ofMegabytes(1)),
+    MEGABYTES("MB", cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize.ofMegabytes(1)),
 
     /**
      * Gigabytes, 后缀表示为： {@code GB}.
      */
-    GIGABYTES("GB", cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize.ofGigabytes(1)),
+    GIGABYTES("GB", cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize.ofGigabytes(1)),
 
     /**
      * Terabytes, 后缀表示为： {@code TB}.
      */
-    TERABYTES("TB", cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize.ofTerabytes(1));
+    TERABYTES("TB", cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize.ofTerabytes(1));
 
     public static final String[] UNIT_NAMES = new String[]{"B", "KB", "MB", "GB", "TB", "PB", "EB"};
 
     private final String suffix;
 
-    private final cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize size;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize size;
 
 
-    DataUnit(String suffix, cn.creekmoon.operationLog.hutool589.core.io.unit.DataSize size) {
+    DataUnit(String suffix, cn.creekmoon.operationLog.hutoolCore589.core.io.unit.DataSize size) {
         this.suffix = suffix;
         this.size = size;
     }

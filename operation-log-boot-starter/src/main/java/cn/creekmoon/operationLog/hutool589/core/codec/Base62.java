@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Base62Codec;
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base62Codec;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class Base62 {
      * @return 被加密后的字符串
      */
     public static String encode(byte[] source) {
-        return new String(cn.creekmoon.operationLog.hutool589.core.codec.Base62Codec.INSTANCE.encode(source));
+        return new String(Base62Codec.INSTANCE.encode(source));
     }
 
     /**
@@ -102,7 +102,7 @@ public class Base62 {
      * @return 被加密后的字符串
      */
     public static String encodeInverted(byte[] source) {
-        return new String(cn.creekmoon.operationLog.hutool589.core.codec.Base62Codec.INSTANCE.encode(source, true));
+        return new String(Base62Codec.INSTANCE.encode(source, true));
     }
 
     /**
@@ -197,7 +197,7 @@ public class Base62 {
      * @return 解码后的bytes
      */
     public static byte[] decode(byte[] base62bytes) {
-        return cn.creekmoon.operationLog.hutool589.core.codec.Base62Codec.INSTANCE.decode(base62bytes);
+        return Base62Codec.INSTANCE.decode(base62bytes);
     }
 
     /**

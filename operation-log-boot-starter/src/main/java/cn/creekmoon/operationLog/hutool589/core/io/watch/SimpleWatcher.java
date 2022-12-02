@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.io.watch;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.watch;
 
-import cn.creekmoon.operationLog.hutool589.core.io.watch.watchers.IgnoreWatcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.watch.watchers.IgnoreWatcher;
 
 /**
  * 空白WatchListener<br>

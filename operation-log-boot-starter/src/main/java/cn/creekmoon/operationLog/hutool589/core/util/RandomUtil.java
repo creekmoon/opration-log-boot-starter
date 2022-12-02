@@ -1,24 +1,29 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.date.DateField;
-import cn.creekmoon.operationLog.hutool589.core.date.DateTime;
-import cn.creekmoon.operationLog.hutool589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.WeightRandom;
-import cn.creekmoon.operationLog.hutool589.core.lang.WeightRandom.WeightObj;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.NumberUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateField;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateTime;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.WeightRandom;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.WeightRandom.WeightObj;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.awt.*;
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -262,7 +267,7 @@ public class RandomUtil {
      * @since 4.0.8
      */
     public static double randomDouble(double min, double max, int scale, RoundingMode roundingMode) {
-        return NumberUtil.round(randomDouble(min, max), scale, roundingMode).doubleValue();
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.round(randomDouble(min, max), scale, roundingMode).doubleValue();
     }
 
     /**
@@ -285,7 +290,7 @@ public class RandomUtil {
      * @since 4.0.8
      */
     public static double randomDouble(int scale, RoundingMode roundingMode) {
-        return NumberUtil.round(randomDouble(), scale, roundingMode).doubleValue();
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.round(randomDouble(), scale, roundingMode).doubleValue();
     }
 
     /**
@@ -310,7 +315,7 @@ public class RandomUtil {
      * @since 4.0.8
      */
     public static double randomDouble(double limit, int scale, RoundingMode roundingMode) {
-        return NumberUtil.round(randomDouble(limit), scale, roundingMode).doubleValue();
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.round(randomDouble(limit), scale, roundingMode).doubleValue();
     }
 
     /**
@@ -320,7 +325,7 @@ public class RandomUtil {
      * @since 4.0.9
      */
     public static BigDecimal randomBigDecimal() {
-        return NumberUtil.toBigDecimal(getRandom().nextDouble());
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.toBigDecimal(getRandom().nextDouble());
     }
 
     /**
@@ -331,7 +336,7 @@ public class RandomUtil {
      * @since 4.0.9
      */
     public static BigDecimal randomBigDecimal(BigDecimal limit) {
-        return NumberUtil.toBigDecimal(getRandom().nextDouble(limit.doubleValue()));
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.NumberUtil.toBigDecimal(getRandom().nextDouble(limit.doubleValue()));
     }
 
     /**
@@ -444,7 +449,7 @@ public class RandomUtil {
         if (count >= source.size()) {
             return ListUtil.toList(source);
         }
-        final int[] randomList = ArrayUtil.sub(randomInts(source.size()), 0, count);
+        final int[] randomList = cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.sub(randomInts(source.size()), 0, count);
         List<T> result = new ArrayList<>();
         for (int e : randomList) {
             result.add(source.get(e));
@@ -484,7 +489,7 @@ public class RandomUtil {
      * @since 5.2.1
      */
     public static int[] randomInts(int length) {
-        final int[] range = ArrayUtil.range(length);
+        final int[] range = cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.range(length);
         for (int i = 0; i < length; i++) {
             int random = randomInt(i, length);
             ArrayUtil.swap(range, i, random);
@@ -522,7 +527,7 @@ public class RandomUtil {
      */
     public static String randomStringWithoutStr(int length, String elemData) {
         String baseStr = BASE_CHAR_NUMBER;
-        baseStr = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.removeAll(baseStr, elemData.toLowerCase().toCharArray());
+        baseStr = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.removeAll(baseStr, elemData.toLowerCase().toCharArray());
         return randomString(baseStr, length);
     }
 
@@ -544,7 +549,7 @@ public class RandomUtil {
      * @return 随机字符串
      */
     public static String randomString(String baseString, int length) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(baseString)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isEmpty(baseString)) {
             return StrUtil.EMPTY;
         }
         if (length < 1) {

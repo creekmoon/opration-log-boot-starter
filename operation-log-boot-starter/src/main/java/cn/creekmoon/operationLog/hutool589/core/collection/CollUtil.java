@@ -1,25 +1,53 @@
-package cn.creekmoon.operationLog.hutool589.core.collection;
+package cn.creekmoon.operationLog.hutoolCore589.core.collection;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.BeanUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.IteratorEnumeration;
-import cn.creekmoon.operationLog.hutool589.core.comparator.CompareUtil;
-import cn.creekmoon.operationLog.hutool589.core.comparator.PinyinComparator;
-import cn.creekmoon.operationLog.hutool589.core.comparator.PropertyComparator;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.convert.ConverterRegistry;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Editor;
-import cn.creekmoon.operationLog.hutool589.core.lang.Filter;
-import cn.creekmoon.operationLog.hutool589.core.lang.Matcher;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Hash32;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.BeanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.CompareUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PinyinComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.PropertyComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.ConverterRegistry;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Editor;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Filter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Matcher;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Hash32;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.TypeUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NavigableSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.Stack;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -2551,12 +2579,12 @@ public class CollUtil {
      * @return {@link LinkedList}
      * @since 3.0.9
      */
-    public static <K, V> LinkedHashMap<K, V> sortToMap(Collection<Entry<K, V>> entryCollection, Comparator<Entry<K, V>> comparator) {
-        List<Entry<K, V>> list = new LinkedList<>(entryCollection);
+    public static <K, V> LinkedHashMap<K, V> sortToMap(Collection<Map.Entry<K, V>> entryCollection, Comparator<Map.Entry<K, V>> comparator) {
+        List<Map.Entry<K, V>> list = new LinkedList<>(entryCollection);
         list.sort(comparator);
 
         LinkedHashMap<K, V> result = new LinkedHashMap<>();
-        for (Entry<K, V> entry : list) {
+        for (Map.Entry<K, V> entry : list) {
             result.put(entry.getKey(), entry.getValue());
         }
         return result;
@@ -2572,7 +2600,7 @@ public class CollUtil {
      * @return {@link LinkedList}
      * @since 3.0.9
      */
-    public static <K, V> LinkedHashMap<K, V> sortByEntry(Map<K, V> map, Comparator<Entry<K, V>> comparator) {
+    public static <K, V> LinkedHashMap<K, V> sortByEntry(Map<K, V> map, Comparator<Map.Entry<K, V>> comparator) {
         return sortToMap(map.entrySet(), comparator);
     }
 

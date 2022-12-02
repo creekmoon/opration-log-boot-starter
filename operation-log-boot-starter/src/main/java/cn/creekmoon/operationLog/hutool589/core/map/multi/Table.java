@@ -1,11 +1,15 @@
-package cn.creekmoon.operationLog.hutool589.core.map.multi;
+package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.ListUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Opt;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Consumer3;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ListUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Consumer3;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 表格数据结构定义<br>

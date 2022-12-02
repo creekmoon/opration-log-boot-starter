@@ -1,11 +1,16 @@
-package cn.creekmoon.operationLog.hutool589.core.text.csv;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvParser;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvReadConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRowHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.File;
 import java.io.Reader;
@@ -102,10 +107,10 @@ public class CsvBaseReader implements Serializable {
      * 读取CSV文件，默认UTF-8编码
      *
      * @param file CSV文件
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
-    public CsvData read(File file) throws IORuntimeException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData read(File file) throws IORuntimeException {
         return read(file, DEFAULT_CHARSET);
     }
 
@@ -113,9 +118,9 @@ public class CsvBaseReader implements Serializable {
      * 从字符串中读取CSV数据
      *
      * @param csvStr CSV字符串
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      */
-    public CsvData readFromStr(String csvStr) {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData readFromStr(String csvStr) {
         return read(new StringReader(csvStr));
     }
 
@@ -135,10 +140,10 @@ public class CsvBaseReader implements Serializable {
      *
      * @param file    CSV文件
      * @param charset 文件编码，默认系统编码
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
-    public CsvData read(File file, Charset charset) throws IORuntimeException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData read(File file, Charset charset) throws IORuntimeException {
         return read(Objects.requireNonNull(file.toPath(), "file must not be null"), charset);
     }
 
@@ -146,10 +151,10 @@ public class CsvBaseReader implements Serializable {
      * 读取CSV文件，默认UTF-8编码
      *
      * @param path CSV文件
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
-    public CsvData read(Path path) throws IORuntimeException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData read(Path path) throws IORuntimeException {
         return read(path, DEFAULT_CHARSET);
     }
 
@@ -158,10 +163,10 @@ public class CsvBaseReader implements Serializable {
      *
      * @param path    CSV文件
      * @param charset 文件编码，默认系统编码
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
-    public CsvData read(Path path, Charset charset) throws IORuntimeException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData read(Path path, Charset charset) throws IORuntimeException {
         Assert.notNull(path, "path must not be null");
         return read(FileUtil.getReader(path, charset));
     }
@@ -170,16 +175,16 @@ public class CsvBaseReader implements Serializable {
      * 从Reader中读取CSV数据，读取后关闭Reader
      *
      * @param reader Reader
-     * @return {@link CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
-    public CsvData read(Reader reader) throws IORuntimeException {
-        final CsvParser csvParser = parse(reader);
+    public cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData read(Reader reader) throws IORuntimeException {
+        final cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvParser csvParser = parse(reader);
         final List<CsvRow> rows = new ArrayList<>();
         read(csvParser, rows::add);
         final List<String> header = config.headerLineNo > -1 ? csvParser.getHeader() : null;
 
-        return new CsvData(header, rows);
+        return new cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData(header, rows);
     }
 
     /**
@@ -256,7 +261,7 @@ public class CsvBaseReader implements Serializable {
      * @throws IORuntimeException IO异常
      * @since 5.0.4
      */
-    private void read(CsvParser csvParser, CsvRowHandler rowHandler) throws IORuntimeException {
+    private void read(cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvParser csvParser, CsvRowHandler rowHandler) throws IORuntimeException {
         try {
             while (csvParser.hasNext()) {
                 rowHandler.handle(csvParser.next());
@@ -267,13 +272,13 @@ public class CsvBaseReader implements Serializable {
     }
 
     /**
-     * 构建 {@link CsvParser}
+     * 构建 {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvParser}
      *
      * @param reader Reader
      * @return CsvParser
      * @throws IORuntimeException IO异常
      */
-    protected CsvParser parse(Reader reader) throws IORuntimeException {
+    protected cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvParser parse(Reader reader) throws IORuntimeException {
         return new CsvParser(reader, this.config);
     }
     //--------------------------------------------------------------------------------------------- Private method start

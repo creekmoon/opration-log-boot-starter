@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io;
+package cn.creekmoon.operationLog.hutoolCore589.core.io;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteBuffer;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.util.CharsetUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteBuffer;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharsetUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
  */
 public class FastByteArrayOutputStream extends OutputStream {
 
-    private final FastByteBuffer buffer;
+    private final cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteBuffer buffer;
 
     /**
      * 构造
@@ -70,9 +70,9 @@ public class FastByteArrayOutputStream extends OutputStream {
      * 写出
      *
      * @param out 输出流
-     * @throws IORuntimeException IO异常
+     * @throws cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException IO异常
      */
-    public void writeTo(OutputStream out) throws IORuntimeException {
+    public void writeTo(OutputStream out) throws cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException {
         final int index = buffer.index();
         if (index < 0) {
             // 无数据写出

@@ -1,22 +1,28 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.comparator.LengthComparator;
-import cn.creekmoon.operationLog.hutool589.core.convert.Convert;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.lang.PatternPool;
-import cn.creekmoon.operationLog.hutool589.core.lang.RegexPool;
-import cn.creekmoon.operationLog.hutool589.core.lang.Validator;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.Mutable;
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.MutableObj;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.comparator.LengthComparator;
+import cn.creekmoon.operationLog.hutoolCore589.core.convert.Convert;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.PatternPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.RegexPool;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Validator;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.MutableObj;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -343,7 +349,7 @@ public class ReUtil {
                 int group = Integer.parseInt(var);
                 template = template.replace("$" + var, matcher.group(group));
             }
-            contentHolder.set(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.sub(content, matcher.end(), content.length()));
+            contentHolder.set(StrUtil.sub(content, matcher.end(), content.length()));
             return template;
         }
         return null;
@@ -376,8 +382,8 @@ public class ReUtil {
      * @return 删除后剩余的内容
      */
     public static String delFirst(String regex, CharSequence content) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hasBlank(regex, content)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        if (StrUtil.hasBlank(regex, content)) {
+            return StrUtil.str(content);
         }
 
         final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
@@ -392,7 +398,7 @@ public class ReUtil {
      * @return 删除后剩余的内容
      */
     public static String delFirst(Pattern pattern, CharSequence content) {
-        return replaceFirst(pattern, content, cn.creekmoon.operationLog.hutool589.core.util.StrUtil.EMPTY);
+        return replaceFirst(pattern, content, StrUtil.EMPTY);
     }
 
     /**
@@ -405,8 +411,8 @@ public class ReUtil {
      * @since 5.6.5
      */
     public static String replaceFirst(Pattern pattern, CharSequence content, String replacement) {
-        if (null == pattern || cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(content)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        if (null == pattern || StrUtil.isEmpty(content)) {
+            return StrUtil.str(content);
         }
 
         return pattern.matcher(content).replaceFirst(replacement);
@@ -421,8 +427,8 @@ public class ReUtil {
      * @since 5.6.5
      */
     public static String delLast(String regex, CharSequence str) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hasBlank(regex, str)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(str);
+        if (StrUtil.hasBlank(regex, str)) {
+            return StrUtil.str(str);
         }
 
         final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
@@ -438,14 +444,14 @@ public class ReUtil {
      * @since 5.6.5
      */
     public static String delLast(Pattern pattern, CharSequence str) {
-        if (null != pattern && cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotEmpty(str)) {
+        if (null != pattern && StrUtil.isNotEmpty(str)) {
             final MatchResult matchResult = lastIndexOf(pattern, str);
             if (null != matchResult) {
-                return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subPre(str, matchResult.start()) + cn.creekmoon.operationLog.hutool589.core.util.StrUtil.subSuf(str, matchResult.end());
+                return StrUtil.subPre(str, matchResult.start()) + StrUtil.subSuf(str, matchResult.end());
             }
         }
 
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(str);
+        return StrUtil.str(str);
     }
 
     /**
@@ -456,8 +462,8 @@ public class ReUtil {
      * @return 删除后剩余的内容
      */
     public static String delAll(String regex, CharSequence content) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.hasBlank(regex, content)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        if (StrUtil.hasBlank(regex, content)) {
+            return StrUtil.str(content);
         }
 
         final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
@@ -472,11 +478,11 @@ public class ReUtil {
      * @return 删除后剩余的内容
      */
     public static String delAll(Pattern pattern, CharSequence content) {
-        if (null == pattern || cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(content)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        if (null == pattern || StrUtil.isBlank(content)) {
+            return StrUtil.str(content);
         }
 
-        return pattern.matcher(content).replaceAll(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.EMPTY);
+        return pattern.matcher(content).replaceAll(StrUtil.EMPTY);
     }
 
     /**
@@ -488,7 +494,7 @@ public class ReUtil {
      */
     public static String delPre(String regex, CharSequence content) {
         if (null == content || null == regex) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+            return StrUtil.str(content);
         }
 
         final Pattern pattern = PatternPool.get(regex, Pattern.DOTALL);
@@ -504,14 +510,14 @@ public class ReUtil {
      */
     public static String delPre(Pattern pattern, CharSequence content) {
         if (null == content || null == pattern) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+            return StrUtil.str(content);
         }
 
         final Matcher matcher = pattern.matcher(content);
         if (matcher.find()) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.sub(content, matcher.end(), content.length());
+            return StrUtil.sub(content, matcher.end(), content.length());
         }
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        return StrUtil.str(content);
     }
 
     /**
@@ -810,7 +816,7 @@ public class ReUtil {
             return false;
         }
 
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(regex)) {
+        if (StrUtil.isEmpty(regex)) {
             // 正则不存在则为全匹配
             return true;
         }
@@ -869,8 +875,8 @@ public class ReUtil {
      * @since 3.0.4
      */
     public static String replaceAll(CharSequence content, Pattern pattern, String replacementTemplate) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(content)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        if (StrUtil.isEmpty(content)) {
+            return StrUtil.str(content);
         }
 
         final Matcher matcher = pattern.matcher(content);
@@ -890,7 +896,7 @@ public class ReUtil {
             matcher.appendTail(sb);
             return sb.toString();
         }
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(content);
+        return StrUtil.str(content);
     }
 
     /**
@@ -928,8 +934,8 @@ public class ReUtil {
      * @since 4.2.2
      */
     public static String replaceAll(CharSequence str, Pattern pattern, Func1<Matcher, String> replaceFun) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isEmpty(str)) {
-            return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.str(str);
+        if (StrUtil.isEmpty(str)) {
+            return StrUtil.str(str);
         }
 
         final Matcher matcher = pattern.matcher(str);
@@ -967,7 +973,7 @@ public class ReUtil {
      * @return 转义后的文本
      */
     public static String escape(CharSequence content) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(content)) {
+        if (StrUtil.isBlank(content)) {
             return StrUtil.str(content);
         }
 

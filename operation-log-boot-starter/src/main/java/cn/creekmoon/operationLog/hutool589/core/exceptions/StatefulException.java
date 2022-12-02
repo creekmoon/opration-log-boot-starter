@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.exceptions;
+package cn.creekmoon.operationLog.hutoolCore589.core.exceptions;
 
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 /**
  * 带有状态码的异常

@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.io.checksum;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.checksum;
 
-import cn.creekmoon.operationLog.hutool589.core.io.checksum.crc16.CRC16Checksum;
-import cn.creekmoon.operationLog.hutool589.core.io.checksum.crc16.CRC16IBM;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16.CRC16Checksum;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.checksum.crc16.CRC16IBM;
 
 import java.io.Serializable;
 import java.util.zip.Checksum;

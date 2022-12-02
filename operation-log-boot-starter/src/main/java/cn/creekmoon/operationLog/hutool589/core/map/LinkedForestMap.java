@@ -1,10 +1,10 @@
-package cn.creekmoon.operationLog.hutool589.core.map;
+package cn.creekmoon.operationLog.hutoolCore589.core.map;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.util.ClassUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ObjectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ClassUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ObjectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -167,12 +167,12 @@ public class LinkedForestMap<K, V> implements ForestMap<K, V> {
 
     /**
      * 由key与{@link TreeEntry}组成的键值对实体的{@link Set}集合。
-     * 注意，返回集合中{@link Entry#setValue(Object)}不支持调用。
+     * 注意，返回集合中{@link Map.Entry#setValue(Object)}不支持调用。
      *
      * @return 集合
      */
     @Override
-    public Set<Entry<K, TreeEntry<K, V>>> entrySet() {
+    public Set<Map.Entry<K, TreeEntry<K, V>>> entrySet() {
         return nodes.entrySet().stream()
                 .map(this::wrap)
                 .collect(Collectors.toSet());
@@ -181,7 +181,7 @@ public class LinkedForestMap<K, V> implements ForestMap<K, V> {
     /**
      * 将{@link TreeEntryNode}包装为{@link EntryNodeWrapper}
      */
-    private Entry<K, TreeEntry<K, V>> wrap(Entry<K, TreeEntryNode<K, V>> nodeEntry) {
+    private Map.Entry<K, TreeEntry<K, V>> wrap(Map.Entry<K, TreeEntryNode<K, V>> nodeEntry) {
         return new EntryNodeWrapper<>(nodeEntry.getValue());
     }
 
@@ -702,7 +702,7 @@ public class LinkedForestMap<K, V> implements ForestMap<K, V> {
     }
 
     /**
-     * {@link Entry}包装类
+     * {@link java.util.Map.Entry}包装类
      *
      * @param <K> key类型
      * @param <V> value类型
@@ -710,7 +710,7 @@ public class LinkedForestMap<K, V> implements ForestMap<K, V> {
      * @see #entrySet()
      * @see #values()
      */
-    public static class EntryNodeWrapper<K, V, N extends TreeEntry<K, V>> implements Entry<K, TreeEntry<K, V>> {
+    public static class EntryNodeWrapper<K, V, N extends TreeEntry<K, V>> implements Map.Entry<K, TreeEntry<K, V>> {
         private final N entryNode;
 
         EntryNodeWrapper(N entryNode) {

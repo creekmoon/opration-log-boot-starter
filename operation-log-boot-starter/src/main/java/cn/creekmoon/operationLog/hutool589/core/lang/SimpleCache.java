@@ -1,11 +1,11 @@
-package cn.creekmoon.operationLog.hutool589.core.lang;
+package cn.creekmoon.operationLog.hutoolCore589.core.lang;
 
-import cn.creekmoon.operationLog.hutool589.core.collection.TransIter;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func0;
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.Mutable;
-import cn.creekmoon.operationLog.hutool589.core.lang.mutable.MutableObj;
-import cn.creekmoon.operationLog.hutool589.core.map.SafeConcurrentHashMap;
-import cn.creekmoon.operationLog.hutool589.core.map.WeakConcurrentMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.TransIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func0;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.Mutable;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.mutable.MutableObj;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.SafeConcurrentHashMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.WeakConcurrentMap;
 
 import java.io.Serializable;
 import java.util.Iterator;

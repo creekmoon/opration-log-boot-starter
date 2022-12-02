@@ -1,13 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.text.csv;
+package cn.creekmoon.operationLog.hutoolCore589.core.text.csv;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.IORuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.io.IoUtil;
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvBaseReader;
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvData;
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig;
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRow;
-import cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRowHandler;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IORuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.IoUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvBaseReader;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvReadConfig;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow;
+import cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRowHandler;
 
 import java.io.Closeable;
 import java.io.File;
@@ -25,7 +25,7 @@ import java.util.stream.StreamSupport;
  * @author Looly
  * @since 4.0.1
  */
-public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRow>, Closeable {
+public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow>, Closeable {
     private static final long serialVersionUID = 1L;
 
     private final Reader reader;
@@ -44,7 +44,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      *
      * @param config 配置项
      */
-    public CsvReader(cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig config) {
+    public CsvReader(CsvReadConfig config) {
         this((Reader) null, config);
     }
 
@@ -55,7 +55,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * @param config 配置项，null表示默认配置
      * @since 5.0.4
      */
-    public CsvReader(File file, cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig config) {
+    public CsvReader(File file, CsvReadConfig config) {
         this(file, DEFAULT_CHARSET, config);
     }
 
@@ -66,7 +66,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * @param config 配置项，null表示默认配置
      * @since 5.0.4
      */
-    public CsvReader(Path path, cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig config) {
+    public CsvReader(Path path, CsvReadConfig config) {
         this(path, DEFAULT_CHARSET, config);
     }
 
@@ -78,7 +78,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * @param config  配置项，null表示默认配置
      * @since 5.0.4
      */
-    public CsvReader(File file, Charset charset, cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig config) {
+    public CsvReader(File file, Charset charset, CsvReadConfig config) {
         this(FileUtil.getReader(file, charset), config);
     }
 
@@ -90,7 +90,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * @param config  配置项，null表示默认配置
      * @since 5.0.4
      */
-    public CsvReader(Path path, Charset charset, cn.creekmoon.operationLog.hutool589.core.text.csv.CsvReadConfig config) {
+    public CsvReader(Path path, Charset charset, CsvReadConfig config) {
         this(FileUtil.getReader(path, charset), config);
     }
 
@@ -111,7 +111,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * 读取CSV文件，此方法只能调用一次<br>
      * 调用此方法的前提是构造中传入文件路径或Reader
      *
-     * @return {@link cn.creekmoon.operationLog.hutool589.core.text.csv.CsvData}，包含数据列表和行信息
+     * @return {@link cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvData}，包含数据列表和行信息
      * @throws IORuntimeException IO异常
      */
     public CsvData read() throws IORuntimeException {
@@ -136,7 +136,7 @@ public class CsvReader extends CsvBaseReader implements Iterable<cn.creekmoon.op
      * @return {@link Stream}
      * @since 5.7.14
      */
-    public Stream<cn.creekmoon.operationLog.hutool589.core.text.csv.CsvRow> stream() {
+    public Stream<cn.creekmoon.operationLog.hutoolCore589.core.text.csv.CsvRow> stream() {
         return StreamSupport.stream(spliterator(), false)
                 .onClose(() -> {
                     try {

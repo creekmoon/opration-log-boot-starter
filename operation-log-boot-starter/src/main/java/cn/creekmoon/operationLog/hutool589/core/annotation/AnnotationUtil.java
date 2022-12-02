@@ -1,16 +1,19 @@
-package cn.creekmoon.operationLog.hutool589.core.annotation;
+package cn.creekmoon.operationLog.hutoolCore589.core.annotation;
 
-import cn.creekmoon.operationLog.hutool589.core.annotation.CombinationAnnotationElement;
-import cn.creekmoon.operationLog.hutool589.core.annotation.scanner.AnnotationScanner;
-import cn.creekmoon.operationLog.hutool589.core.annotation.scanner.MetaAnnotationScanner;
-import cn.creekmoon.operationLog.hutool589.core.annotation.scanner.MethodAnnotationScanner;
-import cn.creekmoon.operationLog.hutool589.core.annotation.scanner.TypeAnnotationScanner;
-import cn.creekmoon.operationLog.hutool589.core.collection.CollUtil;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Opt;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.Func1;
-import cn.creekmoon.operationLog.hutool589.core.lang.func.LambdaUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.*;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.CombinationAnnotationElement;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.GenericSynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAggregateAnnotation;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.SynthesizedAnnotationProxy;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.AnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.MetaAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.MethodAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.annotation.scanner.TypeAnnotationScanner;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.CollUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Opt;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.Func1;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.func.LambdaUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.*;
 
 import java.lang.annotation.*;
 import java.lang.invoke.SerializedLambda;

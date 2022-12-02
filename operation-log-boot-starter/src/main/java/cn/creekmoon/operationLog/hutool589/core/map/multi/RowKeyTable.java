@@ -1,15 +1,23 @@
-package cn.creekmoon.operationLog.hutool589.core.map.multi;
+package cn.creekmoon.operationLog.hutoolCore589.core.map.multi;
 
-import cn.creekmoon.operationLog.hutool589.core.builder.Builder;
-import cn.creekmoon.operationLog.hutool589.core.collection.ComputeIter;
-import cn.creekmoon.operationLog.hutool589.core.collection.IterUtil;
-import cn.creekmoon.operationLog.hutool589.core.collection.TransIter;
-import cn.creekmoon.operationLog.hutool589.core.map.AbsEntry;
-import cn.creekmoon.operationLog.hutool589.core.map.MapUtil;
-import cn.creekmoon.operationLog.hutool589.core.map.multi.AbsTable;
-import cn.creekmoon.operationLog.hutool589.core.map.multi.Table;
+import cn.creekmoon.operationLog.hutoolCore589.core.builder.Builder;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.ComputeIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.IterUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.collection.TransIter;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.AbsEntry;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.MapUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.AbsTable;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.multi.Table;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 将行的键作为主键的{@link Table}实现<br>
@@ -224,10 +232,10 @@ public class RowKeyTable<R, C, V> extends AbsTable<R, C, V> {
             return new EntrySet();
         }
 
-        private class EntrySet extends AbstractSet<Entry<R, V>> {
+        private class EntrySet extends AbstractSet<Map.Entry<R, V>> {
 
             @Override
-            public Iterator<Entry<R, V>> iterator() {
+            public Iterator<Map.Entry<R, V>> iterator() {
                 return new EntrySetIterator();
             }
 

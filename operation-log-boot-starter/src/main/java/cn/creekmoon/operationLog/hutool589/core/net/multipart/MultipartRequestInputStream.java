@@ -1,9 +1,13 @@
-package cn.creekmoon.operationLog.hutool589.core.net.multipart;
+package cn.creekmoon.operationLog.hutoolCore589.core.net.multipart;
 
-import cn.creekmoon.operationLog.hutool589.core.io.FastByteArrayOutputStream;
-import cn.creekmoon.operationLog.hutool589.core.net.multipart.UploadFileHeader;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FastByteArrayOutputStream;
+import cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -84,9 +88,9 @@ public class MultipartRequestInputStream extends BufferedInputStream {
 
     // ---------------------------------------------------------------- data header
 
-    protected UploadFileHeader lastHeader;
+    protected cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader lastHeader;
 
-    public UploadFileHeader getLastHeader() {
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader getLastHeader() {
         return lastHeader;
     }
 
@@ -97,7 +101,7 @@ public class MultipartRequestInputStream extends BufferedInputStream {
      * @return 头部信息， 如果达到末尾则返回null
      * @throws IOException 读取异常
      */
-    public UploadFileHeader readDataHeader(Charset encoding) throws IOException {
+    public cn.creekmoon.operationLog.hutoolCore589.core.net.multipart.UploadFileHeader readDataHeader(Charset encoding) throws IOException {
         String dataHeader = readDataHeaderString(encoding);
         if (dataHeader != null) {
             lastHeader = new UploadFileHeader(dataHeader);

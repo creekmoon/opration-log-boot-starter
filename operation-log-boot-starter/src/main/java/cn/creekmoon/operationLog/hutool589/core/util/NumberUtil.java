@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.math.Calculator;
-import cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.CharUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.RandomUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.math.Calculator;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.RandomUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -133,7 +133,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal add(Number... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -157,7 +157,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal add(String... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -165,7 +165,7 @@ public class NumberUtil {
         BigDecimal result = toBigDecimal(value);
         for (int i = 1; i < values.length; i++) {
             value = values[i];
-            if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotBlank(value)) {
+            if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(value)) {
                 result = result.add(toBigDecimal(value));
             }
         }
@@ -181,7 +181,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal add(BigDecimal... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -273,7 +273,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal sub(Number... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -297,7 +297,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal sub(String... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -305,7 +305,7 @@ public class NumberUtil {
         BigDecimal result = toBigDecimal(value);
         for (int i = 1; i < values.length; i++) {
             value = values[i];
-            if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isNotBlank(value)) {
+            if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isNotBlank(value)) {
                 result = result.subtract(toBigDecimal(value));
             }
         }
@@ -321,7 +321,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal sub(BigDecimal... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -414,7 +414,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal mul(Number... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.hasNull(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.hasNull(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -448,7 +448,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal mul(String... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.hasNull(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.hasNull(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -469,7 +469,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static BigDecimal mul(BigDecimal... values) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.hasNull(values)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.isEmpty(values) || cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.hasNull(values)) {
             return BigDecimal.ZERO;
         }
 
@@ -723,7 +723,7 @@ public class NumberUtil {
         if (v1 instanceof BigDecimal && v2 instanceof BigDecimal) {
             return div((BigDecimal) v1, (BigDecimal) v2, scale, roundingMode);
         }
-        return div(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.toStringOrNull(v1), cn.creekmoon.operationLog.hutool589.core.util.StrUtil.toStringOrNull(v2), scale, roundingMode);
+        return div(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.toStringOrNull(v1), cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.toStringOrNull(v2), scale, roundingMode);
     }
 
     /**
@@ -1138,7 +1138,7 @@ public class NumberUtil {
      * @return 是否为数字
      */
     public static boolean isNumber(CharSequence str) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(str)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(str)) {
             return false;
         }
         char[] chars = str.toString().toCharArray();
@@ -1242,7 +1242,7 @@ public class NumberUtil {
      * @return 是否为整数
      */
     public static boolean isInteger(String s) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(s)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(s)) {
             return false;
         }
         try {
@@ -1262,7 +1262,7 @@ public class NumberUtil {
      * @since 4.0.0
      */
     public static boolean isLong(String s) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(s)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(s)) {
             return false;
         }
         try {
@@ -1280,7 +1280,7 @@ public class NumberUtil {
      * @return 是否为{@link Double}类型
      */
     public static boolean isDouble(String s) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(s)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(s)) {
             return false;
         }
         try {
@@ -1320,7 +1320,7 @@ public class NumberUtil {
      */
     public static int[] generateRandomNumber(int begin, int end, int size) {
         // 种子你可以随意生成，但不能重复
-        final int[] seed = cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.range(begin, end);
+        final int[] seed = cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.range(begin, end);
         return generateRandomNumber(begin, end, size, seed);
     }
 
@@ -1348,7 +1348,7 @@ public class NumberUtil {
         // 数量你可以自己定义。
         for (int i = 0; i < size; i++) {
             // 得到一个位置
-            int j = cn.creekmoon.operationLog.hutool589.core.util.RandomUtil.randomInt(seed.length - i);
+            int j = RandomUtil.randomInt(seed.length - i);
             // 得到那个位置的数值
             ranArr[i] = seed[j];
             // 将最后一个未用的数字放到这里
@@ -1506,7 +1506,7 @@ public class NumberUtil {
         Assert.notNull(start, "Factorial start must be not null!");
         Assert.notNull(end, "Factorial end must be not null!");
         if (start.compareTo(BigInteger.ZERO) < 0 || end.compareTo(BigInteger.ZERO) < 0) {
-            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Factorial start and end both must be > 0, but got start={}, end={}", start, end));
+            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Factorial start and end both must be > 0, but got start={}, end={}", start, end));
         }
 
         if (start.equals(BigInteger.ZERO)) {
@@ -1540,7 +1540,7 @@ public class NumberUtil {
     public static long factorial(long start, long end) {
         // 负数没有阶乘
         if (start < 0 || end < 0) {
-            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Factorial start and end both must be >= 0, but got start={}, end={}", start, end));
+            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Factorial start and end both must be >= 0, but got start={}, end={}", start, end));
         }
         if (0L == start || start == end) {
             return 1L;
@@ -1562,7 +1562,7 @@ public class NumberUtil {
         if (a <= Long.MAX_VALUE / b) {
             return a * b;
         }
-        throw new IllegalArgumentException(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Overflow in multiplication: {} * {}", a, b));
+        throw new IllegalArgumentException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Overflow in multiplication: {} * {}", a, b));
     }
 
     /**
@@ -1576,7 +1576,7 @@ public class NumberUtil {
      */
     public static long factorial(long n) {
         if (n < 0 || n > 20) {
-            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Factorial must have n >= 0 and n <= 20 for n!, but got n = {}", n));
+            throw new IllegalArgumentException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Factorial must have n >= 0 and n <= 20 for n!, but got n = {}", n));
         }
         return FACTORIALS[(int) n];
     }
@@ -1902,7 +1902,7 @@ public class NumberUtil {
      * @param c2         字符2
      * @param ignoreCase 是否忽略大小写
      * @return 是否相同
-     * @see cn.creekmoon.operationLog.hutool589.core.util.CharUtil#equals(char, char, boolean)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.CharUtil#equals(char, char, boolean)
      * @since 3.2.1
      */
     public static boolean equals(char c1, char c2, boolean ignoreCase) {
@@ -1915,11 +1915,11 @@ public class NumberUtil {
      * @param <T>         元素类型
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(Comparable[])
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(Comparable[])
      * @since 4.0.7
      */
     public static <T extends Comparable<? super T>> T min(T[] numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1927,11 +1927,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(long...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(long...)
      * @since 4.0.7
      */
     public static long min(long... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1939,11 +1939,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(int...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(int...)
      * @since 4.0.7
      */
     public static int min(int... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1951,11 +1951,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(short...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(short...)
      * @since 4.0.7
      */
     public static short min(short... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1963,11 +1963,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(double...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(double...)
      * @since 4.0.7
      */
     public static double min(double... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1975,11 +1975,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(float...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(float...)
      * @since 4.0.7
      */
     public static float min(float... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -1987,11 +1987,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最小值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#min(Comparable[])
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#min(Comparable[])
      * @since 5.0.8
      */
     public static BigDecimal min(BigDecimal... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.min(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.min(numberArray);
     }
 
     /**
@@ -2000,11 +2000,11 @@ public class NumberUtil {
      * @param <T>         元素类型
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(Comparable[])
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(Comparable[])
      * @since 4.0.7
      */
     public static <T extends Comparable<? super T>> T max(T[] numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2012,11 +2012,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(long...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(long...)
      * @since 4.0.7
      */
     public static long max(long... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2024,11 +2024,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(int...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(int...)
      * @since 4.0.7
      */
     public static int max(int... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2036,11 +2036,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(short...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(short...)
      * @since 4.0.7
      */
     public static short max(short... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2048,11 +2048,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(double...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(double...)
      * @since 4.0.7
      */
     public static double max(double... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2060,11 +2060,11 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(float...)
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(float...)
      * @since 4.0.7
      */
     public static float max(float... numberArray) {
-        return cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil.max(numberArray);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil.max(numberArray);
     }
 
     /**
@@ -2072,7 +2072,7 @@ public class NumberUtil {
      *
      * @param numberArray 数字数组
      * @return 最大值
-     * @see cn.creekmoon.operationLog.hutool589.core.util.ArrayUtil#max(Comparable[])
+     * @see cn.creekmoon.operationLog.hutoolCore589.core.util.ArrayUtil#max(Comparable[])
      * @since 5.0.8
      */
     public static BigDecimal max(BigDecimal... numberArray) {
@@ -2201,7 +2201,7 @@ public class NumberUtil {
      * @since 4.0.9
      */
     public static BigDecimal toBigDecimal(String numberStr) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(numberStr)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(numberStr)) {
             return BigDecimal.ZERO;
         }
 
@@ -2251,7 +2251,7 @@ public class NumberUtil {
      * @since 5.4.5
      */
     public static BigInteger toBigInteger(String number) {
-        return cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(number) ? BigInteger.ZERO : new BigInteger(number);
+        return cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(number) ? BigInteger.ZERO : new BigInteger(number);
     }
 
     /**
@@ -2298,7 +2298,7 @@ public class NumberUtil {
      * @since 3.2.1
      */
     public static BigInteger newBigInteger(String str) {
-        str = cn.creekmoon.operationLog.hutool589.core.util.StrUtil.trimToNull(str);
+        str = cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.trimToNull(str);
         if (null == str) {
             return null;
         }
@@ -2441,16 +2441,16 @@ public class NumberUtil {
      * @since 4.1.4
      */
     public static int parseInt(String number) throws NumberFormatException {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(number)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(number)) {
             return 0;
         }
 
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.containsIgnoreCase(number, "E")) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.containsIgnoreCase(number, "E")) {
             // 科学计数法忽略支持，科学计数法一般用于表示非常小和非常大的数字，这类数字转换为int后精度丢失，没有意义。
-            throw new NumberFormatException(cn.creekmoon.operationLog.hutool589.core.util.StrUtil.format("Unsupported int format: [{}]", number));
+            throw new NumberFormatException(cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.format("Unsupported int format: [{}]", number));
         }
 
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.startWithIgnoreCase(number, "0x")) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.startWithIgnoreCase(number, "0x")) {
             // 0x04表示16进制数
             return Integer.parseInt(number.substring(2), 16);
         }
@@ -2479,7 +2479,7 @@ public class NumberUtil {
      * @since 4.1.4
      */
     public static long parseLong(String number) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(number)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(number)) {
             return 0L;
         }
 
@@ -2510,7 +2510,7 @@ public class NumberUtil {
      * @since 5.5.5
      */
     public static float parseFloat(String number) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(number)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(number)) {
             return 0f;
         }
 
@@ -2536,7 +2536,7 @@ public class NumberUtil {
      * @since 5.5.5
      */
     public static double parseDouble(String number) {
-        if (cn.creekmoon.operationLog.hutool589.core.util.StrUtil.isBlank(number)) {
+        if (cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil.isBlank(number)) {
             return 0D;
         }
 

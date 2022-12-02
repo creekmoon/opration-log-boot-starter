@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.codec;
+package cn.creekmoon.operationLog.hutoolCore589.core.codec;
 
-import cn.creekmoon.operationLog.hutool589.core.codec.Base58Codec;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.UtilException;
-import cn.creekmoon.operationLog.hutool589.core.exceptions.ValidateException;
+import cn.creekmoon.operationLog.hutoolCore589.core.codec.Base58Codec;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.UtilException;
+import cn.creekmoon.operationLog.hutoolCore589.core.exceptions.ValidateException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,7 +1,7 @@
-package cn.creekmoon.operationLog.hutool589.core.swing.clipboard;
+package cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard;
 
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardListener;
-import cn.creekmoon.operationLog.hutool589.core.swing.clipboard.ClipboardUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardListener;
+import cn.creekmoon.operationLog.hutoolCore589.core.swing.clipboard.ClipboardUtil;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;

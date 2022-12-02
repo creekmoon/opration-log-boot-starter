@@ -1,12 +1,12 @@
-package cn.creekmoon.operationLog.hutool589.core.bean;
+package cn.creekmoon.operationLog.hutoolCore589.core.bean;
 
-import cn.creekmoon.operationLog.hutool589.core.bean.PropDesc;
-import cn.creekmoon.operationLog.hutool589.core.lang.Assert;
-import cn.creekmoon.operationLog.hutool589.core.map.CaseInsensitiveMap;
-import cn.creekmoon.operationLog.hutool589.core.util.BooleanUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ModifierUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
-import cn.creekmoon.operationLog.hutool589.core.util.StrUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.bean.PropDesc;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.Assert;
+import cn.creekmoon.operationLog.hutoolCore589.core.map.CaseInsensitiveMap;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.BooleanUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ModifierUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

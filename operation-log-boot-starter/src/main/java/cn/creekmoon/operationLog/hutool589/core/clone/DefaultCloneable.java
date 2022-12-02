@@ -1,8 +1,8 @@
-package cn.creekmoon.operationLog.hutool589.core.clone;
+package cn.creekmoon.operationLog.hutoolCore589.core.clone;
 
 
-import cn.creekmoon.operationLog.hutool589.core.clone.CloneRuntimeException;
-import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.clone.CloneRuntimeException;
+import cn.creekmoon.operationLog.hutoolCore589.core.util.ReflectUtil;
 
 /**
  * 克隆默认实现接口，用于实现返回指定泛型类型的克隆方法
@@ -10,7 +10,7 @@ import cn.creekmoon.operationLog.hutool589.core.util.ReflectUtil;
  * @param <T> 泛型类型
  * @since 5.7.17
  */
-public interface DefaultCloneable<T> extends Cloneable {
+public interface DefaultCloneable<T> extends java.lang.Cloneable {
 
     /**
      * 浅拷贝，提供默认的泛型返回值的clone方法。

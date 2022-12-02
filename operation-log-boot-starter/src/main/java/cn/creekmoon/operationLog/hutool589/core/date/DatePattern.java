@@ -1,6 +1,6 @@
-package cn.creekmoon.operationLog.hutool589.core.date;
+package cn.creekmoon.operationLog.hutoolCore589.core.date;
 
-import cn.creekmoon.operationLog.hutool589.core.date.format.FastDateFormat;
+import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

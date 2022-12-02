@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.util;
+package cn.creekmoon.operationLog.hutoolCore589.core.util;
 
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.CityHash;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.MetroHash;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.MurmurHash;
-import cn.creekmoon.operationLog.hutool589.core.lang.hash.Number128;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.CityHash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.MetroHash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.MurmurHash;
+import cn.creekmoon.operationLog.hutoolCore589.core.lang.hash.Number128;
 
 /**
  * Hash算法大全<br>

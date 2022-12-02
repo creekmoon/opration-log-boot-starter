@@ -1,9 +1,9 @@
-package cn.creekmoon.operationLog.hutool589.core.io.resource;
-
-import cn.creekmoon.operationLog.hutool589.core.io.FileUtil;
-import cn.creekmoon.operationLog.hutool589.core.io.resource.FileResource;
+package cn.creekmoon.operationLog.hutoolCore589.core.io.resource;
 
 import java.io.File;
+
+import cn.creekmoon.operationLog.hutoolCore589.core.io.FileUtil;
+import cn.creekmoon.operationLog.hutoolCore589.core.io.resource.FileResource;
 
 /**
  * Web root资源访问对象
