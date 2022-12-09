@@ -6,7 +6,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TimeZone;
 
 import static cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.UTC_MS_PATTERN;
 
@@ -41,9 +44,9 @@ public class LogRecord {
     /*操作时间 */
     Date operationTime = new Date();
     /*记录标签 可以用标签进行索引查找 */
-    List<String> tags = new LinkedList();
+    LinkedHashSet<String> tags = new LinkedHashSet();
     /*备注 可以手动为此次操作添加备注*/
-    List<String> remarks = new LinkedList();
+    LinkedHashSet<String> remarks = new LinkedHashSet();
 
 
     /**
