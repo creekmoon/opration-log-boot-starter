@@ -1,6 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
 
+import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletRequest;
@@ -92,7 +93,7 @@ public class OperationLogContext {
             return;
         }
         for (String tag : tags) {
-            if (tag != null && !"".equals(tag)) {
+            if (StrUtil.isNotBlank(tag)) {
                 record.getTags().add(tag.trim());
             }
         }
