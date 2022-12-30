@@ -76,6 +76,9 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             List<Object> paramList = Arrays
                     .stream(Optional.ofNullable(pjp.getArgs()).orElse(new Object[]{}))
                     .map(currentParam -> {
+                        if (currentParam == null) {
+                            return "NULL";
+                        }
                         /*对不能进行序列化的类进行额外处理*/
                         if (currentParam instanceof ServletRequest) {
                             return "ServletRequest";
