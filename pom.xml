@@ -8,7 +8,7 @@
     <name>operation-log-parent</name>
     <artifactId>operation-log-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <modules>
         <module>operation-log-boot-starter</module>
         <!--<module>operation-log-example</module>-->
@@ -118,7 +118,7 @@
     </dependencyManagement>
 
     <properties>
-        <current.version>1.3.4</current.version>
+        <current.version>1.3.5</current.version>
         <!-- 文件拷贝时的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
