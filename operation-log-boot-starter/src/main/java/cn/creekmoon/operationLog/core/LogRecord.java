@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
-import cn.creekmoon.operationLog.hutoolCore589.core.date.DateUtil;
-import cn.creekmoon.operationLog.hutoolCore589.core.date.format.FastDateFormat;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.format.FastDateFormat;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
-import static cn.creekmoon.operationLog.hutoolCore589.core.date.DatePattern.UTC_MS_PATTERN;
+import static cn.hutool.core.date.DatePattern.UTC_MS_PATTERN;
 
 @Data
 public class LogRecord {
