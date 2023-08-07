@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
 
-import cn.creekmoon.operationLog.hutoolCore589.core.util.StrUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletRequest;
@@ -89,7 +89,6 @@ public class OperationLogContext {
         }
         LogRecord record = getCurrentLogRecord();
         if (record == null) {
-            log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!", new RuntimeException("获取日志上下文失败!"));
             return;
         }
         for (String tag : tags) {
