@@ -12,17 +12,18 @@
 <dependency>
     <groupId>io.github.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.4.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 #### 踩雷警告! 使用前注意!!
 
-个人水平非常非常有限,这个工具性能比较差,而且应该有很多BUG  
-这个工具需要额外依赖
+个人水平有限,纯粹写来玩玩. 使用后果自负.
 
-* fastjson
-* hutool-core
+本项目不能依赖如下组件
+
+* fastjson  
+* hutool-all  >= 5.8.9
 * lombok
 
 ## 快速开始
@@ -32,7 +33,7 @@
 ```java
 
 @EnableOperationLog //在启动类加上注解
-@ComponentScan(basePackages = {"com.vdp", "com.wtx.mgt"})
+@ComponentScan(basePackages = {"cn.creekmoon"})
 public class VdpWebApplication {
     public static void main(String[] args) {
         SpringApplication.run(VdpWebApplication.class, args);
@@ -45,7 +46,7 @@ public class VdpWebApplication {
 ```java
 
 @RequestMapping("web/test")
-public class TTransportController {
+public class TestController {
     
     @OperationLog //在此加上注解
     @PostMapping(value = "/update")
@@ -57,9 +58,13 @@ public class TTransportController {
 
 ```
 
+通常而言, 您应该实现**OperationLogHandler**接口,并使用**@Component**交给Spring进行管理.
+
 ## 查看效果
 
-如果能够成功启动.那么会将每次操作Controller的情况打印到控制台.
+(若您没有实现接口)会默认注入一个DefaultOperationLogHandler, 其作用是将内容直接打印.
+
+例如控制台会显示
 
 ```text
 operation-log:LogRecord(userId=1, orgId=1, userName=unknown  ..........省略

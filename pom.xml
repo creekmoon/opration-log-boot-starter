@@ -8,7 +8,7 @@
     <name>operation-log-parent</name>
     <artifactId>operation-log-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.0</version>
+    <version>2.0.0</version>
     <modules>
         <module>operation-log-boot-starter</module>
         <!--<module>operation-log-example</module>-->
@@ -118,7 +118,7 @@
     </dependencyManagement>
 
     <properties>
-        <current.version>1.4.0</current.version>
+        <operation-log-starter.version>2.0.0</operation-log-starter.version>
         <!-- 文件拷贝时的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -197,8 +197,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>21</source>
+                        <target>21</target>
                     </configuration>
                 </plugin>
                 <!--定义源码解析插件-->
