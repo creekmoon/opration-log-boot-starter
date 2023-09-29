@@ -20,15 +20,17 @@
 
 个人水平有限,纯粹写来玩玩. 使用后果自负.
 
-本项目不能依赖如下组件
+JDK >= 21
+
+本项目依赖如下组件
 
 * fastjson  
 * hutool-all  >= 5.8.9
-* lombok
+* lombok  >= 1.8.30
 
 ## 快速开始
 
-首先在**SpringBoot启动类**加上**@EnableOperationLog**注解
+1.首先在**SpringBoot启动类**加上**@EnableOperationLog**注解
 
 ```java
 
@@ -41,7 +43,7 @@ public class VdpWebApplication {
 } 
 ```
 
-在**controller方法**上加入注解 **@OperationLog**
+2.在**controller方法**上加入注解 **@OperationLog**
 
 ```java
 
