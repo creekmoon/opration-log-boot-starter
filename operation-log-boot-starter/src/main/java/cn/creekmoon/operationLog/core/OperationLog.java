@@ -7,8 +7,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface OperationLog {
+
+    public static final String DEFAULT_VALUE = "未描述的接口";
     //操作描述
-    String value() default "未描述的接口";
+    String value() default DEFAULT_VALUE;
 
 
     //操作失败时,不进行日志记录

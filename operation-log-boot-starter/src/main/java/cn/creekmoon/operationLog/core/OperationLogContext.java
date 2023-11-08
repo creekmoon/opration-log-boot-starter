@@ -19,11 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OperationLogContext {
     /*当前是否处于禁用状态*/
     public static boolean disable = true;
+    /*当前记录实例识别号*/
+    protected static ThreadLocal<String> currentRecordId = new ThreadLocal<>();
     /*当前请求*/
     protected static ThreadLocal<ServletRequest> currentServletRequest = new ThreadLocal<>();
     /*跟踪的元数据*/
     protected static ThreadLocal<Callable<Object>> metadataSupplier = new ThreadLocal<>();
-    protected static ConcurrentHashMap<ServletRequest, LogRecord> request2Logs = new ConcurrentHashMap(1024);
+    protected static ConcurrentHashMap<String, LogRecord> recordId2Logs = new ConcurrentHashMap(1024);
 
     /**
      * 传入一个获取数据的方式,会通过这个方式监控数据变化 体现在effectFields字段中
@@ -39,7 +41,7 @@ public class OperationLogContext {
             log.error("[日志推送]获取当前ServletRequest失败! ");
             return;
         }
-        LogRecord record = request2Logs.get(servletRequest);
+        LogRecord record = recordId2Logs.get(servletRequest);
         if (record == null) {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!", new RuntimeException("获取日志上下文失败!"));
             return;
@@ -73,8 +75,8 @@ public class OperationLogContext {
      * @return
      */
     public static LogRecord getCurrentLogRecord() {
-        ServletRequest servletRequest = currentServletRequest.get();
-        return servletRequest == null ? null : request2Logs.get(servletRequest);
+        String recordId = currentRecordId.get();
+        return recordId == null ? null : recordId2Logs.get(recordId);
     }
 
 
@@ -118,4 +120,21 @@ public class OperationLogContext {
             }
         }
     }
+
+
+    /**
+     * 清理当前的上下文信息
+     */
+    protected static void clean() {
+        String recordId = OperationLogContext.currentRecordId.get();
+        if (recordId == null) {
+            return;
+        }
+        /*移除对象*/
+        OperationLogContext.recordId2Logs.remove(recordId);   //及时移除对象
+        OperationLogContext.currentServletRequest.remove(); //及时移除对象
+        OperationLogContext.metadataSupplier.remove();//及时移除对象
+        OperationLogContext.currentRecordId.remove();//及时移除对象
+    }
+
 }
