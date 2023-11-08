@@ -7,7 +7,7 @@ Spring:
 swagger-config:
   enable: true
   protocol: http
-  base-package: cn.jy.operationLog
+  base-package: cn.creekmoon.operationLog
   title: 日志测试API
   version: 1.0
   description: 日志测试API

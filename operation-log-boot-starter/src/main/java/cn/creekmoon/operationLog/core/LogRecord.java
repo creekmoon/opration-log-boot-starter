@@ -27,6 +27,8 @@ public class LogRecord {
     String operationName;
     /*操作的JAVA方法名称*/
     String methodName;
+    /*操作的JAVA方法全称*/
+    String classFullName;
     /*可能改变的值*/
     Set<String> effectFields;
     /*改变的值之前*/
@@ -48,31 +50,5 @@ public class LogRecord {
     /*备注 可以手动为此次操作添加备注*/
     LinkedHashSet<String> remarks = new LinkedHashSet();
 
-
-    /**
-     * 内置方法, 转换为打平的JSON对象(即所有第一级属性都转为简单的String或String[]类型)
-     *
-     * @return
-     */
-    public JSONObject toFlatJson() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("userId", userId != null ? String.valueOf(userId) : null);
-        jsonObject.put("orgId", orgId != null ? String.valueOf(orgId) : null);
-        jsonObject.put("userName", userName);
-        jsonObject.put("projectName", projectName);
-        jsonObject.put("operationName", operationName);
-        jsonObject.put("methodName", methodName);
-        jsonObject.put("effectFields", effectFields);
-        jsonObject.put("preValue", preValue != null ? JSONObject.toJSONString(preValue) : null);
-        jsonObject.put("afterValue", afterValue != null ? JSONObject.toJSONString(afterValue) : null);
-        jsonObject.put("effectFieldsBefore", effectFieldsBefore != null ? JSONObject.toJSONString(effectFieldsBefore) : null);
-        jsonObject.put("effectFieldsAfter", effectFieldsAfter != null ? JSONObject.toJSONString(effectFieldsAfter) : null);
-        jsonObject.put("requestResult", requestResult);
-        jsonObject.put("requestParams", requestParams != null ? requestParams.toJSONString() : null);
-        jsonObject.put("operationTime", operationTime != null ? DateUtil.format(operationTime, FastDateFormat.getInstance(UTC_MS_PATTERN, TimeZone.getTimeZone("GMT+:08:00"))) : null);
-        jsonObject.put("tags", tags);
-        jsonObject.put("remarks", remarks);
-        return jsonObject;
-    }
 
 }

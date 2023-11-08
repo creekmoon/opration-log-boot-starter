@@ -15,7 +15,7 @@
         <dependency>
             <groupId>io.github.creekmoon</groupId>
             <artifactId>operation-log-boot-starter</artifactId>
-            <version>${current.version}</version>
+            <version>${operation-log.version}</version>
         </dependency>
         <!--spring依赖-->
         <dependency>
@@ -48,11 +48,6 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-        </dependency>
-        <!--mybatis-plus-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
         <!--mysql连接器-->
         <dependency>

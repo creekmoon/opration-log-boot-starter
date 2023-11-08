@@ -1,6 +1,7 @@
 package cn.creekmoon.operationLog.example.config.exception;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version: v1.0
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public String exceptionHandler(Exception e) {
-        System.out.println("全局异常捕获>>>:" + e);
+        log.error("全局异常捕获,错误原因>>>", e);
         return "全局异常捕获,错误原因>>>" + e.getMessage();
     }
 }

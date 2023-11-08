@@ -1,51 +1,44 @@
 package cn.creekmoon.operationLog.example.controller;
 
-import cn.hutool.core.util.RandomUtil;
 import cn.creekmoon.operationLog.core.OperationLog;
-import cn.creekmoon.operationLog.example.mapper.TCargoMapper;
+import cn.creekmoon.operationLog.core.OperationLogContext;
 import cn.creekmoon.operationLog.example.model.TCargo;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import org.springframework.transaction.annotation.Transactional;
+import cn.creekmoon.operationLog.example.service.ExampleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 
 @RestController("/example")
 public class ExampleController {
 
 
-    @Resource
-    private TCargoMapper cargoMapper;
+    public static TCargo cargo = new TCargo();
 
-    @GetMapping("/test1")
-    public void testSelect() {
-        System.out.println(("----- selectAll method test ------"));
-        List<TCargo> userList = cargoMapper.selectList(Wrappers.lambdaQuery());
-        userList.forEach(System.out::println);
+    @Autowired
+    ExampleService exampleService;
+
+    @GetMapping("/test")
+    @OperationLog
+    public String test() throws Exception {
+        cargo.setCargoNo("TEST-1");
+        cargo.setCreateTime(new Date());
+        OperationLogContext.follow(this::getLatestCargo);
+        cargo.setCargoNo("TEST-2");
+        return "good";
     }
 
     @GetMapping("/test2")
-    @OperationLog
-    @Transactional(rollbackFor = Exception.class)
-    public String testInsert() throws Exception {
-        for (int i = 0; i < 10; i++) {
-            TCargo tCargo = new TCargo();
-            tCargo.setCargoNo("TEST" + RandomUtil.randomString(5));
-            tCargo.setCreateTime(new Date());
-            cargoMapper.insert(tCargo);
-            if (i == 5) {
-                try {
-                    throw new Exception("抛出一个异常");
-                } catch (Exception e) {
+    public String test2() throws Exception {
+        cargo.setCargoNo("TEST-1");
+        cargo.setCreateTime(new Date());
+        exampleService.updateCargo(cargo);
+        return "good";
+    }
 
-                    return "error but success";
-                }
-            }
-        }
-        return "good succes";
+    TCargo getLatestCargo() {
+        return cargo;
     }
 }

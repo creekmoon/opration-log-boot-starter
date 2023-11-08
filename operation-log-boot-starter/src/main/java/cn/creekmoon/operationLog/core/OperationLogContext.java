@@ -2,6 +2,7 @@ package cn.creekmoon.operationLog.core;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletRequest;
@@ -36,20 +37,17 @@ public class OperationLogContext {
         if (disable) {
             return;
         }
-        ServletRequest servletRequest = currentServletRequest.get();
-        if (servletRequest == null) {
-            log.error("[日志推送]获取当前ServletRequest失败! ");
-            return;
-        }
-        LogRecord record = recordId2Logs.get(servletRequest);
+        LogRecord record = OperationLogContext.getCurrentLogRecord();
         if (record == null) {
             log.error("[日志推送]获取日志上下文失败! 请检查是否添加了@OperationLog注解!", new RuntimeException("获取日志上下文失败!"));
             return;
         }
-        metadataSupplier.set(metadata);
         try {
             if (metadata != null) {
-                record.setPreValue(metadata.call());
+                metadataSupplier.set(metadata);
+                //序列化成JSON格式
+                JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(metadata.call()));
+                record.setPreValue(parse);
             }
         } catch (Exception e) {
             log.warn("[日志推送]跟踪日志对象时报错! 发生位置setPreValue");

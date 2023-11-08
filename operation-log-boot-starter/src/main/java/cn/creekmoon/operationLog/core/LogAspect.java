@@ -4,6 +4,7 @@ import cn.creekmoon.operationLog.utils.ObjectUtils;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LogAspect implements ApplicationContextAware, Ordered {
 
-    private volatile operationLogRecordInitializer logDetailProvider;
+    private volatile OperationLogRecordInitializer logDetailProvider;
     /**
      * 上下文对象实例
      */
@@ -57,7 +58,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
 
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
-        /*如果已经有了一个日志对象, 说明外层已经存在AOP了, 本次直接跳过*/
+        /*如果已经有了一个日志对象, 说明外层方法已经启用过一次注解了, 直接跳过*/
         LogRecord currentLogRecord = OperationLogContext.getCurrentLogRecord();
         if (currentLogRecord != null) {
             return pjp.proceed();
@@ -65,23 +66,34 @@ public class LogAspect implements ApplicationContextAware, Ordered {
 
         /*尝试开启新的日志对象*/
         LogRecord logRecord = initOperationLog();
-
-        /*初始化请求体信息*/
+        /*尝试获取外部请求体信息*/
         ServletRequestAttributes servletAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletAttributes != null) {
             HttpServletRequest request = servletAttributes.getRequest();
             OperationLogContext.currentServletRequest.set(request);
         }
-
-        /*获取注解值*/
+        /*获取注解所在的方法*/
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         ApiOperation swaggerApi = signature.getMethod().getAnnotation(ApiOperation.class);
         OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
         logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
-        logRecord.setOperationName(
-                OperationLog.DEFAULT_VALUE.equals(annotation.value()) && swaggerApi.value() != null
-                        ? swaggerApi.value()
-                        : annotation.value());
+        logRecord.setClassFullName(pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
+
+        /**
+         * 赋值优先级 从上到下
+         * 1.使用OperationLog注解(如果已经填写)
+         * 2.使用Swagger注解(如果已经填写)
+         * 3.使用当前方法类名
+         *
+         * */
+        if (!OperationLog.DEFAULT_VALUE.equals(annotation.value())) {
+            logRecord.setOperationName(annotation.value());
+        } else if (swaggerApi != null && swaggerApi.value() != null) {
+            logRecord.setOperationName(swaggerApi.value());
+        } else {
+            logRecord.setOperationName(logRecord.classFullName);
+        }
+
 
         /*处理注解所在的方法体参数*/
         try {
@@ -144,12 +156,13 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         } finally {
             /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
             boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && annotation.handleOnFail());
-            /*进行日志记录*/
+            /* 跟踪结果变化*/
             if (isNeedRecord) {
                 if (OperationLogContext.metadataSupplier.get() != null) {
                     try {
-                        /*跟踪结果变化*/
-                        logRecord.setAfterValue(OperationLogContext.metadataSupplier.get().call());
+                        //序列化成JSON格式
+                        JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(OperationLogContext.metadataSupplier.get().call()));
+                        logRecord.setAfterValue(parse);
                     } catch (Exception e) {
                         log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue!", e);
                     }
@@ -189,11 +202,11 @@ public class LogAspect implements ApplicationContextAware, Ordered {
     }
 
 
-    private operationLogRecordInitializer getLogDetailFactory() {
+    private OperationLogRecordInitializer getLogDetailFactory() {
         if (this.logDetailProvider == null) {
             synchronized (this) {
                 if (this.logDetailProvider == null) {
-                    this.logDetailProvider = applicationContext.getBean(operationLogRecordInitializer.class);
+                    this.logDetailProvider = applicationContext.getBean(OperationLogRecordInitializer.class);
                 }
             }
         }

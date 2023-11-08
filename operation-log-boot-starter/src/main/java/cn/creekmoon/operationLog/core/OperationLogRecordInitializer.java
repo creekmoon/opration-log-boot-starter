@@ -3,7 +3,7 @@ package cn.creekmoon.operationLog.core;
 /**
  * 日志提供器
  */
-public interface operationLogRecordInitializer {
+public interface OperationLogRecordInitializer {
     
     LogRecord createNewLogRecord();
 

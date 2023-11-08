@@ -221,6 +221,8 @@ OperationLogContext.fail();
 
 ## 对ElasticSearch的支持
 
+> 从1.4.0以后已经移除支持.请自己实现OperationLogHandler
+
 ### 使用步骤
 * 在SpringBoot的Main方法上, 使用注解 **@EnableOperationLogElasticSearchSupport**
 * 在application.yaml配置ES的连接参数
