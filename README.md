@@ -12,7 +12,7 @@
 <dependency>
     <groupId>io.github.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 
@@ -220,6 +220,8 @@ OperationLogContext.fail();
 ```
 
 ## 对ElasticSearch的支持
+
+> 从1.4.0以后已经移除支持.请自己实现OperationLogHandler
 
 ### 使用步骤
 * 在SpringBoot的Main方法上, 使用注解 **@EnableOperationLogElasticSearchSupport**

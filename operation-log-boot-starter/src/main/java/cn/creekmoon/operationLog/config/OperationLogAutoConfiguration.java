@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 @Configuration
 @Import({LogAspect.class,
         DefaultOperationLogHandler.class,
-        DefaultOperationLogRecordFactory.class})
+        DefaultOperationLogRecordInitializer.class})
 public class OperationLogAutoConfiguration {
     @PostConstruct
     public void init() {

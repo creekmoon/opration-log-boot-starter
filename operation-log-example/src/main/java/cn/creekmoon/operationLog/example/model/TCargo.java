@@ -1,7 +1,6 @@
 package cn.creekmoon.operationLog.example.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +9,6 @@ import java.util.Date;
 @Data
 public class TCargo {
 
-    @TableId(type = IdType.AUTO)
     private Long id;
     private String cargoNo;
     private String cargoName;

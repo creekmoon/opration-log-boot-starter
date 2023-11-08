@@ -27,6 +27,8 @@ public class LogRecord {
     String operationName;
     /*操作的JAVA方法名称*/
     String methodName;
+    /*操作的JAVA方法全称*/
+    String classFullName;
     /*可能改变的值*/
     Set<String> effectFields;
     /*改变的值之前*/
@@ -48,7 +50,6 @@ public class LogRecord {
     /*备注 可以手动为此次操作添加备注*/
     LinkedHashSet<String> remarks = new LinkedHashSet();
 
-
     /**
      * 内置方法, 转换为打平的JSON对象(即所有第一级属性都转为简单的String或String[]类型)
      *
@@ -63,6 +64,7 @@ public class LogRecord {
         jsonObject.put("operationName", operationName);
         jsonObject.put("methodName", methodName);
         jsonObject.put("effectFields", effectFields);
+        jsonObject.put("classFullName", classFullName);
         jsonObject.put("preValue", preValue != null ? JSONObject.toJSONString(preValue) : null);
         jsonObject.put("afterValue", afterValue != null ? JSONObject.toJSONString(afterValue) : null);
         jsonObject.put("effectFieldsBefore", effectFieldsBefore != null ? JSONObject.toJSONString(effectFieldsBefore) : null);
@@ -74,5 +76,4 @@ public class LogRecord {
         jsonObject.put("remarks", remarks);
         return jsonObject;
     }
-
 }

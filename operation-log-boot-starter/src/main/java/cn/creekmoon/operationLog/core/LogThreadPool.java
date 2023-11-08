@@ -17,7 +17,7 @@ public class LogThreadPool {
     private static ThreadFactory namedThreadFactory;
 
     static {
-        namedThreadFactory = new CustomizableThreadFactory("logs-thread");
+        namedThreadFactory = new CustomizableThreadFactory("operation-logs-thread");
     }
 
 

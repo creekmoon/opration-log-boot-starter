@@ -7,7 +7,7 @@ public interface OperationLogHandler {
 
 
     /**
-     * 定义处理这个日志对象
+     * 定义如何处理这个日志记录
      *
      * @param logRecord
      */
