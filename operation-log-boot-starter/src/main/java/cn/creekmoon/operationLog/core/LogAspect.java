@@ -1,11 +1,13 @@
 package cn.creekmoon.operationLog.core;
 
-import cn.creekmoon.operationLog.utils.ObjectUtils;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import io.swagger.annotations.ApiOperation;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -23,9 +25,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +74,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         }
         /*获取注解所在的方法*/
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        ApiOperation swaggerApi = signature.getMethod().getAnnotation(ApiOperation.class);
+        Operation swaggerApi = signature.getMethod().getAnnotation(Operation.class);
         OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
         logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
         logRecord.setClassFullName(pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
@@ -86,10 +86,10 @@ public class LogAspect implements ApplicationContextAware, Ordered {
          * 3.使用当前方法类名
          *
          * */
-        if (!OperationLog.DEFAULT_VALUE.equals(annotation.value())) {
+        if (!OperationLog.OPERATION_SUMMARY_DEFAULT.equals(annotation.value())) {
             logRecord.setOperationName(annotation.value());
-        } else if (swaggerApi != null && swaggerApi.value() != null) {
-            logRecord.setOperationName(swaggerApi.value());
+        } else if (swaggerApi != null && swaggerApi.summary() != null) {
+            logRecord.setOperationName(swaggerApi.summary());
         } else {
             logRecord.setOperationName(logRecord.classFullName);
         }
@@ -140,17 +140,17 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                     .collect(Collectors.toList());
             logRecord.setRequestParams(new JSONArray(paramList));
         } catch (Exception e) {
-            log.error("[日志推送]获取方法参数出错！可能入参含有无法转换为JSON的值! 本次参数保存空值！", e);
+            log.error("[operation-log]获取方法参数出错！可能入参含有无法转换为JSON的值! 本次参数保存空值！", e);
             logRecord.setRequestParams(new JSONArray());
         }
         try {
             /*执行真正的方法*/
             Object returnValue = pjp.proceed();
             /*执行工厂类afterReturn方法*/
-            getLogDetailFactory().postProcess(logRecord, returnValue);
+            getLogDetailFactory().functionPostProcess(logRecord, returnValue);
             return returnValue;
         } catch (Exception e) {
-            log.debug("[日志推送]原生方法执行异常!", e);
+            log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
             throw e;
         } finally {
@@ -164,24 +164,23 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                         JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(OperationLogContext.metadataSupplier.get().call()));
                         logRecord.setAfterValue(parse);
                     } catch (Exception e) {
-                        log.debug("[日志推送]跟踪日志对象时报错! 发生位置setAfterValue!", e);
+                        log.debug("[operation-log]跟踪日志对象时报错! 发生位置setAfterValue!", e);
                     }
                 }
                 /*保存日志结果*/
                 LogThreadPool.runTask(() -> {
-                    ObjectUtils.findDifferent(logRecord);
                     for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
                         try {
                             operationLogHandler.handle(logRecord);
                         } catch (Exception e) {
-                            log.error("[日志推送]日志处理器执行异常!", e);
+                            log.error("[operation-log]日志处理器执行异常!", e);
                         }
                     }
                 });
             }
             /*不进行日志记录*/
             if (!isNeedRecord) {
-                log.debug("[日志推送]用户操作没有成功,不会进行日志记录");
+                log.debug("[operation-log]用户操作没有成功,不会进行日志记录");
             }
             OperationLogContext.clean();
         }
@@ -194,7 +193,8 @@ public class LogAspect implements ApplicationContextAware, Ordered {
      * @return
      */
     private LogRecord initOperationLog() {
-        LogRecord logRecord = getLogDetailFactory().createNewLogRecord();
+        LogRecord logRecord = new LogRecord();
+        getLogDetailFactory().init(logRecord);
         String recordId = UUID.fastUUID().toString();
         OperationLogContext.currentRecordId.set(recordId);
         OperationLogContext.recordId2Logs.put(recordId, logRecord);

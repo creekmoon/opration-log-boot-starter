@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.creekmoon</groupId>
         <artifactId>operation-log-parent</artifactId>
-        <version>1.5.1</version>
+        <version>2.0.0</version>
     </parent>
 
     <name>operation-log-boot-starter</name>
@@ -16,6 +16,11 @@
 
 
     <dependencies>
+        <!-- swagger v3依赖-->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+        </dependency>
         <!--hutool工具类-->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -48,18 +53,14 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>provided</scope>
-        </dependency>
+
         <!--打包所需的插件 好像去掉也没问题-->
         <!--        <dependency>-->
         <!--            <groupId>org.apache.maven.plugins</groupId>-->
@@ -138,8 +139,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>21</source>
+                        <target>21</target>
                         <!--配置注解处理器 貌似不配置也会有提示-->
                         <annotationProcessors>
                             <annotationProcessor>
@@ -154,7 +155,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.3.0</version>
                     <inherited>true</inherited>
                     <executions>
                         <execution>
@@ -174,7 +175,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.6.2</version>
                     <inherited>true</inherited>
                     <executions>
                         <execution>

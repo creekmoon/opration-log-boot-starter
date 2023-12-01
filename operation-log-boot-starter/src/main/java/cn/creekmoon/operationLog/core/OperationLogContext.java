@@ -2,10 +2,12 @@ package cn.creekmoon.operationLog.core;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+
+import com.alibaba.fastjson2.JSONObject;
+import jakarta.servlet.ServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.ServletRequest;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,7 +61,7 @@ public class OperationLogContext {
      *
      * @return
      */
-    public static void fail() {
+    public static void markFail() {
         LogRecord currentLogRecord = getCurrentLogRecord();
         if (currentLogRecord == null) {
             return;

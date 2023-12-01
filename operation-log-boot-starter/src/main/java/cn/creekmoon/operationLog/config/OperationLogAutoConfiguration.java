@@ -2,10 +2,10 @@ package cn.creekmoon.operationLog.config;
 
 import cn.creekmoon.operationLog.core.LogAspect;
 import cn.creekmoon.operationLog.core.OperationLogContext;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
 
 @Configuration
 @Import({LogAspect.class,

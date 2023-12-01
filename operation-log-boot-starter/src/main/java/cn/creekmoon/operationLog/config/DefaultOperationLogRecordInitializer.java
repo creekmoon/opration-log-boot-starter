@@ -12,19 +12,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class DefaultOperationLogRecordInitializer implements OperationLogRecordInitializer {
 
-    public static final String UNKNOWN_STRING = "unknown";
+    public static final String UNKNOWN_STRING = "UNKNOWN";
     public static final Long UNKNOWN_LONG = -1L;
+
     @Override
-    public LogRecord createNewLogRecord() {
+    public LogRecord init(LogRecord logRecord) {
         /*初始化LogRecord*/
-        LogRecord logRecord = new LogRecord();
-        logRecord.setOrgId(UNKNOWN_LONG);
         logRecord.setUserId(UNKNOWN_LONG);
         logRecord.setUserName(UNKNOWN_STRING);
         logRecord.setProjectName(UNKNOWN_STRING);
         return logRecord;
     }
-
-
 
 }

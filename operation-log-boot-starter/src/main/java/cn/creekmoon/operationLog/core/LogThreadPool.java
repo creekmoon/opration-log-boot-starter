@@ -22,7 +22,7 @@ public class LogThreadPool {
 
 
     private static ExecutorService service = new ThreadPoolExecutor(
-            1,
+            0,
             4,
             60L,
             TimeUnit.SECONDS,

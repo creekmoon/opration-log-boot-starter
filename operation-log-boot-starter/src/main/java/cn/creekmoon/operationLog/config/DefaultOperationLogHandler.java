@@ -14,6 +14,8 @@ public class DefaultOperationLogHandler implements OperationLogHandler {
 
     @Override
     public void handle(LogRecord logRecord) {
-        log.info("operation-log:" + logRecord.toString());
+        log.info("[operation-log]" + logRecord.toString());
     }
+
+
 }
