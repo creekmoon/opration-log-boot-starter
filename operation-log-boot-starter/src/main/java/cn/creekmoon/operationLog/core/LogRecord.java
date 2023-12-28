@@ -22,10 +22,12 @@ public class LogRecord {
 
     /*用户id */
     Long userId;
-    /*用户账户名*/
-    String userAccount;
     /*用户姓名*/
     String userName;
+    /*用户账户Id*/
+    Long userAccountId;
+    /*用户账户名*/
+    String userAccountName;
     /*当前项目名称*/
     String projectName;
     /*操作操作类型*/
