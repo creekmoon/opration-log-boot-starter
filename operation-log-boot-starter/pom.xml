@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.creekmoon</groupId>
         <artifactId>operation-log-parent</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
     </parent>
 
     <name>operation-log-boot-starter</name>
@@ -77,7 +77,7 @@
         <!--        <dependency>-->
         <!--            <groupId>jakarta.json</groupId>-->
         <!--            <artifactId>jakarta.json-api</artifactId>-->
-        <!--            <version>2.1.0</version>-->
+        <!--            <version>2.1.1</version>-->
         <!--        </dependency>-->
     </dependencies>
 

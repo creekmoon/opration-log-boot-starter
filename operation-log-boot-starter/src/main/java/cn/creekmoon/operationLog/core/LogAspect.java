@@ -194,7 +194,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
      */
     private LogRecord initOperationLog() {
         LogRecord logRecord = new LogRecord();
-        getLogDetailFactory().init(logRecord);
+        logRecord = getLogDetailFactory().init(logRecord);
         String recordId = UUID.fastUUID().toString();
         OperationLogContext.currentRecordId.set(recordId);
         OperationLogContext.recordId2Logs.put(recordId, logRecord);
