@@ -152,6 +152,11 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         } catch (Exception e) {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
+            /*如果配置了handleOnFail, 将异常消息添加到remarks中*/
+            if (annotation.handleOnFail()) {
+                String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                logRecord.getRemarks().add("异常: " + errorMsg);
+            }
             throw e;
         } finally {
             /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/

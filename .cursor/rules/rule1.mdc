@@ -1,0 +1,202 @@
+---
+description: Operation Log Starter 项目开发规范
+globs:
+alwaysApply: true
+---
+
+您是 JAVA Web 方面的 SpringBoot 技术专家，专门负责维护 operation-log-boot-starter 项目。
+
+## 当前项目情况
+
+- 这是一个 Spring Boot 3 Starter 库，用于自动记录用户操作日志
+- 基于 AOP 实现，拦截带有 @OperationLog 注解的 Controller 方法
+- 技术栈：Spring Boot 3.0.12+、JDK 21、AspectJ、Fastjson2、Hutool、Lombok
+- 发布坐标：`io.github.creekmoon:operation-log-boot-starter:2.1.3`
+- 已发布至 Maven Central，供其他 Spring Boot 应用引用
+
+### 核心功能
+- 自动记录方法调用参数、返回值、用户信息
+- 支持字段变更跟踪（通过 OperationLogContext.follow()）
+- 异步日志处理（通过 LogThreadPool）
+- 可扩展的日志处理器（OperationLogHandler 接口）
+
+## 文件结构
+
+```
+operation-log-parent/                    # 父POM（聚合模块）
+├── pom.xml                              # 父POM配置，管理依赖版本
+└── operation-log-boot-starter/          # 核心Starter模块
+    ├── pom.xml                          # 模块POM
+    └── src/main/java/cn/creekmoon/operationLog/
+        ├── config/                      # 配置包：自动配置和启用注解
+        │   ├── EnableOperationLog.java           # 启用注解（用户在主类添加）
+        │   ├── OperationLogAutoConfiguration.java # 自动配置类
+        │   ├── OperationLogConfig.java            # 配置属性类（@ConfigurationProperties）
+        │   ├── DefaultOperationLogHandler.java    # 默认日志处理器
+        │   └── DefaultOperationLogRecordInitializer.java # 默认日志初始化器
+        └── core/                        # 核心包：日志功能实现
+            ├── OperationLog.java                   # 方法注解（标记需要记录日志的方法）
+            ├── LogAspect.java                      # AOP切面（拦截注解方法）
+            ├── LogRecord.java                      # 日志数据对象
+            ├── LogThreadPool.java                  # 异步日志线程池
+            ├── OperationLogContext.java            # ThreadLocal上下文（存储请求级状态）
+            ├── OperationLogHandler.java            # 日志处理器接口（用户扩展点）
+            ├── OperationLogRecordInitializer.java  # 日志初始化接口（用户扩展点）
+            └── ZoneIdEnum.java                     # 时区枚举
+```
+
+### 关键文件说明
+
+| 文件路径 | 作用 |
+|---------|------|
+| `core/OperationLog.java` | 注解类，用于标记需要记录日志的方法。属性包括：value(操作名称)、handleOnFail(失败时是否记录) |
+| `core/LogAspect.java` | AOP切面，拦截 @OperationLog 注解的方法，捕获参数、处理异常、异步记录日志 |
+| `core/LogRecord.java` | 日志数据实体，包含用户ID、操作名称、方法名、参数、返回值、remarks等字段 |
+| `core/OperationLogContext.java` | 线程本地存储，管理每个请求的生命周期状态，包括 follow() 方法用于跟踪字段变更 |
+| `config/EnableOperationLog.java` | 启用注解，用户在自己的 Spring Boot 应用主类上添加此注解即可启用功能 |
+
+## 代码要求(配置类)
+
+### 自动配置模式
+- 使用标准的 Spring Boot Starter 自动配置模式
+- 配置类使用 `@Configuration` 和 `@Import` 组织Bean
+- 使用 `@ConditionalOnMissingBean` 提供默认实现，允许用户覆盖
+
+### 配置属性规范
+- 使用 `@ConfigurationProperties(prefix = "operation-log")` 绑定YAML配置
+- 当前版本预留配置前缀，但暂无具体配置属性（注释说明"暂时没有任何需要配置的"）
+- 用户通过 `@EnableOperationLog` 注解启用功能
+
+### 扩展接口
+用户通过实现以下接口自定义行为：
+- `OperationLogHandler`：定义日志处理方式（如输出到控制台、Elasticsearch）
+- `OperationLogRecordInitializer`：初始化 LogRecord（设置 userId、userName 等）
+
+默认实现使用 `@ConditionalOnMissingBean` 自动注册，用户自定义实现会自动替换。
+
+### 常量定义
+- 注解默认常量定义在 `OperationLog` 接口中：
+  - `OPERATION_TYPE_DEFAULT = "DEFAULT"`
+  - `OPERATION_SUMMARY_DEFAULT = "未描述的接口"`
+- 未知值常量定义在 `DefaultOperationLogRecordInitializer` 中：
+  - `UNKNOWN_STRING = "UNKNOWN"`
+  - `UNKNOWN_LONG = -1L`
+
+## 代码要求(Spring规范类)
+
+### 技术栈规范
+- **Spring Boot 版本**：3.0.12+
+- **JDK 版本**：21（使用新特性如 switch 表达式）
+- **JSON 处理**：Fastjson2 (`com.alibaba.fastjson2`)
+- **工具类**：Hutool 5.8.x
+- **简化代码**：Lombok (`@Data`, `@Slf4j`)
+- **AOP**：AspectJ (`@Aspect`, `@Around`, `@Pointcut`)
+
+### 注解使用规范
+
+#### Spring 注解
+| 注解 | 使用场景 |
+|-----|---------|
+| `@Aspect` + `@Component` | AOP切面类 |
+| `@Configuration` + `@Import` | 配置类 |
+| `@ConfigurationProperties` | 配置属性绑定 |
+| `@ConditionalOnMissingBean` | 条件化Bean注册（提供默认实现） |
+| `@PostConstruct` | 初始化后执行 |
+
+#### 自定义注解
+- `@OperationLog`：标记在 Controller 方法上，触发日志记录
+- `@EnableOperationLog`：标记在 Spring Boot 主类上，启用功能
+
+### JavaDoc 注释规范
+
+#### 类级别注释
+```java
+/**
+ * 简要描述类的功能
+ * 可以有多行补充说明
+ *
+ * @author creekmoon
+ */
+```
+
+#### 方法级别注释
+```java
+/**
+ * 方法功能描述
+ *
+ * @param paramName 参数说明
+ * @return 返回值说明
+ */
+```
+
+#### 注释要求
+- 使用标准 JavaDoc 格式 (`/** ... */`)
+- 使用中文注释
+- 必须包含 `@author` 标签（统一使用 `creekmoon`）
+- 方法参数使用 `@param` 标签说明
+- 返回值使用 `@return` 标签说明
+- 不要使用 HTML 标签和 Markdown 语法
+
+### 代码风格
+- 属性使用驼峰命名（如 `userId`, `operationName`）
+- 常量使用大写下划线（如 `OPERATION_TYPE_DEFAULT`）
+- 类名使用大驼峰（如 `LogRecord`, `OperationLogContext`）
+- 时间类型使用 `LocalDateTime`
+- 集合类型使用 `LinkedHashSet` 保持插入顺序
+- 日志使用 Lombok 的 `@Slf4j`，日志前缀统一为 `[operation-log]`
+
+### 线程安全
+- 使用 `ThreadLocal` 存储请求级状态（OperationLogContext）
+- 使用 `ConcurrentHashMap` 存储日志记录
+- 异步处理使用专门的线程池（LogThreadPool）
+
+### 异常处理
+- 捕获异常后设置 `logRecord.setRequestResult(Boolean.FALSE)`
+- 如启用了 `handleOnFail`，将异常消息添加到 remarks
+- 异常消息为 null 时，使用异常类名作为 fallback
+
+## 内部模块划分
+
+### config/ 包 - 配置层
+负责 Starter 的自动配置和启用机制：
+
+| 类 | 职责 |
+|---|-----|
+| `EnableOperationLog` | 自定义注解，用户添加此注解启用功能 |
+| `OperationLogAutoConfiguration` | 自动配置类，导入核心组件 |
+| `OperationLogConfig` | 配置属性类（预留扩展） |
+| `DefaultOperationLogHandler` | 默认日志处理器（输出到日志） |
+| `DefaultOperationLogRecordInitializer` | 默认初始化器（设置默认值） |
+
+### core/ 包 - 核心层
+负责日志功能的核心实现：
+
+| 类 | 职责 |
+|---|-----|
+| `OperationLog` | 方法注解，标记需要记录日志的方法 |
+| `LogAspect` | AOP切面，拦截注解方法，处理日志记录流程 |
+| `LogRecord` | 日志数据对象，包含所有日志字段 |
+| `LogThreadPool` | 异步处理日志的线程池 |
+| `OperationLogContext` | 请求上下文，ThreadLocal存储状态 |
+| `OperationLogHandler` | 接口，定义日志处理行为（扩展点） |
+| `OperationLogRecordInitializer` | 接口，定义日志初始化行为（扩展点） |
+| `ZoneIdEnum` | 时区枚举 |
+
+### 数据流
+1. 方法添加 `@OperationLog` 注解被调用
+2. `LogAspect.around()` 拦截调用
+3. 通过 `OperationLogRecordInitializer` 初始化 LogRecord
+4. 序列化方法参数并存储
+5. 执行原方法
+6. 如调用了 `OperationLogContext.follow()`，捕获"之后"的值
+7. 通过 `LogThreadPool` 异步处理日志
+8. 调用所有 `OperationLogHandler` 实现处理日志
+9. 清理 `OperationLogContext`
+
+## 测试要求
+
+- 反复检查代码逻辑合理完备
+- 确保异步处理的线程安全
+- 验证异常情况下 remarks 正确记录
+- 不能执行任何 Maven 脚本（用户将自行执行）
+- 不能执行任何系统命令
