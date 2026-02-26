@@ -12,7 +12,7 @@
 <dependency>
     <groupId>io.github.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>2.1.2</version>
+    <version>2.1.3</version>
 </dependency>
 ```
 
@@ -20,7 +20,7 @@
 
 Spring Boot 3.0.0+
 
-JDK >= 17
+JDK >= 21
 
 ## 快速开始
 
