@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.creekmoon</groupId>
+        <groupId>cn.creekmoon</groupId>
         <artifactId>operation-log-parent</artifactId>
         <version>2.1.3</version>
     </parent>
@@ -106,16 +106,16 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</developerConnection>
-        <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+        <connection>scm:git:https://gitee.com/creekmoon/operation-log-starter.git</connection>
+        <developerConnection>scm:git:https://gitee.com/creekmoon/operation-log-starter.git</developerConnection>
+        <url>https://gitee.com/creekmoon/operation-log-starter</url>
     </scm>
 
     <developers>
         <developer>
             <name>JY</name>
             <email>yinjiangyue@hotmail.com</email>
-            <url>https://github.com/creekmoon</url>
+            <url>https://gitee.com/creekmoon</url>
         </developer>
     </developers>
 

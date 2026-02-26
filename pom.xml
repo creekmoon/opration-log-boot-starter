@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.creekmoon</groupId>
+    <groupId>cn.creekmoon</groupId>
     <name>operation-log-parent</name>
     <artifactId>operation-log-parent</artifactId>
     <packaging>pom</packaging>
@@ -96,7 +96,7 @@
     <description>
         此项目不包含功能,请引入opration-log-boot-starter
     </description>
-    <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+    <url>https://gitee.com/creekmoon/operation-log-starter</url>
 
     <!--注意 install会有报错, 但是不会影响结果-->
     <!--这是因为javadoc解析出的格式错误, 已经启用<doclint>none</doclint>忽略了错误-->
@@ -111,126 +111,126 @@
     </licenses>
 
     <issueManagement>
-        <system>github</system>
-        <url>https://github.com/creekmoon/opration-log-boot-starter/issues</url>
+        <system>gitee</system>
+        <url>https://gitee.com/creekmoon/operation-log-starter/issues</url>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/creekmoon/opration-log-boot-starter.git</developerConnection>
-        <url>https://github.com/creekmoon/opration-log-boot-starter</url>
+        <connection>scm:git:https://gitee.com/creekmoon/operation-log-starter.git</connection>
+        <developerConnection>scm:git:https://gitee.com/creekmoon/operation-log-starter.git</developerConnection>
+        <url>https://gitee.com/creekmoon/operation-log-starter</url>
     </scm>
 
     <developers>
         <developer>
             <name>JY</name>
             <email>yinjiangyue@hotmail.com</email>
-            <url>https://github.com/creekmoon</url>
+            <url>https://gitee.com/creekmoon</url>
         </developer>
     </developers>
 
-    <distributionManagement>
-        <repository>
-            <id>maven_oss_push</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-        <snapshotRepository>
-            <id>maven_oss_push</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>maven_oss_push</id>-->
+<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>maven_oss_push</id>-->
+<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
 
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!--定义编译版本-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-                <!--定义源码解析插件-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <inherited>true</inherited>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <excludeResources>true</excludeResources>
-                        <useDefaultExcludes>true</useDefaultExcludes>
-                    </configuration>
-                </plugin>
-
-                <!--定义javadoc插件  整个过程会有报错,因为有些注释格式不正确.但是不影响结果 已经启用<doclint>none</doclint>忽略了错误-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <inherited>true</inherited>
-                    <executions>
-                        <execution>
-                            <id>bundle-sources</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <maxmemory>1024</maxmemory>
-                        <encoding>UTF-8</encoding>
-                        <show>protected</show>
-                        <notree>true</notree>
-                        <failOnError>false</failOnError>
-                        <doclint>none</doclint>
-                    </configuration>
-                </plugin>
-
-                <!--定义gpg签名插件 Gpg4win 构建时会自动调用gpg.exe进行签名-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-            </plugins>
-        </pluginManagement>
         <plugins>
-            <!--我们上传的jar包，需要包含doc和源码-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>maven_oss_push</publishingServerId>
+                </configuration>
+            </plugin>
+            <!--定义编译版本-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <!--定义源码解析插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludeResources>true</excludeResources>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                </configuration>
             </plugin>
-            <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
-            <!-- GPG -->
+
+            <!--定义javadoc插件  整个过程会有报错,因为有些注释格式不正确.但是不影响结果 已经启用<doclint>none</doclint>忽略了错误-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>bundle-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <maxmemory>1024</maxmemory>
+                    <encoding>UTF-8</encoding>
+                    <show>protected</show>
+                    <notree>true</notree>
+                    <failOnError>false</failOnError>
+                    <doclint>none</doclint>
+                </configuration>
+            </plugin>
+
+            <!--定义gpg签名插件 Gpg4win 构建时会自动调用gpg.exe进行签名-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

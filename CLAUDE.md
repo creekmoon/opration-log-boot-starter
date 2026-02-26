@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Spring Boot 3 starter library for operation logging. It provides an AOP-based solution to automatically log controller method invocations, including request parameters, user information, and field change tracking.
 
-**Published Artifact**: `io.github.creekmoon:operation-log-boot-starter:2.1.2` on Maven Central
+**Published Artifact**: `cn.creekmoon:operation-log-boot-starter:2.1.2` on Maven Central
 
 ## Build Commands
 
