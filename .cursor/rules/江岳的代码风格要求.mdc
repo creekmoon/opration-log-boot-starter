@@ -1,0 +1,680 @@
+---
+description: 江岳的 Java 代码风格要求（方法设计 / 参数定义 / 代码流程组织）
+globs:
+alwaysApply: false
+---
+
+## 适用范围
+
+本规则不限编程语言,适用于所有的项目，目的是用于规范：
+
+- 方法设计与抽取粒度
+- Service 层公共方法入参风格
+- 方法内部的流程组织（主流程优先）
+- 命名与副作用边界（Name == Behavior）
+
+## 总体目标
+
+- 代码逻辑尽量收束在方法本身，减少不必要的跳转与间接层
+- 方法名对行为负责，让调用方“看名知意、可预期副作用”
+- 以主流程为主线，降低缩进层级，提高可读性与可维护性
+
+## 规则清单
+
+### 1. 保持方法内聚（收束逻辑，降低复杂度）
+
+原则：将代码逻辑收束在方法本身，保持修改精准简洁，禁止引入不必要的复杂度。
+
+- 优先通过“顺序组织 + 清晰命名 + 早返回”来控制复杂度
+- 不要为了“看起来更优雅”而引入多层跳转
+
+### 2. 禁止过度抽取（Avoid Over-Extraction）
+
+原则：不要抽取仅有一个调用点的 `private` 方法，此类逻辑应直接内联到原方法体中。
+
+- 抽取的前提是“降低理解成本”，而不是“减少行数”
+- 如果抽取会导致上下文丢失、频繁跳转、增加阅读负担，则应回退内联
+
+### 3. 方法名必须对行为负责（Name == Behavior）
+
+原则：方法逻辑必须严格遵循方法名称；禁止出现“方法名做 A，实际代码做 A + B”的隐藏逻辑。
+
+- 若方法做多件事，必须把行为写进方法名（宁可名字长，也不要契约模糊）
+- 若存在副作用（通知、级联、写库、发消息等），必须在方法名中显式体现
+- 若存在前置检查并可能静默 `return`，必须在方法名中显式体现（例如 `IfExists`）
+
+示例 1：多步骤操作必须体现在方法名中（存在性检查 + 删除 + 通知）
+
+正面示例（方法名完整描述行为）：
+
+```java
+public void deleteUserAndNoticeIfExists(Long userId) {
+    User user = userRepository.findById(userId);
+    if (user == null) {
+        log.warn("用户不存在，跳过删除: {}", userId);
+        return;
+    }
+
+    userRepository.delete(userId);
+    log.info("用户已删除: {}", userId);
+
+    notificationService.sendDeleteNotice(user.getEmail());
+}
+```
+
+反面示例（方法名隐瞒实际行为与副作用）：
+
+```java
+public void deleteUser(Long userId) {
+    User user = userRepository.findById(userId);
+    if (user == null) {
+        return;
+    }
+
+    userRepository.delete(userId);
+    notificationService.sendDeleteNotice(user.getEmail());
+}
+```
+
+示例 2：禁止方法名暗示单操作，实际执行级联操作（删除机构）
+
+正面示例（方法名与行为严格一致）：
+
+```java
+public void deleteOrg(Long orgId) {
+    orgRepository.deleteById(orgId);
+}
+```
+
+反面示例（方法名掩盖级联副作用）：
+
+```java
+public void deleteOrg(Long orgId) {
+    orgRepository.deleteById(orgId);
+
+    List<Long> userIds = userRepository.findByOrgId(orgId);
+    userIds.forEach(userRepository::delete);
+}
+```
+
+### 4. Service 层公共方法入参：优先基本类型/简单对象
+
+原则：Service 层的公共方法（`public`）入参应尽可能使用基本类型（Primitive Types）或简单对象，避免使用聚合对象包裹。
+
+例外情况：
+
+- Service 方法为 `private`，用于内部特殊处理封装：允许入参使用 DTO/BO
+- Service 方法直接为前端 Controller 层提供服务：允许入参使用 DTO/BO（用于接口承载）
+
+正面示例：
+
+```java
+public void doSomething(String name, int age, String email) {
+    // 业务逻辑
+}
+```
+
+反面示例：
+
+```java
+public void doSomething(UserInfoDTO userInfo) {
+    // 需要拆解对象获取字段，增加不必要的依赖
+}
+```
+
+补充说明（落地标准与优化方向）：
+
+- 默认优先级：优先尝试使用基本数据类型（含 `String`、各类 `Id`、数值/时间等简单值对象）作为 `public` 方法入参。
+  - 这类入参让方法契约更“自足”：调用方不需要先准备一整套对象（通常意味着“先查库/先拼装”），也更容易复用、测试与迁移调用点。
+- 例外情况（业务一等公民，仅作为“可选优化项”而非强制改造）：
+  - 若某个对象本身是业务的核心承载对象（业务一等公民），且该对象的获取代价明显较高（例如需要复杂 join、跨服务调用、昂贵的聚合计算、或需要依赖上游已经完成的装配），则允许保留“传对象”这一形式。
+  - 反之，如果该对象获取非常容易（例如单表 `getById` / 简单条件查询即可得到），则更建议优化为“传主键 id”，把对象获取内聚到方法内部，减少调用方的前置负担。
+- 优化改进方向（从“传对象”收敛为“传主键 id”）：
+  - 传入对象通常意味着方法内部会消费多个相关字段；若确实如此，优先把入参收敛为主键 `id`（接受方法内部重新查库的代价），让接口语义更清晰、调用点更少依赖、方法更可复用。
+  - 若除了 `id` 还需要少量额外值（例如 `status`、`operatorId`），优先“显式列出必要的基本类型参数”；只有当参数数量变多且强关联时，才考虑“简单对象”（仅承载 2-5 个强关联的基本字段，不引入转换/查询逻辑）。
+
+示例：同一业务“传对象”与“传主键 id”的对比
+
+反面示例（`public` 方法要求调用方先准备聚合对象）：
+
+```java
+public void bindTrackingNo(Order order, String trackingNo) {
+    // order 往往意味着调用方需要先查库/装配，制造不必要的前置依赖
+    // 业务逻辑
+}
+```
+
+正面示例（`public` 方法只要求主键，内部自行获取依赖对象）：
+
+```java
+public void bindTrackingNo(Long orderId, String trackingNo) {
+    Order order = orderService.getById(orderId);
+    // 业务逻辑
+}
+```
+
+### 5. 主流程优先（Happy Path First）
+
+原则：每个方法应将业务主要预期（主流程）作为主线逻辑。`if` 分支仅用于额外校验或设置默认值，严禁将主流程逻辑写在分支内部。
+
+正面示例（先处理异常/空值，再执行主逻辑）：
+
+```java
+if (data == null) {
+    return;
+}
+if (status == null) {
+    status = Status.DEFAULT;
+}
+
+processBusinessLogic(data);
+saveToDatabase(data);
+sendNotification(data);
+```
+
+反面示例（主逻辑嵌套在 `if` 中，增加缩进层级）：
+
+```java
+if (data != null) {
+    if (status != null) {
+        processBusinessLogic(data);
+        saveToDatabase(data);
+        sendNotification(data);
+    }
+}
+```
+
+补充说明：当某个值的正向预期是“直接取到并继续使用”（例如 `trackingNumber`），应优先写成“先按预期取值 -> 再判断取到没有”。尽量不要为了 `if` 分支而先做空声明（例如 `String x = null;`），这会把主流程塞进分支里，不符合 Happy Path First。
+
+反例（来自本项目：先空声明，再在分支里做主流程赋值）：
+
+- `src/main/java/com/efficross/web/service/quote/api/provider/chrobinson/BookingApi4CHRobinson.java:496-502`
+
+```java
+String trackingNumber = null;
+if (logistics != null && StringUtils.isNotBlank(logistics.getTrackingNumber())) {
+    trackingNumber = logistics.getTrackingNumber().trim();
+    log.info("{} 物流信息查询成功，trackingNumber={}", logPrefix, trackingNumber);
+} else {
+    log.warn("{} 未找到物流信息或 trackingNumber 为空，将尝试使用 bookingNo 作为 fallback", logPrefix);
+}
+```
+
+推荐写法（先按正向预期取值，再做校验/兜底）：
+
+```java
+String trackingNumber = logistics.getTrackingNumber();
+if (StringUtils.isNotBlank(trackingNumber)) {
+    trackingNumber = trackingNumber.trim();
+    log.info("{} 物流信息查询成功，trackingNumber={}", logPrefix, trackingNumber);
+} else {
+    log.warn("{} 未找到物流信息或 trackingNumber 为空，将尝试使用 bookingNo 作为 fallback", logPrefix);
+}
+```
+
+如果 `logistics` 可能为 `null` 且属于异常分支，应把 `logistics != null` 的校验前移为 fast-fail 或兜底，而不是把“主流程赋值”塞进 `if` 分支里。
+
+### 6. 可选的后续逻辑：回调组合 vs 显式命名
+
+原则：禁止将“可选的、非核心的后续逻辑”硬编码在方法内部。需要复合操作时，必须明确职责边界。
+
+策略一：回调组合（保持方法名纯粹）
+
+- 方法只负责核心逻辑，后续操作通过回调参数交给调用方决定
+- 方法名保持核心动词（如 `saveUser`），副作用不写死在方法体内
+
+策略二：显式命名（方法名承担描述职责）
+
+- 如果后续操作是固定业务规则、每次调用都必须执行：必须把行为写进方法名
+- 例如 `saveUserAndNotice`，禁止用简洁名字掩盖复合逻辑
+
+决策指南：
+
+- 选择策略一（回调）的情况：
+  - 后续操作是临时的、场景特定的，不适合上升为方法契约
+  - 希望保持方法名简洁，且逻辑纯粹
+  - 调用方需要灵活组合多种不同后续操作
+- 选择策略二（改名）的情况：
+  - 后续操作是固定业务规则，每次调用都应该执行
+  - 操作具有业务重要性，必须在方法名中显式声明（如发送通知、初始化权限）
+  - 团队约定某副作用必须让人一眼看出
+
+示例：保存用户后“可能”发送通知
+
+策略一示例（回调组合）：
+
+```java
+public void saveUser(UserBO userBO, Consumer<Long> afterSave) {
+    userMapper.insert(userBO);
+    if (afterSave != null) {
+        afterSave.accept(userBO.getId());
+    }
+}
+
+// 调用方按需组合
+saveUser(userBO, userId -> noticeService.sendWelcomeMsg(userId)); // 场景 A：要通知
+saveUser(userBO, null);                                          // 场景 B：纯保存
+```
+
+策略二示例（显式命名）：
+
+```java
+public void saveUserAndNotice(UserBO userBO) {
+    userMapper.insert(userBO);
+    noticeService.sendWelcomeMsg(userBO.getId());
+}
+
+// 调用方明确知道会发通知
+saveUserAndNotice(userBO);
+```
+
+禁止的做法：
+
+```java
+// 方法名叫 saveUser，内部却偷偷发通知（方法名未声明副作用）
+public void saveUser(UserBO userBO) {
+    userMapper.insert(userBO);
+    noticeService.sendWelcomeMsg(userBO.getId());
+}
+
+// 方法名叫 saveUserAndNotice，却允许跳过通知（方法名承诺与实现不一致）
+public void saveUserAndNotice(UserBO userBO, boolean needNotice) {
+    userMapper.insert(userBO);
+    if (needNotice) {
+        noticeService.sendWelcomeMsg(userBO.getId());
+    }
+}
+```
+
+命名约定（与本规则配套使用）：
+
+- 使用策略一（回调）：
+  - 方法名保持核心动词（`saveUser`、`createOrder`）
+  - 回调参数名使用 `afterXxx` 或 `onXxx`（`afterSave`、`onCreated`）
+- 使用策略二（改名）：
+  - 使用 `And` 连接核心操作与副作用（`saveUserAndNotice`）
+  - 使用 `AndThen` / `Then` 表示时序（`validateAndThenSave`）
+  - 禁止出现可以跳过的副作用命名（如 `saveUserAndMaybeNotice`）
+
+### 7. 纯 CPU 业务转换：减少“一次性中间变量”（可用 Stream + 顶部流程注释）
+
+原则：若逻辑不涉及对外 I/O、仅为纯 CPU 的业务转换（过滤、映射、排序、取最值、格式化等），允许将“只消费一次的中间变量”合并为一次流式转换，以减少冗余变量与中断点。
+
+适用前提：
+
+- 转换过程不触发外部 I/O（HTTP、RPC、DB、MQ、文件、缓存等）
+- 转换过程不包含关键副作用（写库、发消息、更新外部状态等）
+
+约束与要求：
+
+- 需要在流式转换前方**顶部写清楚步骤注释**，说明从输入到输出的转换链路
+- 如果流式链路过长、难以理解：宁可保留 1-2 个具名中间变量，也不要强行一条链到底
+- 一旦进入 I/O（或可能阻塞/失败的操作）：必须切断链路，单独处理（避免把 I/O 混进 stream）
+
+示例（纯 CPU 转换：`List<...>` 直接得到 `documentId`；I/O 获取内容单独处理）：
+
+```java
+// 纯 CPU 转换（不涉及 I/O）：
+// 1. 过滤空记录
+// 2. 过滤 documentType=BOL
+// 3. 提取非空 documentId
+// 4. 按业务规则取最小值（最早签发版本）
+Long earliestBolDocumentId = documentIds.stream()
+        .filter(item -> item != null)
+        .filter(item -> "BOL".equalsIgnoreCase(item.getDocumentType()))
+        .map(CHRobinsonDocumentIdResponse::getDocumentId)
+        .filter(documentId -> documentId != null)
+        .min(Long::compareTo)
+        .orElse(null);
+
+// I/O 操作（单独处理，不混进 stream）
+CHRobinsonDocumentContentResponse contentResponse = getDocumentContent(earliestBolDocumentId);
+```
+
+### 8. 方法名前缀约定：`tryXxx`（调用方不关心是否成功）
+
+原则：使用 `try` 前缀意味着调用方“不关心是否成功”，且该方法**不会向外抛出异常**。
+
+契约约定：
+
+- `tryXxx` 方法**不得**向外抛出任何异常（包括运行时异常）
+- `tryXxx` 方法返回值**只能**是：
+  - `void`（调用方完全不关心结果）
+  - `boolean`（调用方仅关心成功/失败，不关心失败原因）
+- 构造 `tryXxx` 这类方法时，必须保证逻辑完备：即使失败也能在内部“兜住”最终结果，避免造成业务异常
+- `tryXxx` 方法不得打断外部调用方的事务：
+  - 不得通过抛异常触发外部事务回滚
+  - 不得制造不可控的业务中断
+
+建议做法（非强制，但强烈推荐）：
+
+- 内部对异常进行捕获、记录必要日志，并返回 `false` 或直接结束
+- 日志级别建议使用 `debug`；日志文案必须明确包含“可能是正常情况无须理会”，避免误报告警、干扰排查
+- 对关键资源与状态进行保护，避免部分成功导致系统处于不可预测状态
+
+正面示例：
+
+```java
+public boolean trySendWelcomeNotice(Long userId) {
+    try {
+        noticeService.sendWelcomeMsg(userId);
+        return true;
+    } catch (Exception e) {
+        log.debug("发送欢迎通知失败(可能是正常情况无须理会), userId={}", userId, e);
+        return false;
+    }
+}
+```
+
+反面示例：
+
+```java
+public boolean trySendWelcomeNotice(Long userId) {
+    // 违规：try 前缀方法向外抛异常，会打断外部调用方事务
+    noticeService.sendWelcomeMsg(userId);
+    return true;
+}
+```
+
+### 9. 方法体分区组织（0-4，可读性模板）
+
+原则：方法体必须按“可读性分区”组织代码，使读者能够一眼看出：先校验什么、再准备什么、默认值如何补齐、依赖关系如何校验、最后执行什么业务。
+
+分区约定（尽量实现为如下顺序）：
+
+- 0. fast-fail 校验区域：通常是针对入参/上下文的**第一时间校验**，不通过就立刻 `throw` 或 `return`，避免继续往下构建对象与组织业务。
+- 1. 参数声明区域：对后续会使用的参数/变量进行声明，并做“初次尝试赋值”（例如从入参/上下文/查询结果中拿到候选值）。
+- 2. 赋默认值区域：对可为空的参数补齐默认值，或做优先级合并（例如 `a != null ? a : b`）。
+- 3. 二次 fast-fail 校验区域：当 1/2 阶段已经把“id -> 对象”等依赖关系建立起来后，应立即进行依赖校验（例如对象是否存在、状态是否合法、跨字段约束是否满足）。
+  - 允许 2 与 3 混合存在：如果在“赋默认值”的同时就能确定依赖关系并且逻辑更清晰，可以在同一段连续代码中完成；但只要代码能够前移且逻辑不变，就应该往前移，避免把校验拖到业务执行阶段。
+- 4. 执行业务区域：只做明确的业务动作（写库、调用外部服务、事务内编排等），不应再混入大量“防御性编程”来支撑主流程。
+  - 例外：特定的专用入参对象属于“立即构建、立即消费”的一次性对象（且只在一个调用点使用），可以在业务调用处就地构建，不强制提前声明。
+
+阶段顶部注释规范（必须遵守）：
+
+- 每个阶段的顶部必须有**有意义**的注释，用于帮助读者快速理解该阶段“做了什么”（可选补充“为了什么”）。
+- 禁止使用无价值的阶段占位注释，例如 `// 1. 参数声明区域`、`// 2. 赋默认值区域`。
+- 注释风格必须使用块注释：
+  - 单行注释：使用 `/* xxx */`，不要使用 `/** xxx */`
+  - 多行注释：使用 `/** ... */` 或 `/* ... */`
+  - 不要用单行 `//` 去写阶段标题。
+- 话术要求：精准、简洁，至少覆盖“做了什么”，可选补充“为了什么”；避免把意图写得过细导致啰嗦。
+  - 反例（意图过细/过度解释）：
+    - `/* 建立依赖关系：先把后续要用到的对象查出来，避免在业务执行阶段穿插防御分支 */`
+  - 正例（精准简洁，说明做了什么）：
+    - `/* 简单查 xx 表拿对象 */`
+
+注释密度与边界（防止“逐行注释”）：
+
+- 阶段注释是**该阶段的总注释**：解释这一段代码要完成的事，不要解释每一行在做什么。
+- **同一阶段默认只写一条阶段注释**；阶段内部应依靠“清晰的变量/方法命名 + 连续的主流程”来自解释。
+- 阶段内部原则上**禁止**再补充“跟代码表面行为重复”的注释，例如：
+  - `/* 校验订单不为空 */ if (order == null) ...`
+  - `/* 给变量赋值 */ String x = ...`
+  - `/* 打日志 */ log.info(...)`
+- 阶段内部只有在“业务规则不直观/有坑/反直觉约束”时，才允许增加**极少量**局部注释（最多 1 条），且必须解释“为什么”，不要解释“是什么”。
+
+入参变量复用（默认推荐）：
+
+- 如果没有特别备注，在 1（参数声明）与 2（默认值）阶段，允许直接对方法入参变量进行重新赋值（例如对 `String`、`Long`、`Integer`、`BigDecimal`、`LocalDateTime` 等“值对象/不可变对象”补默认值或做归一化）。
+- 不应该为了“防御性编程”再额外声明一个与入参同含义的新变量（例如 `String bizCode = code`），这会制造重复语义与不必要的理解成本。
+- 例外：当需要引入更准确的业务命名（入参名过泛、含义发生转换）或需要保留原始入参用于日志/审计时，才允许额外声明“不同语义”的变量，并在变量名上体现差异（例如 `rawCode` 与 `normalizedCode`）。
+
+空行规则（非常重要）：
+
+- 同一个分区内部，不允许留下意义不明的空行；同阶段的多步操作必须连续排列，不要用空行“分隔步骤”（需要强调步骤时，用有意义的块注释即可）。
+- 块注释阶段标题与本阶段第一行代码之间，不要额外插空行。
+- 空行只用于分区切割。
+- 若某分区代码为空，则直接省略该分区，不要为了“凑模板”保留占位空行。
+
+示例（空行只用于分区切割，同阶段操作不插空行）：
+
+```java
+/* 入参 fast-fail 校验 */
+if (orderId == null) {
+    throw new BizException("订单ID不能为空");
+}
+if (StrUtil.isBlank(trackingNumber)) {
+    throw new BizException("追踪号不能为空");
+}
+
+/* 查询核心对象并声明候选值（强依赖对象缺失则直接 fast-fail） */
+TOrder order = orderService.getById(orderId);
+TLogistics logistics = new LambdaQueryChainWrapper<>(tLogisticsMapper)
+        .eq(TLogistics::getRefOrderId, orderId)
+        .eq(TLogistics::getDelFlag, DictConstant.DEL_FLAG_NO)
+        .one();
+if (order == null) {
+    throw new BizException("找不到订单");
+}
+if (logistics == null) {
+    throw new BizException("找不到物流单");
+}
+String physicalCarrierCode = order.getPhysicalCarrierCode();
+
+/* 默认值兜底：同阶段兜底逻辑连续写，不额外插空行 */
+if (physicalCarrierCode == null) {
+    physicalCarrierCode = logistics.getPhysicalCarrierCode();
+}
+if (StrUtil.isBlank(platformName)) {
+    platformName = resolveTrackingPlatformName(order.getRefCarrierId(), order.getId());
+}
+
+/* 执行业务：同阶段动作连续写 */
+log.info("update ok, orderId={}", orderId);
+tryBindTrackingNumberToPlatform(orderId, trackingNumber, platformName, order.getRemoteCarrierName(), physicalCarrierCode);
+```
+
+主流程强依赖校验前移（落地要求）：
+
+- 若业务主流程强依赖某个 `id` / 某个对象存在，则必须在 0 或 3 区域把“是否存在/是否合法”的校验完成。
+- 禁止把关键校验耦合到 4 区域之前临时才做，导致 4 区域出现多个 `if (xxx == null) { ... }` 的防御性编程分支，主流程被切碎。
+
+声明阶段强校验的例外情况（核心对象强依赖）：
+
+- 若“参数声明/默认值兜底”阶段的其它变量初始化都**强依赖**某个核心对象（例如 `order`、`user`、`bizEntity`），一旦该对象为 `null`，后续声明与兜底都没有意义且无法补救，则允许在**声明阶段刚拿到核心对象后**立刻 fast-fail（不用强行拖到 3 区域）。
+- 这类校验的目标是“避免无意义的后续声明/兜底”，而不是把校验四处散落；因此建议放在“查询核心对象”之后的第一时间完成。
+
+示例（核心对象强依赖，声明阶段直接 fast-fail）：
+
+```java
+/* 查询核心对象并声明候选值（后续变量强依赖它们） */
+TOrder order = orderService.getById(orderId);
+if (order == null) {
+    throw new BizException("找不到订单");
+}
+TLogistics logistics = new LambdaQueryChainWrapper<>(tLogisticsMapper)
+        .eq(TLogistics::getRefOrderId, orderId)
+        .eq(TLogistics::getDelFlag, DictConstant.DEL_FLAG_NO)
+        .one();
+if (logistics == null) {
+    throw new BizException("找不到物流单");
+}
+String physicalCarrierCode = order.getPhysicalCarrierCode();
+
+/* 默认值兜底：如果订单未带出，则再从其它来源兜底 */
+if (physicalCarrierCode == null) {
+    physicalCarrierCode = logistics.getPhysicalCarrierCode();
+}
+```
+
+正面示例（结构模板）：
+
+```java
+public void doSomething(Long id, String code) {
+    /* 入参 fast-fail 校验 */
+    if (id == null) {
+        throw new BizException("id 不能为空");
+    }
+
+    /* 简单查 BizEntity 拿对象 */
+    BizEntity entity = bizService.getById(id);
+
+    /* 默认值兜底：补齐 code */
+    if (StrUtil.isBlank(code)) {
+        code = entity != null ? entity.getDefaultCode() : null;
+    }
+
+    /* 二次 fast-fail：依赖关系校验 */
+    if (entity == null) {
+        throw new BizException("记录不存在");
+    }
+    if (StrUtil.isBlank(code)) {
+        throw new BizException("业务编码不能为空");
+    }
+
+    /* 执行业务 */
+    bizService.process(entity, code);
+}
+```
+
+反例（把“声明 + 兜底”揉成一次性表达式，阶段边界不清晰）：
+
+```java
+String physicalCarrierCode = StrUtil.isNotBlank(order.getPhysicalCarrierCode())
+        ? order.getPhysicalCarrierCode()
+        : logistics.getPhysicalCarrierCode();
+```
+
+正例（先声明，再兜底：让读者明确“优先级”和“兜底来源”）：
+
+```java
+/* 参数声明：优先从订单读取物理承运商编码 */
+String physicalCarrierCode = order.getPhysicalCarrierCode();
+
+/* 默认值兜底：如果订单未带出 physicalCarrierCode，则从物流单再兜底一次 */
+if (physicalCarrierCode == null) {
+    physicalCarrierCode = logistics.getPhysicalCarrierCode();
+}
+/* 默认值兜底：如果没指定平台名称，尝试再兜底一次 */
+if (StrUtil.isBlank(platformName)) {
+    platformName = resolveTrackingPlatformName(order.getRefCarrierId(), order.getId());
+}
+```
+
+反例（来自本项目，说明问题点）：
+
+- `src/main/java/com/efficross/web/service/LogisticsService.java:155-177`
+  - `physicalCarrierCode` 属于“声明 + 兜底”的典型场景：应在 1 区域先声明（优先从订单读取），在 2 区域再做兜底（必要时从物流单读取），不要用一次性表达式把两个阶段揉在一起。
+  - 若订单/物流单是后续声明与兜底的核心强依赖对象，允许在声明阶段查询到对象后立刻 fast-fail，避免无意义的后续默认值处理。
+  - 该段逻辑属于可选后续动作（“追踪号绑定回调”），应当与主流程边界更清晰地分隔；若主流程强依赖某些前置条件，应在 0/3 区域完成校验，避免业务执行中出现多处防御性判断。
+- `src/main/java/com/efficross/web/service/MailService.java:35-69`
+  - 在同一分区内出现多次不必要的空行，导致阅读节奏被打断；应把空行仅用于分区切割，并让每个分区内部保持紧凑、连续、语义一致。
+
+### 10. 避免过度防御性编程包装（把“空值处理”从参数表达式里拆出来）
+
+原则：防御性编程应该服务于“边界清晰 + 主流程顺畅”，而不是把多个防御动作堆进一行参数表达式里，迫使读者在脑中展开多层条件与兜底链路。
+
+典型坏味道：
+
+- 在一个参数表达式里同时做「空判断 + 取值 + 归一化/兜底」，尤其是把三元表达式嵌到 `xxxToDefault(...)` 里。
+- 读者需要反向推理：到底哪个对象允许为 `null`？为 `null` 时业务语义是什么？最终是要“空串”还是“null”？这会制造心理负担与阅读压力。
+
+补充说明（业务层优先保持简洁）：
+
+- 业务层（Service/Controller 的业务编排部分）应当以“主流程顺畅、契约清晰”为第一目标：能不写防御性代码就不写，把读者的注意力留给业务规则本身。
+- 业务层出现大量 `null` 兼容/默认值兜底，往往意味着“依赖关系与字段语义没有收敛”：调用点既要做业务，又要猜底层能不能接收 `null`，最终造成阅读负担与维护成本。
+- 防御性代码不是越多越好：它应该被组织成“少数几个明确的承接点”，而不是散落在每个业务调用处。
+
+落地建议（把防御下沉/前移，而不是堆在业务调用点）：
+
+- 强依赖（缺失就无法继续）：在业务层入口 fast-fail，失败信息直接表达业务约束；后续主流程不再夹杂防御分支。
+- 弱依赖（允许为空但需统一语义）：下沉到被调用方（更底层）集中承接，由底层统一决定“保留 null / 归一化为空串 / 忽略”之一，业务层只透传值。
+- 若确实存在“兼容空值”的业务行为差异：要么把行为写进方法名（Name == Behavior），要么拆成两个清晰的方法契约；不要在同一个调用点里用包装表达式隐式切换语义。
+
+反例（来自本项目）：
+
+```java
+.addUserMessage(StrUtil.nullToEmpty(requestBO != null ? requestBO.getText() : null))
+.execute();
+```
+
+推荐写法 A（该入参是强依赖：前置 fast-fail，主流程不夹杂防御分支）：
+
+```java
+if (requestBO == null) {
+    throw new BizException("requestBO 不能为空");
+}
+
+String text = requestBO.getText();
+if (StrUtil.isBlank(text)) {
+    throw new BizException("text 不能为空");
+}
+
+prompt.addUserMessage(text).execute();
+```
+
+推荐写法 B（上游已保证对象非空：调用点直接透传，把“字段为空”的承接下沉到底层逻辑）：
+
+```java
+prompt.addUserMessage(requestBO.getText()).execute();
+```
+
+底层承接方式（示意：在 `addUserMessage` 内部集中处理空值语义，调用点不做兜底）：
+
+```java
+public Prompt addUserMessage(String text) {
+    /* text 允许为 null：底层统一归一化，调用点只负责透传业务值 */
+    this.userMessage = StrUtil.nullToEmpty(text);
+    return this;
+}
+```
+
+约束：
+
+- 对“简单空值处理”，优先把规则收敛到被调用方（更底层）统一承接；调用点只表达业务意图（透传值），不要做“兜底/归一化”的防御性透传。
+- 防御逻辑要么前移为 fast-fail（强依赖），要么集中在“默认值兜底/归一化”阶段（弱依赖），不要分散在多个调用点。
+
+### 11. 禁止为微小性能提升牺牲可读性
+
+原则：**可读性优先于微优化**。禁止用手写魔数、位运算技巧、手动内联等手段换取可以忽略不计的性能提升，此类代码只会增加理解成本与维护风险，而收益几乎为零。
+
+典型坏味道：手写字节魔数检测文件格式（来自本项目）：
+
+- `src/main/java/com/efficross/web/service/quote/api/provider/chrobinson/BookingApi4CHRobinson.java:508-517`
+
+```java
+if ((content[0] & 0xFF) == 0x89 && content[1] == 0x50 && content[2] == 0x4E && content[3] == 0x47) {
+    extension = ".png";
+} else if ((content[0] & 0xFF) == 0xFF && (content[1] & 0xFF) == 0xD8 && (content[2] & 0xFF) == 0xFF) {
+    extension = ".jpg";
+} else if (content[0] == 0x47 && content[1] == 0x49 && content[2] == 0x46 && content[3] == 0x38) {
+    extension = ".gif";
+}
+```
+
+推荐写法（使用标准库，语义清晰）：
+
+```java
+String mimeType = tika.detect(content);
+if ("image/png".equals(mimeType)) {
+    extension = ".png";
+} else if ("image/jpeg".equals(mimeType)) {
+    extension = ".jpg";
+} else if ("image/gif".equals(mimeType)) {
+    extension = ".gif";
+}
+```
+
+约束：
+
+- 禁止在业务代码中用手写字节魔数做逻辑判断；即便将裸字节提取为具名常量，本质上仍是在做底层字节操作，也不是业务代码该有的写法。
+- 凡是有成熟工具库（如 Apache Tika）能完成的类型识别、格式解析等工作，必须优先使用工具库，而非自己手写底层实现。
+- 微优化的前提是"有可观测的性能瓶颈"。在没有性能数据支撑的情况下，所有以"性能"为由牺牲可读性的做法都应被视为过早优化，应予以拒绝。
+
+## 检查清单（Review Checklist）
+
+- 方法体是否按 0-4 分区组织？空行是否仅用于分区切割，避免同分区内无意义空行？
+- 各阶段顶部是否使用了**有意义的块注释**（单行用 `/* xxx */`，多行用 `/** ... */` 或 `/* ... */`），并避免 `// 1/2/3` 这种无价值占位注释？
+- 主流程强依赖的关键校验（存在性/合法性/依赖关系）是否已前移到 0 或 3 区域完成，避免业务执行阶段出现大量防御性分支？
+- 是否避免把「空判断 + 取值 + 兜底/归一化」堆进同一个参数表达式里，造成阅读压力？
+- 是否避免为同一含义重复声明变量（能直接复用入参变量就复用），并仅在“语义不同”时引入新变量名？
+- 方法是否保持内聚，主要逻辑是否收束在方法体内？
+- 是否存在“单调用点 private 方法”的过度抽取？
+- 方法名是否准确覆盖了实现行为？是否存在隐藏逻辑/隐藏副作用？
+- 若方法名包含 `AndXxx`，是否保证无论什么情况都会执行 `Xxx`？
+- 若方法名以 `try` 开头：是否保证不向外抛异常，且返回类型仅为 `void` 或 `boolean`？是否避免打断外部事务？
+- 是否遵循 Happy Path First：先校验/默认值，再走主流程，避免多层嵌套？
+- Service `public` 方法入参是否优先使用基本类型/简单对象？例外是否合理？
+- 是否存在以"性能"为由写出的裸魔数/位运算技巧，而实际上没有可观测的性能瓶颈支撑？
+- 可选后续逻辑是否通过“回调组合”交给调用方，而不是硬编码在方法内部？

@@ -6,6 +6,14 @@ alwaysApply: true
 
 您是 JAVA Web 方面的 SpringBoot 技术专家，专门负责维护 operation-log-boot-starter 项目。
 
+## LLM 上下文缓存目录（必读）
+
+本仓库的 `.cursor/doc/` 目录用于**缓存 LLM 可复用的项目上下文总结**（入口索引页 + 模块文档）。
+
+- 开始处理需求前：优先阅读 `.cursor/doc/业务开发总结.md`，再按需跳转到对应 `模块-*.md`
+- 当你对代码做了会改变“对外行为/扩展点/关键流程/配置方式”的修改时：必须同步更新 `.cursor/doc/` 中对应文档（只写 DONE，并给出可检索的证据锚点：类名/方法名/路径）
+- `.cursor/doc/` 中的信息是后续 AI 协作的“共享缓存”，允许读写，用于减少重复分析成本
+
 ## 当前项目情况
 
 - 这是一个 Spring Boot 3 Starter 库，用于自动记录用户操作日志
