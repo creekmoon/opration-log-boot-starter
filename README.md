@@ -5,6 +5,10 @@
 ## 能做什么?  
 简易的业务操作日志AOP实现类, 用于记录业务中的Controller的操作日志,能记录用户什么时候修改了哪些字段
 
+**新增功能(v2.2.0+):**
+- **操作热力图统计**: 基于Redis HyperLogLog统计接口PV/UV,支持实时/小时/天级维度
+- **用户行为画像**: 基于用户操作历史自动生成行为标签,支持精细化运营
+
 #### maven引用方式
 
 ```xml
@@ -21,6 +25,8 @@
 Spring Boot 3.0.0+
 
 JDK >= 21
+
+Redis (用于热力图和用户画像功能)
 
 ## 快速开始
 
@@ -61,6 +67,177 @@ public class TTransportController {
 ```text
 operation-log:LogRecord(userId=1, orgId=1, userName=unknown  ..........省略
 ```
+
+## 新增功能: 操作热力图统计
+
+### 开启方式
+
+在 `@OperationLog` 注解上添加 `heatmap = true`:
+
+```java
+@OperationLog(heatmap = true)
+@GetMapping("/list")
+public List<Order> list() {
+    // 业务代码
+}
+```
+
+### 配置项
+
+```yaml
+operation-log:
+  heatmap:
+    enabled: true                    # 是否启用热力图统计
+    redis-key-prefix: "operation-log:heatmap"  # Redis key前缀
+    realtime-retention-hours: 24     # 实时数据保留时间(小时)
+    hourly-retention-days: 7         # 小时级数据保留时间(天)
+    daily-retention-days: 90         # 天级数据保留时间(天)
+    top-n-default-size: 10           # TopN查询默认返回数量
+    top-n-max-size: 100              # TopN查询最大返回数量
+    fallback-enabled: true           # 是否启用降级策略
+    sample-rate: 1.0                 # 采样率(0.0-1.0)
+```
+
+### 查看数据
+
+通过Actuator端点访问:
+
+```bash
+# 查看服务状态
+GET /actuator/operation-log-heatmap
+
+# 查看所有接口实时统计
+GET /actuator/operation-log-heatmap/stats
+
+# 查看指定接口统计
+GET /actuator/operation-log-heatmap/stats/{className}/{methodName}
+
+# 查看TopN接口
+GET /actuator/operation-log-heatmap/topn
+```
+
+### 编程式使用
+
+```java
+@Autowired
+private HeatmapService heatmapService;
+
+// 获取实时统计
+HeatmapStats stats = heatmapService.getRealtimeStats("OrderService", "list");
+System.out.println("PV: " + stats.pv() + ", UV: " + stats.uv());
+
+// 获取Top10接口(PV)
+List<HeatmapTopItem> topList = heatmapService.getTopN(
+    TimeWindow.REALTIME, MetricType.PV, 10);
+
+// 获取趋势数据
+List<HeatmapTrendPoint> trend = heatmapService.getTrend(
+    "OrderService", "list", TimeWindow.HOURLY, 24);
+```
+
+## 新增功能: 用户行为画像
+
+### 开启方式
+
+在 `@OperationLog` 注解上添加 `profile = true`,并定义操作类型:
+
+```java
+@OperationLog(value = "查询订单", type = "ORDER_QUERY", profile = true)
+@GetMapping("/list")
+public List<Order> list() {
+    // 业务代码
+}
+
+@OperationLog(value = "提交订单", type = "ORDER_SUBMIT", profile = true)
+@PostMapping("/submit")
+public Result submit(@RequestBody Order order) {
+    // 业务代码
+}
+```
+
+### 配置项
+
+```yaml
+operation-log:
+  profile:
+    enabled: true                    # 是否启用用户画像
+    redis-key-prefix: "operation-log:user-profile"  # Redis key前缀
+    default-stats-days: 30           # 默认统计时间范围(天)
+    operation-count-retention-days: 90  # 操作计数保留时间(天)
+    user-tags-retention-days: 90     # 用户标签保留时间(天)
+    tag-engine-enabled: true         # 是否启用标签规则引擎
+    fallback-enabled: true           # 是否启用降级策略
+```
+
+### 自定义标签规则
+
+```yaml
+operation-log:
+  profile:
+    tag-rules:
+      - name: "VIP用户"
+        condition: "ORDER_SUBMIT > 20 AND ORDER_REFUND < 3"
+        priority: 10
+        description: "下单超过20次且退款少于3次"
+      - name: "羊毛党"
+        condition: "ORDER_REFUND > 10"
+        priority: 5
+        description: "退款超过10次"
+```
+
+### 查看数据
+
+通过Actuator端点访问:
+
+```bash
+# 查看服务状态
+GET /actuator/operation-log-profile
+
+# 查看用户画像
+GET /actuator/operation-log-profile/user/{userId}
+
+# 查看用户标签
+GET /actuator/operation-log-profile/user/{userId}/tags
+
+# 查看用户操作统计
+GET /actuator/operation-log-profile/user/{userId}/stats
+
+# 根据标签查询用户
+GET /actuator/operation-log-profile/tag/{tagName}
+```
+
+### 编程式使用
+
+```java
+@Autowired
+private ProfileService profileService;
+
+// 获取用户画像
+UserProfile profile = profileService.getUserProfile("user123");
+System.out.println("用户标签: " + profile.tags());
+System.out.println("操作统计: " + profile.operationStats());
+
+// 获取用户标签
+Set<String> tags = profileService.getUserTags("user123");
+
+// 根据标签查询用户
+List<String> users = profileService.getUsersByTag("高价值用户", 0, 20);
+long count = profileService.getUserCountByTag("高价值用户");
+
+// 刷新用户标签
+profileService.refreshUserTags("user123");
+```
+
+### 内置标签规则
+
+组件默认提供以下标签规则:
+
+| 标签名称 | 规则条件 | 说明 |
+|---------|---------|------|
+| 高频查询用户 | ORDER_QUERY > 50 | 查询操作超过50次 |
+| 高价值用户 | ORDER_SUBMIT > 10 AND ORDER_REFUND < 2 | 下单超过10次且退款少于2次 |
+| 潜在流失用户 | ORDER_QUERY > 30 AND ORDER_SUBMIT = 0 | 查询超过30次但从不下单 |
+| 高频退款用户 | ORDER_REFUND > 5 | 退款超过5次 |
 
 ## 方法说明
 
