@@ -30,4 +30,16 @@ public @interface OperationLog {
 
     //操作失败时,不进行日志记录
     boolean handleOnFail() default false;
+
+    /**
+     * 是否启用热力图统计
+     * 默认关闭,需要显式开启
+     */
+    boolean heatmap() default false;
+
+    /**
+     * 是否启用用户行为画像统计
+     * 默认关闭,需要显式开启
+     */
+    boolean profile() default false;
 }

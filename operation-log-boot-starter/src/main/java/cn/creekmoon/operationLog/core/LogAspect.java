@@ -1,5 +1,7 @@
 package cn.creekmoon.operationLog.core;
 
+import cn.creekmoon.operationLog.heatmap.HeatmapCollector;
+import cn.creekmoon.operationLog.profile.ProfileCollector;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson2.JSONArray;
@@ -29,7 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -182,12 +186,52 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                         }
                     }
                 });
+
+                /*收集热力图数据*/
+                if (annotation.heatmap()) {
+                    collectHeatmapData(logRecord);
+                }
+
+                /*收集用户画像数据*/
+                if (annotation.profile()) {
+                    collectProfileData(logRecord);
+                }
             }
             /*不进行日志记录*/
             if (!isNeedRecord) {
                 log.debug("[operation-log]用户操作没有成功,不会进行日志记录");
             }
             OperationLogContext.clean();
+        }
+    }
+
+    /**
+     * 收集热力图数据
+     */
+    private void collectHeatmapData(LogRecord logRecord) {
+        try {
+            Map<String, HeatmapCollector> collectors = applicationContext.getBeansOfType(HeatmapCollector.class);
+            if (!collectors.isEmpty()) {
+                HeatmapCollector collector = collectors.values().iterator().next();
+                collector.collect(logRecord);
+            }
+        } catch (Exception e) {
+            log.debug("[operation-log]热力图数据收集异常: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * 收集用户画像数据
+     */
+    private void collectProfileData(LogRecord logRecord) {
+        try {
+            Map<String, ProfileCollector> collectors = applicationContext.getBeansOfType(ProfileCollector.class);
+            if (!collectors.isEmpty()) {
+                ProfileCollector collector = collectors.values().iterator().next();
+                collector.collect(logRecord);
+            }
+        } catch (Exception e) {
+            log.debug("[operation-log]用户画像数据收集异常: {}", e.getMessage());
         }
     }
 
