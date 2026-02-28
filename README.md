@@ -190,7 +190,7 @@ operation-log:
 operation-log:
   heatmap-global-enabled: true   # 快捷方式：启用热力图全局统计
   profile-global-enabled: true   # 快捷方式：启用用户画像全局统计
-  handle-on-fail-global-enabled: false
+  record-on-fail-global-enabled: false
   use-value-as-type: false
 ```
 
@@ -403,7 +403,7 @@ curl -o users.csv http://localhost:8080/operation-log/profile/export/tag/高价�
 |------|----------------|-------------------|
 | 热力图统计 | `heatmap-global-enabled: true` | `@OperationLog(heatmap = true)` |
 | 用户画像 | `profile-global-enabled: true` | `@OperationLog(profile = true)` |
-| 失败记录 | `handle-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
+| 失败记录 | `record-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
 
 > 🔥 **最佳实践**: 使用全局配置统一管理，减少重复代码！
 
