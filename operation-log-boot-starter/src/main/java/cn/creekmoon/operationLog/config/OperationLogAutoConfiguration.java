@@ -3,6 +3,7 @@ package cn.creekmoon.operationLog.config;
 import cn.creekmoon.operationLog.core.LogAspect;
 import cn.creekmoon.operationLog.core.LogThreadPool;
 import cn.creekmoon.operationLog.core.OperationLogContext;
+import cn.creekmoon.operationLog.dashboard.DashboardProperties;
 import cn.creekmoon.operationLog.heatmap.HeatmapConfiguration;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Import;
 
 
 @Configuration
-@EnableConfigurationProperties(OperationLogProperties.class)
+@EnableConfigurationProperties({OperationLogProperties.class, DashboardProperties.class})
 @Import({LogAspect.class,
         DefaultOperationLogHandler.class,
         DefaultOperationLogRecordInitializer.class,
