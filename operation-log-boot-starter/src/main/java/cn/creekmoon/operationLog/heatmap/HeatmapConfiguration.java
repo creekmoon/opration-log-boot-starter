@@ -7,6 +7,7 @@ import cn.creekmoon.operationLog.profile.ProfileExportController;
 import cn.creekmoon.operationLog.profile.ProfileProperties;
 import cn.creekmoon.operationLog.profile.ProfileService;
 import cn.creekmoon.operationLog.profile.ProfileCollector;
+import cn.creekmoon.operationLog.profile.ProfileServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

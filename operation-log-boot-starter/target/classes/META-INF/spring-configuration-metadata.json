@@ -1,0 +1,226 @@
+{
+  "groups": [
+    {
+      "name": "operation-log",
+      "type": "cn.creekmoon.operationLog.config.OperationLogConfig",
+      "sourceType": "cn.creekmoon.operationLog.config.OperationLogConfig"
+    },
+    {
+      "name": "operation-log.dashboard",
+      "type": "cn.creekmoon.operationLog.dashboard.DashboardProperties",
+      "sourceType": "cn.creekmoon.operationLog.dashboard.DashboardProperties"
+    },
+    {
+      "name": "operation-log.export.csv",
+      "type": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties"
+    },
+    {
+      "name": "operation-log.heatmap",
+      "type": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties"
+    },
+    {
+      "name": "operation-log.profile",
+      "type": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "operation-log.dashboard.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用Dashboard",
+      "sourceType": "cn.creekmoon.operationLog.dashboard.DashboardProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.dashboard.path",
+      "type": "java.lang.String",
+      "description": "访问路径",
+      "sourceType": "cn.creekmoon.operationLog.dashboard.DashboardProperties",
+      "defaultValue": "\/operation-log\/dashboard"
+    },
+    {
+      "name": "operation-log.dashboard.refresh-interval",
+      "type": "java.lang.Integer",
+      "description": "自动刷新间隔（秒）",
+      "sourceType": "cn.creekmoon.operationLog.dashboard.DashboardProperties",
+      "defaultValue": 30
+    },
+    {
+      "name": "operation-log.export.csv.delimiter",
+      "type": "java.lang.Character",
+      "description": "CSV分隔符",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "defaultValue": ","
+    },
+    {
+      "name": "operation-log.export.csv.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用CSV导出功能",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.export.csv.file-name-prefix",
+      "type": "java.lang.String",
+      "description": "文件名前缀",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "defaultValue": "export"
+    },
+    {
+      "name": "operation-log.export.csv.max-export-rows",
+      "type": "java.lang.Integer",
+      "description": "单次导出最大行数限制（防止内存溢出）",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "defaultValue": 10000
+    },
+    {
+      "name": "operation-log.export.csv.with-bom",
+      "type": "java.lang.Boolean",
+      "description": "是否带BOM（Excel兼容模式）",
+      "sourceType": "cn.creekmoon.operationLog.export.CsvExportProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.heatmap.daily-retention-days",
+      "type": "java.lang.Integer",
+      "description": "天级数据保留时间(天)",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 90
+    },
+    {
+      "name": "operation-log.heatmap.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用热力图统计",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.heatmap.exclude-operation-types",
+      "type": "java.util.List<java.lang.String>",
+      "description": "需要排除统计的操作类型列表",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties"
+    },
+    {
+      "name": "operation-log.heatmap.fallback-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用降级策略(当Redis不可用时)",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.heatmap.fallback-max-size",
+      "type": "java.lang.Integer",
+      "description": "降级时的最大本地缓存数量",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 1000
+    },
+    {
+      "name": "operation-log.heatmap.hourly-retention-days",
+      "type": "java.lang.Integer",
+      "description": "小时级数据保留时间(天)",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 7
+    },
+    {
+      "name": "operation-log.heatmap.realtime-retention-hours",
+      "type": "java.lang.Integer",
+      "description": "实时数据保留时间(小时)",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 24
+    },
+    {
+      "name": "operation-log.heatmap.redis-key-prefix",
+      "type": "java.lang.String",
+      "description": "Redis key前缀",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": "operation-log:heatmap"
+    },
+    {
+      "name": "operation-log.heatmap.sample-rate",
+      "type": "java.lang.Double",
+      "description": "采样率(0.0-1.0, 1.0表示全量)",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 1
+    },
+    {
+      "name": "operation-log.heatmap.top-n-default-size",
+      "type": "java.lang.Integer",
+      "description": "TopN查询默认返回数量",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 10
+    },
+    {
+      "name": "operation-log.heatmap.top-n-max-size",
+      "type": "java.lang.Integer",
+      "description": "TopN查询最大返回数量",
+      "sourceType": "cn.creekmoon.operationLog.heatmap.HeatmapProperties",
+      "defaultValue": 100
+    },
+    {
+      "name": "operation-log.profile.async-queue-size",
+      "type": "java.lang.Integer",
+      "description": "异步更新队列大小",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": 512
+    },
+    {
+      "name": "operation-log.profile.default-stats-days",
+      "type": "java.lang.Integer",
+      "description": "默认统计时间范围(天)",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": 30
+    },
+    {
+      "name": "operation-log.profile.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用用户行为画像",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.profile.fallback-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用降级策略",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.profile.operation-count-retention-days",
+      "type": "java.lang.Integer",
+      "description": "操作计数保留时间(天)",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": 90
+    },
+    {
+      "name": "operation-log.profile.redis-key-prefix",
+      "type": "java.lang.String",
+      "description": "Redis key前缀",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": "operation-log:user-profile"
+    },
+    {
+      "name": "operation-log.profile.tag-engine-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用标签规则引擎",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "operation-log.profile.tag-rules",
+      "type": "java.util.List<cn.creekmoon.operationLog.profile.ProfileProperties$TagRule>",
+      "description": "标签规则配置列表",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties"
+    },
+    {
+      "name": "operation-log.profile.user-tags-retention-days",
+      "type": "java.lang.Integer",
+      "description": "用户标签保留时间(天)",
+      "sourceType": "cn.creekmoon.operationLog.profile.ProfileProperties",
+      "defaultValue": 90
+    }
+  ],
+  "hints": []
+}

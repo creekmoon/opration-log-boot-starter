@@ -289,9 +289,9 @@ public class HeatmapServiceImpl implements HeatmapService {
                 .collect(Collectors.toList())
                 .stream()
                 .map(item -> new HeatmapTopItem(
-                        allStats.entrySet().stream()
+                        (int) (allStats.entrySet().stream()
                                 .filter(e -> e.getValue() > item.value())
-                                .count() + 1,
+                                .count() + 1),
                         item.className(), item.methodName(), item.value(), metricType))
                 .collect(Collectors.toList());
     }
