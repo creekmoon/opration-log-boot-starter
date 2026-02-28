@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Log Dashboard V2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --border-color: #e2e8f0;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #818cf8;
+            --accent-gradient: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.3);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            -webkit-text-fill-color: white;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .nav-item:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Page Sections */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        
+        .metric-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .metric-icon.blue { background: rgba(59, 130, 246, 0.1); }
+        .metric-icon.green { background: rgba(16, 185, 129, 0.1); }
+        .metric-icon.yellow { background: rgba(245, 158, 11, 0.1); }
+        .metric-icon.red { background: rgba(239, 68, 68, 0.1); }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .metric-change.up { color: var(--success); }
+        .metric-change.down { color: var(--error); }
+        
+        /* Charts */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* Tables */
+        .table-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .table-search {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            width: 250px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        th:hover {
+            color: var(--accent-primary);
+        }
+        
+        tr:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .tag {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .tag.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        /* Status Badges */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .status.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status.success .status-dot { background: var(--success); }
+        .status.error { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+        .status.error .status-dot { background: var(--error); }
+        .status.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status.warning .status-dot { background: var(--warning); }
+        
+        /* User Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(90vh - 80px);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.25rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 2px solid var(--bg-secondary);
+        }
+        
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-content {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: var(--radius);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .nav-content {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-search {
+                width: 150px;
+            }
+        }
+        
+        /* Loading */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-primary) 50%, var(--bg-tertiary) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius);
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <span>Operation Log Dashboard</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn" onclick="toggleTheme()">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">暗色</span>
+                </button>
+                <button class="btn btn-primary" onclick="refreshAll()">
+                    🔄 刷新数据
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-item active" data-page="overview">概览</div>
+            <div class="nav-item" data-page="endpoints">接口分析</div>
+            <div class="nav-item" data-page="users">用户分析</div>
+            <div class="nav-item" data-page="realtime">实时监控</div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Overview Page -->
+        <div class="page active" id="page-overview">
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">总 PV</span>
+                        <div class="metric-icon blue">👁</div>
+                    </div>
+                    <div class="metric-value" id="totalPv">-</div>
+                    <div class="metric-change up">
+                        <span>↑</span>
+                        <span>12.5%</span>
+                        <span style="color: var(--text-tertiary)">较昨日</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">总 UV</span>
+                        <div class="metric-icon green">👤</div>
+                    </div>
+                    <div class="metric-value" id="totalUv">-</div>
+                    <div class="metric-change up">
+                        <span>↑</span>
+                        <span>8.3%</span>
+                        <span style="color: var(--text-tertiary)">较昨日</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">实时 QPS</span>
+                        <div class="metric-icon yellow">⚡</div>
+                    </div>
+                    <div class="metric-value" id="currentQps">-</div>
+                    <div class="metric-change">
+                        <span style="color: var(--text-tertiary)">峰值: </span>
+                        <span id="peakQps">-</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">错误率</span>
+                        <div class="metric-icon red">⚠</div>
+                    </div>
+                    <div class="metric-value" id="errorRate">-</div>
+                    <div class="metric-change down">
+                        <span>↓</span>
+                        <span>2.1%</span>
+                        <span style="color: var(--text-tertiary)">较昨日</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-title">PV/UV 趋势</span>
+                        <div class="chart-actions">
+                            <button class="btn" onclick="changeTimeRange('1h')">1小时</button>
+                            <button class="btn" onclick="changeTimeRange('24h')">24小时</button>
+                            <button class="btn" onclick="changeTimeRange('7d')">7天</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-title">响应时间分布</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="responseTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Endpoints Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <span class="table-title">热门接口 Top 10</span>
+                    <input type="text" class="table-search" placeholder="搜索接口..." id="endpointSearch">
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>接口</th>
+                                <th>PV</th>
+                                <th>平均响应时间</th>
+                                <th>错误率</th>
+                                <th>趋势</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topEndpointsTable">
+                            <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-secondary)">加载中...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Endpoints Page -->
+        <div class="page" id="page-endpoints">
+            <div class="table-card">
+                <div class="table-header">
+                    <span class="table-title">接口性能分析</span>
+                    <input type="text" class="table-search" placeholder="搜索接口...">
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>接口</th>
+                                <th>调用次数</th>
+                                <th>P50</th>
+                                <th>P95</th>
+                                <th>P99</th>
+                                <th>错误率</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-secondary)">暂无数据</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Users Page -->
+        <div class="page" id="page-users">
+            <div class="table-card">
+                <div class="table-header">
+                    <span class="table-title">用户列表</span>
+                    <input type="text" class="table-search" placeholder="搜索用户ID..." id="userSearch">
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用户ID</th>
+                                <th>操作次数</th>
+                                <th>标签</th>
+                                <th>最后活跃</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-secondary)">加载中...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Realtime Page -->
+        <div class="page" id="page-realtime">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">实时日志流</span>
+                    <span class="status success"><span class="status-dot"></span>实时连接中</span>
+                </div>
+                <div id="logStream" style="height: 400px; overflow-y: auto; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius); font-family: monospace; font-size: 0.875rem;">
+                    <div style="color: var(--text-tertiary)">等待日志数据...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- User Detail Modal -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">用户详情</h2>
+                <button class="modal-close" onclick="closeUserModal()">×</button>
+            </div>
+            <div class="modal-body" id="userModalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== State ====================
+        let currentPage = 'overview';
+        let charts = {};
+        let eventSource = null;
+        
+        // ==================== Theme ====================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                icon.textContent = '🌙';
+                text.textContent = '暗色';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                icon.textContent = '☀️';
+                text.textContent = '亮色';
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            // Update charts
+            Object.values(charts).forEach(chart => chart.update());
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('themeIcon').textContent = '☀️';
+            document.getElementById('themeText').textContent = '亮色';
+        }
+        
+        // ==================== Navigation ====================
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                const page = item.getAttribute('data-page');
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-' + page).classList.add('active');
+                
+                currentPage = page;
+                if (page === 'users') loadUsers();
+            });
+        });
+        
+        // ==================== Charts ====================
+        function initCharts() {
+            // Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            charts.trend = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: 'PV',
+                        data: [1200, 1900, 3000, 5000, 4800, 4200],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'UV',
+                        data: [800, 1200, 2000, 3500, 3200, 2800],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    }
+                }
+            });
+            
+            // Response Time Chart
+            const rtCtx = document.getElementById('responseTimeChart').getContext('2d');
+            charts.responseTime = new Chart(rtCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['<100ms', '100-300ms', '300-500ms', '500ms-1s', '>1s'],
+                    datasets: [{
+                        label: '请求数',
+                        data: [4500, 2800, 1200, 400, 150],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(239, 68, 68, 0.9)'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+        
+        // ==================== Data Loading ====================
+        async function loadOverview() {
+            try {
+                // Load metrics
+                const response = await fetch('/operation-log/dashboard/api/realtime');
+                const data = await response.json();
+                
+                document.getElementById('totalPv').textContent = data.totalPv?.toLocaleString() || '-';
+                document.getElementById('totalUv').textContent = data.totalUv?.toLocaleString() || '-';
+                
+            } catch (e) {
+                console.error('加载概览数据失败:', e);
+            }
+        }
+        
+        async function loadUsers() {
+            try {
+                const response = await fetch('/operation-log/dashboard/api/users?page=0&size=20');
+                const users = await response.json();
+                
+                const tbody = document.getElementById('usersTable');
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-secondary)">暂无数据</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td><strong>${user.userId}</strong></td>
+                        <td>${user.totalOperations.toLocaleString()}</td>
+                        <td>${user.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</td>
+                        <td>${new Date(user.lastActiveTime).toLocaleString()}</td>
+                        <td><button class="btn btn-primary" onclick="showUserDetail('${user.userId}')">查看详情</button></td>
+                    </tr>
+                `).join('');
+                
+            } catch (e) {
+                console.error('加载用户数据失败:', e);
+            }
+        }
+        
+        // ==================== User Detail Modal ====================
+        async function showUserDetail(userId) {
+            try {
+                const [detailRes, timelineRes] = await Promise.all([
+                    fetch(`/operation-log/dashboard/api/users/${userId}`),
+                    fetch(`/operation-log/dashboard/api/users/${userId}/timeline?days=7`)
+                ]);
+                
+                const detail = await detailRes.json();
+                const timeline = await timelineRes.json();
+                
+                document.getElementById('userModalBody').innerHTML = `
+                    <div class="metrics-grid" style="grid-template-columns: repeat(4, 1fr);">
+                        <div class="metric-card">
+                            <div class="metric-title">总操作次数</div>
+                            <div class="metric-value">${detail.totalOperations}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">近7天</div>
+                            <div class="metric-value">${detail.last7DaysCount}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">近30天</div>
+                            <div class="metric-value">${detail.last30DaysCount}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">标签数</div>
+                            <div class="metric-value">${detail.tags?.length || 0}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 1.5rem 0;">
+                        <h3 style="margin-bottom: 1rem;">用户标签</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            ${detail.tags?.map(tag => `<span class="tag">${tag}</span>`).join(' ') || '暂无标签'}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">行为轨迹 (最近7天)</h3>
+                        <div class="timeline">
+                            ${timeline.length > 0 ? timeline.slice(0, 10).map(event => `
+                                <div class="timeline-item">
+                                    <div class="timeline-time">${new Date(event.timestamp).toLocaleString()}</div>
+                                    <div class="timeline-content">
+                                        <strong>${event.operationType}</strong> - ${event.endpoint}
+                                        ${event.success ? '<span class="status success"><span class="status-dot"></span>成功</span>' : '<span class="status error"><span class="status-dot"></span>失败</span>'}
+                                    </div>
+                                </div>
+                            `).join('') : '<div style="color: var(--text-tertiary)">暂无行为数据</div>'}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('userModal').classList.add('active');
+                
+            } catch (e) {
+                console.error('加载用户详情失败:', e);
+                alert('加载用户详情失败');
+            }
+        }
+        
+        function closeUserModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('userModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeUserModal();
+            }
+        });
+        
+        // ==================== SSE ====================
+        function initSSE() {
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource('/operation-log/dashboard/stream');
+            
+            eventSource.addEventListener('dashboard-update', (e) => {
+                const data = JSON.parse(e.data);
+                updateRealtimeData(data);
+            });
+            
+            eventSource.onerror = () => {
+                console.log('SSE连接错误，5秒后重试...');
+                setTimeout(initSSE, 5000);
+            };
+        }
+        
+        function updateRealtimeData(data) {
+            // Update metrics
+            if (data.totalPv !== undefined) {
+                document.getElementById('totalPv').textContent = data.totalPv.toLocaleString();
+            }
+            if (data.totalUv !== undefined) {
+                document.getElementById('totalUv').textContent = data.totalUv.toLocaleString();
+            }
+        }
+        
+        // ==================== Utils ====================
+        function refreshAll() {
+            loadOverview();
+            if (currentPage === 'users') loadUsers();
+        }
+        
+        function changeTimeRange(range) {
+            console.log('切换时间范围:', range);
+            // TODO: reload chart data
+        }
+        
+        // ==================== Init ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            loadOverview();
+            initSSE();
+        });
+    </script>
+</body>
+</html>
