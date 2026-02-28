@@ -26,6 +26,16 @@ public class ProfileCollector {
      * @param logRecord 日志记录
      */
     public void collect(LogRecord logRecord) {
+        collect(logRecord, logRecord != null ? logRecord.getOperationType() : null);
+    }
+
+    /**
+     * 收集操作日志数据(指定操作类型)
+     *
+     * @param logRecord 日志记录
+     * @param operationType 操作类型
+     */
+    public void collect(LogRecord logRecord, String operationType) {
         if (!properties.isEnabled()) {
             return;
         }
@@ -39,21 +49,17 @@ public class ProfileCollector {
             return;
         }
 
+        // 使用final变量供lambda使用
+        final String finalOperationType = operationType != null && !operationType.isEmpty() 
+                ? operationType : "DEFAULT";
+        final String userId = logRecord.getUserId().toString();
+        final LocalDateTime timestamp = logRecord.getOperationTime() != null 
+                ? logRecord.getOperationTime() : LocalDateTime.now();
+
         // 异步处理
         LogThreadPool.runTask(() -> {
             try {
-                String userId = logRecord.getUserId().toString();
-                String operationType = logRecord.getOperationType();
-                
-                // 如果没有操作类型,使用默认值
-                if (operationType == null || operationType.isEmpty()) {
-                    operationType = "DEFAULT";
-                }
-
-                LocalDateTime timestamp = logRecord.getOperationTime() != null 
-                        ? logRecord.getOperationTime() : LocalDateTime.now();
-
-                profileService.recordOperation(userId, operationType, timestamp);
+                profileService.recordOperation(userId, finalOperationType, timestamp);
             } catch (Exception e) {
                 log.debug("[operation-log] Profile collect error: {}", e.getMessage());
             }

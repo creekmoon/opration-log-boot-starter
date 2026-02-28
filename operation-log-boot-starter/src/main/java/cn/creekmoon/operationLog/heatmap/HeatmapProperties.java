@@ -68,4 +68,11 @@ public class HeatmapProperties {
      * 采样率(0.0-1.0, 1.0表示全量)
      */
     private double sampleRate = 1.0;
+
+    /**
+     * 是否全局启用热力图统计
+     * 为true时，所有@OperationLog注解的方法都会自动开启热力图统计
+     * 为false时，需要在注解上显式设置 heatmap = true
+     */
+    private boolean globalEnabled = false;
 }

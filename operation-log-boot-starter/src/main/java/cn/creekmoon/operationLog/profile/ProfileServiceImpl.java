@@ -13,8 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -29,20 +27,15 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileProperties properties;
 
     // 降级模式下的本地缓存
-    private final Map<String, Map<String, AtomicBoolean>> fallbackCache = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, Long>> fallbackCache = new ConcurrentHashMap<>();
     private final AtomicBoolean fallbackActive = new AtomicBoolean(false);
     private final AtomicBoolean redisErrorLogged = new AtomicBoolean(false);
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    // 规则解析正则
-    private static final Pattern RULE_PATTERN = Pattern.compile(
-            "(\\w+)\\s*(=|!=|>|<|>=|<=)\\s*(\\d+)");
-
     @PostConstruct
     public void init() {
-        log.info("[operation-log] ProfileService initialized, enabled={}, tagEngineEnabled={}",
-                properties.isEnabled(), properties.isTagEngineEnabled());
+        log.info("[operation-log] ProfileService initialized, enabled={}", properties.isEnabled());
     }
 
     @PreDestroy
@@ -52,35 +45,27 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void recordOperation(String userId, String operationType, LocalDateTime timestamp) {
-        if (!properties.isEnabled() || userId == null || userId.isEmpty()) {
+        if (!properties.isEnabled()) {
             return;
         }
 
-        if (operationType == null || operationType.isEmpty()) {
-            operationType = "UNKNOWN";
+        if (userId == null || userId.isEmpty() || operationType == null || operationType.isEmpty()) {
+            return;
         }
 
         try {
-            String dateStr = timestamp.format(DATE_FORMATTER);
-            
-            // 用户操作计数Hash (按日期)
-            String countKey = properties.getRedisKeyPrefix() + ":" + userId + ":counts:" + dateStr;
-            redisTemplate.opsForHash().increment(countKey, operationType, 1);
-            redisTemplate.expire(countKey, 
-                    java.time.Duration.ofDays(properties.getOperationCountRetentionDays()));
+            String dateKey = timestamp != null ? timestamp.format(DATE_FORMATTER) : LocalDate.now().format(DATE_FORMATTER);
+            String key = buildKey(userId, dateKey);
 
-            // 用户最后活跃时间
-            String lastActiveKey = properties.getRedisKeyPrefix() + ":" + userId + ":meta";
-            redisTemplate.opsForHash().put(lastActiveKey, "lastActiveTime", timestamp.toString());
-            redisTemplate.expire(lastActiveKey, 
-                    java.time.Duration.ofDays(properties.getOperationCountRetentionDays()));
+            // 使用Redis Hash存储操作计数
+            redisTemplate.opsForHash().increment(key, operationType, 1);
 
-            // 异步更新标签(可以优化为批量更新)
-            if (properties.isTagEngineEnabled()) {
-                refreshUserTags(userId);
-            }
+            // 设置过期时间
+            redisTemplate.expire(key, java.time.Duration.ofDays(properties.getOperationCountRetentionDays()));
+
         } catch (Exception e) {
             handleRedisError("recordOperation", e);
+            // 降级到本地缓存
             if (properties.isFallbackEnabled()) {
                 recordOperationFallback(userId, operationType);
             }
@@ -96,10 +81,8 @@ public class ProfileServiceImpl implements ProfileService {
      * 降级模式下的操作记录
      */
     private void recordOperationFallback(String userId, String operationType) {
-        String key = userId + ":" + operationType;
-        fallbackCache
-                .computeIfAbsent(key, k -> new ConcurrentHashMap<>())
-                .computeIfAbsent("count", k -> new AtomicBoolean(false));
+        fallbackCache.computeIfAbsent(userId, k -> new ConcurrentHashMap<>())
+                .merge(operationType, 1L, Long::sum);
     }
 
     @Override
@@ -109,28 +92,32 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Map<String, Long> getUserOperationStats(String userId, int days) {
-        if (!properties.isEnabled() || userId == null || userId.isEmpty()) {
+        if (!properties.isEnabled()) {
             return Collections.emptyMap();
         }
 
         Map<String, Long> result = new HashMap<>();
-        LocalDate today = LocalDate.now();
 
         try {
+            LocalDate today = LocalDate.now();
             for (int i = 0; i < days; i++) {
                 LocalDate date = today.minusDays(i);
-                String dateStr = date.format(DATE_FORMATTER);
-                String countKey = properties.getRedisKeyPrefix() + ":" + userId + ":counts:" + dateStr;
+                String key = buildKey(userId, date.format(DATE_FORMATTER));
 
-                Map<Object, Object> entries = redisTemplate.opsForHash().entries(countKey);
-                for (Map.Entry<Object, Object> entry : entries.entrySet()) {
-                    String operationType = entry.getKey().toString();
-                    long count = entry.getValue() instanceof Number 
-                            ? ((Number) entry.getValue()).longValue() 
-                            : Long.parseLong(entry.getValue().toString());
+                Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);
+                entries.forEach((k, v) -> {
+                    String operationType = k.toString();
+                    Long count = v instanceof Number ? ((Number) v).longValue() : Long.parseLong(v.toString());
                     result.merge(operationType, count, Long::sum);
-                }
+                });
             }
+
+            // 合并降级缓存数据
+            if (fallbackActive.get() && fallbackCache.containsKey(userId)) {
+                Map<String, Long> fallbackData = fallbackCache.get(userId);
+                fallbackData.forEach((k, v) -> result.merge(k, v, Long::sum));
+            }
+
         } catch (Exception e) {
             handleRedisError("getUserOperationStats", e);
         }
@@ -140,18 +127,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Set<String> getUserTags(String userId) {
-        if (!properties.isEnabled() || userId == null || userId.isEmpty()) {
-            return Collections.emptySet();
-        }
-
-        try {
-            String tagsKey = properties.getRedisKeyPrefix() + ":" + userId + ":tags";
-            Set<String> tags = redisTemplate.opsForSet().members(tagsKey);
-            return tags != null ? tags : Collections.emptySet();
-        } catch (Exception e) {
-            handleRedisError("getUserTags", e);
-            return Collections.emptySet();
-        }
+        // 标签功能已移除，返回空集合
+        return Collections.emptySet();
     }
 
     @Override
@@ -161,251 +138,43 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public UserProfile getUserProfile(String userId, int days) {
-        if (!properties.isEnabled() || userId == null || userId.isEmpty()) {
+        if (!properties.isEnabled()) {
             return null;
         }
 
-        Map<String, Long> allStats = getUserOperationStats(userId, days);
-        Map<String, Long> last7DaysStats = getUserOperationStats(userId, 7);
-        Map<String, Long> last30DaysStats = getUserOperationStats(userId, 30);
-        Set<String> tags = getUserTags(userId);
-
-        LocalDateTime lastActiveTime = null;
-        try {
-            String lastActiveKey = properties.getRedisKeyPrefix() + ":" + userId + ":meta";
-            Object lastActive = redisTemplate.opsForHash().get(lastActiveKey, "lastActiveTime");
-            if (lastActive != null) {
-                lastActiveTime = LocalDateTime.parse(lastActive.toString());
-            }
-        } catch (Exception e) {
-            log.warn("[operation-log] Failed to get last active time for user: {}", userId);
-        }
+        Map<String, Long> operationStats = getUserOperationStats(userId, days);
 
         return new UserProfile(
                 userId,
-                tags,
-                allStats,
-                last7DaysStats,
-                last30DaysStats,
-                lastActiveTime,
+                Collections.emptySet(), // 标签功能已移除
+                operationStats,
+                Collections.emptyMap(),
+                Collections.emptyMap(),
+                null,
                 LocalDateTime.now()
         );
     }
 
     @Override
     public List<String> getUsersByTag(String tag, int page, int size) {
-        if (!properties.isEnabled() || tag == null || tag.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        try {
-            String tagIndexKey = properties.getRedisKeyPrefix() + ":tag-index:" + tag;
-            long start = (long) page * size;
-            long end = start + size - 1;
-            
-            Set<String> users = redisTemplate.opsForSet().members(tagIndexKey);
-            if (users == null) {
-                return Collections.emptyList();
-            }
-            
-            return users.stream()
-                    .skip(start)
-                    .limit(size)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            handleRedisError("getUsersByTag", e);
-            return Collections.emptyList();
-        }
+        // 标签功能已移除，返回空列表
+        return Collections.emptyList();
     }
 
     @Override
     public long getUserCountByTag(String tag) {
-        if (!properties.isEnabled() || tag == null || tag.isEmpty()) {
-            return 0;
-        }
-
-        try {
-            String tagIndexKey = properties.getRedisKeyPrefix() + ":tag-index:" + tag;
-            Long size = redisTemplate.opsForSet().size(tagIndexKey);
-            return size != null ? size : 0;
-        } catch (Exception e) {
-            handleRedisError("getUserCountByTag", e);
-            return 0;
-        }
+        // 标签功能已移除，返回0
+        return 0;
     }
 
     @Override
     public void refreshUserTags(String userId) {
-        if (!properties.isEnabled() || !properties.isTagEngineEnabled() 
-                || userId == null || userId.isEmpty()) {
-            return;
-        }
-
-        try {
-            Map<String, Long> stats = getUserOperationStats(userId, properties.getDefaultStatsDays());
-            Set<String> newTags = evaluateTagRules(stats);
-            
-            // 获取旧标签
-            String tagsKey = properties.getRedisKeyPrefix() + ":" + userId + ":tags";
-            Set<String> oldTags = redisTemplate.opsForSet().members(tagsKey);
-            
-            // 删除不再满足条件的标签
-            if (oldTags != null) {
-                for (String oldTag : oldTags) {
-                    if (!newTags.contains(oldTag)) {
-                        redisTemplate.opsForSet().remove(tagsKey, oldTag);
-                        String tagIndexKey = properties.getRedisKeyPrefix() + ":tag-index:" + oldTag;
-                        redisTemplate.opsForSet().remove(tagIndexKey, userId);
-                    }
-                }
-            }
-            
-            // 添加新标签
-            for (String newTag : newTags) {
-                redisTemplate.opsForSet().add(tagsKey, newTag);
-                String tagIndexKey = properties.getRedisKeyPrefix() + ":tag-index:" + newTag;
-                redisTemplate.opsForSet().add(tagIndexKey, userId);
-            }
-            
-            // 设置过期时间
-            redisTemplate.expire(tagsKey, 
-                    java.time.Duration.ofDays(properties.getUserTagsRetentionDays()));
-            
-        } catch (Exception e) {
-            handleRedisError("refreshUserTags", e);
-        }
+        // 标签功能已移除，无需操作
     }
 
     @Override
     public void refreshAllUserTags() {
-        if (!properties.isEnabled() || !properties.isTagEngineEnabled()) {
-            return;
-        }
-
-        log.info("[operation-log] Starting batch tag refresh for all users");
-        
-        try {
-            // 获取所有用户(通过扫描keys)
-            String pattern = properties.getRedisKeyPrefix() + ":*:counts:*";
-            Set<String> keys = redisTemplate.keys(pattern);
-            
-            if (keys != null) {
-                Set<String> userIds = keys.stream()
-                        .map(this::extractUserIdFromKey)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toSet());
-                
-                for (String userId : userIds) {
-                    try {
-                        refreshUserTags(userId);
-                    } catch (Exception e) {
-                        log.warn("[operation-log] Failed to refresh tags for user: {}", userId, e);
-                    }
-                }
-                
-                log.info("[operation-log] Batch tag refresh completed for {} users", userIds.size());
-            }
-        } catch (Exception e) {
-            handleRedisError("refreshAllUserTags", e);
-        }
-    }
-
-    /**
-     * 从key中提取用户ID
-     */
-    private String extractUserIdFromKey(String key) {
-        // key格式: operation-log:user-profile:{userId}:counts:{date}
-        String prefix = properties.getRedisKeyPrefix() + ":";
-        if (!key.startsWith(prefix)) {
-            return null;
-        }
-        
-        String remaining = key.substring(prefix.length());
-        int firstColon = remaining.indexOf(':');
-        if (firstColon > 0) {
-            return remaining.substring(0, firstColon);
-        }
-        return null;
-    }
-
-    /**
-     * 评估标签规则
-     */
-    private Set<String> evaluateTagRules(Map<String, Long> stats) {
-        Set<String> tags = new HashSet<>();
-        
-        List<ProfileProperties.TagRule> sortedRules = properties.getTagRules().stream()
-                .sorted(Comparator.comparingInt(ProfileProperties.TagRule::getPriority))
-                .collect(Collectors.toList());
-        
-        for (ProfileProperties.TagRule rule : sortedRules) {
-            if (evaluateRuleCondition(rule.getCondition(), stats)) {
-                tags.add(rule.getName());
-            }
-        }
-        
-        return tags;
-    }
-
-    /**
-     * 评估单个规则条件
-     * 支持格式: OPERATION_TYPE > count [AND|OR] OPERATION_TYPE2 < count2
-     */
-    private boolean evaluateRuleCondition(String condition, Map<String, Long> stats) {
-        if (condition == null || condition.isEmpty()) {
-            return false;
-        }
-
-        // 处理AND条件
-        if (condition.contains(" AND ")) {
-            String[] parts = condition.split(" AND ");
-            for (String part : parts) {
-                if (!evaluateSingleCondition(part.trim(), stats)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // 处理OR条件
-        if (condition.contains(" OR ")) {
-            String[] parts = condition.split(" OR ");
-            for (String part : parts) {
-                if (evaluateSingleCondition(part.trim(), stats)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // 单个条件
-        return evaluateSingleCondition(condition, stats);
-    }
-
-    /**
-     * 评估单个条件
-     */
-    private boolean evaluateSingleCondition(String condition, Map<String, Long> stats) {
-        Matcher matcher = RULE_PATTERN.matcher(condition);
-        if (!matcher.matches()) {
-            return false;
-        }
-
-        String operationType = matcher.group(1);
-        String operator = matcher.group(2);
-        long threshold = Long.parseLong(matcher.group(3));
-        
-        long actualValue = stats.getOrDefault(operationType, 0L);
-
-        return switch (operator) {
-            case "=" -> actualValue == threshold;
-            case "!=" -> actualValue != threshold;
-            case ">" -> actualValue > threshold;
-            case "<" -> actualValue < threshold;
-            case ">=" -> actualValue >= threshold;
-            case "<=" -> actualValue <= threshold;
-            default -> false;
-        };
+        // 标签功能已移除，无需操作
     }
 
     @Override
@@ -415,15 +184,15 @@ public class ProfileServiceImpl implements ProfileService {
         }
 
         log.info("[operation-log] Starting profile data cleanup");
-        
+
         try {
             // 清理过期的操作计数数据
             LocalDate cutoffDate = LocalDate.now().minusDays(properties.getOperationCountRetentionDays());
             String cutoffDateStr = cutoffDate.format(DATE_FORMATTER);
-            
+
             String pattern = properties.getRedisKeyPrefix() + ":*:counts:*";
             Set<String> keys = redisTemplate.keys(pattern);
-            
+
             if (keys != null) {
                 int deleted = 0;
                 for (String key : keys) {
@@ -439,7 +208,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
                 log.info("[operation-log] Deleted {} expired profile keys", deleted);
             }
-            
+
             // 清理降级缓存
             fallbackCache.clear();
         } catch (Exception e) {
@@ -450,10 +219,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileStatus getStatus() {
         boolean redisConnected = checkRedisConnection();
-        
+
         long totalUsers = 0;
-        long totalTags = 0;
-        
+
         try {
             Set<String> userKeys = redisTemplate.keys(properties.getRedisKeyPrefix() + ":*:counts:*");
             if (userKeys != null) {
@@ -463,11 +231,6 @@ public class ProfileServiceImpl implements ProfileService {
                         .distinct()
                         .count();
             }
-            
-            Set<String> tagKeys = redisTemplate.keys(properties.getRedisKeyPrefix() + ":tag-index:*");
-            if (tagKeys != null) {
-                totalTags = tagKeys.size();
-            }
         } catch (Exception e) {
             log.warn("[operation-log] Failed to get status counts", e);
         }
@@ -475,10 +238,10 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileStatus(
                 properties.isEnabled(),
                 redisConnected,
-                properties.isTagEngineEnabled(),
+                false, // tagEngineEnabled 已移除
                 fallbackActive.get(),
                 totalUsers,
-                totalTags
+                0 // totalTags 已移除
         );
     }
 
@@ -511,78 +274,80 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+    /**
+     * 构建Redis key
+     */
+    private String buildKey(String userId, String date) {
+        return properties.getRedisKeyPrefix() + ":" + userId + ":counts:" + date;
+    }
+
+    /**
+     * 从key中提取用户ID
+     */
+    private String extractUserIdFromKey(String key) {
+        String prefix = properties.getRedisKeyPrefix() + ":";
+        if (!key.startsWith(prefix)) {
+            return null;
+        }
+        String remaining = key.substring(prefix.length());
+        int firstColon = remaining.indexOf(':');
+        if (firstColon > 0) {
+            return remaining.substring(0, firstColon);
+        }
+        return null;
+    }
+
     // ==================== CSV导出方法实现 ====================
 
     @Override
     public List<List<String>> exportUserProfileToCsv(String userId) {
         List<List<String>> rows = new ArrayList<>();
-        
+
         UserProfile profile = getUserProfile(userId);
         if (profile == null) {
-            rows.add(Arrays.asList("用户ID", "标签", "操作类型", "操作次数"));
+            rows.add(Arrays.asList("用户ID", "操作类型", "操作次数"));
             return rows;
         }
-        
+
         // 表头
-        rows.add(Arrays.asList("用户ID", "标签", "操作类型", "操作次数"));
-        
-        // 用户基本信息行
-        String tags = profile.tags() != null ? String.join(";", profile.tags()) : "";
-        
+        rows.add(Arrays.asList("用户ID", "操作类型", "操作次数"));
+
         // 操作统计行
         if (profile.operationStats() != null && !profile.operationStats().isEmpty()) {
             for (Map.Entry<String, Long> entry : profile.operationStats().entrySet()) {
                 rows.add(Arrays.asList(
                         profile.userId(),
-                        tags,
                         entry.getKey(),
                         String.valueOf(entry.getValue())
                 ));
             }
         } else {
-            rows.add(Arrays.asList(profile.userId(), tags, "", ""));
+            rows.add(Arrays.asList(profile.userId(), "", ""));
         }
-        
+
         return rows;
     }
 
     @Override
     public List<List<String>> exportUsersByTagToCsv(String tag, int page, int size) {
+        // 标签功能已移除，返回空表头
         List<List<String>> rows = new ArrayList<>();
-        
-        // 表头
-        rows.add(Arrays.asList("用户ID", "标签", "ORDER_QUERY次数", "ORDER_SUBMIT次数", "ORDER_REFUND次数"));
-        
-        // 获取用户列表
-        List<String> userIds = getUsersByTag(tag, page, size);
-        
-        for (String userId : userIds) {
-            Map<String, Long> stats = getUserOperationStats(userId);
-            
-            rows.add(Arrays.asList(
-                    userId,
-                    tag,
-                    String.valueOf(stats.getOrDefault("ORDER_QUERY", 0L)),
-                    String.valueOf(stats.getOrDefault("ORDER_SUBMIT", 0L)),
-                    String.valueOf(stats.getOrDefault("ORDER_REFUND", 0L))
-            ));
-        }
-        
+        rows.add(Arrays.asList("用户ID", "操作统计JSON"));
         return rows;
     }
 
     @Override
     public List<List<String>> exportAllUserStatsToCsv(int limit) {
         List<List<String>> rows = new ArrayList<>();
-        
+
         // 表头
-        rows.add(Arrays.asList("用户ID", "标签列表", "操作统计JSON"));
-        
+        rows.add(Arrays.asList("用户ID", "操作统计JSON"));
+
         try {
             // 获取所有用户
             String pattern = properties.getRedisKeyPrefix() + ":*:counts:*";
             Set<String> keys = redisTemplate.keys(pattern);
-            
+
             if (keys != null) {
                 Set<String> userIds = keys.stream()
                         .map(this::extractUserIdFromKey)
@@ -590,22 +355,19 @@ public class ProfileServiceImpl implements ProfileService {
                         .distinct()
                         .limit(limit)
                         .collect(Collectors.toSet());
-                
+
                 for (String userId : userIds) {
-                    UserProfile profile = getUserProfile(userId);
-                    if (profile != null) {
-                        String tags = profile.tags() != null ? String.join(";", profile.tags()) : "";
-                        String statsJson = profile.operationStats() != null ? 
-                                profile.operationStats().toString() : "{}";
-                        
-                        rows.add(Arrays.asList(userId, tags, statsJson));
+                    Map<String, Long> stats = getUserOperationStats(userId);
+                    if (!stats.isEmpty()) {
+                        String statsJson = stats.toString();
+                        rows.add(Arrays.asList(userId, statsJson));
                     }
                 }
             }
         } catch (Exception e) {
             log.error("[operation-log] Error exporting all user stats", e);
         }
-        
+
         return rows;
     }
 }

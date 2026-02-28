@@ -1,5 +1,6 @@
 package cn.creekmoon.operationLog.core;
 
+import cn.creekmoon.operationLog.config.OperationLogProperties;
 import cn.creekmoon.operationLog.heatmap.HeatmapCollector;
 import cn.creekmoon.operationLog.profile.ProfileCollector;
 import cn.hutool.core.lang.UUID;
@@ -45,6 +46,8 @@ import java.util.stream.Collectors;
 public class LogAspect implements ApplicationContextAware, Ordered {
 
     private volatile OperationLogRecordInitializer logDetailProvider;
+    private volatile OperationLogProperties operationLogProperties;
+
     /**
      * 上下文对象实例
      */
@@ -53,6 +56,24 @@ public class LogAspect implements ApplicationContextAware, Ordered {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    /**
+     * 获取全局配置
+     */
+    private OperationLogProperties getOperationLogProperties() {
+        if (operationLogProperties == null) {
+            synchronized (this) {
+                if (operationLogProperties == null) {
+                    try {
+                        operationLogProperties = applicationContext.getBean(OperationLogProperties.class);
+                    } catch (Exception e) {
+                        operationLogProperties = new OperationLogProperties();
+                    }
+                }
+            }
+        }
+        return operationLogProperties;
     }
 
     @Pointcut("@annotation(cn.creekmoon.operationLog.core.OperationLog)")
@@ -156,15 +177,17 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         } catch (Exception e) {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
-            /*如果配置了handleOnFail, 将异常消息添加到remarks中*/
-            if (annotation.handleOnFail()) {
+            /*如果配置了handleOnFail(注解或全局), 将异常消息添加到remarks中*/
+            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
+            if (handleOnFail) {
                 String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
                 logRecord.getRemarks().add("异常: " + errorMsg);
             }
             throw e;
         } finally {
             /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
-            boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && annotation.handleOnFail());
+            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
+            boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && handleOnFail);
             /* 跟踪结果变化*/
             if (isNeedRecord) {
                 if (OperationLogContext.metadataSupplier.get() != null) {
@@ -187,14 +210,16 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                     }
                 });
 
-                /*收集热力图数据*/
-                if (annotation.heatmap()) {
+                /*收集热力图数据 - 支持全局配置*/
+                boolean heatmapEnabled = annotation.heatmap() || getOperationLogProperties().isHeatmapGlobalEnabled();
+                if (heatmapEnabled) {
                     collectHeatmapData(logRecord);
                 }
 
-                /*收集用户画像数据*/
-                if (annotation.profile()) {
-                    collectProfileData(logRecord);
+                /*收集用户画像数据 - 支持全局配置*/
+                boolean profileEnabled = annotation.profile() || getOperationLogProperties().isProfileGlobalEnabled();
+                if (profileEnabled) {
+                    collectProfileData(logRecord, annotation);
                 }
             }
             /*不进行日志记录*/
@@ -223,12 +248,19 @@ public class LogAspect implements ApplicationContextAware, Ordered {
     /**
      * 收集用户画像数据
      */
-    private void collectProfileData(LogRecord logRecord) {
+    private void collectProfileData(LogRecord logRecord, OperationLog annotation) {
         try {
             Map<String, ProfileCollector> collectors = applicationContext.getBeansOfType(ProfileCollector.class);
             if (!collectors.isEmpty()) {
                 ProfileCollector collector = collectors.values().iterator().next();
-                collector.collect(logRecord);
+                /*确定操作类型: 如果全局配置useValueAsType为true,则使用operationName作为type*/
+                String operationType;
+                if (getOperationLogProperties().isUseValueAsType()) {
+                    operationType = logRecord.getOperationName();
+                } else {
+                    operationType = annotation.type();
+                }
+                collector.collect(logRecord, operationType);
             }
         } catch (Exception e) {
             log.debug("[operation-log]用户画像数据收集异常: {}", e.getMessage());
