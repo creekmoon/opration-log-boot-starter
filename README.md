@@ -93,7 +93,7 @@
 <dependency>
     <groupId>cn.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>2.2.0</version>
+    <version>2.1.3</version>
 </dependency>
 ```
 
@@ -171,17 +171,15 @@ operation-log: LogRecord(
 
 #### 方式一：详细配置（推荐）
 
-在 `heatmap` 和 `profile` 配置段中启用全局开关：
+在 `heatmap` 和 `profile` 配置段中启用模块：
 
 ```yaml
 operation-log:
   heatmap:
     enabled: true           # 启用热力图模块
-    global-enabled: true    # 全局开启所有接口的热力图统计
   
   profile:
     enabled: true           # 启用画像模块
-    global-enabled: true    # 全局开启所有接口的用户画像统计
 ```
 
 #### 方式二：快捷配置
@@ -190,8 +188,8 @@ operation-log:
 
 ```yaml
 operation-log:
-  heatmap-global-enabled: true   # 快捷方式：operation-log.heatmap.global-enabled
-  profile-global-enabled: true   # 快捷方式：operation-log.profile.global-enabled
+  heatmap-global-enabled: true   # 快捷方式：启用热力图全局统计
+  profile-global-enabled: true   # 快捷方式：启用用户画像全局统计
   handle-on-fail-global-enabled: false
   use-value-as-type: false
 ```
@@ -202,7 +200,6 @@ operation-log:
 operation-log:
   heatmap:
     enabled: true                    # 是否启用热力图模块
-    global-enabled: true             # 全局开关（优先级高于注解）
     redis-key-prefix: "oplog:heatmap" # Redis key 前缀
     realtime-retention-hours: 24     # 实时数据保留时间
     hourly-retention-days: 7         # 小时级数据保留时间
@@ -213,7 +210,7 @@ operation-log:
     fallback-enabled: true           # Redis 故障时降级处理
 ```
 
-> 💡 **提示**: 当 `heatmap.global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
+> 💡 **提示**: 使用 `operation-log.heatmap-global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
 
 ### 用户画像配置
 
@@ -221,7 +218,6 @@ operation-log:
 operation-log:
   profile:
     enabled: true                    # 是否启用画像模块
-    global-enabled: true             # 全局开关
     auto-infer-type: true            # 自动推断操作类型
     redis-key-prefix: "oplog:profile" # Redis key 前缀
     default-stats-days: 30           # 默认统计时间范围
@@ -235,9 +231,10 @@ operation-log:
 operation-log:
   dashboard:
     enabled: true                    # 是否启用 Dashboard
-    path: "/operation-log/dashboard"  # 访问路径
     refresh-interval: 30             # 自动刷新间隔(秒)
 ```
+
+> 💡 **提示**: Dashboard 访问路径固定为 `/operation-log/dashboard`，如需自定义请通过反向代理（Nginx）实现。
 
 ---
 
@@ -404,8 +401,8 @@ curl -o users.csv http://localhost:8080/operation-log/profile/export/tag/高价�
 
 | 功能 | 全局配置 (推荐) | 注解配置 (细粒度) |
 |------|----------------|-------------------|
-| 热力图统计 | `heatmap.global-enabled: true` | `@OperationLog(heatmap = true)` |
-| 用户画像 | `profile.global-enabled: true` | `@OperationLog(profile = true)` |
+| 热力图统计 | `heatmap-global-enabled: true` | `@OperationLog(heatmap = true)` |
+| 用户画像 | `profile-global-enabled: true` | `@OperationLog(profile = true)` |
 | 失败记录 | `handle-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
 
 > 🔥 **最佳实践**: 使用全局配置统一管理，减少重复代码！
