@@ -229,10 +229,11 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                 if (!isNeedRecord) {
                     log.debug("[operation-log]用户操作没有成功,不会进行日志记录");
                 }
-            } finally {
-                /*确保ThreadLocal上下文始终被清理，防止内存泄漏*/
-                OperationLogContext.clean();
+            } catch (Exception e) {
+                log.error("[operation-log]日志处理异常", e);
             }
+            /*确保ThreadLocal上下文始终被清理，防止内存泄漏*/
+            OperationLogContext.clean();
         }
     }
 
