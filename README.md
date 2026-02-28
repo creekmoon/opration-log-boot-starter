@@ -1,19 +1,64 @@
-# operation-log-boot-starter
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.creekmoon/operation-log-boot-starter/badge.svg)](https://mvnrepository.com/artifact/cn.creekmoon/operation-log-boot-starter)
-[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+<div align="center">
 
-## 能做什么?  
-简易的业务操作日志AOP实现类, 用于记录业务中的Controller的操作日志,能记录用户什么时候修改了哪些字段
+# 🔥 operation-log-boot-starter
 
-**新增功能(v2.2.0+):**
-- **Dashboard Pro**: 增强版监控面板，支持8+数据维度
-- **扩展数据维度**: 响应时间分位数、错误率趋势、地域分布、终端分布
-- **CSV导出功能**: 支持热力图和用户画像数据导出为CSV格式
-- **可视化Dashboard**: 提供Web界面实时监控操作日志数据
-- **操作热力图统计**: 基于Redis HyperLogLog统计接口PV/UV,支持实时/小时/天级维度
-- **用户行为画像**: 基于用户操作历史自动生成行为标签,支持精细化运营
+<p align="center">
+  <strong>一站式业务操作日志解决方案</strong>
+</p>
 
-#### maven引用方式
+<p align="center">
+  <a href="https://mvnrepository.com/artifact/cn.creekmoon/operation-log-boot-starter">
+    <img src="https://maven-badges.herokuapp.com/maven-central/cn.creekmoon/operation-log-boot-starter/badge.svg" alt="Maven Central">
+  </a>
+  <a href="http://www.apache.org/licenses/LICENSE-2.0.html">
+    <img src="http://img.shields.io/:license-apache-brightgreen.svg" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.0+-green.svg" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/JDK-21+-blue.svg" alt="JDK">
+</p>
+
+<p align="center">
+  <a href="#-功能特性">功能特性</a> •
+  <a href="#-快速开始">快速开始</a> •
+  <a href="#-配置说明">配置说明</a> •
+  <a href="#-高级功能">高级功能</a> •
+  <a href="#-api文档">API文档</a>
+</p>
+
+</div>
+
+---
+
+## ✨ 功能特性
+
+<table>
+<tr>
+<td width="50%">
+
+### 📝 核心能力
+- **零侵入日志记录** - 一个注解自动记录操作日志
+- **字段变更追踪** - 记录数据修改前后的变化
+- **异步高性能** - 独立的线程池处理，不阻塞业务
+- **多存储支持** - 控制台/Elasticsearch/自定义Handler
+
+</td>
+<td width="50%">
+
+### 📊 分析能力 (v2.2+)
+- **操作热力图** - 接口 PV/UV 实时统计
+- **用户行为画像** - 基于操作历史生成用户标签
+- **可视化 Dashboard** - 内置 Web 监控面板
+- **CSV 数据导出** - 支持各类数据导出分析
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 快速开始
+
+### 1️⃣ 添加依赖
 
 ```xml
 <dependency>
@@ -23,439 +68,347 @@
 </dependency>
 ```
 
-## 使用条件
-
-Spring Boot 3.0.0+
-
-JDK >= 21
-
-Redis (用于热力图和用户画像功能)
-
-## 快速开始
-
-首先在启动类加上**EnableOperationLog**注解
+### 2️⃣ 启用日志记录
 
 ```java
-
-@EnableOperationLog //在启动类加上注解
-public class VdpWebApplication {
+@SpringBootApplication
+@EnableOperationLog  // ← 添加这个注解
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(VdpWebApplication.class, args);
-    }
-} 
-```
-
-在**controller方法**上加入注解 **@OperationLog**
-
-```java
-
-@RequestMapping("web/test")
-public class TTransportController {
-    
-    @OperationLog //在此加上注解
-    @PostMapping(value = "/update")
-    public ReturnValue update(TTransport tTransport) {
-       /*业务代码*/
-       return SUCCESS; 
+        SpringApplication.run(Application.class, args);
     }
 }
-
 ```
 
-## 查看效果
-
-在您没有定义日志应该如何处理之前, 组件默认将日志打印到控制台
-
-会输出以下文字.
-```text
-operation-log:LogRecord(userId=1, orgId=1, userName=unknown  ..........省略
-```
-
-## 新增功能: CSV导出
-
-### 功能说明
-
-支持将热力图统计和用户画像数据导出为CSV格式,方便数据分析和报表制作。
-
-### 热力图CSV导出
+### 3️⃣ 标记需要记录的方法
 
 ```java
-@Autowired
-private HeatmapService heatmapService;
-
-// 导出实时统计数据
-List<List<String>> realtimeData = heatmapService.exportRealtimeStatsToCsv();
-
-// 导出TopN排行
-List<List<String>> topNData = heatmapService.exportTopNToCsv(
-    TimeWindow.REALTIME, MetricType.PV, 10);
-
-// 导出趋势数据
-List<List<String>> trendData = heatmapService.exportTrendToCsv(
-    "OrderController", "list", TimeWindow.HOURLY, 24);
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+    
+    @OperationLog("创建订单")  // ← 添加这个注解
+    @PostMapping
+    public Order create(@RequestBody Order order) {
+        // 业务逻辑...
+        return orderService.create(order);
+    }
+    
+    @OperationLog(value = "更新订单", type = "ORDER_UPDATE")
+    @PutMapping("/{id}")
+    public Order update(@PathVariable Long id, @RequestBody Order order) {
+        // 跟踪字段变更
+        OperationLogContext.follow(() -> orderService.getById(id));
+        return orderService.update(id, order);
+    }
+}
 ```
 
-### 用户画像CSV导出
+### 4️⃣ 定义日志处理器
 
 ```java
-@Autowired
-private ProfileService profileService;
-
-// 导出用户画像
-List<List<String>> profileData = profileService.exportUserProfileToCsv("user123");
-
-// 导出标签用户列表
-List<List<String>> tagUsersData = profileService.exportUsersByTagToCsv(
-    "高价值用户", 0, 100);
-
-// 导出所有用户统计
-List<List<String>> allUsersData = profileService.exportAllUserStatsToCsv(1000);
+@Component
+public class EsLogHandler implements OperationLogHandler {
+    @Override
+    public void handle(LogRecord logRecord) {
+        // 推送到 Elasticsearch
+        elasticsearchClient.index(logRecord.toFlatJson());
+    }
+}
 ```
 
-### HTTP接口导出
+### 5️⃣ 查看效果
 
-启动应用后,可通过以下接口下载CSV文件:
-
-```bash
-# 热力图导出
-GET /operation-log/heatmap/export/realtime
-GET /operation-log/heatmap/export/topn?timeWindow=REALTIME&metricType=PV&topN=10
-GET /operation-log/heatmap/export/trend?className=OrderController&methodName=list
-
-# 画像导出
-GET /operation-log/profile/export/user/{userId}
-GET /operation-log/profile/export/tag/{tagName}
-GET /operation-log/profile/export/all?limit=1000
-```
-
-## 新增功能: 可视化Dashboard
-
-### 功能说明
-
-提供Web界面实时监控操作日志数据,包括:
-- PV/UV趋势图表
-- 热门接口排行
-- 用户标签分布
-- 操作类型统计
-
-### 访问方式
-
-启动应用后,访问以下地址:
+启动应用后，操作日志会自动输出到控制台：
 
 ```
-http://localhost:8080/operation-log/dashboard
+operation-log: LogRecord(
+  userId=10001, 
+  userName=zhangsan, 
+  operationName=创建订单,
+  operationType=DEFAULT,
+  methodName=create,
+  classFullName=com.example.OrderController.create,
+  requestResult=true,
+  operationTime=2026-02-28T23:30:00
+)
 ```
 
-### 配置项
+---
+
+## ⚙️ 配置说明
+
+### 基础配置
 
 ```yaml
 operation-log:
-  dashboard:
-    enabled: true           # 是否启用Dashboard
-    path: "/operation-log/dashboard"  # 访问路径
-    refresh-interval: 30    # 自动刷新间隔(秒)
+  # 全局热力图开关 - 开启后所有接口自动统计 PV/UV
+  heatmap-global-enabled: true
+  
+  # 全局用户画像开关 - 开启后自动收集用户行为
+  profile-global-enabled: true
+  
+  # 全局失败记录开关 - 操作失败时是否记录日志
+  handle-on-fail-global-enabled: false
+  
+  # 使用操作描述作为操作类型
+  use-value-as-type: false
 ```
 
-### 页面功能
-
-- **实时概览**: 显示总PV、总UV、用户总数、标签总数
-- **PV/UV趋势**: 24小时趋势折线图
-- **热门接口Top10**: 接口访问量排行表格
-- **用户标签分布**: 标签占比饼图
-- **操作类型分布**: 操作类型柱状图
-- **自动刷新**: 每30秒自动刷新数据
-- **手动刷新**: 点击右下角刷新按钮立即更新
-
-## 新增功能: 操作热力图统计
-
-### 开启方式
-
-在 `@OperationLog` 注解上添加 `heatmap = true`:
-
-```java
-@OperationLog(heatmap = true)
-@GetMapping("/list")
-public List<Order> list() {
-    // 业务代码
-}
-```
-
-### 配置项
+### 热力图配置
 
 ```yaml
 operation-log:
   heatmap:
-    enabled: true                    # 是否启用热力图统计
-    redis-key-prefix: "operation-log:heatmap"  # Redis key前缀
-    realtime-retention-hours: 24     # 实时数据保留时间(小时)
-    hourly-retention-days: 7         # 小时级数据保留时间(天)
-    daily-retention-days: 90         # 天级数据保留时间(天)
-    top-n-default-size: 10           # TopN查询默认返回数量
-    top-n-max-size: 100              # TopN查询最大返回数量
-    fallback-enabled: true           # 是否启用降级策略
-    sample-rate: 1.0                 # 采样率(0.0-1.0)
+    enabled: true                    # 是否启用热力图模块
+    global-enabled: true             # 全局开关（优先级高于注解）
+    redis-key-prefix: "oplog:heatmap" # Redis key 前缀
+    realtime-retention-hours: 24     # 实时数据保留时间
+    hourly-retention-days: 7         # 小时级数据保留时间
+    daily-retention-days: 90         # 天级数据保留时间
+    top-n-default-size: 10           # TopN 默认返回数量
+    top-n-max-size: 100              # TopN 最大返回数量
+    sample-rate: 1.0                 # 采样率 (0.0-1.0)
+    fallback-enabled: true           # Redis 故障时降级处理
 ```
 
-### 查看数据
+> 💡 **提示**: 当 `heatmap.global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
 
-通过HTTP接口访问:
+### 用户画像配置
+
+```yaml
+operation-log:
+  profile:
+    enabled: true                    # 是否启用画像模块
+    global-enabled: true             # 全局开关
+    redis-key-prefix: "oplog:profile" # Redis key 前缀
+    default-stats-days: 30           # 默认统计时间范围
+    operation-count-retention-days: 90  # 操作计数保留时间
+    user-tags-retention-days: 90     # 用户标签保留时间
+    fallback-enabled: true           # 降级策略
+```
+
+### Dashboard 配置
+
+```yaml
+operation-log:
+  dashboard:
+    enabled: true                    # 是否启用 Dashboard
+    path: "/operation-log/dashboard"  # 访问路径
+    refresh-interval: 30             # 自动刷新间隔(秒)
+```
+
+---
+
+## 🎯 高级功能
+
+### 📊 热力图统计
+
+全局开启后，自动统计所有接口的访问量：
+
+```java
+// 全局开启后，无需额外配置
+@OperationLog("查询订单")
+@GetMapping("/orders")
+public List<Order> list() {
+    // 自动统计 PV/UV
+    return orderService.list();
+}
+```
+
+如需在特定方法上**禁用**热力图统计：
+
+```java
+// 未来版本将支持通过配置排除特定接口
+// 当前可通过配置排除特定 operation-type
+```
+
+**查看统计数据**:
 
 ```bash
-# 查看服务状态
-GET /operation-log/heatmap/status
-
 # 查看所有接口实时统计
-GET /operation-log/heatmap/stats
+curl http://localhost:8080/operation-log/heatmap/stats
 
 # 查看指定接口统计
-GET /operation-log/heatmap/stats/{className}/{methodName}
+curl http://localhost:8080/operation-log/heatmap/stats/OrderController/list
 
-# 查看TopN接口
-GET /operation-log/heatmap/topn
+# 查看 Top10 热门接口
+curl http://localhost:localhost:8080/operation-log/heatmap/topn
 ```
 
-### 编程式使用
+**编程式使用**:
 
 ```java
 @Autowired
 private HeatmapService heatmapService;
 
 // 获取实时统计
-HeatmapStats stats = heatmapService.getRealtimeStats("OrderService", "list");
+HeatmapStats stats = heatmapService.getRealtimeStats("OrderController", "list");
 System.out.println("PV: " + stats.pv() + ", UV: " + stats.uv());
 
-// 获取Top10接口(PV)
-List<HeatmapTopItem> topList = heatmapService.getTopN(
-    TimeWindow.REALTIME, MetricType.PV, 10);
-
-// 获取趋势数据
-List<HeatmapTrendPoint> trend = heatmapService.getTrend(
-    "OrderService", "list", TimeWindow.HOURLY, 24);
+// 导出 CSV
+List<List<String>> csvData = heatmapService.exportRealtimeStatsToCsv();
 ```
 
-## 新增功能: 用户行为画像
+### 👤 用户行为画像
 
-### 开启方式
-
-在 `@OperationLog` 注解上添加 `profile = true`,并定义操作类型:
+全局开启后，自动收集用户操作数据：
 
 ```java
-@OperationLog(value = "查询订单", type = "ORDER_QUERY", profile = true)
-@GetMapping("/list")
-public List<Order> list() {
-    // 业务代码
-}
-
-@OperationLog(value = "提交订单", type = "ORDER_SUBMIT", profile = true)
-@PostMapping("/submit")
-public Result submit(@RequestBody Order order) {
-    // 业务代码
+// 全局开启后，无需额外配置
+@OperationLog(value = "提交订单", type = "ORDER_SUBMIT")
+@PostMapping("/orders")
+public Order submit(@RequestBody Order order) {
+    return orderService.submit(order);
 }
 ```
 
-### 配置项
-
-```yaml
-operation-log:
-  profile:
-    enabled: true                    # 是否启用用户画像
-    redis-key-prefix: "operation-log:user-profile"  # Redis key前缀
-    default-stats-days: 30           # 默认统计时间范围(天)
-    operation-count-retention-days: 90  # 操作计数保留时间(天)
-    user-tags-retention-days: 90     # 用户标签保留时间(天)
-    fallback-enabled: true           # 是否启用降级策略
-```
-
-### 查看数据
-
-通过HTTP接口访问:
+**查看画像数据**:
 
 ```bash
-# 查看服务状态
-GET /operation-log/profile/status
-
 # 查看用户画像
-GET /operation-log/profile/user/{userId}
+curl http://localhost:8080/operation-log/profile/user/10001
 
 # 查看用户标签
-GET /operation-log/profile/user/{userId}/tags
-
-# 查看用户操作统计
-GET /operation-log/profile/user/{userId}/stats
+curl http://localhost:8080/operation-log/profile/user/10001/tags
 
 # 根据标签查询用户
-GET /operation-log/profile/tag/{tagName}
+curl http://localhost:8080/operation-log/profile/tag/高价值用户
 ```
 
-### 编程式使用
+**编程式使用**:
 
 ```java
 @Autowired
 private ProfileService profileService;
 
 // 获取用户画像
-UserProfile profile = profileService.getUserProfile("user123");
-System.out.println("操作统计: " + profile.operationStats());
+UserProfile profile = profileService.getUserProfile("10001");
+Set<String> tags = profile.tags();  // [高频用户, 高价值用户, 深夜活跃]
 ```
 
-## 方法说明
+### 📈 可视化 Dashboard
 
-### 跟踪值的变化
+启动应用后访问：
 
-```java
-OperationLogContext.follow(()->getStudentInfo(studentId));
-        updateStudentInfo(studentId);
-```
+- **基础版 Dashboard**: `http://localhost:8080/operation-log/dashboard`
+- **专业版 Dashboard**: `http://localhost:8080/operation-log-dashboard-pro.html`
 
+**功能特性**:
+- 实时 PV/UV 概览
+- 24小时趋势图表
+- 热门接口排行
+- 用户标签分布
+- 响应时间分位数 (Pro)
+- 错误率趋势 (Pro)
+- 地域/终端分布 (Pro)
 
-### 定义日志该如何处理
+### 📤 CSV 导出
 
-实现**OperationLogHandler**接口
-```java
-
-@Component
-public class PushElasticSearch implements OperationLogHandler {
-
-    @Override
-    public void handle(LogRecord logRecord) {
-        pushES(logRecord);
-    }
-
-}
-
-```
-
-### 定义当前用户
-
-实现**OperationLogRecordInitializer接口**
-```java
-@Component
-public class DefaultOperationLogRecordInitializer implements OperationLogRecordInitializer {
-
-    @Override
-    public LogRecord init(LogRecord logRecord) {
-        /*获取当前的用户*/
-        logRecord.setUserId(getCurrentUserId());
-        return logRecord;
-    }
-}
-
-```
-
-### 定义日志结果
-
-如果您本次操作抛出了**异常**, 或者日志被标记了**失败**,
-
-则日志不会被处理.除非您手动指定 **handleOnFail = true**
-
-
-```java
-@OperationLog(handleOnFail = true)
-```
-
-在组件中,有两种方法标记当前操作失败:
-
-- 向外抛出异常,自动标记失败
-
-- 手动标记失败
-
-```java
-OperationLogContext.fail();
-```
-
-
-## 常见错误解决
-
-#### Elastic索引问题
-如果提示索引上限达到1000个 需要为ES的索引进行配置 (直接去Kibana可视化配置就好,不需要重启)
-```yaml
-"index.mapping.total_fields.limit": "5000",
-```
-
-清理Elastic索引数据
-
-```json
-POST walmart-operation-log/_delete_by_query
-{
-  "query": {
-    "range": {
-      "operationTime": {
-        "lt": "2022-09-05T02:20:05.231Z"
-      }
-    }
-  }
-}
-
-
-
-```
-
-定义了Elastic索引声明周期, 但是删除阶段没有奏效 可以看这个人的文章
-
-[这个人的文章]: https://blog.csdn.net/m0_60696455/article/details/119736496
-
-
-
-> 这貌似是源于kibana的一个BUG,使用kibana创建索引声明周期时, actions为空
-> 所以需要去kibana管理声明周期那里,复制一下它的更新语句, 然后为delete阶段添加一个action
-> 如下所示, 只展示需改动的部分:
-
-```json
-
-//之前的
-{
-  "delete": {
-    "min_age": "30d",
-    "actions": {
-    }
-  }
-}
-
-//添加action之后的
-{
-  "delete": {
-    "min_age": "30d",
-    "actions": {
-      "delete": {}
-    }
-  }
-}
-
-```
-
-## Dashboard Pro API (v2.2.0+)
-
-### 扩展数据维度
-
-Dashboard Pro 提供8+数据维度，支持更精细的监控分析：
-
-| 维度 | API | 说明 |
-|------|-----|------|
-| 响应时间 | `/operation-log/dashboard/api/response-time` | P50/P95/P99分位数 |
-| 错误率 | `/operation-log/dashboard/api/error-rate` | 按时间趋势 |
-| 地域分布 | `/operation-log/dashboard/api/geo-distribution` | 按省份统计 |
-| 终端分布 | `/operation-log/dashboard/api/terminal-distribution` | Web/App/小程序 |
-
-### 导出API
-
-所有数据维度均支持CSV导出：
+所有统计数据支持 CSV 导出：
 
 ```bash
-# 导出响应时间统计
-GET /operation-log/dashboard/api/export/response-time?className=OrderController&methodName=list
+# 热力图数据导出
+curl -o heatmap.csv http://localhost:8080/operation-log/heatmap/export/realtime
+curl -o topn.csv "http://localhost:8080/operation-log/heatmap/export/topn?timeWindow=REALTIME&metricType=PV&topN=10"
 
-# 导出错误率趋势
-GET /operation-log/dashboard/api/export/error-rate?className=OrderController&methodName=list&points=24
-
-# 导出地域分布
-GET /operation-log/dashboard/api/export/geo-distribution
-
-# 导出终端分布
-GET /operation-log/dashboard/api/export/terminal-distribution
+# 用户画像导出
+curl -o profile.csv http://localhost:8080/operation-log/profile/export/user/10001
+curl -o users.csv http://localhost:8080/operation-log/profile/export/tag/高价值用户
 ```
 
-### 访问Dashboard Pro
+---
 
+## 📚 API 文档
+
+### 核心注解
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `value` | String | "未描述的接口" | 操作描述 |
+| `type` | String | "DEFAULT" | 操作类型，用于分类统计 |
+| `handleOnFail` | boolean | false | 失败时是否记录日志 |
+
+### 全局配置 vs 注解配置
+
+| 功能 | 全局配置 (推荐) | 注解配置 (细粒度) |
+|------|----------------|-------------------|
+| 热力图统计 | `heatmap.global-enabled: true` | `@OperationLog(heatmap = true)` |
+| 用户画像 | `profile.global-enabled: true` | `@OperationLog(profile = true)` |
+| 失败记录 | `handle-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
+
+> 🔥 **最佳实践**: 使用全局配置统一管理，减少重复代码！
+
+### HTTP API
+
+#### 热力图 API
+
+| 接口 | 说明 |
+|------|------|
+| `GET /operation-log/heatmap/status` | 服务状态 |
+| `GET /operation-log/heatmap/stats` | 所有接口统计 |
+| `GET /operation-log/heatmap/stats/{class}/{method}` | 指定接口统计 |
+| `GET /operation-log/heatmap/topn` | TopN 排行 |
+| `GET /operation-log/heatmap/export/realtime` | 导出实时数据 |
+| `GET /operation-log/heatmap/export/topn` | 导出排行数据 |
+
+#### 用户画像 API
+
+| 接口 | 说明 |
+|------|------|
+| `GET /operation-log/profile/status` | 服务状态 |
+| `GET /operation-log/profile/user/{userId}` | 用户画像 |
+| `GET /operation-log/profile/user/{userId}/tags` | 用户标签 |
+| `GET /operation-log/profile/user/{userId}/stats` | 操作统计 |
+| `GET /operation-log/profile/tag/{tagName}` | 标签用户列表 |
+
+#### Dashboard Pro API
+
+| 接口 | 说明 |
+|------|------|
+| `GET /operation-log/dashboard/api/response-time` | 响应时间分位数 |
+| `GET /operation-log/dashboard/api/error-rate` | 错误率趋势 |
+| `GET /operation-log/dashboard/api/geo-distribution` | 地域分布 |
+| `GET /operation-log/dashboard/api/terminal-distribution` | 终端分布 |
+
+---
+
+## 🔧 常见问题
+
+### Q: 热力图数据占用多少 Redis 内存？
+
+A: 基于 HyperLogLog 算法，千万级 UV 统计仅需约 **12KB** 内存。
+
+### Q: 如何排除特定接口的热力图统计？
+
+A: 当前版本可通过配置排除特定 operation-type：
+
+```yaml
+operation-log:
+  heatmap:
+    exclude-operation-types:
+      - HEALTH_CHECK
+      - PING
 ```
-http://localhost:8080/operation-log-dashboard-pro.html
-```
+
+### Q: Redis 故障会影响业务吗？
+
+A: 不会。启用 `fallback-enabled: true` 后，Redis 故障会自动降级，不影响业务功能。
+
+### Q: Dashboard 访问需要认证吗？
+
+A: 当前版本 Dashboard 为公开访问，生产环境建议通过反向代理添加认证。
+
+---
+
+## 📄 许可证
+
+[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+---
+
+<div align="center">
+
+**Made with ❤️ by creekmoon**
+
+</div>
