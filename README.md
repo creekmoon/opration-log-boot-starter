@@ -264,16 +264,57 @@ List<List<String>> csvData = heatmapService.exportRealtimeStatsToCsv();
 
 ### 👤 用户行为画像
 
-全局开启后，自动收集用户操作数据：
+**零配置开箱即用**
+
+```yaml
+operation-log:
+  profile:
+    enabled: true
+    global-enabled: true        # 全局开启
+    auto-infer-type: true       # 自动推断操作类型
+    default-tags-enabled: true  # 启用默认标签策略
+```
+
+开启后，**无需任何额外配置**，系统会自动：
+1. 从 `@OperationLog("xxx")` 的描述中推断操作类型（查询/创建/更新/删除）
+2. 为用户生成默认标签（高频用户、活跃用户、新用户等）
 
 ```java
-// 全局开启后，无需额外配置
-@OperationLog(value = "提交订单", type = "ORDER_SUBMIT")
-@PostMapping("/orders")
-public Order submit(@RequestBody Order order) {
-    return orderService.submit(order);
+@RestController
+public class OrderController {
+    
+    // 自动推断为 QUERY 类型
+    @OperationLog("查询订单")
+    @GetMapping("/orders")
+    public List<Order> list() {
+        return orderService.list();
+    }
+    
+    // 自动推断为 CREATE 类型
+    @OperationLog("创建订单")
+    @PostMapping("/orders")
+    public Order create(@RequestBody Order order) {
+        return orderService.create(order);
+    }
 }
 ```
+
+**自动生成的默认标签**
+
+| 标签 | 规则 |
+|------|------|
+| 高频用户 | 7天内操作 > 50 次 |
+| 活跃用户 | 7天内操作 > 10 次 |
+| 低频用户 | 7天内操作 < 3 次 |
+| 新用户 | 首次使用在7天内 |
+| 老用户 | 首次使用超过90天 |
+| 沉默用户 | 30天未活跃 |
+| 流失风险 | 7天未活跃但30天内活跃过 |
+| 查询型用户 | 查询操作占比 > 80% |
+| 提交型用户 | 创建/提交操作占比 > 30% |
+| 管理型用户 | 更新/删除操作占比 > 20% |
+| 夜猫子 | 22:00-06:00 操作占比 > 50% |
+| 工作时间用户 | 09:00-18:00 操作占比 > 70% |
 
 **查看画像数据**:
 
@@ -285,7 +326,7 @@ curl http://localhost:8080/operation-log/profile/user/10001
 curl http://localhost:8080/operation-log/profile/user/10001/tags
 
 # 根据标签查询用户
-curl http://localhost:8080/operation-log/profile/tag/高价值用户
+curl http://localhost:8080/operation-log/profile/tag/高频用户
 ```
 
 **编程式使用**:
@@ -296,7 +337,7 @@ private ProfileService profileService;
 
 // 获取用户画像
 UserProfile profile = profileService.getUserProfile("10001");
-Set<String> tags = profile.tags();  // [高频用户, 高价值用户, 深夜活跃]
+Set<String> tags = profile.tags();  // [高频用户, 查询型用户, 工作时间用户]
 ```
 
 ### 📈 可视化 Dashboard

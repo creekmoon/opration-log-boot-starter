@@ -2,7 +2,9 @@ package cn.creekmoon.operationLog.core;
 
 import cn.creekmoon.operationLog.config.OperationLogProperties;
 import cn.creekmoon.operationLog.heatmap.HeatmapCollector;
+import cn.creekmoon.operationLog.profile.OperationTypeInference;
 import cn.creekmoon.operationLog.profile.ProfileCollector;
+import cn.creekmoon.operationLog.profile.ProfileProperties;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson2.JSONArray;
@@ -253,13 +255,27 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             Map<String, ProfileCollector> collectors = applicationContext.getBeansOfType(ProfileCollector.class);
             if (!collectors.isEmpty()) {
                 ProfileCollector collector = collectors.values().iterator().next();
-                /*确定操作类型: 如果全局配置useValueAsType为true,则使用operationName作为type*/
-                String operationType;
-                if (getOperationLogProperties().isUseValueAsType()) {
-                    operationType = logRecord.getOperationName();
-                } else {
-                    operationType = annotation.type();
+                
+                /*确定操作类型优先级:
+                 * 1. 注解显式指定的 type (非 DEFAULT)
+                 * 2. 自动推断的类型 (如果启用)
+                 * 3. 注解的 type 默认值
+                 */
+                String operationType = annotation.type();
+                if ("DEFAULT".equals(operationType) || operationType == null || operationType.isEmpty()) {
+                    // 尝试从 ProfileProperties 获取配置
+                    try {
+                        ProfileProperties profileProperties = applicationContext.getBean(ProfileProperties.class);
+                        if (profileProperties.isAutoInferType()) {
+                            OperationTypeInference inference = applicationContext.getBean(OperationTypeInference.class);
+                            operationType = inference.inferType(logRecord.getOperationName());
+                        }
+                    } catch (Exception ex) {
+                        // 如果获取 bean 失败，使用默认值
+                        operationType = "DEFAULT";
+                    }
                 }
+                
                 collector.collect(logRecord, operationType);
             }
         } catch (Exception e) {

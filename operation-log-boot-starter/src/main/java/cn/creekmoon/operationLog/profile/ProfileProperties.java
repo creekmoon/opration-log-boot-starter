@@ -17,6 +17,25 @@ public class ProfileProperties {
     private boolean enabled = true;
 
     /**
+     * 是否全局启用用户画像
+     * 为true时，所有@OperationLog注解的方法都会自动开启用户画像
+     * 为false时，需要在注解上显式设置 profile = true
+     */
+    private boolean globalEnabled = false;
+
+    /**
+     * 是否自动推断操作类型
+     * 为true时，从@OperationLog的value中自动推断操作类型
+     */
+    private boolean autoInferType = true;
+
+    /**
+     * 是否启用默认标签策略
+     * 为true时，自动生成标签（高频用户、活跃用户等）
+     */
+    private boolean defaultTagsEnabled = true;
+
+    /**
      * Redis key前缀
      */
     private String redisKeyPrefix = "operation-log:user-profile";
