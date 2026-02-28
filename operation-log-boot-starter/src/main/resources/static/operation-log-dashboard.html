@@ -4,412 +4,696 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operation Log Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
+        /* CSS Variables for theming */
+        :root {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --border-color: #2d2d44;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            color: #333;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
         }
+        
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
             color: white;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .header p { opacity: 0.9; }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
+        
+        .header h1 { font-size: 1.5rem; font-weight: 600; }
+        
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-        }
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #444;
+        
+        .btn:hover { background: rgba(255,255,255,0.3); }
+        .btn.active { background: rgba(255,255,255,0.4); }
+        
+        .connection-status {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.875rem;
         }
-        .card-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            animation: pulse 2s infinite;
         }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        
+        .status-dot.disconnected {
+            background: #f56565;
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
             gap: 1rem;
+        }
+        
+        .time-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .time-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .time-btn:hover, .time-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
-        .stat-item {
-            text-align: center;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
+        
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
         }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #667eea;
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
-        .stat-label {
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
             font-size: 0.875rem;
-            color: #666;
-            margin-top: 0.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .card-change.positive { color: #48bb78; }
+        .card-change.negative { color: #f56565; }
+        
+        .chart-card {
+            grid-column: span 2;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-card { grid-column: span 1; }
+        }
+        
         .chart-container {
             position: relative;
             height: 300px;
-            margin-top: 1rem;
         }
+        
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+        
         .table-container {
             overflow-x: auto;
-            max-height: 300px;
-            overflow-y: auto;
         }
+        
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.875rem;
         }
+        
         th, td {
             padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid var(--border-color);
         }
+        
         th {
-            background: #f8f9fa;
             font-weight: 600;
-            color: #555;
-            position: sticky;
-            top: 0;
-        }
-        tr:hover { background: #f8f9fa; }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .badge-primary { background: #e3f2fd; color: #1976d2; }
-        .badge-success { background: #e8f5e9; color: #388e3c; }
-        .badge-warning { background: #fff3e0; color: #f57c00; }
-        .badge-danger { background: #ffebee; color: #d32f2f; }
-        .refresh-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
+            color: var(--text-secondary);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            font-size: 1.5rem;
-            transition: transform 0.2s;
-            z-index: 100;
+            user-select: none;
         }
-        .refresh-btn:hover { transform: scale(1.1); }
-        .loading {
-            display: flex;
-            justify-content: center;
+        
+        th:hover {
+            color: var(--accent-primary);
+        }
+        
+        tr:hover {
+            background: var(--bg-primary);
+        }
+        
+        .rank {
+            display: inline-flex;
             align-items: center;
-            height: 200px;
-            color: #666;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.75rem;
         }
-        .error {
-            background: #ffebee;
-            color: #d32f2f;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
+        
+        .rank.top1 { background: #ffd700; color: #333; }
+        .rank.top2 { background: #c0c0c0; color: #333; }
+        .rank.top3 { background: #cd7f32; color: white; }
+        .rank.other { background: var(--bg-primary); color: var(--text-secondary); }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📊 Operation Log Dashboard</h1>
-        <p>操作日志监控面板 - 实时热力图与用户画像</p>
-    </div>
-
-    <div class="container">
-        <!-- 统计概览 -->
-        <div class="card">
-            <div class="card-title">实时概览</div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalPV">-</div>
-                    <div class="stat-label">总PV</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalUV">-</div>
-                    <div class="stat-label">总UV</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalUsers">-</div>
-                    <div class="stat-label">用户总数</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalTags">-</div>
-                    <div class="stat-label">标签总数</div>
-                </div>
+        <div class="header-controls">
+            <div class="connection-status">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">实时连接中</span>
             </div>
+            <button class="btn" id="themeToggle">🌙 暗色</button>
+            <button class="btn" id="pauseBtn">⏸ 暂停</button>
         </div>
-
+    </div>
+    
+    <div class="container">
+        <div class="toolbar">
+            <div class="time-selector">
+                <button class="time-btn active" data-range="realtime">实时</button>
+                <button class="time-btn" data-range="hourly">1小时</button>
+                <button class="time-btn" data-range="daily">24小时</button>
+            </div>
+            <span style="color: var(--text-secondary); font-size: 0.875rem;">
+                最后更新: <span id="lastUpdate">--</span>
+            </span>
+        </div>
+        
         <div class="grid">
-            <!-- 热力图趋势 -->
             <div class="card">
-                <div class="card-title">PV/UV 趋势</div>
+                <div class="card-header">
+                    <span class="card-title">总 PV</span>
+                </div>
+                <div class="card-value" id="totalPv">--</div>
+                <div class="card-change positive" id="pvChange">↑ --%</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">总 UV</span>
+                </div>
+                <div class="card-value" id="totalUv">--</div>
+                <div class="card-change positive" id="uvChange">↑ --%</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">活跃接口</span>
+                </div>
+                <div class="card-value" id="activeEndpoints">--</div>
+                <div class="card-change">实时监控中</div>
+            </div>
+            
+            <div class="card chart-card">
+                <div class="card-header">
+                    <span class="card-title">PV/UV 趋势</span>
+                </div>
                 <div class="chart-container">
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
-
-            <!-- TopN接口 -->
-            <div class="card">
-                <div class="card-title">热门接口 Top10</div>
+            
+            <div class="card chart-card">
+                <div class="card-header">
+                    <span class="card-title">热门接口 Top 10</span>
+                </div>
                 <div class="table-container">
-                    <table id="topnTable">
+                    <table>
                         <thead>
                             <tr>
                                 <th>排名</th>
                                 <th>接口</th>
-                                <th>PV</th>
+                                <th onclick="sortTable('pv')">PV ↕</th>
+                                <th onclick="sortTable('uv')">UV ↕</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody id="topTable">
+                            <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">加载中...</td></tr>
+                        </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- 用户标签分布 -->
-            <div class="card">
-                <div class="card-title">用户标签分布</div>
-                <div class="chart-container">
-                    <canvas id="tagChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 操作类型统计 -->
-            <div class="card">
-                <div class="card-title">操作类型分布</div>
-                <div class="chart-container">
-                    <canvas id="operationChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
-    <button class="refresh-btn" onclick="loadAllData()" title="刷新数据">🔄</button>
+    
+    <div class="tooltip" id="tooltip"></div>
 
     <script>
-        // 图表实例
-        let trendChart, tagChart, operationChart;
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-            loadAllData();
-            // 自动刷新每30秒
-            setInterval(loadAllData, 30000);
-        });
-
-        // 初始化图表
-        function initCharts() {
-            // 趋势图
-            const trendCtx = document.getElementById('trendChart').getContext('2d');
-            trendChart = new Chart(trendCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'PV',
-                        data: [],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        tension: 0.4
-                    }, {
-                        label: 'UV',
-                        data: [],
-                        borderColor: '#764ba2',
-                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-
-            // 标签分布饼图
-            const tagCtx = document.getElementById('tagChart').getContext('2d');
-            tagChart = new Chart(tagCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['高频查询用户', '高价值用户', '潜在流失用户', '高频退款用户'],
-                    datasets: [{
-                        data: [0, 0, 0, 0],
-                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-
-            // 操作类型柱状图
-            const operationCtx = document.getElementById('operationChart').getContext('2d');
-            operationChart = new Chart(operationCtx, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: '操作次数',
-                        data: [],
-                        backgroundColor: '#667eea'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        }
-
-        // 加载所有数据
-        async function loadAllData() {
-            await Promise.all([
-                loadHeatmapStats(),
-                loadTopN(),
-                loadProfileStats()
-            ]);
-        }
-
-        // 加载热力图统计
-        async function loadHeatmapStats() {
-            try {
-                // 模拟数据 - 实际应从API获取
-                const mockData = {
-                    totalPV: 12580,
-                    totalUV: 3420
+        // ==================== 原生 Canvas 图表库 ====================
+        class SimpleChart {
+            constructor(canvasId, options = {}) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.options = {
+                    padding: { top: 20, right: 20, bottom: 40, left: 60 },
+                    colors: ['#667eea', '#764ba2', '#48bb78', '#f56565'],
+                    ...options
                 };
-                document.getElementById('totalPV').textContent = mockData.totalPV.toLocaleString();
-                document.getElementById('totalUV').textContent = mockData.totalUV.toLocaleString();
-
-                // 更新趋势图
-                const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
-                trendChart.data.labels = hours;
-                trendChart.data.datasets[0].data = generateMockTrendData(24);
-                trendChart.data.datasets[1].data = generateMockTrendData(24, 0.3);
-                trendChart.update();
-            } catch (error) {
-                console.error('加载热力图统计失败:', error);
+                this.data = [];
+                this.hoverIndex = -1;
+                
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
             }
-        }
-
-        // 加载TopN
-        async function loadTopN() {
-            try {
-                const mockTopN = [
-                    { rank: 1, className: 'OrderController', methodName: 'list', value: 5234 },
-                    { rank: 2, className: 'OrderController', methodName: 'submit', value: 3456 },
-                    { rank: 3, className: 'UserController', methodName: 'getInfo', value: 2890 },
-                    { rank: 4, className: 'ProductController', methodName: 'list', value: 2134 },
-                    { rank: 5, className: 'OrderController', methodName: 'detail', value: 1876 }
+            
+            resize() {
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                this.canvas.width = rect.width * window.devicePixelRatio;
+                this.canvas.height = rect.height * window.devicePixelRatio;
+                this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                this.width = rect.width;
+                this.height = rect.height;
+                this.draw();
+            }
+            
+            setData(data) {
+                this.data = data;
+                this.draw();
+            }
+            
+            draw() {
+                if (!this.data.length) return;
+                
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                
+                const { padding } = this.options;
+                const chartWidth = this.width - padding.left - padding.right;
+                const chartHeight = this.height - padding.top - padding.bottom;
+                
+                // 计算最大值
+                const maxValue = Math.max(...this.data.flatMap(d => [d.pv, d.uv])) * 1.1;
+                
+                // 绘制网格线
+                this.ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+                this.ctx.lineWidth = 1;
+                for (let i = 0; i <= 5; i++) {
+                    const y = padding.top + (chartHeight * i / 5);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(padding.left, y);
+                    this.ctx.lineTo(this.width - padding.right, y);
+                    this.ctx.stroke();
+                    
+                    // Y轴标签
+                    this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+                    this.ctx.font = '12px sans-serif';
+                    this.ctx.textAlign = 'right';
+                    this.ctx.fillText(Math.round(maxValue * (5-i) / 5), padding.left - 10, y + 4);
+                }
+                
+                // 绘制折线
+                ['pv', 'uv'].forEach((key, idx) => {
+                    this.ctx.strokeStyle = this.options.colors[idx];
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    
+                    this.data.forEach((point, i) => {
+                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
+                        const y = padding.top + chartHeight - (chartHeight * point[key] / maxValue);
+                        
+                        if (i === 0) this.ctx.moveTo(x, y);
+                        else this.ctx.lineTo(x, y);
+                    });
+                    
+                    this.ctx.stroke();
+                    
+                    // 绘制数据点
+                    this.ctx.fillStyle = this.options.colors[idx];
+                    this.data.forEach((point, i) => {
+                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
+                        const y = padding.top + chartHeight - (chartHeight * point[key] / maxValue);
+                        
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, i === this.hoverIndex ? 6 : 4, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    });
+                });
+                
+                // 绘制 X 轴标签
+                this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+                this.ctx.textAlign = 'center';
+                this.data.forEach((point, i) => {
+                    if (i % Math.ceil(this.data.length / 6) === 0) {
+                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
+                        this.ctx.fillText(point.time, x, this.height - padding.bottom + 20);
+                    }
+                });
+                
+                // 绘制图例
+                this.drawLegend();
+            }
+            
+            drawLegend() {
+                const legendItems = [
+                    { label: 'PV', color: this.options.colors[0] },
+                    { label: 'UV', color: this.options.colors[1] }
                 ];
-
-                const tbody = document.querySelector('#topnTable tbody');
-                tbody.innerHTML = mockTopN.map(item => `
-                    <tr>
-                        <td><span class="badge badge-primary">${item.rank}</span></td>
-                        <td>${item.className}.${item.methodName}</td>
-                        <td>${item.value.toLocaleString()}</td>
-                    </tr>
-                `).join('');
-            } catch (error) {
-                console.error('加载TopN失败:', error);
+                
+                let x = this.width - this.options.padding.right - 100;
+                const y = this.options.padding.top;
+                
+                legendItems.forEach(item => {
+                    this.ctx.fillStyle = item.color;
+                    this.ctx.fillRect(x, y - 6, 12, 12);
+                    this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-primary');
+                    this.ctx.font = '12px sans-serif';
+                    this.ctx.textAlign = 'left';
+                    this.ctx.fillText(item.label, x + 18, y + 4);
+                    x += 50;
+                });
+            }
+            
+            handleMouseMove(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * window.devicePixelRatio;
+                const { padding } = this.options;
+                const chartWidth = this.width - padding.left - padding.right;
+                
+                const index = Math.round(((x - padding.left) / chartWidth) * (this.data.length - 1));
+                
+                if (index >= 0 && index < this.data.length && index !== this.hoverIndex) {
+                    this.hoverIndex = index;
+                    this.draw();
+                    this.showTooltip(e, this.data[index]);
+                }
+            }
+            
+            handleMouseLeave() {
+                this.hoverIndex = -1;
+                this.draw();
+                document.getElementById('tooltip').style.opacity = '0';
+            }
+            
+            showTooltip(e, data) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.innerHTML = `
+                    <strong>${data.time}</strong><br>
+                    PV: ${data.pv.toLocaleString()}<br>
+                    UV: ${data.uv.toLocaleString()}
+                `;
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY - 30 + 'px';
+                tooltip.style.opacity = '1';
             }
         }
 
-        // 加载画像统计
-        async function loadProfileStats() {
-            try {
-                const mockData = {
-                    totalUsers: 1250,
-                    totalTags: 4,
-                    tagDistribution: [320, 180, 95, 45],
-                    operationStats: {
-                        'ORDER_QUERY': 5234,
-                        'ORDER_SUBMIT': 3456,
-                        'ORDER_REFUND': 234,
-                        'USER_LOGIN': 1890
+        // ==================== SSE 实时连接 ====================
+        class DashboardStream {
+            constructor() {
+                this.eventSource = null;
+                this.isPaused = false;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 5;
+                this.connect();
+            }
+            
+            connect() {
+                if (this.eventSource) {
+                    this.eventSource.close();
+                }
+                
+                this.eventSource = new EventSource('/operation-log/dashboard/stream');
+                
+                this.eventSource.onopen = () => {
+                    console.log('SSE 连接已建立');
+                    this.updateStatus(true);
+                    this.reconnectAttempts = 0;
+                };
+                
+                this.eventSource.addEventListener('dashboard-update', (e) => {
+                    if (!this.isPaused) {
+                        const data = JSON.parse(e.data);
+                        updateDashboard(data);
+                    }
+                });
+                
+                this.eventSource.onerror = () => {
+                    console.error('SSE 连接错误');
+                    this.updateStatus(false);
+                    this.eventSource.close();
+                    
+                    // 自动重连
+                    if (this.reconnectAttempts < this.maxReconnectAttempts) {
+                        this.reconnectAttempts++;
+                        setTimeout(() => this.connect(), 3000 * this.reconnectAttempts);
                     }
                 };
-
-                document.getElementById('totalUsers').textContent = mockData.totalUsers.toLocaleString();
-                document.getElementById('totalTags').textContent = mockData.totalTags;
-
-                // 更新标签分布
-                tagChart.data.datasets[0].data = mockData.tagDistribution;
-                tagChart.update();
-
-                // 更新操作类型统计
-                operationChart.data.labels = Object.keys(mockData.operationStats);
-                operationChart.data.datasets[0].data = Object.values(mockData.operationStats);
-                operationChart.update();
-            } catch (error) {
-                console.error('加载画像统计失败:', error);
+            }
+            
+            updateStatus(connected) {
+                const dot = document.getElementById('statusDot');
+                const text = document.getElementById('statusText');
+                
+                if (connected) {
+                    dot.classList.remove('disconnected');
+                    text.textContent = '实时连接中';
+                } else {
+                    dot.classList.add('disconnected');
+                    text.textContent = '连接断开，重连中...';
+                }
+            }
+            
+            pause() {
+                this.isPaused = true;
+            }
+            
+            resume() {
+                this.isPaused = false;
             }
         }
 
-        // 生成模拟趋势数据
-        function generateMockTrendData(count, ratio = 1) {
-            return Array.from({length: count}, () => Math.floor(Math.random() * 500 * ratio + 100));
+        // ==================== Dashboard 逻辑 ====================
+        let trendChart;
+        let stream;
+        let currentData = null;
+        let previousData = null;
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            trendChart = new SimpleChart('trendChart');
+            stream = new DashboardStream();
+            
+            // 主题切换
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // 暂停/继续
+            document.getElementById('pauseBtn').addEventListener('click', togglePause);
+            
+            // 时间范围选择
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    // TODO: 切换时间范围数据
+                });
+            });
+        });
+        
+        function updateDashboard(data) {
+            previousData = currentData;
+            currentData = data;
+            
+            // 更新指标卡片
+            document.getElementById('totalPv').textContent = data.totalPv.toLocaleString();
+            document.getElementById('totalUv').textContent = data.totalUv.toLocaleString();
+            document.getElementById('activeEndpoints').textContent = data.activeEndpoints;
+            
+            // 计算变化率
+            if (previousData) {
+                updateChange('pvChange', data.totalPv, previousData.totalPv);
+                updateChange('uvChange', data.totalUv, previousData.totalUv);
+            }
+            
+            // 更新时间
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+            
+            // 更新图表
+            if (data.trend && data.trend.length > 0) {
+                trendChart.setData(data.trend);
+            }
+            
+            // 更新表格
+            updateTopTable(data.topPvList || []);
+        }
+        
+        function updateChange(elementId, current, previous) {
+            const el = document.getElementById(elementId);
+            const change = previous > 0 ? ((current - previous) / previous * 100).toFixed(1) : 0;
+            const isPositive = change >= 0;
+            
+            el.textContent = (isPositive ? '↑' : '↓') + ' ' + Math.abs(change) + '%';
+            el.className = 'card-change ' + (isPositive ? 'positive' : 'negative');
+        }
+        
+        function updateTopTable(list) {
+            const tbody = document.getElementById('topTable');
+            if (!list.length) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">暂无数据</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = list.map((item, idx) => `
+                <tr>
+                    <td><span class="rank ${idx < 3 ? 'top' + (idx+1) : 'other'}">${idx + 1}</span></td>
+                    <td>${item.fullName}</td>
+                    <td>${item.value.toLocaleString()}</td>
+                    <td>--</td>
+                </tr>
+            `).join('');
+        }
+        
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                btn.textContent = '🌙 暗色';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀️ 亮色';
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            // 重绘图表
+            if (trendChart) trendChart.draw();
+        }
+        
+        function togglePause() {
+            const btn = document.getElementById('pauseBtn');
+            
+            if (stream.isPaused) {
+                stream.resume();
+                btn.textContent = '⏸ 暂停';
+            } else {
+                stream.pause();
+                btn.textContent = '▶️ 继续';
+            }
+        }
+        
+        function sortTable(column) {
+            // TODO: 实现表格排序
+            console.log('排序:', column);
+        }
+        
+        // 加载保存的主题
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('themeToggle').textContent = '☀️ 亮色';
         }
     </script>
 </body>
