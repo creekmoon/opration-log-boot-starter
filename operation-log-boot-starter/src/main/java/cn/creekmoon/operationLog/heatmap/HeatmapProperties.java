@@ -9,13 +9,17 @@ import java.util.List;
 /**
  * 热力图配置属性类
  * 配置前缀: operation-log.heatmap
+ * 
+ * 注意: 全局启用开关在 operation-log.heatmap-global-enabled
+ * 位于 {@link cn.creekmoon.operationLog.config.OperationLogProperties}
  */
 @Data
 @ConfigurationProperties(prefix = "operation-log.heatmap")
 public class HeatmapProperties {
 
     /**
-     * 是否启用热力图统计
+     * 是否启用热力图模块
+     * 注意: 全局开关请使用 operation-log.heatmap-global-enabled
      */
     private boolean enabled = true;
 
@@ -68,11 +72,4 @@ public class HeatmapProperties {
      * 采样率(0.0-1.0, 1.0表示全量)
      */
     private double sampleRate = 1.0;
-
-    /**
-     * 是否全局启用热力图统计
-     * 为true时，所有@OperationLog注解的方法都会自动开启热力图统计
-     * 为false时，需要在注解上显式设置 heatmap = true
-     */
-    private boolean globalEnabled = false;
 }
