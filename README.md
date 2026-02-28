@@ -175,7 +175,7 @@ operation-log:
   # ========== 全局快捷配置 ==========
   heatmap-global-enabled: false       # 是否全局启用热力图统计，默认false
   profile-global-enabled: false       # 是否全局启用用户画像统计，默认false
-  record-on-fail-global-enabled: false # 是否全局默认在失败时记录日志，默认false
+  handle-on-fail-global-enabled: false # 是否全局默认在失败时记录日志，默认false
   use-value-as-type: false            # 是否全局使用value作为操作类型，默认false
   
   # ========== 热力图模块配置 ==========
@@ -225,7 +225,7 @@ operation-log:
 |--------|------|--------|------|
 | `heatmap-global-enabled` | boolean | false | 全局启用热力图统计，所有`@OperationLog`方法自动统计 |
 | `profile-global-enabled` | boolean | false | 全局启用用户画像统计 |
-| `record-on-fail-global-enabled` | boolean | false | 全局配置：失败时是否记录日志（对应注解的`handleOnFail`） |
+| `handle-on-fail-global-enabled` | boolean | false | 全局配置：失败时是否记录日志（对应注解的`handleOnFail`） |
 | `use-value-as-type` | boolean | false | 全局使用`value`作为`operationType` |
 
 #### 热力图配置 (operation-log.heatmap.*)
@@ -638,7 +638,7 @@ operation-log:
   # 生产环境：按需开启，注意性能
   heatmap-global-enabled: true
   profile-global-enabled: true
-  record-on-fail-global-enabled: true  # 失败时也要记录
+  handle-on-fail-global-enabled: true  # 失败时也要记录
   
   heatmap:
     enabled: true
@@ -690,7 +690,7 @@ operation-log:
 |------|----------|----------|------|
 | 热力图统计 | `heatmap-global-enabled` | `heatmap = true` | 任一开启即生效 |
 | 用户画像 | `profile-global-enabled` | `profile = true` | 任一开启即生效 |
-| 失败记录 | `record-on-fail-global-enabled` | `handleOnFail = true` | 注解优先级更高 |
+| 失败记录 | `handle-on-fail-global-enabled` | `handleOnFail = true` | 注解优先级更高 |
 
 > 🔥 **最佳实践**: 使用全局配置统一管理，减少重复代码！
 
@@ -748,9 +748,9 @@ A: 不会。启用 `fallback-enabled: true` 后，Redis 故障会自动降级，
 
 A: 当前版本 Dashboard 为公开访问，生产环境建议通过 Spring Security 或反向代理添加认证。参考上方集成示例。
 
-### Q: 配置项 `handle-on-fail-global-enabled` 和 `record-on-fail-global-enabled` 有什么区别？
+### Q: 配置项 `handle-on-fail-global-enabled` 和 `handle-on-fail-global-enabled` 有什么区别？
 
-A: 代码中实际使用的是 `record-on-fail-global-enabled`，README 之前版本有误，现已修正。注解中的 `handleOnFail` 对应全局配置的 `record-on-fail-global-enabled`。
+A: 代码中实际使用的是 `handle-on-fail-global-enabled`，README 之前版本有误，现已修正。注解中的 `handleOnFail` 对应全局配置的 `handle-on-fail-global-enabled`。
 
 ---
 
