@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Log Dashboard V2.5</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #94a3b8;
+            --sidebar-active: #3b82f6;
+            --header-bg: #ffffff;
+            --content-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--content-bg);
+            color: var(--text-primary);
+        }
+        
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-section {
+            padding: 1rem;
+        }
+        
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            padding: 0.5rem 1rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .nav-item:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .main {
+            flex: 1;
+            margin-left: 260px;
+        }
+        
+        .header {
+            background: var(--header-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-bar {
+            background: var(--header-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-container {
+            height: 300px;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">📊</div>
+                    <span>Operation Log</span>
+                </div>
+            </div>
+            <nav class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <div class="nav-item active" data-page="overview">📈 概览</div>
+                <div class="nav-item" data-page="operations">🔍 操作分析</div>
+                <div class="nav-item" data-page="users">👥 用户分析</div>
+            </nav>
+        </aside>
+        
+        <main class="main">
+            <header class="header">
+                <div>Dashboard / <span id="pageTitle">概览</span></div>
+                <button class="btn btn-primary" onclick="refreshData()">🔄 刷新</button>
+            </header>
+            
+            <div class="filter-bar">
+                <select class="btn" id="timeRange" onchange="onFilterChange()">
+                    <option value="7d">最近7天</option>
+                    <option value="30d">最近30天</option>
+                </select>
+                <select class="btn" id="opType" onchange="onFilterChange()">
+                    <option value="all">全部类型</option>
+                    <option value="QUERY">查询</option>
+                </select>
+            </div>
+            
+            <div class="content">
+                <div class="page active" id="page-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div>总操作次数</div>
+                            <div class="stat-value" id="totalOps">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>独立用户</div>
+                            <div class="stat-value" id="totalUsers">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <div>操作趋势</div>
+                            <div class="chart-container">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                const page = item.getAttribute('data-page');
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-' + page).classList.add('active');
+            });
+        });
+        
+        const trendChart = new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                datasets: [{
+                    label: '操作次数',
+                    data: [12, 19, 15, 25, 22],
+                    borderColor: '#3b82f6',
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        
+        function refreshData() {
+            console.log('刷新数据');
+        }
+        
+        function onFilterChange() {
+            console.log('筛选变化');
+        }
+    </script>
+</body>
+</html>
