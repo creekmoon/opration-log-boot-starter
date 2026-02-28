@@ -1,12 +1,16 @@
 package cn.creekmoon.operationLog.actuator;
 
+import cn.creekmoon.operationLog.export.CsvExportService;
 import cn.creekmoon.operationLog.profile.ProfileService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,7 @@ import java.util.Set;
 public class ProfileActuatorEndpoint {
 
     private final ProfileService profileService;
+    private final CsvExportService csvExportService;
 
     /**
      * 获取用户画像服务状态
@@ -80,5 +85,58 @@ public class ProfileActuatorEndpoint {
         result.put("users", users);
         
         return result;
+    }
+
+    // ==================== CSV导出端点 ====================
+
+    /**
+     * 导出用户画像CSV
+     */
+    @ReadOperation(operation = "export/user/{userId}")
+    public void exportUserProfile(@Selector String userId, HttpServletResponse response) throws IOException {
+        List<List<String>> data = profileService.exportUserProfileToCsv(userId);
+        String fileName = csvExportService.generateFileName("profile-user-" + userId);
+        
+        response.setContentType(csvExportService.getContentType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        
+        try (OutputStream out = response.getOutputStream()) {
+            csvExportService.exportCsvWithBom(data.get(0), data.subList(1, data.size()), 
+                    row -> row, out);
+        }
+    }
+
+    /**
+     * 导出标签用户列表CSV
+     */
+    @ReadOperation(operation = "export/tag/{tag}")
+    public void exportUsersByTag(@Selector String tag, HttpServletResponse response) throws IOException {
+        List<List<String>> data = profileService.exportUsersByTagToCsv(tag, 0, 100);
+        String fileName = csvExportService.generateFileName("profile-tag-" + tag);
+        
+        response.setContentType(csvExportService.getContentType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        
+        try (OutputStream out = response.getOutputStream()) {
+            csvExportService.exportCsvWithBom(data.get(0), data.subList(1, data.size()), 
+                    row -> row, out);
+        }
+    }
+
+    /**
+     * 导出所有用户统计CSV
+     */
+    @ReadOperation(operation = "export/all")
+    public void exportAllUsers(HttpServletResponse response) throws IOException {
+        List<List<String>> data = profileService.exportAllUserStatsToCsv(1000);
+        String fileName = csvExportService.generateFileName("profile-all-users");
+        
+        response.setContentType(csvExportService.getContentType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        
+        try (OutputStream out = response.getOutputStream()) {
+            csvExportService.exportCsvWithBom(data.get(0), data.subList(1, data.size()), 
+                    row -> row, out);
+        }
     }
 }

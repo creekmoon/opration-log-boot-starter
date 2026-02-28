@@ -1,12 +1,11 @@
 package cn.creekmoon.operationLog.heatmap;
 
-import cn.creekmoon.operationLog.actuator.HeatmapActuatorEndpoint;
-import cn.creekmoon.operationLog.actuator.ProfileActuatorEndpoint;
+import cn.creekmoon.operationLog.export.CsvExportService;
+import cn.creekmoon.operationLog.profile.ProfileExportController;
 import cn.creekmoon.operationLog.profile.ProfileProperties;
 import cn.creekmoon.operationLog.profile.ProfileService;
 import cn.creekmoon.operationLog.profile.ProfileCollector;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -69,22 +68,22 @@ public class HeatmapConfiguration {
     }
 
     /**
-     * 热力图Actuator端点
+     * 热力图导出Controller（可选）
      */
     @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnAvailableEndpoint(endpoint = HeatmapActuatorEndpoint.class)
-    public HeatmapActuatorEndpoint heatmapActuatorEndpoint(HeatmapService heatmapService) {
-        return new HeatmapActuatorEndpoint(heatmapService);
+    @ConditionalOnMissingBean(HeatmapExportController.class)
+    @ConditionalOnProperty(prefix = "operation-log.heatmap", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public HeatmapExportController heatmapExportController(HeatmapService heatmapService, CsvExportService csvExportService) {
+        return new HeatmapExportController(heatmapService, csvExportService);
     }
 
     /**
-     * 用户画像Actuator端点
+     * 用户画像导出Controller（可选）
      */
     @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnAvailableEndpoint(endpoint = ProfileActuatorEndpoint.class)
-    public ProfileActuatorEndpoint profileActuatorEndpoint(ProfileService profileService) {
-        return new ProfileActuatorEndpoint(profileService);
+    @ConditionalOnMissingBean(ProfileExportController.class)
+    @ConditionalOnProperty(prefix = "operation-log.profile", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public ProfileExportController profileExportController(ProfileService profileService, CsvExportService csvExportService) {
+        return new ProfileExportController(profileService, csvExportService);
     }
 }

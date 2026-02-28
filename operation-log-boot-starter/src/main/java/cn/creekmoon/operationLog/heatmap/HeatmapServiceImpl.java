@@ -479,4 +479,75 @@ public class HeatmapServiceImpl implements HeatmapService {
     private String buildBaseKey(String className, String methodName) {
         return className + ":" + methodName;
     }
+
+    // ==================== CSV导出方法实现 ====================
+
+    @Override
+    public List<List<String>> exportRealtimeStatsToCsv() {
+        List<List<String>> rows = new ArrayList<>();
+        
+        // 表头
+        rows.add(Arrays.asList("接口类", "接口方法", "PV", "UV", "统计时间"));
+        
+        // 数据
+        Map<String, HeatmapStats> stats = getAllRealtimeStats();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        
+        for (HeatmapStats stat : stats.values()) {
+            rows.add(Arrays.asList(
+                    stat.className(),
+                    stat.methodName(),
+                    String.valueOf(stat.pv()),
+                    String.valueOf(stat.uv()),
+                    stat.timestamp() != null ? stat.timestamp().format(formatter) : ""
+            ));
+        }
+        
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> exportTopNToCsv(TimeWindow timeWindow, MetricType metricType, int topN) {
+        List<List<String>> rows = new ArrayList<>();
+        
+        // 表头
+        rows.add(Arrays.asList("排名", "接口类", "接口方法", "指标类型", "数值"));
+        
+        // 数据
+        List<HeatmapTopItem> topItems = getTopN(timeWindow, metricType, topN);
+        
+        for (HeatmapTopItem item : topItems) {
+            rows.add(Arrays.asList(
+                    String.valueOf(item.rank()),
+                    item.className(),
+                    item.methodName(),
+                    item.metricType().name(),
+                    String.valueOf(item.value())
+            ));
+        }
+        
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> exportTrendToCsv(String className, String methodName, TimeWindow timeWindow, int pointCount) {
+        List<List<String>> rows = new ArrayList<>();
+        
+        // 表头
+        rows.add(Arrays.asList("时间", "PV", "UV"));
+        
+        // 数据
+        List<HeatmapTrendPoint> points = getTrend(className, methodName, timeWindow, pointCount);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        
+        for (HeatmapTrendPoint point : points) {
+            rows.add(Arrays.asList(
+                    point.timestamp() != null ? point.timestamp().format(formatter) : "",
+                    String.valueOf(point.pv()),
+                    String.valueOf(point.uv())
+            ));
+        }
+        
+        return rows;
+    }
 }

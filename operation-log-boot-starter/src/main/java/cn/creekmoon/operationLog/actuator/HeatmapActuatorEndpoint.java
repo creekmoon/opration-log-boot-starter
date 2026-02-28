@@ -1,12 +1,16 @@
 package cn.creekmoon.operationLog.actuator;
 
+import cn.creekmoon.operationLog.export.CsvExportService;
 import cn.creekmoon.operationLog.heatmap.HeatmapService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,7 @@ import java.util.Map;
 public class HeatmapActuatorEndpoint {
 
     private final HeatmapService heatmapService;
+    private final CsvExportService csvExportService;
 
     /**
      * 获取热力图服务状态
@@ -76,5 +81,44 @@ public class HeatmapActuatorEndpoint {
         result.put("topUv", topUv);
         
         return result;
+    }
+
+    // ==================== CSV导出端点 ====================
+
+    /**
+     * 导出实时统计CSV
+     */
+    @ReadOperation(operation = "export/realtime")
+    public void exportRealtime(HttpServletResponse response) throws IOException {
+        List<List<String>> data = heatmapService.exportRealtimeStatsToCsv();
+        String fileName = csvExportService.generateFileName("heatmap-realtime");
+        
+        response.setContentType(csvExportService.getContentType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        
+        try (OutputStream out = response.getOutputStream()) {
+            csvExportService.exportCsvWithBom(data.get(0), data.subList(1, data.size()), 
+                    row -> row, out);
+        }
+    }
+
+    /**
+     * 导出TopN CSV
+     */
+    @ReadOperation(operation = "export/topn")
+    public void exportTopN(HttpServletResponse response) throws IOException {
+        List<List<String>> data = heatmapService.exportTopNToCsv(
+                HeatmapService.TimeWindow.REALTIME, 
+                HeatmapService.MetricType.PV, 
+                10);
+        String fileName = csvExportService.generateFileName("heatmap-topn");
+        
+        response.setContentType(csvExportService.getContentType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        
+        try (OutputStream out = response.getOutputStream()) {
+            csvExportService.exportCsvWithBom(data.get(0), data.subList(1, data.size()), 
+                    row -> row, out);
+        }
     }
 }

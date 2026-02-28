@@ -1,12 +1,13 @@
 package cn.creekmoon.operationLog.heatmap;
 
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 热力图服务接口
- * 提供PV/UV统计、TopN查询等功能
+ * 提供PV/UV统计、TopN查询、CSV导出等功能
  */
 public interface HeatmapService {
 
@@ -86,6 +87,36 @@ public interface HeatmapService {
      * @return 状态信息
      */
     HeatmapStatus getStatus();
+
+    // ==================== CSV导出方法 ====================
+
+    /**
+     * 导出实时统计数据为CSV格式
+     *
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportRealtimeStatsToCsv();
+
+    /**
+     * 导出TopN数据为CSV格式
+     *
+     * @param timeWindow 时间窗口类型
+     * @param metricType 指标类型
+     * @param topN       返回数量
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportTopNToCsv(TimeWindow timeWindow, MetricType metricType, int topN);
+
+    /**
+     * 导出趋势数据为CSV格式
+     *
+     * @param className   类名
+     * @param methodName  方法名
+     * @param timeWindow  时间窗口类型
+     * @param pointCount  数据点数量
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportTrendToCsv(String className, String methodName, TimeWindow timeWindow, int pointCount);
 
     /**
      * 指标类型枚举

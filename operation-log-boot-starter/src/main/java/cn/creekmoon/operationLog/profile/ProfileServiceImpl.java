@@ -510,4 +510,102 @@ public class ProfileServiceImpl implements ProfileService {
                     operation, e.getMessage());
         }
     }
+
+    // ==================== CSV导出方法实现 ====================
+
+    @Override
+    public List<List<String>> exportUserProfileToCsv(String userId) {
+        List<List<String>> rows = new ArrayList<>();
+        
+        UserProfile profile = getUserProfile(userId);
+        if (profile == null) {
+            rows.add(Arrays.asList("用户ID", "标签", "操作类型", "操作次数"));
+            return rows;
+        }
+        
+        // 表头
+        rows.add(Arrays.asList("用户ID", "标签", "操作类型", "操作次数"));
+        
+        // 用户基本信息行
+        String tags = profile.tags() != null ? String.join(";", profile.tags()) : "";
+        
+        // 操作统计行
+        if (profile.operationStats() != null && !profile.operationStats().isEmpty()) {
+            for (Map.Entry<String, Long> entry : profile.operationStats().entrySet()) {
+                rows.add(Arrays.asList(
+                        profile.userId(),
+                        tags,
+                        entry.getKey(),
+                        String.valueOf(entry.getValue())
+                ));
+            }
+        } else {
+            rows.add(Arrays.asList(profile.userId(), tags, "", ""));
+        }
+        
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> exportUsersByTagToCsv(String tag, int page, int size) {
+        List<List<String>> rows = new ArrayList<>();
+        
+        // 表头
+        rows.add(Arrays.asList("用户ID", "标签", "ORDER_QUERY次数", "ORDER_SUBMIT次数", "ORDER_REFUND次数"));
+        
+        // 获取用户列表
+        List<String> userIds = getUsersByTag(tag, page, size);
+        
+        for (String userId : userIds) {
+            Map<String, Long> stats = getUserOperationStats(userId);
+            
+            rows.add(Arrays.asList(
+                    userId,
+                    tag,
+                    String.valueOf(stats.getOrDefault("ORDER_QUERY", 0L)),
+                    String.valueOf(stats.getOrDefault("ORDER_SUBMIT", 0L)),
+                    String.valueOf(stats.getOrDefault("ORDER_REFUND", 0L))
+            ));
+        }
+        
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> exportAllUserStatsToCsv(int limit) {
+        List<List<String>> rows = new ArrayList<>();
+        
+        // 表头
+        rows.add(Arrays.asList("用户ID", "标签列表", "操作统计JSON"));
+        
+        try {
+            // 获取所有用户
+            String pattern = properties.getRedisKeyPrefix() + ":*:counts:*";
+            Set<String> keys = redisTemplate.keys(pattern);
+            
+            if (keys != null) {
+                Set<String> userIds = keys.stream()
+                        .map(this::extractUserIdFromKey)
+                        .filter(Objects::nonNull)
+                        .distinct()
+                        .limit(limit)
+                        .collect(Collectors.toSet());
+                
+                for (String userId : userIds) {
+                    UserProfile profile = getUserProfile(userId);
+                    if (profile != null) {
+                        String tags = profile.tags() != null ? String.join(";", profile.tags()) : "";
+                        String statsJson = profile.operationStats() != null ? 
+                                profile.operationStats().toString() : "{}";
+                        
+                        rows.add(Arrays.asList(userId, tags, statsJson));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("[operation-log] Error exporting all user stats", e);
+        }
+        
+        return rows;
+    }
 }

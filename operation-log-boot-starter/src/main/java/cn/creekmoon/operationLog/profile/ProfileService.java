@@ -112,6 +112,34 @@ public interface ProfileService {
      */
     ProfileStatus getStatus();
 
+    // ==================== CSV导出方法 ====================
+
+    /**
+     * 导出用户画像为CSV格式
+     *
+     * @param userId 用户ID
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportUserProfileToCsv(String userId);
+
+    /**
+     * 导出指定标签的用户列表为CSV格式
+     *
+     * @param tag    标签名称
+     * @param page   页码
+     * @param size   每页大小
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportUsersByTagToCsv(String tag, int page, int size);
+
+    /**
+     * 导出所有用户统计为CSV格式
+     *
+     * @param limit 最大导出数量
+     * @return CSV数据行列表（包含表头）
+     */
+    List<List<String>> exportAllUserStatsToCsv(int limit);
+
     /**
      * 用户画像
      */
