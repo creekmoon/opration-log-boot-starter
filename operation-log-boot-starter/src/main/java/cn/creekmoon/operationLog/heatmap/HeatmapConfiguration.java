@@ -1,5 +1,7 @@
 package cn.creekmoon.operationLog.heatmap;
 
+import cn.creekmoon.operationLog.dashboard.DashboardController;
+import cn.creekmoon.operationLog.dashboard.DashboardProperties;
 import cn.creekmoon.operationLog.export.CsvExportService;
 import cn.creekmoon.operationLog.profile.ProfileExportController;
 import cn.creekmoon.operationLog.profile.ProfileProperties;
@@ -22,7 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Slf4j
 @Configuration
 @EnableScheduling
-@EnableConfigurationProperties({HeatmapProperties.class, ProfileProperties.class})
+@EnableConfigurationProperties({HeatmapProperties.class, ProfileProperties.class, DashboardProperties.class})
 @ConditionalOnClass(StringRedisTemplate.class)
 @Import(HeatmapDataCleanupTask.class)
 public class HeatmapConfiguration {
@@ -85,5 +87,15 @@ public class HeatmapConfiguration {
     @ConditionalOnProperty(prefix = "operation-log.profile", name = "enabled", havingValue = "true", matchIfMissing = true)
     public ProfileExportController profileExportController(ProfileService profileService, CsvExportService csvExportService) {
         return new ProfileExportController(profileService, csvExportService);
+    }
+
+    /**
+     * Dashboard控制器（可选）
+     */
+    @Bean
+    @ConditionalOnMissingBean(DashboardController.class)
+    @ConditionalOnProperty(prefix = "operation-log.dashboard", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public DashboardController dashboardController() {
+        return new DashboardController();
     }
 }

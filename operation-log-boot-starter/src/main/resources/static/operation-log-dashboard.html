@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Log Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .header p { opacity: 0.9; }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+        .table-container {
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover { background: #f8f9fa; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-primary { background: #e3f2fd; color: #1976d2; }
+        .badge-success { background: #e8f5e9; color: #388e3c; }
+        .badge-warning { background: #fff3e0; color: #f57c00; }
+        .badge-danger { background: #ffebee; color: #d32f2f; }
+        .refresh-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+            z-index: 100;
+        }
+        .refresh-btn:hover { transform: scale(1.1); }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #666;
+        }
+        .error {
+            background: #ffebee;
+            color: #d32f2f;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Operation Log Dashboard</h1>
+        <p>操作日志监控面板 - 实时热力图与用户画像</p>
+    </div>
+
+    <div class="container">
+        <!-- 统计概览 -->
+        <div class="card">
+            <div class="card-title">实时概览</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalPV">-</div>
+                    <div class="stat-label">总PV</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalUV">-</div>
+                    <div class="stat-label">总UV</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalUsers">-</div>
+                    <div class="stat-label">用户总数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalTags">-</div>
+                    <div class="stat-label">标签总数</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- 热力图趋势 -->
+            <div class="card">
+                <div class="card-title">PV/UV 趋势</div>
+                <div class="chart-container">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- TopN接口 -->
+            <div class="card">
+                <div class="card-title">热门接口 Top10</div>
+                <div class="table-container">
+                    <table id="topnTable">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>接口</th>
+                                <th>PV</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 用户标签分布 -->
+            <div class="card">
+                <div class="card-title">用户标签分布</div>
+                <div class="chart-container">
+                    <canvas id="tagChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 操作类型统计 -->
+            <div class="card">
+                <div class="card-title">操作类型分布</div>
+                <div class="chart-container">
+                    <canvas id="operationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadAllData()" title="刷新数据">🔄</button>
+
+    <script>
+        // 图表实例
+        let trendChart, tagChart, operationChart;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            loadAllData();
+            // 自动刷新每30秒
+            setInterval(loadAllData, 30000);
+        });
+
+        // 初始化图表
+        function initCharts() {
+            // 趋势图
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'PV',
+                        data: [],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'UV',
+                        data: [],
+                        borderColor: '#764ba2',
+                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // 标签分布饼图
+            const tagCtx = document.getElementById('tagChart').getContext('2d');
+            tagChart = new Chart(tagCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['高频查询用户', '高价值用户', '潜在流失用户', '高频退款用户'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // 操作类型柱状图
+            const operationCtx = document.getElementById('operationChart').getContext('2d');
+            operationChart = new Chart(operationCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '操作次数',
+                        data: [],
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // 加载所有数据
+        async function loadAllData() {
+            await Promise.all([
+                loadHeatmapStats(),
+                loadTopN(),
+                loadProfileStats()
+            ]);
+        }
+
+        // 加载热力图统计
+        async function loadHeatmapStats() {
+            try {
+                // 模拟数据 - 实际应从API获取
+                const mockData = {
+                    totalPV: 12580,
+                    totalUV: 3420
+                };
+                document.getElementById('totalPV').textContent = mockData.totalPV.toLocaleString();
+                document.getElementById('totalUV').textContent = mockData.totalUV.toLocaleString();
+
+                // 更新趋势图
+                const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
+                trendChart.data.labels = hours;
+                trendChart.data.datasets[0].data = generateMockTrendData(24);
+                trendChart.data.datasets[1].data = generateMockTrendData(24, 0.3);
+                trendChart.update();
+            } catch (error) {
+                console.error('加载热力图统计失败:', error);
+            }
+        }
+
+        // 加载TopN
+        async function loadTopN() {
+            try {
+                const mockTopN = [
+                    { rank: 1, className: 'OrderController', methodName: 'list', value: 5234 },
+                    { rank: 2, className: 'OrderController', methodName: 'submit', value: 3456 },
+                    { rank: 3, className: 'UserController', methodName: 'getInfo', value: 2890 },
+                    { rank: 4, className: 'ProductController', methodName: 'list', value: 2134 },
+                    { rank: 5, className: 'OrderController', methodName: 'detail', value: 1876 }
+                ];
+
+                const tbody = document.querySelector('#topnTable tbody');
+                tbody.innerHTML = mockTopN.map(item => `
+                    <tr>
+                        <td><span class="badge badge-primary">${item.rank}</span></td>
+                        <td>${item.className}.${item.methodName}</td>
+                        <td>${item.value.toLocaleString()}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('加载TopN失败:', error);
+            }
+        }
+
+        // 加载画像统计
+        async function loadProfileStats() {
+            try {
+                const mockData = {
+                    totalUsers: 1250,
+                    totalTags: 4,
+                    tagDistribution: [320, 180, 95, 45],
+                    operationStats: {
+                        'ORDER_QUERY': 5234,
+                        'ORDER_SUBMIT': 3456,
+                        'ORDER_REFUND': 234,
+                        'USER_LOGIN': 1890
+                    }
+                };
+
+                document.getElementById('totalUsers').textContent = mockData.totalUsers.toLocaleString();
+                document.getElementById('totalTags').textContent = mockData.totalTags;
+
+                // 更新标签分布
+                tagChart.data.datasets[0].data = mockData.tagDistribution;
+                tagChart.update();
+
+                // 更新操作类型统计
+                operationChart.data.labels = Object.keys(mockData.operationStats);
+                operationChart.data.datasets[0].data = Object.values(mockData.operationStats);
+                operationChart.update();
+            } catch (error) {
+                console.error('加载画像统计失败:', error);
+            }
+        }
+
+        // 生成模拟趋势数据
+        function generateMockTrendData(count, ratio = 1) {
+            return Array.from({length: count}, () => Math.floor(Math.random() * 500 * ratio + 100));
+        }
+    </script>
+</body>
+</html>

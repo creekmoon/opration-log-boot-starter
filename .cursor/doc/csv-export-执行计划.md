@@ -16,15 +16,16 @@
 ## 任务清单
 
 ### Phase 0: 技术预研 - 可视化HTML集成
-- [ ] 调研嵌入式HTML方案（Spring Boot + 静态资源）
-- [ ] 调研图表库选型（ECharts / Chart.js / 原生Canvas）
-- [ ] 评估代价：包体积增加、依赖复杂度、维护成本
-- [ ] 输出预研结论文档
+- [x] 调研嵌入式HTML方案（Spring Boot + 静态资源）
+- [x] 调研图表库选型（ECharts / Chart.js / 原生Canvas）
+- [x] 评估代价：包体积增加、依赖复杂度、维护成本
+- [x] 输出预研结论文档
 
-**预研方向**:
-1. **方案A**: 纯后端数据 + 前端独立部署（推荐，零代价）
-2. **方案B**: Starter嵌入HTML+JS（轻量级，~100KB）
-3. **方案C**: 完整管理后台（重，不推荐）
+**预研结论**: 推荐方案B (Starter嵌入轻量HTML+JS)
+- 包体积: ~5KB
+- 使用 Chart.js (CDN)
+- 维护成本低
+- 预计开发时间: 2-3小时
 
 ### Phase 1: 基础框架
 - [x] 创建 `CsvExportService` 接口
@@ -43,14 +44,14 @@
 - [ ] 单元测试
 
 ### Phase 4: 测试与文档
-- [ ] `CsvExportServiceImplTest`
+- [x] `CsvExportServiceImplTest`
+- [x] 更新 LLM 模块文档
 - [ ] 更新 README.md
-- [ ] 更新 LLM 模块文档
 
 ### Phase 5: 集成与推送
-- [ ] 代码审查
-- [ ] Git 提交
-- [ ] 推送到 `kimiclaw` 分支
+- [x] 代码审查
+- [x] Git 提交
+- [x] 推送到 `kimiclaw` 分支
 
 ## 设计变更记录
 
