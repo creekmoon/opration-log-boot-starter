@@ -261,24 +261,7 @@ operation-log:
     default-stats-days: 30           # 默认统计时间范围(天)
     operation-count-retention-days: 90  # 操作计数保留时间(天)
     user-tags-retention-days: 90     # 用户标签保留时间(天)
-    tag-engine-enabled: true         # 是否启用标签规则引擎
     fallback-enabled: true           # 是否启用降级策略
-```
-
-### 自定义标签规则
-
-```yaml
-operation-log:
-  profile:
-    tag-rules:
-      - name: "VIP用户"
-        condition: "ORDER_SUBMIT > 20 AND ORDER_REFUND < 3"
-        priority: 10
-        description: "下单超过20次且退款少于3次"
-      - name: "羊毛党"
-        condition: "ORDER_REFUND > 10"
-        priority: 5
-        description: "退款超过10次"
 ```
 
 ### 查看数据
@@ -310,30 +293,8 @@ private ProfileService profileService;
 
 // 获取用户画像
 UserProfile profile = profileService.getUserProfile("user123");
-System.out.println("用户标签: " + profile.tags());
 System.out.println("操作统计: " + profile.operationStats());
-
-// 获取用户标签
-Set<String> tags = profileService.getUserTags("user123");
-
-// 根据标签查询用户
-List<String> users = profileService.getUsersByTag("高价值用户", 0, 20);
-long count = profileService.getUserCountByTag("高价值用户");
-
-// 刷新用户标签
-profileService.refreshUserTags("user123");
 ```
-
-### 内置标签规则
-
-组件默认提供以下标签规则:
-
-| 标签名称 | 规则条件 | 说明 |
-|---------|---------|------|
-| 高频查询用户 | ORDER_QUERY > 50 | 查询操作超过50次 |
-| 高价值用户 | ORDER_SUBMIT > 10 AND ORDER_REFUND < 2 | 下单超过10次且退款少于2次 |
-| 潜在流失用户 | ORDER_QUERY > 30 AND ORDER_SUBMIT = 0 | 查询超过30次但从不下单 |
-| 高频退款用户 | ORDER_REFUND > 5 | 退款超过5次 |
 
 ## 方法说明
 
