@@ -97,16 +97,17 @@ class ProfileServiceImplTest {
         entries.put("ORDER_QUERY", 100);
         entries.put("ORDER_SUBMIT", 10);
         
+        // 默认查询30天，mock返回累计值
         when(hashOperations.entries(anyString())).thenReturn(entries);
 
         // When
         Map<String, Long> result = profileService.getUserOperationStats(userId);
 
-        // Then
+        // Then - 30天的累计值 (100*30=3000, 10*30=300)
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals(100, result.get("ORDER_QUERY"));
-        assertEquals(10, result.get("ORDER_SUBMIT"));
+        assertEquals(3000, result.get("ORDER_QUERY"));
+        assertEquals(300, result.get("ORDER_SUBMIT"));
     }
 
     @Test
@@ -202,7 +203,8 @@ class ProfileServiceImplTest {
         userKeys.add("operation-log:user-profile:user2:counts:20240101");
         
         when(redisTemplate.keys(contains(":counts:"))).thenReturn(userKeys);
-        when(redisTemplate.execute(any(RedisCallback.class))).thenReturn("PONG");
+        // 注意：checkRedisConnection 使用 getConnectionFactory().getConnection().ping() 
+        // 而不是 execute()，所以不需要 stubbing execute
 
         // When
         ProfileService.ProfileStatus status = profileService.getStatus();
