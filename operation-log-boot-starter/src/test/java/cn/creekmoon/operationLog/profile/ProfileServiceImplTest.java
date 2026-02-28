@@ -203,6 +203,7 @@ class ProfileServiceImplTest {
         userKeys.add("operation-log:user-profile:user2:counts:20240101");
         
         when(redisTemplate.keys(contains(":counts:"))).thenReturn(userKeys);
+        when(redisTemplate.keys(contains(":tag-index:"))).thenReturn(tagKeys);
         // 注意：checkRedisConnection 使用 getConnectionFactory().getConnection().ping() 
         // 而不是 execute()，所以不需要 stubbing execute
 
