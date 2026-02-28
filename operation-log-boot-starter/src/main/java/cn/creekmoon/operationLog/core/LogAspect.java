@@ -180,7 +180,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
             /*如果配置了handleOnFail(注解或全局), 将异常消息添加到remarks中*/
-            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isRecordOnFailGlobalEnabled();
+            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
             if (handleOnFail) {
                 String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
                 logRecord.getRemarks().add("异常: " + errorMsg);
@@ -188,7 +188,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             throw e;
         } finally {
             /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
-            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isRecordOnFailGlobalEnabled();
+            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
             boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && handleOnFail);
             /* 跟踪结果变化*/
             if (isNeedRecord) {

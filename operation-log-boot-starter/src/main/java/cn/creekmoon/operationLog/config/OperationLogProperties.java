@@ -23,7 +23,7 @@ public class OperationLogProperties {
     /**
      * 是否全局默认在失败时记录日志
      */
-    private boolean recordOnFailGlobalEnabled = false;
+    private boolean handleOnFailGlobalEnabled = false;
 
     /**
      * 是否全局使用value作为操作类型
