@@ -212,6 +212,80 @@ operation-log:
 
 > 💡 **提示**: 使用 `operation-log.heatmap-global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
 
+### 🔒 Dashboard 安全配置 (v2.2+)
+
+从 v2.2 版本开始，Dashboard 支持多种访问控制方式：
+
+#### 安全类型说明
+
+| 类型 | 说明 | 适用场景 |
+|------|------|----------|
+| `none` | 无限制，任何人可访问 | 开发环境 |
+| `local-only` | 仅允许本地访问 | 配合 SSH 隧道使用 |
+| `ip-whitelist` | IP 白名单限制 | 内网/办公环境 |
+| `token` | 令牌验证 | 临时分享/外网访问 |
+| `combined` | IP + Token 双重验证 | 生产环境 |
+
+#### 快速配置示例
+
+**开发环境（无限制）**:
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    security-type: none
+```
+
+**测试环境（IP 白名单）**:
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    security-type: ip-whitelist
+    allowed-ips:
+      - 127.0.0.1
+      - 192.168.1.0/24
+```
+
+**生产环境（双重验证）**:
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    security-type: combined
+    allowed-ips:
+      - 192.168.0.0/16
+      - 10.0.0.0/8
+    token: ${DASHBOARD_TOKEN}  # 从环境变量读取
+```
+
+#### Token 访问方式
+
+配置 Token 后，访问时需要在 URL 添加 `token` 参数：
+
+```
+http://localhost:8080/operation-log/dashboard?token=your-secret-token
+```
+
+或在请求头中添加：
+
+```bash
+curl -H "X-Dashboard-Token: your-secret-token" \
+  http://localhost:8080/operation-log/dashboard/api/heatmap
+```
+
+#### SSH 隧道访问（local-only 模式）
+
+当使用 `security-type: local-only` 时，可通过 SSH 隧道安全访问：
+
+```bash
+# 建立隧道
+ssh -L 8080:localhost:8080 user@your-server
+
+# 本地访问
+open http://localhost:8080/operation-log/dashboard
+```
+
 ### 用户画像配置
 
 ```yaml
@@ -465,7 +539,18 @@ A: 不会。启用 `fallback-enabled: true` 后，Redis 故障会自动降级，
 
 ### Q: Dashboard 访问需要认证吗？
 
-A: 当前版本 Dashboard 为公开访问，生产环境建议通过反向代理添加认证。
+A: v2.2+ 版本支持多种访问控制方式，默认不启用。生产环境强烈建议配置安全认证：
+
+```yaml
+operation-log:
+  dashboard:
+    security-type: combined  # 或 ip-whitelist / token / local-only
+    token: ${DASHBOARD_TOKEN}
+    allowed-ips:
+      - 192.168.0.0/16
+```
+
+详见 [Dashboard 安全配置](#-dashboard-安全配置-v22) 章节。
 
 ---
 
