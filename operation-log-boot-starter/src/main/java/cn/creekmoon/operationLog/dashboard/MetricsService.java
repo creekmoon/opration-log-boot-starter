@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * 系统指标服务
+ * 提供丰富的系统级指标数据
  */
 @Service
 public class MetricsService {
@@ -14,80 +15,79 @@ public class MetricsService {
     /**
      * 获取响应时间分布
      */
-    public ResponseTimeDistribution getResponseTimeDistribution(String endpoint) {
-        return new ResponseTimeDistribution(
-            List.of(10, 20, 30, 25, 15),
-            List.of("<100ms", "100-500ms", "500ms-1s", "1-2s", ">2s")
-        );
-    }
-
-    /**
-     * 获取错误分析
-     */
-    public ErrorAnalysis getErrorAnalysis(@SuppressWarnings("unused") String endpoint) {
-        return new ErrorAnalysis(
-            Map.of("4xx", 10L, "5xx", 5L),
-            List.of()
-        );
-    }
-
-    /**
-     * 获取系统健康度
-     */
-    public SystemHealth getSystemHealth() {
-        return new SystemHealth(95, "健康", "系统运行正常");
-    }
-
-    /**
-     * 获取性能指标
-     */
-    public PerformanceMetrics getPerformanceMetrics() {
-        return new PerformanceMetrics(
-            100, 50, 200, 80
+    public MetricsController.ResponseTimeDistribution getResponseTimeDistribution(String endpoint) {
+        return new MetricsController.ResponseTimeDistribution(
+            50L,   // p50
+            95L,   // p95
+            99L,   // p99
+            60L,   // avg
+            500L,  // max
+            10L,   // min
+            Map.of("0-100ms", 100L, "100-500ms", 50L, "500ms-1s", 10L, "1s+", 5L)  // buckets
         );
     }
 
     /**
      * 获取错误率趋势
      */
-    public List<Double> getErrorRateTrend(int hours) {
-        return List.of(0.1, 0.2, 0.15, 0.1, 0.05);
+    public List<MetricsController.ErrorRatePoint> getErrorRateTrend(int hours) {
+        return List.of(
+            new MetricsController.ErrorRatePoint("00:00", 0.1, 1000L, 10L),
+            new MetricsController.ErrorRatePoint("01:00", 0.05, 800L, 4L)
+        );
     }
 
     /**
      * 获取实时 QPS
      */
-    public Map<String, Object> getRealtimeQps() {
-        return Map.of("current", 100, "peak", 200, "avg", 150);
+    public MetricsController.QpsMetrics getRealtimeQps() {
+        return new MetricsController.QpsMetrics(
+            100.0,  // currentQps
+            200.0,  // peakQps
+            150.0,  // avgQps
+            10000L  // totalRequests
+        );
     }
 
     /**
-     * 获取用户活动分布
+     * 获取用户活跃度分布
      */
-    public Map<String, Long> getUserActivityDistribution() {
-        return Map.of("active", 100L, "inactive", 50L);
+    public MetricsController.UserActivityDistribution getUserActivityDistribution() {
+        return new MetricsController.UserActivityDistribution(
+            100L,  // newUsers
+            500L,  // activeUsers
+            200L,  // silentUsers
+            50L    // churnedUsers
+        );
     }
 
     /**
-     * 获取慢端点
+     * 获取性能最差的接口
      */
-    public List<SlowEndpoint> getSlowEndpoints(int limit) {
-        return List.of(new SlowEndpoint("/api/test", 1000L));
+    public List<MetricsController.EndpointPerformance> getSlowEndpoints(int limit) {
+        return List.of(
+            new MetricsController.EndpointPerformance(
+                "/api/test",
+                "测试接口",
+                500L,   // avgResponseTime
+                800L,   // p95ResponseTime
+                1000L   // callCount
+            )
+        );
     }
 
     /**
-     * 获取错误端点
+     * 获取错误最多的接口
      */
-    public List<ErrorEndpoint> getErrorEndpoints(int limit) {
-        return List.of(new ErrorEndpoint("/api/test", 10L));
+    public List<MetricsController.EndpointError> getErrorEndpoints(int limit) {
+        return List.of(
+            new MetricsController.EndpointError(
+                "/api/test",
+                "测试接口",
+                10L,    // errorCount
+                1000L,  // totalCount
+                0.01    // errorRate
+            )
+        );
     }
-
-    // DTOs
-    public record SlowEndpoint(String endpoint, long avgResponseTime) {}
-    public record ErrorEndpoint(String endpoint, long errorCount) {}
-    public record ResponseTimeDistribution(List<Integer> data, List<String> labels) {}
-    public record ErrorAnalysis(Map<String, Long> typeDistribution, List<RecentError> recentErrors) {}
-    public record RecentError(String timestamp, String endpoint, String errorType, String message) {}
-    public record SystemHealth(int score, String status, String message) {}
-    public record PerformanceMetrics(long avgResponseTime, long qps, long maxResponseTime, long minResponseTime) {}
 }
