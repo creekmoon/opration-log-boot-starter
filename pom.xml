@@ -105,7 +105,6 @@
         <swagger-annotations.verison>1.5.22</swagger-annotations.verison>
         <swagger.version>2.8.0</swagger.version>
         <aspectjweaver.version>1.9.20.1</aspectjweaver.version>
-        <hutool.version>5.8.19</hutool.version>
         <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
         <fastjson2.version>2.0.42</fastjson2.version>
         <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
