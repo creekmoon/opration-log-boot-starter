@@ -180,55 +180,59 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
             /*如果配置了handleOnFail(注解或全局), 将异常消息添加到remarks中*/
-            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
+            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isRecordOnFailGlobalEnabled();
             if (handleOnFail) {
                 String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
                 logRecord.getRemarks().add("异常: " + errorMsg);
             }
             throw e;
         } finally {
-            /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
-            boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
-            boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && handleOnFail);
-            /* 跟踪结果变化*/
-            if (isNeedRecord) {
-                if (OperationLogContext.metadataSupplier.get() != null) {
-                    try {
-                        //序列化成JSON格式
-                        JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(OperationLogContext.metadataSupplier.get().call()));
-                        logRecord.setAfterValue(parse);
-                    } catch (Exception e) {
-                        log.debug("[operation-log]跟踪日志对象时报错! 发生位置setAfterValue!", e);
-                    }
-                }
-                /*保存日志结果*/
-                LogThreadPool.runTask(() -> {
-                    for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
+            try {
+                /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
+                boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isRecordOnFailGlobalEnabled();
+                boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && handleOnFail);
+                /* 跟踪结果变化*/
+                if (isNeedRecord) {
+                    if (OperationLogContext.metadataSupplier.get() != null) {
                         try {
-                            operationLogHandler.handle(logRecord);
+                            //序列化成JSON格式
+                            JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(OperationLogContext.metadataSupplier.get().call()));
+                            logRecord.setAfterValue(parse);
                         } catch (Exception e) {
-                            log.error("[operation-log]日志处理器执行异常!", e);
+                            log.debug("[operation-log]跟踪日志对象时报错! 发生位置setAfterValue!", e);
                         }
                     }
-                });
+                    /*保存日志结果*/
+                    LogThreadPool.runTask(() -> {
+                        for (OperationLogHandler operationLogHandler : applicationContext.getBeansOfType(OperationLogHandler.class).values()) {
+                            try {
+                                operationLogHandler.handle(logRecord);
+                            } catch (Exception e) {
+                                log.error("[operation-log]日志处理器执行异常!", e);
+                            }
+                        }
+                    });
 
-                /*收集热力图数据 - 支持全局配置*/
-                boolean heatmapEnabled = annotation.heatmap() || getOperationLogProperties().isHeatmapGlobalEnabled();
-                if (heatmapEnabled) {
-                    collectHeatmapData(logRecord);
-                }
+                    /*收集热力图数据 - 支持全局配置*/
+                    boolean heatmapEnabled = annotation.heatmap() || getOperationLogProperties().isHeatmapGlobalEnabled();
+                    if (heatmapEnabled) {
+                        collectHeatmapData(logRecord);
+                    }
 
-                /*收集用户画像数据 - 支持全局配置*/
-                boolean profileEnabled = annotation.profile() || getOperationLogProperties().isProfileGlobalEnabled();
-                if (profileEnabled) {
-                    collectProfileData(logRecord, annotation);
+                    /*收集用户画像数据 - 支持全局配置*/
+                    boolean profileEnabled = annotation.profile() || getOperationLogProperties().isProfileGlobalEnabled();
+                    if (profileEnabled) {
+                        collectProfileData(logRecord, annotation);
+                    }
                 }
+                /*不进行日志记录*/
+                if (!isNeedRecord) {
+                    log.debug("[operation-log]用户操作没有成功,不会进行日志记录");
+                }
+            } finally {
+                /*确保ThreadLocal上下文始终被清理，防止内存泄漏*/
+                OperationLogContext.clean();
             }
-            /*不进行日志记录*/
-            if (!isNeedRecord) {
-                log.debug("[operation-log]用户操作没有成功,不会进行日志记录");
-            }
-            OperationLogContext.clean();
         }
     }
 

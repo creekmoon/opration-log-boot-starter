@@ -208,6 +208,10 @@ operation-log:
     top-n-max-size: 100              # TopN 最大返回数量
     sample-rate: 1.0                 # 采样率 (0.0-1.0)
     fallback-enabled: true           # Redis 故障时降级处理
+    exclude-operation-types:         # 排除统计的操作类型列表
+      - HEALTH_CHECK
+      - PING
+      - METRICS
 ```
 
 > 💡 **提示**: 使用 `operation-log.heatmap-global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
@@ -234,7 +238,10 @@ operation-log:
     refresh-interval: 30             # 自动刷新间隔(秒)
 ```
 
-> 💡 **提示**: Dashboard 访问路径固定为 `/operation-log/dashboard`，如需自定义请通过反向代理（Nginx）实现。
+> 💡 **提示**: Dashboard 访问路径：
+> - 基础版: `/operation-log-dashboard.html`
+> - 专业版: `/operation-log-dashboard-pro.html`
+> 如需自定义路径，请通过反向代理（Nginx）实现。
 
 ---
 
@@ -359,7 +366,7 @@ Set<String> tags = profile.tags();  // [高频用户, 查询型用户, 工作时
 
 启动应用后访问：
 
-- **基础版 Dashboard**: `http://localhost:8080/operation-log/dashboard`
+- **基础版 Dashboard**: `http://localhost:8080/operation-log-dashboard.html`
 - **专业版 Dashboard**: `http://localhost:8080/operation-log-dashboard-pro.html`
 
 **功能特性**:
@@ -403,7 +410,7 @@ curl -o users.csv http://localhost:8080/operation-log/profile/export/tag/高价�
 |------|----------------|-------------------|
 | 热力图统计 | `heatmap-global-enabled: true` | `@OperationLog(heatmap = true)` |
 | 用户画像 | `profile-global-enabled: true` | `@OperationLog(profile = true)` |
-| 失败记录 | `handle-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
+| 失败记录 | `record-on-fail-global-enabled: true` | `@OperationLog(handleOnFail = true)` |
 
 > 🔥 **最佳实践**: 使用全局配置统一管理，减少重复代码！
 
