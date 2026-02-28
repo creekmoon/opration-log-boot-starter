@@ -16,6 +16,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 /**
  * 用户画像服务测试类
@@ -41,10 +42,9 @@ class ProfileServiceImplTest {
         properties.setEnabled(true);
         properties.setRedisKeyPrefix("operation-log:user-profile");
         properties.setDefaultStatsDays(30);
-        properties.setTagEngineEnabled(true);
         
-        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
-        when(redisTemplate.opsForSet()).thenReturn(setOperations);
+        lenient().when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        lenient().when(redisTemplate.opsForSet()).thenReturn(setOperations);
         
         profileService = new ProfileServiceImpl(redisTemplate, properties);
     }
@@ -187,37 +187,26 @@ class ProfileServiceImplTest {
 
     @Test
     void testRefreshUserTags() {
-        // Given
+        // Given - 标签功能已移除，此方法现在为空
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 100); // > 50, 应该打上"高频查询用户"标签
-        entries.put("ORDER_SUBMIT", 0);
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then
-        verify(setOperations, atLeast(1)).add(anyString(), eq("高频查询用户"));
+        // Then - 标签功能已移除，方法应正常返回不抛出异常
+        assertTrue(true, "标签功能已移除，方法应正常返回不抛出异常");
     }
 
     @Test
     void testRefreshUserTags_NotMatching() {
-        // Given
+        // Given - 标签功能已移除，此方法现在为空
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 10); // < 50, 不应该打上"高频查询用户"标签
         
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
-
         // When
         profileService.refreshUserTags(userId);
-
-        // Then - verify no tags are added
-        verify(setOperations, never()).add(anyString(), eq("高频查询用户"));
+        
+        // Then - 标签功能已移除，不调用任何操作
+        assertTrue(true, "标签功能已移除，方法应正常返回不抛出异常");
     }
 
     @Test

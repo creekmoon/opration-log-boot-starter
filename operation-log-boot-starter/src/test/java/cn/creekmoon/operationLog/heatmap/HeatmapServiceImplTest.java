@@ -20,6 +20,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 /**
  * 热力图服务测试类
@@ -49,8 +50,8 @@ class HeatmapServiceImplTest {
         properties.setDailyRetentionDays(90);
         properties.setFallbackEnabled(true);
         
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-        when(redisTemplate.opsForHyperLogLog()).thenReturn(hyperLogLogOperations);
+        lenient().when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        lenient().when(redisTemplate.opsForHyperLogLog()).thenReturn(hyperLogLogOperations);
         
         heatmapService = new HeatmapServiceImpl(redisTemplate, properties);
     }
