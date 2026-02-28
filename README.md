@@ -6,6 +6,8 @@
 简易的业务操作日志AOP实现类, 用于记录业务中的Controller的操作日志,能记录用户什么时候修改了哪些字段
 
 **新增功能(v2.2.0+):**
+- **Dashboard Pro**: 增强版监控面板，支持8+数据维度
+- **扩展数据维度**: 响应时间分位数、错误率趋势、地域分布、终端分布
 - **CSV导出功能**: 支持热力图和用户画像数据导出为CSV格式
 - **可视化Dashboard**: 提供Web界面实时监控操作日志数据
 - **操作热力图统计**: 基于Redis HyperLogLog统计接口PV/UV,支持实时/小时/天级维度
@@ -419,4 +421,41 @@ POST walmart-operation-log/_delete_by_query
   }
 }
 
+```
+
+## Dashboard Pro API (v2.2.0+)
+
+### 扩展数据维度
+
+Dashboard Pro 提供8+数据维度，支持更精细的监控分析：
+
+| 维度 | API | 说明 |
+|------|-----|------|
+| 响应时间 | `/operation-log/dashboard/api/response-time` | P50/P95/P99分位数 |
+| 错误率 | `/operation-log/dashboard/api/error-rate` | 按时间趋势 |
+| 地域分布 | `/operation-log/dashboard/api/geo-distribution` | 按省份统计 |
+| 终端分布 | `/operation-log/dashboard/api/terminal-distribution` | Web/App/小程序 |
+
+### 导出API
+
+所有数据维度均支持CSV导出：
+
+```bash
+# 导出响应时间统计
+GET /operation-log/dashboard/api/export/response-time?className=OrderController&methodName=list
+
+# 导出错误率趋势
+GET /operation-log/dashboard/api/export/error-rate?className=OrderController&methodName=list&points=24
+
+# 导出地域分布
+GET /operation-log/dashboard/api/export/geo-distribution
+
+# 导出终端分布
+GET /operation-log/dashboard/api/export/terminal-distribution
+```
+
+### 访问Dashboard Pro
+
+```
+http://localhost:8080/operation-log-dashboard-pro.html
 ```

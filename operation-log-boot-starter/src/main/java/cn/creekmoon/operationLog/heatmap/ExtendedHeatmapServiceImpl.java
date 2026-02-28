@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 扩展热力图服务实现
@@ -24,33 +23,90 @@ public class ExtendedHeatmapServiceImpl implements ExtendedHeatmapService {
     private final HeatmapService heatmapService;
 
     @Override
+    public void recordVisit(String className, String methodName, String userId, LocalDateTime timestamp) {
+        heatmapService.recordVisit(className, methodName, userId, timestamp);
+    }
+
+    @Override
+    public void recordVisit(String className, String methodName, String userId) {
+        heatmapService.recordVisit(className, methodName, userId);
+    }
+
+    @Override
+    public HeatmapStats getRealtimeStats(String className, String methodName) {
+        return heatmapService.getRealtimeStats(className, methodName);
+    }
+
+    @Override
+    public Map<String, HeatmapStats> getAllRealtimeStats() {
+        return heatmapService.getAllRealtimeStats();
+    }
+
+    @Override
+    public java.util.List<HeatmapTopItem> getTopN(TimeWindow timeWindow, MetricType metricType, int topN) {
+        return heatmapService.getTopN(timeWindow, metricType, topN);
+    }
+
+    @Override
+    public java.util.List<HeatmapTopItem> getTopN(TimeWindow timeWindow, MetricType metricType) {
+        return heatmapService.getTopN(timeWindow, metricType);
+    }
+
+    @Override
+    public java.util.List<HeatmapTrendPoint> getTrend(String className, String methodName, TimeWindow timeWindow, int pointCount) {
+        return heatmapService.getTrend(className, methodName, timeWindow, pointCount);
+    }
+
+    @Override
+    public void cleanupExpiredData() {
+        heatmapService.cleanupExpiredData();
+    }
+
+    @Override
+    public HeatmapStatus getStatus() {
+        return heatmapService.getStatus();
+    }
+
+    @Override
+    public java.util.List<java.util.List<String>> exportRealtimeStatsToCsv() {
+        return heatmapService.exportRealtimeStatsToCsv();
+    }
+
+    @Override
+    public java.util.List<java.util.List<String>> exportTopNToCsv(TimeWindow timeWindow, MetricType metricType, int topN) {
+        return heatmapService.exportTopNToCsv(timeWindow, metricType, topN);
+    }
+
+    @Override
+    public java.util.List<java.util.List<String>> exportTrendToCsv(String className, String methodName, TimeWindow timeWindow, int pointCount) {
+        return heatmapService.exportTrendToCsv(className, methodName, timeWindow, pointCount);
+    }
+
+    @Override
     public ResponseTimeStats getResponseTimeStats(String className, String methodName, TimeWindow timeWindow) {
         String baseKey = buildMetricsKey(className, methodName, timeWindow);
-        
-        /* 从Redis获取响应时间统计数据 */
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(baseKey + ":responseTime");
         
         if (entries.isEmpty()) {
             return new ResponseTimeStats(className, methodName, 0, 0, 0, 0, 0, 0);
         }
 
-        long p50 = getLongValue(entries, "p50");
-        long p95 = getLongValue(entries, "p95");
-        long p99 = getLongValue(entries, "p99");
-        long avg = getLongValue(entries, "avg");
-        long max = getLongValue(entries, "max");
-        long min = getLongValue(entries, "min");
-
-        return new ResponseTimeStats(className, methodName, p50, p95, p99, avg, max, min);
+        return new ResponseTimeStats(
+            className, methodName,
+            getLongValue(entries, "p50"),
+            getLongValue(entries, "p95"),
+            getLongValue(entries, "p99"),
+            getLongValue(entries, "avg"),
+            getLongValue(entries, "max"),
+            getLongValue(entries, "min")
+        );
     }
 
     @Override
-    public Map<LocalDateTime, Double> getErrorRateTrend(String className, String methodName, 
-                                                         TimeWindow timeWindow, int pointCount) {
+    public Map<LocalDateTime, Double> getErrorRateTrend(String className, String methodName, TimeWindow timeWindow, int pointCount) {
         Map<LocalDateTime, Double> result = new HashMap<>();
         String baseKey = buildMetricsKey(className, methodName, timeWindow);
         
-        /* 获取错误率和总请求数，计算错误率趋势 */
         for (int i = 0; i < pointCount; i++) {
             LocalDateTime timestamp = calculateTimestamp(timeWindow, i, pointCount);
             String timeKey = baseKey + ":" + formatTimestamp(timestamp, timeWindow);
@@ -68,15 +124,23 @@ public class ExtendedHeatmapServiceImpl implements ExtendedHeatmapService {
     @Override
     public Map<String, Long> getGeoDistribution(TimeWindow timeWindow) {
         Map<String, Long> result = new HashMap<>();
-        String pattern = properties.getRedisKeyPrefix() + ":geo:" + timeWindow.name().toLowerCase() + ":*";
         
-        Set<String> keys = redisTemplate.keys(pattern);
-        if (keys != null) {
-            for (String key : keys) {
-                String region = extractRegionFromKey(key);
-                Long count = getCount(key);
-                result.merge(region, count, Long::sum);
+        if (!properties.isEnabled()) {
+            return result;
+        }
+        
+        try {
+            String pattern = properties.getRedisKeyPrefix() + ":geo:" + timeWindow.name().toLowerCase() + ":*";
+            Set<String> keys = redisTemplate.keys(pattern);
+            if (keys != null) {
+                for (String key : keys) {
+                    String region = extractRegionFromKey(key);
+                    Long count = getCount(key);
+                    result.merge(region, count, Long::sum);
+                }
             }
+        } catch (Exception e) {
+            log.warn("[operation-log] 获取地域分布失败: {}", e.getMessage());
         }
         
         return result;
@@ -85,32 +149,35 @@ public class ExtendedHeatmapServiceImpl implements ExtendedHeatmapService {
     @Override
     public Map<String, Long> getTerminalDistribution(TimeWindow timeWindow) {
         Map<String, Long> result = new HashMap<>();
-        String pattern = properties.getRedisKeyPrefix() + ":terminal:" + timeWindow.name().toLowerCase() + ":*";
         
-        Set<String> keys = redisTemplate.keys(pattern);
-        if (keys != null) {
-            for (String key : keys) {
-                String terminal = extractTerminalFromKey(key);
-                Long count = getCount(key);
-                result.merge(terminal, count, Long::sum);
+        if (!properties.isEnabled()) {
+            return result;
+        }
+        
+        try {
+            String pattern = properties.getRedisKeyPrefix() + ":terminal:" + timeWindow.name().toLowerCase() + ":*";
+            Set<String> keys = redisTemplate.keys(pattern);
+            if (keys != null) {
+                for (String key : keys) {
+                    String terminal = extractTerminalFromKey(key);
+                    Long count = getCount(key);
+                    result.merge(terminal, count, Long::sum);
+                }
             }
+        } catch (Exception e) {
+            log.warn("[operation-log] 获取终端分布失败: {}", e.getMessage());
         }
         
         return result;
     }
 
-    /* 辅助方法 */
     private String buildMetricsKey(String className, String methodName, TimeWindow timeWindow) {
-        return properties.getRedisKeyPrefix() + ":metrics:" + timeWindow.name().toLowerCase() + 
-               ":" + className + ":" + methodName;
+        return properties.getRedisKeyPrefix() + ":metrics:" + timeWindow.name().toLowerCase() + ":" + className + ":" + methodName;
     }
 
     private long getLongValue(Map<Object, Object> entries, String key) {
         Object value = entries.get(key);
-        if (value instanceof Number) {
-            return ((Number) value).longValue();
-        }
-        return 0;
+        return value instanceof Number ? ((Number) value).longValue() : 0;
     }
 
     private Long getCount(String key) {
