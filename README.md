@@ -6,17 +6,18 @@
 简易的业务操作日志AOP实现类, 用于记录业务中的Controller的操作日志,能记录用户什么时候修改了哪些字段
 
 **新增功能(v2.2.0+):**
+- **CSV导出功能**: 支持热力图和用户画像数据导出为CSV格式
+- **可视化Dashboard**: 提供Web界面实时监控操作日志数据
 - **操作热力图统计**: 基于Redis HyperLogLog统计接口PV/UV,支持实时/小时/天级维度
 - **用户行为画像**: 基于用户操作历史自动生成行为标签,支持精细化运营
 
 #### maven引用方式
 
 ```xml
-
 <dependency>
     <groupId>cn.creekmoon</groupId>
     <artifactId>operation-log-boot-starter</artifactId>
-    <version>2.1.3</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 
@@ -68,6 +69,101 @@ public class TTransportController {
 operation-log:LogRecord(userId=1, orgId=1, userName=unknown  ..........省略
 ```
 
+## 新增功能: CSV导出
+
+### 功能说明
+
+支持将热力图统计和用户画像数据导出为CSV格式,方便数据分析和报表制作。
+
+### 热力图CSV导出
+
+```java
+@Autowired
+private HeatmapService heatmapService;
+
+// 导出实时统计数据
+List<List<String>> realtimeData = heatmapService.exportRealtimeStatsToCsv();
+
+// 导出TopN排行
+List<List<String>> topNData = heatmapService.exportTopNToCsv(
+    TimeWindow.REALTIME, MetricType.PV, 10);
+
+// 导出趋势数据
+List<List<String>> trendData = heatmapService.exportTrendToCsv(
+    "OrderController", "list", TimeWindow.HOURLY, 24);
+```
+
+### 用户画像CSV导出
+
+```java
+@Autowired
+private ProfileService profileService;
+
+// 导出用户画像
+List<List<String>> profileData = profileService.exportUserProfileToCsv("user123");
+
+// 导出标签用户列表
+List<List<String>> tagUsersData = profileService.exportUsersByTagToCsv(
+    "高价值用户", 0, 100);
+
+// 导出所有用户统计
+List<List<String>> allUsersData = profileService.exportAllUserStatsToCsv(1000);
+```
+
+### HTTP接口导出
+
+启动应用后,可通过以下接口下载CSV文件:
+
+```bash
+# 热力图导出
+GET /operation-log/heatmap/export/realtime
+GET /operation-log/heatmap/export/topn?timeWindow=REALTIME&metricType=PV&topN=10
+GET /operation-log/heatmap/export/trend?className=OrderController&methodName=list
+
+# 画像导出
+GET /operation-log/profile/export/user/{userId}
+GET /operation-log/profile/export/tag/{tagName}
+GET /operation-log/profile/export/all?limit=1000
+```
+
+## 新增功能: 可视化Dashboard
+
+### 功能说明
+
+提供Web界面实时监控操作日志数据,包括:
+- PV/UV趋势图表
+- 热门接口排行
+- 用户标签分布
+- 操作类型统计
+
+### 访问方式
+
+启动应用后,访问以下地址:
+
+```
+http://localhost:8080/operation-log/dashboard
+```
+
+### 配置项
+
+```yaml
+operation-log:
+  dashboard:
+    enabled: true           # 是否启用Dashboard
+    path: "/operation-log/dashboard"  # 访问路径
+    refresh-interval: 30    # 自动刷新间隔(秒)
+```
+
+### 页面功能
+
+- **实时概览**: 显示总PV、总UV、用户总数、标签总数
+- **PV/UV趋势**: 24小时趋势折线图
+- **热门接口Top10**: 接口访问量排行表格
+- **用户标签分布**: 标签占比饼图
+- **操作类型分布**: 操作类型柱状图
+- **自动刷新**: 每30秒自动刷新数据
+- **手动刷新**: 点击右下角刷新按钮立即更新
+
 ## 新增功能: 操作热力图统计
 
 ### 开启方式
@@ -100,20 +196,20 @@ operation-log:
 
 ### 查看数据
 
-通过Actuator端点访问:
+通过HTTP接口访问:
 
 ```bash
 # 查看服务状态
-GET /actuator/operation-log-heatmap
+GET /operation-log/heatmap/status
 
 # 查看所有接口实时统计
-GET /actuator/operation-log-heatmap/stats
+GET /operation-log/heatmap/stats
 
 # 查看指定接口统计
-GET /actuator/operation-log-heatmap/stats/{className}/{methodName}
+GET /operation-log/heatmap/stats/{className}/{methodName}
 
 # 查看TopN接口
-GET /actuator/operation-log-heatmap/topn
+GET /operation-log/heatmap/topn
 ```
 
 ### 编程式使用
@@ -187,23 +283,23 @@ operation-log:
 
 ### 查看数据
 
-通过Actuator端点访问:
+通过HTTP接口访问:
 
 ```bash
 # 查看服务状态
-GET /actuator/operation-log-profile
+GET /operation-log/profile/status
 
 # 查看用户画像
-GET /actuator/operation-log-profile/user/{userId}
+GET /operation-log/profile/user/{userId}
 
 # 查看用户标签
-GET /actuator/operation-log-profile/user/{userId}/tags
+GET /operation-log/profile/user/{userId}/tags
 
 # 查看用户操作统计
-GET /actuator/operation-log-profile/user/{userId}/stats
+GET /operation-log/profile/user/{userId}/stats
 
 # 根据标签查询用户
-GET /actuator/operation-log-profile/tag/{tagName}
+GET /operation-log/profile/tag/{tagName}
 ```
 
 ### 编程式使用
