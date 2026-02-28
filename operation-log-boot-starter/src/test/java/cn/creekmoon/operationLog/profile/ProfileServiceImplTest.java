@@ -41,10 +41,9 @@ class ProfileServiceImplTest {
         properties.setEnabled(true);
         properties.setRedisKeyPrefix("operation-log:user-profile");
         properties.setDefaultStatsDays(30);
-        properties.setTagEngineEnabled(true);
         
-        when(redisTemplate.opsForHash()).thenReturn(hashOperations);
-        when(redisTemplate.opsForSet()).thenReturn(setOperations);
+        lenient().when(redisTemplate.opsForHash()).thenReturn(hashOperations);
+        lenient().when(redisTemplate.opsForSet()).thenReturn(setOperations);
         
         profileService = new ProfileServiceImpl(redisTemplate, properties);
     }

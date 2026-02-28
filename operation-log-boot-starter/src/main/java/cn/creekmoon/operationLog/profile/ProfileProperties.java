@@ -50,4 +50,9 @@ public class ProfileProperties {
      * 异步更新队列大小
      */
     private int asyncQueueSize = 512;
+
+    /**
+     * 是否启用标签引擎
+     */
+    private boolean tagEngineEnabled = true;
 }
