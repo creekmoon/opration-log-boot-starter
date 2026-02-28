@@ -222,10 +222,10 @@ operation-log:
   profile:
     enabled: true                    # 是否启用画像模块
     global-enabled: true             # 全局开关
+    auto-infer-type: true            # 自动推断操作类型
     redis-key-prefix: "oplog:profile" # Redis key 前缀
     default-stats-days: 30           # 默认统计时间范围
     operation-count-retention-days: 90  # 操作计数保留时间
-    user-tags-retention-days: 90     # 用户标签保留时间
     fallback-enabled: true           # 降级策略
 ```
 
@@ -301,12 +301,11 @@ operation-log:
     enabled: true
     global-enabled: true        # 全局开启
     auto-infer-type: true       # 自动推断操作类型
-    default-tags-enabled: true  # 启用默认标签策略
 ```
 
 开启后，**无需任何额外配置**，系统会自动：
 1. 从 `@OperationLog("xxx")` 的描述中推断操作类型（查询/创建/更新/删除）
-2. 为用户生成默认标签（高频用户、活跃用户、新用户等）
+2. 记录用户的操作统计数据
 
 ```java
 @RestController
@@ -328,22 +327,15 @@ public class OrderController {
 }
 ```
 
-**自动生成的默认标签**
+**操作统计功能**
 
-| 标签 | 规则 |
-|------|------|
-| 高频用户 | 7天内操作 > 50 次 |
-| 活跃用户 | 7天内操作 > 10 次 |
-| 低频用户 | 7天内操作 < 3 次 |
-| 新用户 | 首次使用在7天内 |
-| 老用户 | 首次使用超过90天 |
-| 沉默用户 | 30天未活跃 |
-| 流失风险 | 7天未活跃但30天内活跃过 |
-| 查询型用户 | 查询操作占比 > 80% |
-| 提交型用户 | 创建/提交操作占比 > 30% |
-| 管理型用户 | 更新/删除操作占比 > 20% |
-| 夜猫子 | 22:00-06:00 操作占比 > 50% |
-| 工作时间用户 | 09:00-18:00 操作占比 > 70% |
+用户画像会自动统计以下数据：
+
+| 统计维度 | 说明 |
+|----------|------|
+| 操作次数 | 按操作类型统计（查询/创建/更新/删除） |
+| 时间分布 | 按小时段统计活跃情况 |
+| 趋势分析 | 7天/30天操作趋势 |
 
 **查看画像数据**:
 
@@ -351,11 +343,8 @@ public class OrderController {
 # 查看用户画像
 curl http://localhost:8080/operation-log/profile/user/10001
 
-# 查看用户标签
-curl http://localhost:8080/operation-log/profile/user/10001/tags
-
-# 根据标签查询用户
-curl http://localhost:8080/operation-log/profile/tag/高频用户
+# 查看用户操作统计
+curl http://localhost:8080/operation-log/profile/user/10001/stats
 ```
 
 **编程式使用**:
