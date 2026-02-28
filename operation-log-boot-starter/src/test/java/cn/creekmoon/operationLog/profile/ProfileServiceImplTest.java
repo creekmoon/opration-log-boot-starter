@@ -206,17 +206,14 @@ class ProfileServiceImplTest {
     void testRefreshUserTags_NotMatching() {
         // Given
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 10); // < 50, 不应该打上"高频查询用户"标签
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
+        // Note: refreshUserTags() is now an empty implementation (tag feature removed)
+        // No stubbing needed as the method doesn't interact with Redis
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then - verify no tags are added
-        verify(setOperations, never()).add(anyString(), eq("高频查询用户"));
+        // Then - verify no interaction with setOperations (tag feature removed)
+        verifyNoInteractions(setOperations);
     }
 
     @Test
@@ -231,7 +228,7 @@ class ProfileServiceImplTest {
         
         when(redisTemplate.keys(contains(":counts:"))).thenReturn(userKeys);
         when(redisTemplate.keys(contains(":tag-index:"))).thenReturn(tagKeys);
-        when(redisTemplate.execute(any(RedisCallback.class))).thenReturn("PONG");
+        // Note: redisTemplate.execute() is not called by getStatus()
 
         // When
         ProfileService.ProfileStatus status = profileService.getStatus();

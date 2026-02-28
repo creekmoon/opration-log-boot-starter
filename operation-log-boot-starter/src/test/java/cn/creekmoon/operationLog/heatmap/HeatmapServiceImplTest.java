@@ -231,7 +231,7 @@ class HeatmapServiceImplTest {
         keys.add("key2");
         
         when(redisTemplate.keys(anyString())).thenReturn(keys);
-        when(redisTemplate.execute(any(RedisCallback.class))).thenReturn("PONG");
+        // Note: redisTemplate.execute() is not called by getStatus()
 
         // When
         HeatmapService.HeatmapStatus status = heatmapService.getStatus();
