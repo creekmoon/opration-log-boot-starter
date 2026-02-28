@@ -26,6 +26,9 @@ public class CsvExportServiceImpl implements CsvExportService {
 
     private static final DateTimeFormatter FILE_NAME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
     private static final String CSV_CONTENT_TYPE = "text/csv;charset=UTF-8";
+    
+    /* UTF-8 BOM头，用于Excel兼容 */
+    private static final byte[] UTF8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     @Override
     public <T> void exportCsv(List<String> headers, List<T> data, Function<T, List<String>> rowMapper,
@@ -41,13 +44,12 @@ public class CsvExportServiceImpl implements CsvExportService {
 
     private <T> void exportCsvInternal(List<String> headers, List<T> data, Function<T, List<String>> rowMapper,
                                        OutputStream outputStream, boolean withBom) throws IOException {
-        // 写入BOM（Excel兼容）
+        /* 写入BOM头（Excel兼容模式） */
         if (withBom) {
-            outputStream.write(0xEF);
-            outputStream.write(0xBB);
-            outputStream.write(0xBF);
+            outputStream.write(UTF8_BOM);
         }
 
+        /* 构建CSV并写入数据 */
         try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.builder()
                      .setHeader(headers.toArray(new String[0]))
