@@ -208,6 +208,45 @@ operation-log:
     top-n-max-size: 100              # TopN 最大返回数量
     sample-rate: 1.0                 # 采样率 (0.0-1.0)
     fallback-enabled: true           # Redis 故障时降级处理
+    exclude-operation-types:         # 排除特定操作类型的统计
+      - HEALTH_CHECK
+      - PING
+      - METRICS
+```
+
+#### exclude-operation-types 配置说明
+
+用于排除特定操作类型的热力图统计，适用于不需要监控的内部接口（如健康检查、监控探针等）。
+
+| 配置项 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| `exclude-operation-types` | List<String> | 空列表 | 需要排除的操作类型列表 |
+
+**使用示例**:
+
+```yaml
+operation-log:
+  heatmap:
+    enabled: true
+    exclude-operation-types:
+      - HEALTH_CHECK    # 排除健康检查接口
+      - PING            # 排除心跳检测接口
+      - METRICS         # 排除监控指标接口
+```
+
+```java
+// 这些接口将不会被统计到热力图中
+@OperationLog(value = "健康检查", type = "HEALTH_CHECK")
+@GetMapping("/health")
+public String health() {
+    return "OK";
+}
+
+@OperationLog(value = "心跳检测", type = "PING")
+@GetMapping("/ping")
+public String ping() {
+    return "pong";
+}
 ```
 
 > 💡 **提示**: 使用 `operation-log.heatmap-global-enabled: true` 时，**所有**带有 `@OperationLog` 的方法都会自动启用热力图统计，无需在每个方法上添加 `heatmap = true`。
