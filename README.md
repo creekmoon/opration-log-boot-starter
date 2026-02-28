@@ -262,8 +262,25 @@ operation-log:
 |--------|------|--------|------|
 | `enabled` | boolean | true | 是否启用Dashboard |
 | `refresh-interval` | int | 30 | 自动刷新间隔（秒） |
+| `auth-mode` | enum | `OFF` | 访问控制模式：`OFF`/`IP_ONLY`/`TOKEN_ONLY`/`IP_AND_TOKEN` |
+| `allow-ips` | List | `[]` | IP白名单，支持精确IP或CIDR格式（如 `192.168.1.0/24`）|
+| `auth-token` | String | `""` | Token认证密钥，生产环境建议从环境变量读取 |
+| `token-header` | String | `X-Dashboard-Token` | Token请求头名称 |
+| `allow-token-in-query` | boolean | false | 是否允许通过Query参数传递Token |
+| `auth-failure-message` | String | `Dashboard access denied` | 认证失败时的响应消息 |
 
 > 💡 **提示**: Dashboard 访问路径固定为 `/operation-log/dashboard`，如需自定义请通过反向代理（Nginx）实现。
+
+**四种认证模式说明：**
+
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| `OFF` | 无认证，直接访问 | 本地开发环境 |
+| `IP_ONLY` | 仅IP白名单校验 | 内网环境，固定IP场景 |
+| `TOKEN_ONLY` | 仅Token认证 | 外网环境，需动态分发Token |
+| `IP_AND_TOKEN` | IP白名单 + Token双重认证（推荐生产环境） | 高安全性要求的生产环境 |
+
+> 🔐 **安全建议**: 生产环境建议使用 `IP_AND_TOKEN` 模式，双重保护更安全。
 
 ---
 
@@ -419,9 +436,63 @@ curl -o users.csv http://localhost:8080/operation-log/profile/export/tag/高价�
 
 ## 🔌 集成示例
 
-### Spring Security 集成示例
+### Dashboard 安全配置示例
 
-在生产环境中，建议为 Dashboard 添加访问控制：
+Dashboard 已内置 IP 白名单 + Token 认证双重保护，无需额外编写代码。
+
+#### 1. 开发环境配置（无认证）
+
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    auth-mode: OFF    # 开发环境关闭认证
+```
+
+#### 2. 测试环境配置（IP白名单）
+
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    auth-mode: IP_ONLY
+    allow-ips:
+      - "127.0.0.1"
+      - "192.168.1.100"       # 测试服务器IP
+      - "192.168.1.0/24"      # 测试网段（CIDR格式）
+```
+
+#### 3. 生产环境配置（双重认证 - 推荐）
+
+```yaml
+operation-log:
+  dashboard:
+    enabled: true
+    auth-mode: IP_AND_TOKEN    # 双重认证模式
+    refresh-interval: 60       # 生产环境60秒刷新
+    allow-ips:
+      - "127.0.0.1"
+      - "192.168.1.0/24"      # 运维网段
+    auth-token: ${DASHBOARD_TOKEN:}   # 从环境变量读取，拒绝硬编码
+    token-header: X-Dashboard-Token    # Token请求头名称
+    allow-token-in-query: false        # 禁用Query传Token，更安全
+    auth-failure-message: "Access Denied - Contact Ops Team"
+```
+
+**获取 Token 的方式：**
+
+```bash
+# 方式1：通过 Header 传递（推荐）
+curl -H "X-Dashboard-Token: your-secret-token" \
+     http://localhost:8080/operation-log/dashboard
+
+# 方式2：通过 Query 参数传递（需启用 allow-token-in-query: true）
+curl http://localhost:8080/operation-log/dashboard?token=your-secret-token
+```
+
+#### 4. 与 Spring Security 集成（可选）
+
+如需更复杂的权限控制（如 LDAP/OAuth2），可集成 Spring Security：
 
 ```java
 @Configuration
@@ -445,36 +516,7 @@ public class SecurityConfig {
 }
 ```
 
-或使用 IP 白名单：
-
-```java
-@Component
-public class DashboardIpFilter extends OncePerRequestFilter {
-    
-    @Value("${operation-log.dashboard.allowed-ips:127.0.0.1}")
-    private List<String> allowedIps;
-    
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, 
-                                    HttpServletResponse response, 
-                                    FilterChain chain) throws ServletException, IOException {
-        String requestUri = request.getRequestURI();
-        if (requestUri.startsWith("/operation-log/dashboard")) {
-            String clientIp = getClientIp(request);
-            if (!allowedIps.contains(clientIp)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
-        }
-        chain.doFilter(request, response);
-    }
-    
-    private String getClientIp(HttpServletRequest request) {
-        String xff = request.getHeader("X-Forwarded-For");
-        return xff != null ? xff.split(",")[0].trim() : request.getRemoteAddr();
-    }
-}
-```
+> ⚠️ **注意**: 内置安全认证与 Spring Security 可同时使用，Spring Security 先执行，内置认证作为二次校验。
 
 ### 自定义 Handler 完整示例
 
@@ -746,7 +788,26 @@ A: 不会。启用 `fallback-enabled: true` 后，Redis 故障会自动降级，
 
 ### Q: Dashboard 访问需要认证吗？
 
-A: 当前版本 Dashboard 为公开访问，生产环境建议通过 Spring Security 或反向代理添加认证。参考上方集成示例。
+A: **Dashboard 已实现完善的访问控制机制**，支持四种认证模式：
+
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| `OFF` | 无认证 | 本地开发 |
+| `IP_ONLY` | 仅IP白名单 | 内网环境 |
+| `TOKEN_ONLY` | 仅Token认证 | 外网环境 |
+| `IP_AND_TOKEN` | 双重认证（推荐生产） | 高安全要求 |
+
+默认配置为 `OFF`（无认证），建议生产环境配置为 `IP_AND_TOKEN`：
+
+```yaml
+operation-log:
+  dashboard:
+    auth-mode: IP_AND_TOKEN
+    allow-ips:
+      - "127.0.0.1"
+      - "192.168.1.0/24"
+    auth-token: ${DASHBOARD_TOKEN:}
+```
 
 ### Q: 配置项 `handle-on-fail-global-enabled` 和 `handle-on-fail-global-enabled` 有什么区别？
 
