@@ -1,7 +1,7 @@
 package cn.creekmoon.operationLog.dashboard;
 
 import cn.creekmoon.operationLog.export.CsvExportService;
-import cn.creekmoon.operationLog.heatmap.ExtendedHeatmapService;
+import cn.creekmoon.operationLog.heatmap.HeatmapExtensionService;
 import cn.creekmoon.operationLog.heatmap.HeatmapService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DashboardDataController {
 
-    private final ExtendedHeatmapService extendedHeatmapService;
+    private final HeatmapExtensionService heatmapExtensionService;
     private final HeatmapService heatmapService;
     private final CsvExportService csvExportService;
 
@@ -33,11 +33,11 @@ public class DashboardDataController {
      * 获取响应时间统计
      */
     @GetMapping("/response-time")
-    public ExtendedHeatmapService.ResponseTimeStats getResponseTime(
+    public HeatmapExtensionService.ResponseTimeStats getResponseTime(
             @RequestParam String className,
             @RequestParam String methodName,
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow) {
-        return extendedHeatmapService.getResponseTimeStats(className, methodName, timeWindow);
+        return heatmapExtensionService.getResponseTimeStats(className, methodName, timeWindow);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DashboardDataController {
             @RequestParam String methodName,
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow,
             @RequestParam(defaultValue = "24") int points) {
-        return extendedHeatmapService.getErrorRateTrend(className, methodName, timeWindow, points);
+        return heatmapExtensionService.getErrorRateTrend(className, methodName, timeWindow, points);
     }
 
     /**
@@ -58,7 +58,7 @@ public class DashboardDataController {
     @GetMapping("/geo-distribution")
     public Map<String, Long> getGeoDistribution(
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow) {
-        return extendedHeatmapService.getGeoDistribution(timeWindow);
+        return heatmapExtensionService.getGeoDistribution(timeWindow);
     }
 
     /**
@@ -67,7 +67,7 @@ public class DashboardDataController {
     @GetMapping("/terminal-distribution")
     public Map<String, Long> getTerminalDistribution(
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow) {
-        return extendedHeatmapService.getTerminalDistribution(timeWindow);
+        return heatmapExtensionService.getTerminalDistribution(timeWindow);
     }
 
     /**
@@ -80,8 +80,8 @@ public class DashboardDataController {
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow,
             HttpServletResponse response) throws IOException {
         
-        ExtendedHeatmapService.ResponseTimeStats stats = 
-                extendedHeatmapService.getResponseTimeStats(className, methodName, timeWindow);
+        HeatmapExtensionService.ResponseTimeStats stats = 
+                heatmapExtensionService.getResponseTimeStats(className, methodName, timeWindow);
         
         List<List<String>> data = new ArrayList<>();
         data.add(List.of("接口类", "接口方法", "P50(ms)", "P95(ms)", "P99(ms)", "平均值", "最大值", "最小值"));
@@ -107,7 +107,7 @@ public class DashboardDataController {
             HttpServletResponse response) throws IOException {
         
         Map<LocalDateTime, Double> trend = 
-                extendedHeatmapService.getErrorRateTrend(className, methodName, timeWindow, points);
+                heatmapExtensionService.getErrorRateTrend(className, methodName, timeWindow, points);
         
         List<List<String>> data = new ArrayList<>();
         data.add(List.of("时间", "错误率"));
@@ -127,7 +127,7 @@ public class DashboardDataController {
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow,
             HttpServletResponse response) throws IOException {
         
-        Map<String, Long> distribution = extendedHeatmapService.getGeoDistribution(timeWindow);
+        Map<String, Long> distribution = heatmapExtensionService.getGeoDistribution(timeWindow);
         
         List<List<String>> data = new ArrayList<>();
         data.add(List.of("地域", "访问量"));
@@ -144,7 +144,7 @@ public class DashboardDataController {
             @RequestParam(defaultValue = "REALTIME") HeatmapService.TimeWindow timeWindow,
             HttpServletResponse response) throws IOException {
         
-        Map<String, Long> distribution = extendedHeatmapService.getTerminalDistribution(timeWindow);
+        Map<String, Long> distribution = heatmapExtensionService.getTerminalDistribution(timeWindow);
         
         List<List<String>> data = new ArrayList<>();
         data.add(List.of("终端类型", "访问量"));
