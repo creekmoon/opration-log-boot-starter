@@ -336,7 +336,7 @@ public class HeatmapServiceImpl implements HeatmapService {
     private String extractFullNameFromKey(String key, TimeWindow timeWindow, MetricType metricType) {
         String prefix = properties.getRedisKeyPrefix() + ":" + metricType.name().toLowerCase() + ":";
         String remaining = key.substring(prefix.length());
-        
+
         // 根据时间窗口类型移除时间部分
         switch (timeWindow) {
             case HOURLY:
@@ -353,11 +353,17 @@ public class HeatmapServiceImpl implements HeatmapService {
                     remaining = remaining.substring(firstColon + 1);
                 }
                 break;
-            default:
+            case REALTIME:
                 // realtime:class:method -> class:method
+                firstColon = remaining.indexOf(':');
+                if (firstColon > 0) {
+                    remaining = remaining.substring(firstColon + 1);
+                }
+                break;
+            default:
                 break;
         }
-        
+
         return remaining.replace(":", ".");
     }
 

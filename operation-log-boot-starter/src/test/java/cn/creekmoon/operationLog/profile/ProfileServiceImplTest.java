@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.time.LocalDateTime;
@@ -29,9 +28,6 @@ class ProfileServiceImplTest {
     @Mock
     private HashOperations<String, Object, Object> hashOperations;
 
-    @Mock
-    private SetOperations<String, String> setOperations;
-
     private ProfileProperties properties;
     private ProfileServiceImpl profileService;
 
@@ -43,7 +39,6 @@ class ProfileServiceImplTest {
         properties.setDefaultStatsDays(30);
         
         lenient().when(redisTemplate.opsForHash()).thenReturn(hashOperations);
-        lenient().when(redisTemplate.opsForSet()).thenReturn(setOperations);
         
         profileService = new ProfileServiceImpl(redisTemplate, properties);
     }
@@ -93,6 +88,10 @@ class ProfileServiceImplTest {
     void testGetUserOperationStats() {
         // Given
         String userId = "user123";
+        // 使用1天来避免数据被重复计算30次
+        properties.setDefaultStatsDays(1);
+        profileService = new ProfileServiceImpl(redisTemplate, properties);
+        
         Map<Object, Object> entries = new HashMap<>();
         entries.put("ORDER_QUERY", 100);
         entries.put("ORDER_SUBMIT", 10);
@@ -113,34 +112,27 @@ class ProfileServiceImplTest {
     void testGetUserTags() {
         // Given
         String userId = "user123";
-        Set<String> tags = new HashSet<>();
-        tags.add("高频查询用户");
-        tags.add("高价值用户");
-        
-        when(setOperations.members(anyString())).thenReturn(tags);
 
         // When
         Set<String> result = profileService.getUserTags(userId);
 
-        // Then
+        // Then - 标签功能已移除，应返回空集合
         assertNotNull(result);
-        assertEquals(2, result.size());
-        assertTrue(result.contains("高频查询用户"));
+        assertTrue(result.isEmpty());
     }
 
     @Test
     void testGetUserProfile() {
         // Given
         String userId = "user123";
+        properties.setDefaultStatsDays(1);
+        profileService = new ProfileServiceImpl(redisTemplate, properties);
+        
         Map<Object, Object> entries = new HashMap<>();
         entries.put("ORDER_QUERY", 100);
         entries.put("ORDER_SUBMIT", 10);
         
-        Set<String> tags = new HashSet<>();
-        tags.add("高频查询用户");
-        
         when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(tags);
 
         // When
         ProfileService.UserProfile profile = profileService.getUserProfile(userId);
@@ -149,74 +141,61 @@ class ProfileServiceImplTest {
         assertNotNull(profile);
         assertEquals(userId, profile.userId());
         assertEquals(2, profile.operationStats().size());
-        assertTrue(profile.tags().contains("高频查询用户"));
+        // 标签功能已移除，应返回空集合
+        assertTrue(profile.tags().isEmpty());
     }
 
     @Test
     void testGetUsersByTag() {
         // Given
         String tag = "高频查询用户";
-        Set<String> users = new HashSet<>();
-        users.add("user1");
-        users.add("user2");
-        
-        when(setOperations.members(anyString())).thenReturn(users);
 
-        // When
+        // When - 标签功能已移除，应返回空列表
         List<String> result = profileService.getUsersByTag(tag, 0, 10);
 
         // Then
         assertNotNull(result);
-        assertEquals(2, result.size());
+        assertTrue(result.isEmpty());
     }
 
     @Test
     void testGetUserCountByTag() {
         // Given
         String tag = "高频查询用户";
-        
-        when(setOperations.size(anyString())).thenReturn(100L);
 
-        // When
+        // When - 标签功能已移除，应返回0
         long count = profileService.getUserCountByTag(tag);
 
         // Then
-        assertEquals(100, count);
+        assertEquals(0, count);
     }
 
     @Test
     void testRefreshUserTags() {
         // Given
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 100); // > 50, 应该打上"高频查询用户"标签
-        entries.put("ORDER_SUBMIT", 0);
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
+        // 不需要任何 mock，因为标签功能已移除
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then
-        verify(setOperations, atLeast(1)).add(anyString(), eq("高频查询用户"));
+        // Then - 标签功能已移除，方法为空实现，不应抛出异常
+        // 不验证任何 Redis 操作，因为功能已移除
+        assertDoesNotThrow(() -> profileService.refreshUserTags(userId));
     }
 
     @Test
     void testRefreshUserTags_NotMatching() {
         // Given
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 10); // < 50, 不应该打上"高频查询用户"标签
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
+        // 不需要任何 mock，因为标签功能已移除
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then - verify no tags are added
-        verify(setOperations, never()).add(anyString(), eq("高频查询用户"));
+        // Then - 标签功能已移除，方法为空实现
+        // 不验证任何 Redis 操作，因为功能已移除
+        assertDoesNotThrow(() -> profileService.refreshUserTags(userId));
     }
 
     @Test
@@ -226,12 +205,7 @@ class ProfileServiceImplTest {
         userKeys.add("operation-log:user-profile:user1:counts:20240101");
         userKeys.add("operation-log:user-profile:user2:counts:20240101");
         
-        Set<String> tagKeys = new HashSet<>();
-        tagKeys.add("operation-log:user-profile:tag-index:高频查询用户");
-        
         when(redisTemplate.keys(contains(":counts:"))).thenReturn(userKeys);
-        when(redisTemplate.keys(contains(":tag-index:"))).thenReturn(tagKeys);
-        when(redisTemplate.execute(any(RedisCallback.class))).thenReturn("PONG");
 
         // When
         ProfileService.ProfileStatus status = profileService.getStatus();
@@ -239,7 +213,8 @@ class ProfileServiceImplTest {
         // Then
         assertNotNull(status);
         assertTrue(status.enabled());
-        assertTrue(status.tagEngineEnabled());
+        // 标签功能已移除，tagEngineEnabled 应为 false
+        assertFalse(status.tagEngineEnabled());
     }
 
     @Test
@@ -259,37 +234,25 @@ class ProfileServiceImplTest {
 
     @Test
     void testTagRuleEvaluation_HighValueUser() {
-        // Given - 高价值用户: ORDER_SUBMIT > 10 AND ORDER_REFUND < 2
+        // Given - 标签功能已移除，此测试验证空实现不会抛出异常
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_SUBMIT", 15);
-        entries.put("ORDER_REFUND", 1);
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then
-        verify(setOperations, atLeast(1)).add(anyString(), eq("高价值用户"));
+        // Then - 不应抛出异常，也不应调用任何 Redis 操作
+        assertDoesNotThrow(() -> profileService.refreshUserTags(userId));
     }
 
     @Test
     void testTagRuleEvaluation_PotentialChurn() {
-        // Given - 潜在流失用户: ORDER_QUERY > 30 AND ORDER_SUBMIT = 0
+        // Given - 标签功能已移除，此测试验证空实现不会抛出异常
         String userId = "user123";
-        Map<Object, Object> entries = new HashMap<>();
-        entries.put("ORDER_QUERY", 50);
-        entries.put("ORDER_SUBMIT", 0);
-        
-        when(hashOperations.entries(anyString())).thenReturn(entries);
-        when(setOperations.members(anyString())).thenReturn(Collections.emptySet());
 
         // When
         profileService.refreshUserTags(userId);
 
-        // Then
-        verify(setOperations, atLeast(1)).add(anyString(), eq("潜在流失用户"));
+        // Then - 不应抛出异常，也不应调用任何 Redis 操作
+        assertDoesNotThrow(() -> profileService.refreshUserTags(userId));
     }
 }

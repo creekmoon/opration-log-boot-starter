@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.HyperLogLogOperations;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -229,9 +228,10 @@ class HeatmapServiceImplTest {
         Set<String> keys = new HashSet<>();
         keys.add("key1");
         keys.add("key2");
-        
+
         when(redisTemplate.keys(anyString())).thenReturn(keys);
-        when(redisTemplate.execute(any(RedisCallback.class))).thenReturn("PONG");
+        // Note: getStatus() uses redisTemplate.getConnectionFactory().getConnection().ping()
+        // not redisTemplate.execute(), so no need to stub execute()
 
         // When
         HeatmapService.HeatmapStatus status = heatmapService.getStatus();
