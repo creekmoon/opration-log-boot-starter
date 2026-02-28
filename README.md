@@ -359,7 +359,7 @@ Set<String> tags = profile.tags();  // [高频用户, 查询型用户, 工作时
 
 启动应用后访问：
 
-- **基础版 Dashboard**: `http://localhost:8080/operation-log/dashboard`
+- **基础版 Dashboard**: `http://localhost:8080/operation-log-dashboard.html`
 - **专业版 Dashboard**: `http://localhost:8080/operation-log-dashboard-pro.html`
 
 **功能特性**:
