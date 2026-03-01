@@ -202,7 +202,7 @@ public class RedisFailoverManager {
             // 使用超时控制
             Future<Boolean> future = Executors.newSingleThreadExecutor().submit(() -> {
                 try {
-                    String pong = redisTemplate.execute((connection) -> {
+                    String pong = redisTemplate.execute((org.springframework.data.redis.core.RedisCallback<String>) (connection) -> {
                         return connection.ping();
                     });
                     return "PONG".equalsIgnoreCase(pong);

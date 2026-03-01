@@ -83,7 +83,7 @@ public class RedisMetricsCollector {
             String latencyKey = RedisKeyConstants.latencyKey(endpoint);
             
             // 使用Pipeline批量执行
-            redisTemplate.executePipelined((connection) -> {
+            redisTemplate.executePipelined((org.springframework.data.redis.core.RedisCallback<Object>) (connection) -> {
                 // 更新接口统计 (Hash)
                 connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), 1);
                 connection.hashCommands().hIncrBy(statKey.getBytes(), "totalResponseTime".getBytes(), responseTime);
@@ -168,7 +168,7 @@ public class RedisMetricsCollector {
             }
             
             // 批量写入Redis
-            redisTemplate.executePipelined((connection) -> {
+            redisTemplate.executePipelined((org.springframework.data.redis.core.RedisCallback<Object>) (connection) -> {
                 for (Map.Entry<String, EndpointStats> entry : statsMap.entrySet()) {
                     String endpoint = entry.getKey();
                     EndpointStats stats = entry.getValue();
@@ -298,15 +298,15 @@ public class RedisMetricsCollector {
             }
             
             long rank = (long) (total * percentile);
-            Set<Object> values = redisTemplate.opsForZSet().range(latencyKey, rank, rank);
+            Set<String> values = redisTemplate.opsForZSet().range(latencyKey, rank, rank);
             
             if (values == null || values.isEmpty()) {
                 return 0;
             }
             
             // 获取score（响应时间）
-            Object value = values.iterator().next();
-            Double score = redisTemplate.opsForZSet().score(latencyKey, value.toString());
+            String value = values.iterator().next();
+            Double score = redisTemplate.opsForZSet().score(latencyKey, value);
             return score != null ? score.longValue() : 0;
             
         } catch (Exception e) {

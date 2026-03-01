@@ -139,7 +139,7 @@ public class RedisInsightEngine {
             String timelineKey = RedisKeyConstants.userTimelineKey(userId);
             
             // 从Sorted Set获取时间范围内的行为记录
-            Set<Object> actions = redisTemplate.opsForZSet().rangeByScore(
+            Set<String> actions = redisTemplate.opsForZSet().rangeByScore(
                     timelineKey, startTime, endTime);
             
             if (actions == null || actions.isEmpty()) {
@@ -178,7 +178,7 @@ public class RedisInsightEngine {
             String timelineKey = RedisKeyConstants.userTimelineKey(userId);
             
             // 获取最新的N条记录
-            Set<Object> actions = redisTemplate.opsForZSet().reverseRange(timelineKey, 0, limit - 1);
+            Set<String> actions = redisTemplate.opsForZSet().reverseRange(timelineKey, 0, limit - 1);
             
             if (actions == null || actions.isEmpty()) {
                 return new UserPath(userId, List.of(), 0, 0, 0, Set.of());
@@ -240,14 +240,14 @@ public class RedisInsightEngine {
         try {
             // 从错误排行获取高频错误接口
             String errorRankKey = RedisKeyConstants.errorRankKey();
-            Set<Object> topErrors = redisTemplate.opsForZSet().reverseRange(errorRankKey, 0, 20);
+            Set<String> topErrors = redisTemplate.opsForZSet().reverseRange(errorRankKey, 0, 20);
             
             if (topErrors == null || topErrors.isEmpty()) {
                 return patterns;
             }
             
-            for (Object endpointObj : topErrors) {
-                String endpoint = endpointObj.toString();
+            for (String endpointObj : topErrors) {
+                String endpoint = endpointObj;
                 
                 // 获取错误次数
                 Double errorCount = redisTemplate.opsForZSet().score(errorRankKey, endpoint);
@@ -333,7 +333,7 @@ public class RedisInsightEngine {
                                    .replace(":timeline", "");
                 
                 // 检查是否有最近的活动
-                Set<Object> recent = redisTemplate.opsForZSet().rangeByScore(key, cutoffTime, Double.MAX_VALUE);
+                Set<String> recent = redisTemplate.opsForZSet().rangeByScore(key, cutoffTime, Double.MAX_VALUE);
                 if (recent != null && !recent.isEmpty()) {
                     activeUsers.add(userId);
                 }
@@ -362,7 +362,7 @@ public class RedisInsightEngine {
                     .collect(Collectors.groupingBy(UserAction::userId));
             
             // 批量写入Redis Pipeline
-            redisTemplate.executePipelined((connection) -> {
+            redisTemplate.executePipelined((org.springframework.data.redis.core.RedisCallback<Object>) (connection) -> {
                 for (Map.Entry<String, List<UserAction>> entry : grouped.entrySet()) {
                     String userId = entry.getKey();
                     String timelineKey = RedisKeyConstants.userTimelineKey(userId);

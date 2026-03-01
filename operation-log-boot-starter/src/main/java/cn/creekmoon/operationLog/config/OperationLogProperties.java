@@ -11,6 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class OperationLogProperties {
 
     /**
+     * 是否全局启用操作日志
+     */
+    private boolean enabled = true;
+
+    /**
      * 是否全局启用热力图统计
      */
     private boolean heatmapGlobalEnabled = false;
@@ -120,5 +125,15 @@ public class OperationLogProperties {
          * 线程保持存活时间（秒），默认 60
          */
         private long keepAliveSeconds = 60;
+
+        /**
+         * 线程名称前缀，默认 "log-thread-"
+         */
+        private String threadNamePrefix = "log-thread-";
+
+        /**
+         * 是否允许核心线程超时，默认 true
+         */
+        private boolean allowCoreThreadTimeout = true;
     }
 }

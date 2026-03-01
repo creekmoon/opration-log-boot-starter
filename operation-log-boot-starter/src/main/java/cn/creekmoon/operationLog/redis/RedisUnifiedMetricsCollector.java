@@ -108,7 +108,7 @@ public class RedisUnifiedMetricsCollector implements UnifiedMetricsCollector {
             String statKey = RedisKeyConstants.statKey(endpoint);
             String errorRankKey = RedisKeyConstants.errorRankKey();
             
-            redisTemplate.executePipelined((connection) -> {
+            redisTemplate.executePipelined((org.springframework.data.redis.core.RedisCallback<Object>) (connection) -> {
                 connection.hashCommands().hIncrBy(statKey.getBytes(), "errorCount".getBytes(), 1);
                 connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), 1);
                 return null;
@@ -344,7 +344,7 @@ public class RedisUnifiedMetricsCollector implements UnifiedMetricsCollector {
                 stats.minResponseTime = Math.min(stats.minResponseTime, record.responseTime());
             }
             
-            redisTemplate.executePipelined((connection) -> {
+            redisTemplate.executePipelined((org.springframework.data.redis.core.RedisCallback<Object>) (connection) -> {
                 for (Map.Entry<String, EndpointStats> entry : statsMap.entrySet()) {
                     String endpoint = entry.getKey();
                     EndpointStats stats = entry.getValue();
