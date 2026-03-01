@@ -36,11 +36,13 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 
 import org.mockito.quality.Strictness;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 /**
  * LogAspect 单元测试
  */
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class LogAspectTest {
 
     @Mock
