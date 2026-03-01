@@ -272,7 +272,8 @@
                     <reuseForks>true</reuseForks>
                     <threadCount>1</threadCount>
                     <parallel>none</parallel>
-                    <argLine>-Xmx1024m</argLine>
+                    <!-- 保留 JaCoCo 的 argLine，同时添加 JVM 内存配置 -->
+                    <argLine>${argLine} -Xmx1024m</argLine>
                     <systemPropertyVariables>
                         <mockito.mock-maker-class>inline</mockito.mock-maker-class>
                     </systemPropertyVariables>
