@@ -18,7 +18,8 @@ import org.springframework.context.annotation.Import;
 @Import({LogAspect.class,
         DefaultOperationLogHandler.class,
         DefaultOperationLogRecordInitializer.class,
-        HeatmapConfiguration.class})
+        HeatmapConfiguration.class,
+        MetricsCollectorConfiguration.class})
 @RequiredArgsConstructor
 public class OperationLogAutoConfiguration {
 
