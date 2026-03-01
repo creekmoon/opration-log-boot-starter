@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +32,7 @@ import java.util.concurrent.Callable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
 
 /**
  * LogAspect 单元测试
@@ -73,7 +76,7 @@ class LogAspectTest {
     void setUp() {
         logAspect = new LogAspect();
         logAspect.setApplicationContext(applicationContext);
-        
+
         // 清理上下文
         OperationLogContext.clean();
         OperationLogContext.disable = false;
@@ -95,7 +98,7 @@ class LogAspectTest {
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", true, true);
         when(proceedingJoinPoint.proceed()).thenReturn("success result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         handlerMap.put("testHandler", operationLogHandler);
@@ -171,13 +174,13 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         jakarta.servlet.ServletRequest servletRequest = mock(jakarta.servlet.ServletRequest.class);
         Object[] args = new Object[]{servletRequest, "param2"};
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -199,13 +202,13 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         MultipartFile multipartFile = mock(MultipartFile.class);
         Object[] args = new Object[]{multipartFile};
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -227,12 +230,12 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         Object[] args = new Object[]{123, "string", true, 3.14, new BigDecimal("99.99"), 'A'};
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -254,12 +257,12 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         Object[] args = new Object[]{new String[]{"item1", "item2", "item3"}};
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -281,12 +284,12 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         Object[] args = new Object[]{null, "valid"};
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -308,7 +311,7 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, false);
-        
+
         // 使用一个不能正确序列化的对象
         Object circular = new Object() {
             @Override
@@ -320,7 +323,7 @@ class LogAspectTest {
         when(proceedingJoinPoint.getArgs()).thenReturn(args);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -339,15 +342,17 @@ class LogAspectTest {
         // Given
         setupBasicMocks();
         setupOperationLogAnnotation(OperationLog.OPERATION_SUMMARY_DEFAULT, false, "DEFAULT", false, false);
-        
-        // 设置 Swagger 注解
+
+        // 设置 Swagger 注解 - 使用 doReturn 来 stub 链式调用
         Operation swaggerOperation = mock(Operation.class);
         when(swaggerOperation.summary()).thenReturn("Swagger操作名称");
-        when(methodSignature.getMethod().getAnnotation(Operation.class)).thenReturn(swaggerOperation);
-        
+        // 先获取当前 method，然后使用 doReturn 来 stub getAnnotation
+        java.lang.reflect.Method currentMethod = methodSignature.getMethod();
+        doReturn(swaggerOperation).when(currentMethod).getAnnotation(Operation.class);
+
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -371,7 +376,7 @@ class LogAspectTest {
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", true, false);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -399,7 +404,7 @@ class LogAspectTest {
         setupOperationLogAnnotation("测试操作", false, "ORDER_QUERY", false, true);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -427,7 +432,7 @@ class LogAspectTest {
         setupOperationLogAnnotation("测试操作", false, "DEFAULT", false, true);
         when(proceedingJoinPoint.proceed()).thenReturn("result");
         when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(logRecordInitializer.functionPostProcess(any(), any())).thenAnswer(invocation -> invocation.getArgument(0));
+        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
@@ -470,14 +475,39 @@ class LogAspectTest {
         when(proceedingJoinPoint.getArgs()).thenReturn(new Object[]{});
     }
 
-    private void setupOperationLogAnnotation(String value, boolean handleOnFail, String type, 
-                                              boolean heatmap, boolean profile) {
-        OperationLog annotation = mock(OperationLog.class);
-        when(annotation.value()).thenReturn(value);
-        when(annotation.handleOnFail()).thenReturn(handleOnFail);
-        when(annotation.type()).thenReturn(type);
-        when(annotation.heatmap()).thenReturn(heatmap);
-        when(annotation.profile()).thenReturn(profile);
-        when(methodSignature.getMethod().getAnnotation(OperationLog.class)).thenReturn(annotation);
+    @OperationLog(value = "默认测试操作", handleOnFail = false, type = "DEFAULT", heatmap = true, profile = true)
+    public void defaultAnnotatedTestMethod() {
+        // 用于测试的带注解方法
+    }
+
+    @OperationLog(value = OperationLog.OPERATION_SUMMARY_DEFAULT, handleOnFail = false, type = "DEFAULT", heatmap = false, profile = false)
+    public void swaggerAnnotatedTestMethod() {
+        // 用于 Swagger 测试的方法
+    }
+
+    @OperationLog(value = "热力图测试", type = "ORDER_QUERY", heatmap = true, profile = false)
+    public void heatmapAnnotatedTestMethod() {
+        // 用于热力图测试的方法
+    }
+
+    @OperationLog(value = "画像测试", type = "DEFAULT", heatmap = false, profile = true)
+    public void profileAnnotatedTestMethod() {
+        // 用于画像测试的方法
+    }
+
+    private void setupOperationLogAnnotation(String value, boolean handleOnFail, String type,
+                                              boolean heatmap, boolean profile) throws NoSuchMethodException {
+        // 根据参数选择合适的方法
+        Method realMethod;
+        if (OperationLog.OPERATION_SUMMARY_DEFAULT.equals(value)) {
+            realMethod = getClass().getMethod("swaggerAnnotatedTestMethod");
+        } else if ("ORDER_QUERY".equals(type)) {
+            realMethod = getClass().getMethod("heatmapAnnotatedTestMethod");
+        } else if (profile && !heatmap) {
+            realMethod = getClass().getMethod("profileAnnotatedTestMethod");
+        } else {
+            realMethod = getClass().getMethod("defaultAnnotatedTestMethod");
+        }
+        when(methodSignature.getMethod()).thenReturn(realMethod);
     }
 }
