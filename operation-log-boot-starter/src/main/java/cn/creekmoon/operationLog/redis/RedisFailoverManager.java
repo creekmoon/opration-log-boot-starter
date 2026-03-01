@@ -72,6 +72,9 @@ public class RedisFailoverManager {
     
     // 恢复上报调度器
     private ScheduledExecutorService flushScheduler;
+    
+    // 健康检查超时控制线程池 - 复用单一线程池避免线程泄漏
+    private ExecutorService healthCheckExecutor;
 
     /**
      * 队列数据
@@ -94,6 +97,13 @@ public class RedisFailoverManager {
     public void init() {
         log.info("RedisFailoverManager 初始化完成，实例ID: {}", instanceId);
         
+        // 初始化健康检查执行器 - 复用单一线程池
+        healthCheckExecutor = Executors.newSingleThreadExecutor(r -> {
+            Thread t = new Thread(r, "redis-health-check-timeout");
+            t.setDaemon(true);
+            return t;
+        });
+        
         // 启动健康检查
         startHealthCheck();
         
@@ -114,6 +124,11 @@ public class RedisFailoverManager {
         
         if (flushScheduler != null) {
             flushScheduler.shutdown();
+        }
+        
+        // 关闭健康检查执行器
+        if (healthCheckExecutor != null) {
+            healthCheckExecutor.shutdown();
         }
         
         // 尝试最后刷新一次队列
@@ -198,9 +213,15 @@ public class RedisFailoverManager {
      * 检查Redis健康状态
      */
     private boolean checkRedisHealth() {
+        // 确保执行器已初始化
+        if (healthCheckExecutor == null || healthCheckExecutor.isShutdown()) {
+            log.warn("健康检查执行器未初始化或已关闭，Redis检查跳过");
+            return false;
+        }
+        
         try {
-            // 使用超时控制
-            Future<Boolean> future = Executors.newSingleThreadExecutor().submit(() -> {
+            // 使用复用的线程池进行超时控制，避免每次创建新线程池导致泄漏
+            Future<Boolean> future = healthCheckExecutor.submit(() -> {
                 try {
                     String pong = redisTemplate.execute(new org.springframework.data.redis.core.RedisCallback<String>() {
                         @Override
