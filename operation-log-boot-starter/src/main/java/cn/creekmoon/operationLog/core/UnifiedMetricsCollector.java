@@ -4,116 +4,97 @@ import java.util.Map;
 
 /**
  * 统一指标收集器接口
- * 定义指标收集的核心能力，支持内存和 Redis 两种实现
+ * 
+ * 抽象层，定义指标收集的核心操作。
+ * 实现类可以是内存版或 Redis 版。
+ * 
+ * @author CodeSmith
+ * @since 1.0.0
  */
 public interface UnifiedMetricsCollector {
-
+    
     /**
-     * 请求开始（并发计数）
+     * 记录请求开始（增加并发计数）
      */
     void requestStarted();
-
+    
     /**
-     * 请求结束（并发计数）
+     * 记录请求结束（减少并发计数）
      */
     void requestEnded();
-
+    
     /**
-     * 记录接口调用
-     *
-     * @param endpoint     接口标识
-     * @param responseTime 响应时间（毫秒）
+     * 记录接口响应时间
+     * 
+     * @param endpoint 接口标识（类名.方法名）
+     * @param responseTimeMillis 响应时间（毫秒）
      */
-    void record(String endpoint, long responseTime);
-
+    void record(String endpoint, long responseTimeMillis);
+    
     /**
      * 记录接口错误
-     *
+     * 
      * @param endpoint 接口标识
      */
     void recordError(String endpoint);
-
-    /**
-     * 获取指定接口的指标快照
-     *
-     * @param endpoint 接口标识
-     * @return 指标快照
-     */
-    EndpointMetricsSnapshot getEndpointMetrics(String endpoint);
-
-    /**
-     * 获取所有接口的指标快照
-     *
-     * @return 接口标识到指标快照的映射
-     */
-    Map<String, EndpointMetricsSnapshot> getAllEndpointMetrics();
-
-    /**
-     * 获取最慢的接口
-     *
-     * @param limit 返回数量限制
-     * @return 接口标识到指标快照的映射（按平均响应时间降序）
-     */
-    Map<String, EndpointMetricsSnapshot> getSlowestEndpoints(int limit);
-
-    /**
-     * 获取错误最多的接口
-     *
-     * @param limit 返回数量限制
-     * @return 接口标识到指标快照的映射（按错误率降序）
-     */
-    Map<String, EndpointMetricsSnapshot> getErrorEndpoints(int limit);
-
-    /**
-     * 获取全局错误率
-     *
-     * @return 错误率（0.0 ~ 1.0）
-     */
-    double getGlobalErrorRate();
-
-    /**
-     * 获取总请求数
-     *
-     * @return 总请求数
-     */
-    long getTotalRequests();
-
-    /**
-     * 获取当前 QPS
-     *
-     * @return 当前每秒请求数
-     */
-    double getCurrentQps();
-
-    /**
-     * 获取平均 QPS
-     *
-     * @return 平均每秒请求数
-     */
-    double getAvgQps();
-
+    
     /**
      * 获取当前并发请求数
-     *
-     * @return 当前并发数
      */
-    int getCurrentConcurrentRequests();
-
+    long getCurrentConcurrentRequests();
+    
     /**
      * 获取峰值并发请求数
-     *
-     * @return 峰值并发数
      */
-    int getPeakConcurrentRequests();
-
+    long getPeakConcurrentRequests();
+    
     /**
-     * 重置所有指标
+     * 获取总请求数
      */
-    void reset();
-
+    long getTotalRequests();
+    
+    /**
+     * 获取实时 QPS
+     */
+    double getCurrentQps();
+    
+    /**
+     * 获取平均 QPS（最近60秒）
+     */
+    double getAvgQps();
+    
+    /**
+     * 获取全局错误率
+     */
+    double getGlobalErrorRate();
+    
+    /**
+     * 获取所有接口的指标
+     */
+    Map<String, EndpointMetricsSnapshot> getAllEndpointMetrics();
+    
+    /**
+     * 获取指定接口的指标
+     */
+    EndpointMetricsSnapshot getEndpointMetrics(String endpoint);
+    
+    /**
+     * 获取性能最差的接口
+     * 
+     * @param limit 返回数量限制
+     */
+    Map<String, EndpointMetricsSnapshot> getSlowestEndpoints(int limit);
+    
+    /**
+     * 获取错误最多的接口
+     * 
+     * @param limit 返回数量限制
+     */
+    Map<String, EndpointMetricsSnapshot> getErrorEndpoints(int limit);
+    
     /**
      * 端点指标快照
-     * 不可变记录，保存某一时刻的指标数据
+     * 用于跨层传输的数据结构，避免暴露内部实现
      */
     record EndpointMetricsSnapshot(
             String endpoint,
@@ -125,12 +106,10 @@ public interface UnifiedMetricsCollector {
             long minResponseTime,
             double errorRate
     ) {
-        public EndpointMetricsSnapshot {
-            if (endpoint == null) endpoint = "";
-        }
-
         public static EndpointMetricsSnapshot empty(String endpoint) {
-            return new EndpointMetricsSnapshot(endpoint, 0, 0, 0, 0, 0, 0, 0.0);
+            return new EndpointMetricsSnapshot(
+                    endpoint, 0, 0, 0, 0, 0, 0, 0.0
+            );
         }
     }
 }

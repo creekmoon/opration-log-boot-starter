@@ -1,122 +1,151 @@
 package cn.creekmoon.operationLog.core;
 
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.stream.Collectors;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * 内存版统一指标收集器
- * 单实例高性能实现，使用 ConcurrentHashMap 保证线程安全
+ * 内存版统一指标收集器实现
+ * 
+ * 特点：
+ * - 零外部依赖
+ * - 高性能本地内存操作
+ * - 适用于单实例部署或降级模式
+ * 
+ * @author CodeSmith
+ * @since 1.0.0
  */
-@Component
+@Slf4j
 public class MemoryMetricsCollector implements UnifiedMetricsCollector {
 
-    // 端点级指标存储
-    private final ConcurrentHashMap<String, EndpointMetrics> endpointMetrics = new ConcurrentHashMap<>();
-    
-    // 全局计数器
+    /**
+     * 端点指标数据（内部实现）
+     */
+    public static class EndpointMetrics {
+        private final String endpoint;
+        private final LongAdder totalCount = new LongAdder();
+        private final LongAdder errorCount = new LongAdder();
+        private final LongAdder totalResponseTime = new LongAdder();
+        private final AtomicLong maxResponseTime = new AtomicLong(0);
+        private final AtomicLong minResponseTime = new AtomicLong(Long.MAX_VALUE);
+        
+        // 响应时间滑动窗口
+        private final long[] responseTimeWindow = new long[10000];
+        private final AtomicLong windowIndex = new AtomicLong(0);
+        private final ReentrantReadWriteLock windowLock = new ReentrantReadWriteLock();
+
+        public EndpointMetrics(String endpoint) {
+            this.endpoint = endpoint;
+        }
+
+        public void recordResponseTime(long millis) {
+            totalCount.increment();
+            totalResponseTime.add(millis);
+            maxResponseTime.updateAndGet(current -> Math.max(current, millis));
+            minResponseTime.updateAndGet(current -> Math.min(current, millis));
+            
+            windowLock.writeLock().lock();
+            try {
+                int index = (int) (windowIndex.getAndIncrement() % responseTimeWindow.length);
+                responseTimeWindow[index] = millis;
+            } finally {
+                windowLock.writeLock().unlock();
+            }
+        }
+
+        public void recordError() {
+            errorCount.increment();
+        }
+
+        public long getTotalCount() {
+            return totalCount.sum();
+        }
+
+        public long getErrorCount() {
+            return errorCount.sum();
+        }
+
+        public long getTotalResponseTime() {
+            return totalResponseTime.sum();
+        }
+
+        public long getAvgResponseTime() {
+            long total = totalCount.sum();
+            return total > 0 ? totalResponseTime.sum() / total : 0;
+        }
+
+        public long getMaxResponseTime() {
+            return maxResponseTime.get();
+        }
+
+        public long getMinResponseTime() {
+            return minResponseTime.get() == Long.MAX_VALUE ? 0 : minResponseTime.get();
+        }
+
+        public double getErrorRate() {
+            long total = totalCount.sum();
+            long errors = errorCount.sum();
+            return total > 0 ? (double) errors / total : 0.0;
+        }
+    }
+
+    // ==================== 全局指标存储 ====================
+    private final ConcurrentHashMap<String, EndpointMetrics> endpointMetricsMap = new ConcurrentHashMap<>();
+    private final AtomicLong concurrentRequests = new AtomicLong(0);
+    private final AtomicLong peakConcurrentRequests = new AtomicLong(0);
     private final LongAdder totalRequests = new LongAdder();
-    private final LongAdder totalErrors = new LongAdder();
-    private final AtomicLong totalResponseTime = new AtomicLong(0);
     
-    // 并发请求计数
-    private final AtomicInteger currentConcurrent = new AtomicInteger(0);
-    private final AtomicInteger peakConcurrent = new AtomicInteger(0);
-    
-    // QPS 计算
-    private final AtomicLong qpsWindowStart = new AtomicLong(System.currentTimeMillis());
-    private final AtomicInteger qpsWindowRequests = new AtomicInteger(0);
-    private volatile double currentQps = 0.0;
-    private volatile double avgQps = 0.0;
+    // QPS 计算 (1秒滑动窗口)
+    private final long[] qpsWindow = new long[60];
+    private final AtomicLong qpsWindowIndex = new AtomicLong(0);
 
     @Override
     public void requestStarted() {
-        int current = currentConcurrent.incrementAndGet();
-        // 更新峰值
-        int peak;
-        do {
-            peak = peakConcurrent.get();
-        } while (current > peak && !peakConcurrent.compareAndSet(peak, current));
+        long current = concurrentRequests.incrementAndGet();
+        peakConcurrentRequests.updateAndGet(peak -> Math.max(peak, current));
+        totalRequests.increment();
+        
+        long currentSecond = System.currentTimeMillis() / 1000;
+        int index = (int) (currentSecond % qpsWindow.length);
+        int currentIndex = (int) (qpsWindowIndex.get() % qpsWindow.length);
+        
+        if (index != currentIndex) {
+            qpsWindowIndex.set(currentSecond);
+            qpsWindow[index] = 0;
+        }
+        qpsWindow[index]++;
     }
 
     @Override
     public void requestEnded() {
-        currentConcurrent.decrementAndGet();
+        concurrentRequests.decrementAndGet();
     }
 
     @Override
-    public void record(String endpoint, long responseTime) {
-        EndpointMetrics metrics = endpointMetrics.computeIfAbsent(endpoint, k -> new EndpointMetrics(endpoint));
-        metrics.record(responseTime);
-        
+    public void record(String endpoint, long responseTimeMillis) {
+        EndpointMetrics metrics = endpointMetricsMap.computeIfAbsent(endpoint, EndpointMetrics::new);
+        metrics.recordResponseTime(responseTimeMillis);
         totalRequests.increment();
-        totalResponseTime.addAndGet(responseTime);
-        
-        // QPS 计算
-        updateQps();
     }
 
     @Override
     public void recordError(String endpoint) {
-        EndpointMetrics metrics = endpointMetrics.computeIfAbsent(endpoint, k -> new EndpointMetrics(endpoint));
+        EndpointMetrics metrics = endpointMetricsMap.computeIfAbsent(endpoint, EndpointMetrics::new);
         metrics.recordError();
-        totalErrors.increment();
     }
 
     @Override
-    public EndpointMetricsSnapshot getEndpointMetrics(String endpoint) {
-        EndpointMetrics metrics = endpointMetrics.get(endpoint);
-        if (metrics == null) {
-            return EndpointMetricsSnapshot.empty(endpoint);
-        }
-        return metrics.toSnapshot();
+    public long getCurrentConcurrentRequests() {
+        return concurrentRequests.get();
     }
 
     @Override
-    public Map<String, EndpointMetricsSnapshot> getAllEndpointMetrics() {
-        return endpointMetrics.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().toSnapshot()
-                ));
-    }
-
-    @Override
-    public Map<String, EndpointMetricsSnapshot> getSlowestEndpoints(int limit) {
-        return endpointMetrics.values().stream()
-                .sorted(Comparator.comparingLong(EndpointMetrics::getAvgResponseTime).reversed())
-                .limit(limit)
-                .collect(Collectors.toMap(
-                        EndpointMetrics::getEndpoint,
-                        EndpointMetrics::toSnapshot,
-                        (a, b) -> a,
-                        java.util.LinkedHashMap::new
-                ));
-    }
-
-    @Override
-    public Map<String, EndpointMetricsSnapshot> getErrorEndpoints(int limit) {
-        return endpointMetrics.values().stream()
-                .sorted(Comparator.comparingDouble(EndpointMetrics::getErrorRate).reversed())
-                .limit(limit)
-                .collect(Collectors.toMap(
-                        EndpointMetrics::getEndpoint,
-                        EndpointMetrics::toSnapshot,
-                        (a, b) -> a,
-                        java.util.LinkedHashMap::new
-                ));
-    }
-
-    @Override
-    public double getGlobalErrorRate() {
-        long total = totalRequests.sum();
-        return total > 0 ? (double) totalErrors.sum() / total : 0.0;
+    public long getPeakConcurrentRequests() {
+        return peakConcurrentRequests.get();
     }
 
     @Override
@@ -126,125 +155,103 @@ public class MemoryMetricsCollector implements UnifiedMetricsCollector {
 
     @Override
     public double getCurrentQps() {
-        updateQps();
-        return currentQps;
+        long currentSecond = System.currentTimeMillis() / 1000;
+        int index = (int) (currentSecond % qpsWindow.length);
+        return qpsWindow[index];
     }
 
     @Override
     public double getAvgQps() {
-        return avgQps;
-    }
-
-    @Override
-    public int getCurrentConcurrentRequests() {
-        return currentConcurrent.get();
-    }
-
-    @Override
-    public int getPeakConcurrentRequests() {
-        return peakConcurrent.get();
-    }
-
-    @Override
-    public void reset() {
-        endpointMetrics.clear();
-        totalRequests.reset();
-        totalErrors.reset();
-        totalResponseTime.set(0);
-        currentConcurrent.set(0);
-        peakConcurrent.set(0);
-        qpsWindowStart.set(System.currentTimeMillis());
-        qpsWindowRequests.set(0);
-        currentQps = 0.0;
-        avgQps = 0.0;
-    }
-
-    /**
-     * 更新 QPS 计算
-     */
-    private void updateQps() {
-        long now = System.currentTimeMillis();
-        long windowStart = qpsWindowStart.get();
-        
-        if (now - windowStart >= 1000) {
-            // 每秒更新一次
-            int requests = qpsWindowRequests.getAndSet(1);
-            if (now - windowStart < 2000) {
-                // 正常情况：使用滑动窗口
-                currentQps = requests;
-                avgQps = avgQps * 0.8 + currentQps * 0.2; // 指数移动平均
+        long sum = 0;
+        int count = 0;
+        for (long qps : qpsWindow) {
+            if (qps > 0) {
+                sum += qps;
+                count++;
             }
-            qpsWindowStart.set(now);
-        } else {
-            qpsWindowRequests.incrementAndGet();
         }
+        return count > 0 ? (double) sum / count : 0;
+    }
+
+    @Override
+    public double getGlobalErrorRate() {
+        long totalErrors = endpointMetricsMap.values().stream()
+                .mapToLong(EndpointMetrics::getErrorCount)
+                .sum();
+        long total = totalRequests.sum();
+        return total > 0 ? (double) totalErrors / total : 0;
+    }
+
+    @Override
+    public Map<String, EndpointMetricsSnapshot> getAllEndpointMetrics() {
+        Map<String, EndpointMetricsSnapshot> result = new HashMap<>();
+        endpointMetricsMap.forEach((key, metrics) -> {
+            result.put(key, toSnapshot(key, metrics));
+        });
+        return result;
+    }
+
+    @Override
+    public EndpointMetricsSnapshot getEndpointMetrics(String endpoint) {
+        EndpointMetrics metrics = endpointMetricsMap.get(endpoint);
+        if (metrics == null) {
+            return EndpointMetricsSnapshot.empty(endpoint);
+        }
+        return toSnapshot(endpoint, metrics);
+    }
+
+    @Override
+    public Map<String, EndpointMetricsSnapshot> getSlowestEndpoints(int limit) {
+        return endpointMetricsMap.entrySet().stream()
+                .sorted((e1, e2) -> Long.compare(
+                        e2.getValue().getAvgResponseTime(), 
+                        e1.getValue().getAvgResponseTime()))
+                .limit(limit)
+                .collect(java.util.stream.Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> toSnapshot(e.getKey(), e.getValue()),
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
+    }
+
+    @Override
+    public Map<String, EndpointMetricsSnapshot> getErrorEndpoints(int limit) {
+        return endpointMetricsMap.entrySet().stream()
+                .sorted((e1, e2) -> Double.compare(
+                        e2.getValue().getErrorRate(), 
+                        e1.getValue().getErrorRate()))
+                .limit(limit)
+                .collect(java.util.stream.Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> toSnapshot(e.getKey(), e.getValue()),
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private EndpointMetricsSnapshot toSnapshot(String endpoint, EndpointMetrics metrics) {
+        return new EndpointMetricsSnapshot(
+                endpoint,
+                metrics.getTotalCount(),
+                metrics.getErrorCount(),
+                metrics.getTotalResponseTime(),
+                metrics.getAvgResponseTime(),
+                metrics.getMaxResponseTime(),
+                metrics.getMinResponseTime(),
+                metrics.getErrorRate()
+        );
     }
 
     /**
-     * 端点级指标（内部类）
+     * 重置所有指标（测试用）
      */
-    private static class EndpointMetrics {
-        private final String endpoint;
-        private final LongAdder totalCount = new LongAdder();
-        private final LongAdder errorCount = new LongAdder();
-        private final AtomicLong totalResponseTime = new AtomicLong(0);
-        private final AtomicLong maxResponseTime = new AtomicLong(0);
-        private final AtomicLong minResponseTime = new AtomicLong(Long.MAX_VALUE);
-
-        EndpointMetrics(String endpoint) {
-            this.endpoint = endpoint;
-        }
-
-        void record(long responseTime) {
-            totalCount.increment();
-            totalResponseTime.addAndGet(responseTime);
-            
-            // 更新最大响应时间
-            long currentMax;
-            do {
-                currentMax = maxResponseTime.get();
-            } while (responseTime > currentMax && !maxResponseTime.compareAndSet(currentMax, responseTime));
-            
-            // 更新最小响应时间
-            long currentMin;
-            do {
-                currentMin = minResponseTime.get();
-            } while (responseTime < currentMin && !minResponseTime.compareAndSet(currentMin, responseTime));
-        }
-
-        void recordError() {
-            errorCount.increment();
-        }
-
-        String getEndpoint() {
-            return endpoint;
-        }
-
-        long getAvgResponseTime() {
-            long count = totalCount.sum();
-            return count > 0 ? totalResponseTime.get() / count : 0;
-        }
-
-        double getErrorRate() {
-            long count = totalCount.sum();
-            return count > 0 ? (double) errorCount.sum() / count : 0.0;
-        }
-
-        EndpointMetricsSnapshot toSnapshot() {
-            long count = totalCount.sum();
-            long errors = errorCount.sum();
-            long totalTime = totalResponseTime.get();
-            
-            return new EndpointMetricsSnapshot(
-                    endpoint,
-                    count,
-                    errors,
-                    totalTime,
-                    count > 0 ? totalTime / count : 0,
-                    maxResponseTime.get(),
-                    minResponseTime.get() == Long.MAX_VALUE ? 0 : minResponseTime.get(),
-                    count > 0 ? (double) errors / count : 0.0
-            );
-        }
+    public void reset() {
+        endpointMetricsMap.clear();
+        concurrentRequests.set(0);
+        peakConcurrentRequests.set(0);
+        totalRequests.reset();
+        Arrays.fill(qpsWindow, 0);
+        qpsWindowIndex.set(0);
     }
 }
