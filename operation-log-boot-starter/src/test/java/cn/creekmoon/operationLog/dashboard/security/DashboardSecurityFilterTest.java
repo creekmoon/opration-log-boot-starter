@@ -1,7 +1,6 @@
 package cn.creekmoon.operationLog.dashboard.security;
 
 import cn.creekmoon.operationLog.dashboard.DashboardProperties;
-import com.alibaba.fastjson2.JSON;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,27 +10,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Dashboard 安全过滤器测试类
+ * Dashboard 安全过滤器测试类 - Basic Auth 版本
  */
-@DisplayName("DashboardSecurityFilter 过滤器测试")
+@DisplayName("DashboardSecurityFilter Basic Auth 测试")
 class DashboardSecurityFilterTest {
 
     private DashboardSecurityFilter securityFilter;
     private DashboardProperties properties;
-
-    @Mock
-    private DashboardSecurityService securityService;
 
     @Mock
     private HttpServletRequest request;
@@ -48,7 +44,7 @@ class DashboardSecurityFilterTest {
     void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
         properties = new DashboardProperties();
-        securityFilter = new DashboardSecurityFilter(securityService, properties);
+        securityFilter = new DashboardSecurityFilter(properties);
         
         // 设置响应 writer
         responseWriter = new StringWriter();
@@ -70,12 +66,11 @@ class DashboardSecurityFilterTest {
     }
 
     @Test
-    @DisplayName("Dashboard路径 - 需要认证")
+    @DisplayName("Dashboard路径 - 启用时需要认证")
     void testDashboardPath() throws ServletException, IOException {
+        properties.setEnabled(true);
+        // 不配置 auth，不需要认证
         when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.success()
-        );
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
@@ -85,10 +80,8 @@ class DashboardSecurityFilterTest {
     @Test
     @DisplayName("Dashboard HTML页面 - 需要认证")
     void testDashboardHtmlPath() throws ServletException, IOException {
+        properties.setEnabled(true);
         when(request.getRequestURI()).thenReturn("/operation-log-dashboard.html");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.success()
-        );
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
@@ -98,27 +91,26 @@ class DashboardSecurityFilterTest {
     @Test
     @DisplayName("认证端点 - 跳过认证")
     void testAuthEndpointSkipped() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/auth/login");
+        properties.setEnabled(true);
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/auth/status");
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
         verify(filterChain).doFilter(request, response);
-        verifyNoInteractions(securityService);
     }
 
-    // ========== 认证模式测试 ==========
+    // ========== Dashboard 启用/禁用测试 ==========
 
     @Test
-    @DisplayName("OFF模式 - Dashboard启用时直接放行")
-    void testOffMode_Allowed() throws ServletException, IOException {
+    @DisplayName("Dashboard启用且无认证配置 - 直接放行")
+    void testEnabledWithoutAuth() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.OFF);
+        // 不配置 auth
         when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
         verify(filterChain).doFilter(request, response);
-        verifyNoInteractions(securityService);
     }
 
     @Test
@@ -133,41 +125,39 @@ class DashboardSecurityFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
 
+    // ========== Basic Auth 测试 ==========
+
     @Test
-    @DisplayName("IP_ONLY模式 - 访问被拒绝")
-    void testIpOnly_Denied() throws ServletException, IOException {
+    @DisplayName("Basic Auth - 无认证头返回401")
+    void testBasicAuth_NoHeader() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_ONLY);
-        properties.setAuthFailureMessage("Access Denied");
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
         when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.failure(
-                DashboardSecurityService.AuthFailureReason.IP_NOT_ALLOWED, 
-                "192.168.1.100"
-            )
-        );
+        when(request.getHeader("Authorization")).thenReturn(null);
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        verify(response).setContentType(MediaType.APPLICATION_JSON_VALUE);
-        verify(response).setCharacterEncoding(StandardCharsets.UTF_8.name());
+        verify(response).setHeader("WWW-Authenticate", "Basic realm=\"Dashboard\"");
         verify(filterChain, never()).doFilter(request, response);
     }
 
     @Test
-    @DisplayName("TOKEN_ONLY模式 - Token无效")
-    void testTokenOnly_Invalid() throws ServletException, IOException {
+    @DisplayName("Basic Auth - 错误密码返回401")
+    void testBasicAuth_InvalidCredentials() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.TOKEN_ONLY);
-        properties.setAuthFailureMessage("Invalid Token");
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
         when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.failure(
-                DashboardSecurityService.AuthFailureReason.TOKEN_INVALID, 
-                "10.0.0.1"
-            )
-        );
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("admin:wrongpass".getBytes(StandardCharsets.UTF_8)));
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
@@ -176,14 +166,90 @@ class DashboardSecurityFilterTest {
     }
 
     @Test
-    @DisplayName("IP_AND_TOKEN模式 - 访问通过")
-    void testIpAndToken_Allowed() throws ServletException, IOException {
+    @DisplayName("Basic Auth - 正确密码放行")
+    void testBasicAuth_ValidCredentials() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_AND_TOKEN);
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
         when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.success()
-        );
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("admin:secret123".getBytes(StandardCharsets.UTF_8)));
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("Basic Auth - 错误的认证类型")
+    void testBasicAuth_WrongAuthType() throws ServletException, IOException {
+        properties.setEnabled(true);
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        when(request.getHeader("Authorization")).thenReturn("Bearer token123");
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(filterChain, never()).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("Basic Auth - 非法的Base64")
+    void testBasicAuth_InvalidBase64() throws ServletException, IOException {
+        properties.setEnabled(true);
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        when(request.getHeader("Authorization")).thenReturn("Basic invalid_base64!!!");
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(filterChain, never()).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("Basic Auth - 缺少冒号分隔符")
+    void testBasicAuth_NoColon() throws ServletException, IOException {
+        properties.setEnabled(true);
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("admin");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("adminonly".getBytes(StandardCharsets.UTF_8)));
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(filterChain, never()).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("Basic Auth - 自定义用户名")
+    void testBasicAuth_CustomUsername() throws ServletException, IOException {
+        properties.setEnabled(true);
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("operator");
+        auth.setPassword("secret123");
+        properties.setAuth(auth);
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("operator:secret123".getBytes(StandardCharsets.UTF_8)));
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
@@ -212,103 +278,28 @@ class DashboardSecurityFilterTest {
         assertFalse(shouldNotFilter);
     }
 
-    // ========== 错误响应测试 ==========
-
-    @Test
-    @DisplayName("验证错误响应格式 - IP被拒绝")
-    void testErrorResponseFormat_IpDenied() throws ServletException, IOException {
-        properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_ONLY);
-        properties.setAuthFailureMessage("IP Not Allowed");
-        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.failure(
-                DashboardSecurityService.AuthFailureReason.IP_NOT_ALLOWED, 
-                "10.0.0.1"
-            )
-        );
-        
-        securityFilter.doFilterInternal(request, response, filterChain);
-        
-        String responseBody = responseWriter.toString();
-        assertNotNull(responseBody);
-        assertTrue(responseBody.contains("401"));
-        assertTrue(responseBody.contains("IP_NOT_ALLOWED"));
-        assertTrue(responseBody.contains("10.0.0.1"));
-    }
-
-    @Test
-    @DisplayName("验证错误响应格式 - Token无效")
-    void testErrorResponseFormat_TokenInvalid() throws ServletException, IOException {
-        properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.TOKEN_ONLY);
-        properties.setAuthFailureMessage("Token Invalid");
-        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.failure(
-                DashboardSecurityService.AuthFailureReason.TOKEN_INVALID, 
-                "192.168.1.100"
-            )
-        );
-        
-        securityFilter.doFilterInternal(request, response, filterChain);
-        
-        String responseBody = responseWriter.toString();
-        assertNotNull(responseBody);
-        assertTrue(responseBody.contains("401"));
-        assertTrue(responseBody.contains("TOKEN_INVALID"));
-        assertTrue(responseBody.contains("192.168.1.100"));
-    }
-
-    @Test
-    @DisplayName("验证错误响应格式 - 无失败原因")
-    void testErrorResponseFormat_NoReason() throws ServletException, IOException {
-        properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_ONLY);
-        properties.setAuthFailureMessage("Access Denied");
-        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
-        when(securityService.checkAccess(request)).thenReturn(
-            new DashboardSecurityService.AuthResult(false, null, "192.168.1.100")
-        );
-        
-        securityFilter.doFilterInternal(request, response, filterChain);
-        
-        String responseBody = responseWriter.toString();
-        assertNotNull(responseBody);
-        assertTrue(responseBody.contains("401"));
-        assertTrue(responseBody.contains("192.168.1.100"));
-    }
-
     // ========== 路径匹配边界测试 ==========
 
     @Test
     @DisplayName("路径匹配 - /operation-log开头")
     void testPathMatching_OperationLogPrefix() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_ONLY);
         when(request.getRequestURI()).thenReturn("/operation-log/api/data");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.success()
-        );
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
-        verify(securityService).checkAccess(request);
+        verify(filterChain).doFilter(request, response);
     }
 
     @Test
     @DisplayName("路径匹配 - 包含dashboard路径")
     void testPathMatching_ContainsDashboard() throws ServletException, IOException {
         properties.setEnabled(true);
-        properties.setAuthMode(DashboardProperties.AuthMode.IP_ONLY);
         when(request.getRequestURI()).thenReturn("/api/operation-log/dashboard/config");
-        when(securityService.checkAccess(request)).thenReturn(
-            DashboardSecurityService.AuthResult.success()
-        );
         
         securityFilter.doFilterInternal(request, response, filterChain);
         
-        verify(securityService).checkAccess(request);
+        verify(filterChain).doFilter(request, response);
     }
 
     @Test
@@ -319,6 +310,49 @@ class DashboardSecurityFilterTest {
         securityFilter.doFilterInternal(request, response, filterChain);
         
         verify(filterChain).doFilter(request, response);
-        verifyNoInteractions(securityService);
+    }
+
+    // ========== 向后兼容测试 ==========
+
+    @Test
+    @DisplayName("向后兼容 - 旧 TOKEN_ONLY 模式映射为 Basic Auth")
+    void testBackwardCompatibility_TokenOnly() throws ServletException, IOException {
+        // 使用旧配置
+        properties.setEnabled(true);
+        properties.setAuthMode(DashboardProperties.AuthMode.TOKEN_ONLY);
+        properties.setAuthToken("my-secret-token");
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        // 旧 token 作为 password，用户名默认 admin
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("admin:my-secret-token".getBytes(StandardCharsets.UTF_8)));
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        // 应该放行，因为旧配置兼容
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("向后兼容 - 新配置优先于旧配置")
+    void testBackwardCompatibility_NewConfigPriority() throws ServletException, IOException {
+        // 同时配置新旧配置
+        properties.setEnabled(true);
+        properties.setAuthMode(DashboardProperties.AuthMode.TOKEN_ONLY);
+        properties.setAuthToken("old-token");
+        
+        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
+        auth.setUsername("newuser");
+        auth.setPassword("newpass");
+        properties.setAuth(auth);
+        
+        when(request.getRequestURI()).thenReturn("/operation-log/dashboard/stats");
+        // 使用新配置的密码
+        when(request.getHeader("Authorization")).thenReturn("Basic " + 
+                Base64.getEncoder().encodeToString("newuser:newpass".getBytes(StandardCharsets.UTF_8)));
+        
+        securityFilter.doFilterInternal(request, response, filterChain);
+        
+        verify(filterChain).doFilter(request, response);
     }
 }
