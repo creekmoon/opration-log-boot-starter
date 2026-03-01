@@ -255,7 +255,7 @@ public class RedisBasedSampler {
             String p99Key = RedisKeyConstants.p99GlobalKey();
             
             // 获取P99 > 阈值的接口
-            Set<Object> slowEndpoints = redisTemplate.opsForZSet().rangeByScore(
+            Set<?> slowEndpoints = redisTemplate.opsForZSet().rangeByScore(
                     p99Key, SLOW_QUERY_THRESHOLD, Double.MAX_VALUE);
             
             if (slowEndpoints == null) {

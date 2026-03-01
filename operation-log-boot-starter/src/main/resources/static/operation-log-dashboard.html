@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operation Log Dashboard Pro</title>
     <style>
-        /* ===== Design Tokens ===== */
+        /* ===== Design Tokens - Pastel Dark Theme ===== */
         :root {
-            /* Colors - Dark Theme */
+            /* Colors - Dark Theme with Pastel Palette */
             --bg-primary: #0d1117;
             --bg-secondary: #161b22;
             --bg-card: #1c2128;
@@ -16,24 +16,24 @@
             --border-hover: #58a6ff;
             --divider: #21262d;
             
-            /* Text */
+            /* Text - High Contrast */
             --text-primary: #e6edf3;
             --text-secondary: #7d8590;
             --text-muted: #484f58;
             
-            /* Status Colors */
-            --success: #3fb950;
-            --warning: #d29922;
-            --danger: #f85149;
-            --info: #58a6ff;
-            --accent: #a371f7;
+            /* Pastel Status Colors */
+            --success: #7ee787;
+            --warning: #f2cc60;
+            --danger: #ff7b72;
+            --info: #79c0ff;
+            --accent: #d2a8ff;
             
-            /* Chart Colors */
-            --chart-1: #58a6ff;
-            --chart-2: #3fb950;
-            --chart-3: #a371f7;
-            --chart-4: #d29922;
-            --chart-5: #f85149;
+            /* Chart Colors - Pastel */
+            --chart-1: #79c0ff;
+            --chart-2: #7ee787;
+            --chart-3: #d2a8ff;
+            --chart-4: #f2cc60;
+            --chart-5: #ff7b72;
             --chart-6: #56d4dd;
             
             /* Typography */
@@ -46,6 +46,18 @@
             --gap-card: 12px;
             --gap-inner: 12px;
             --padding-card: 16px;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+        }
+        
+        /* Theme Transition Animation */
+        *, *::before, *::after {
+            transition: background-color 0.3s ease, 
+                        color 0.3s ease, 
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
         }
         
         /* ===== Reset & Base ===== */
@@ -59,6 +71,115 @@
             font-size: 13px;
             line-height: 1.5;
             overflow-x: hidden;
+        }
+        
+        /* ===== Skeleton Loading ===== */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-secondary) 50%, var(--bg-elevated) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        .skeleton-text {
+            height: 1em;
+            margin-bottom: 0.5em;
+        }
+        
+        .skeleton-text:last-child { margin-bottom: 0; }
+        
+        /* ===== Toast Notifications ===== */
+        .toast-container {
+            position: fixed;
+            top: 70px;
+            right: 16px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .toast {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            min-width: 200px;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .toast.hide {
+            animation: slideOut 0.3s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 1; transform: translateX(calc(100% + 16px)); }
+        }
+        
+        .toast-icon { font-size: 16px; }
+        .toast-icon.success { color: var(--success); }
+        .toast-icon.error { color: var(--danger); }
+        .toast-icon.info { color: var(--info); }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .toast-message {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* ===== Empty State ===== */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            max-width: 300px;
         }
         
         /* ===== Header ===== */
@@ -169,6 +290,15 @@
             color: var(--text-primary);
         }
         
+        .btn.refreshing .refresh-icon {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         .refresh-info {
             font-size: 11px;
             color: var(--text-muted);
@@ -192,6 +322,20 @@
         .col-6 { grid-column: span 6; }
         .col-8 { grid-column: span 8; }
         .col-12 { grid-column: span 12; }
+        
+        /* Mobile Responsive Grid */
+        @media (max-width: 1200px) {
+            .col-3 { grid-column: span 6; }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-12 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .col-3, .col-4, .col-6, .col-8, .col-12 {
+                grid-column: span 2;
+            }
+        }
         
         /* ===== Card Component ===== */
         .card {
@@ -228,7 +372,7 @@
         }
         
         .card-badge.live {
-            background: rgba(63, 185, 80, 0.15);
+            background: rgba(126, 231, 135, 0.15);
             color: var(--success);
         }
         
@@ -246,6 +390,7 @@
             font-weight: 600;
             color: var(--text-primary);
             font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
         }
         
         .kpi-footer {
@@ -259,10 +404,15 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            font-weight: 500;
         }
         
         .kpi-change.up { color: var(--success); }
         .kpi-change.down { color: var(--danger); }
+        
+        .kpi-change-icon {
+            font-size: 10px;
+        }
         
         .sparkline {
             width: 80px;
@@ -310,6 +460,12 @@
             position: relative;
         }
         
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 200px;
+            }
+        }
+        
         canvas {
             width: 100% !important;
             height: 100% !important;
@@ -319,6 +475,61 @@
         .table-container {
             overflow: auto;
             max-height: 240px;
+        }
+        
+        /* Mobile Card View for Table */
+        @media (max-width: 768px) {
+            .table-container table {
+                display: none;
+            }
+            
+            .mobile-cards {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .mobile-card {
+                background: var(--bg-elevated);
+                border-radius: 6px;
+                padding: 12px;
+            }
+            
+            .mobile-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+            
+            .mobile-card-title {
+                font-weight: 600;
+                font-size: 13px;
+            }
+            
+            .mobile-card-rank {
+                width: 24px;
+                height: 24px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: 600;
+            }
+            
+            .mobile-card-body {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                color: var(--text-secondary);
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-cards {
+                display: none;
+            }
         }
         
         table {
@@ -339,6 +550,31 @@
             position: sticky;
             top: 0;
             background: var(--bg-card);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.15s ease;
+        }
+        
+        th:hover {
+            color: var(--info);
+        }
+        
+        th.sortable::after {
+            content: ' ↕';
+            opacity: 0.5;
+            font-size: 10px;
+        }
+        
+        th.sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+            color: var(--info);
+        }
+        
+        th.sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
+            color: var(--info);
         }
         
         td {
@@ -366,6 +602,14 @@
         .rank.top3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; }
         .rank.other { background: var(--bg-elevated); color: var(--text-secondary); }
         
+        .endpoint-name {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: help;
+        }
+        
         .metric-bar {
             display: flex;
             align-items: center;
@@ -384,6 +628,34 @@
             height: 100%;
             border-radius: 2px;
             transition: width 0.3s ease;
+        }
+        
+        /* Row Actions */
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        
+        tr:hover .row-actions {
+            opacity: 1;
+        }
+        
+        .row-btn {
+            padding: 2px 6px;
+            border: none;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.15s ease;
+        }
+        
+        .row-btn:hover {
+            background: var(--info);
+            color: var(--bg-primary);
         }
         
         /* ===== Log Stream ===== */
@@ -428,12 +700,24 @@
             overflow: hidden;
         }
         
+        @media (max-width: 768px) {
+            .health-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         .health-item {
             background: var(--bg-card);
             padding: 12px 16px;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        
+        .health-item:hover {
+            background: var(--bg-elevated);
         }
         
         .health-header {
@@ -463,6 +747,53 @@
             font-weight: 600;
             color: var(--text-primary);
             font-variant-numeric: tabular-nums;
+        }
+        
+        /* ===== Heatmap ===== */
+        .heatmap-container {
+            position: relative;
+        }
+        
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 2px;
+            padding: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .heatmap {
+                grid-template-columns: repeat(12, 1fr);
+            }
+        }
+        
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        
+        .heatmap-cell:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+        
+        /* Monochromatic gradient for heatmap */
+        .heatmap-cell.l0 { background: var(--bg-elevated); }
+        .heatmap-cell.l1 { background: #1f3d5c; }
+        .heatmap-cell.l2 { background: #2e5a87; }
+        .heatmap-cell.l3 { background: #3d77b2; }
+        .heatmap-cell.l4 { background: #4c94dd; }
+        .heatmap-cell.l5 { background: var(--info); }
+        
+        .heatmap-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
         }
         
         /* ===== Status Code Distribution ===== */
@@ -520,6 +851,12 @@
             margin-bottom: 16px;
         }
         
+        @media (max-width: 768px) {
+            .activity-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
         .activity-stat {
             text-align: center;
             padding: 12px;
@@ -532,6 +869,7 @@
             font-size: 20px;
             font-weight: 600;
             color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
         }
         
         .activity-label {
@@ -543,7 +881,7 @@
         /* ===== Tooltip ===== */
         .tooltip {
             position: fixed;
-            background: rgba(0,0,0,0.9);
+            background: rgba(13, 17, 23, 0.95);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px 12px;
@@ -554,6 +892,21 @@
             transition: opacity 0.15s;
             z-index: 9999;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            max-width: 250px;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .tooltip-value {
+            color: var(--info);
         }
         
         /* ===== Scrollbar ===== */
@@ -564,6 +917,9 @@
     </style>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
     <!-- Header -->
     <header class="header">
         <div class="header-left">
@@ -582,7 +938,9 @@
                 <button class="time-btn" data-range="6h">6小时</button>
                 <button class="time-btn" data-range="24h">24小时</button>
             </div>
-            <button class="btn" id="refreshBtn">🔄 刷新</button>
+            <button class="btn" id="refreshBtn">
+                <span class="refresh-icon">🔄</span> 刷新
+            </button>
             <button class="btn" id="pauseBtn">⏸ 暂停</button>
             <span class="refresh-info">更新于 <span id="lastUpdate">--:--:--</span></span>
         </div>
@@ -594,7 +952,7 @@
             <!-- Row 1: KPI Cards -->
             <!-- Total Requests -->
             <div class="col-3">
-                <div class="card kpi-card" id="kpiTotalRequests">
+                <div class="card kpi-card skeleton-wrapper" id="kpiTotalRequests">
                     <div class="card-header">
                         <span class="card-title">总请求量</span>
                         <span class="card-badge">今日</span>
@@ -602,7 +960,7 @@
                     <div class="kpi-value" id="totalRequests">--</div>
                     <div class="kpi-footer">
                         <div class="kpi-change up" id="totalRequestsChange">
-                            <span>▲</span>
+                            <span class="kpi-change-icon">▲</span>
                             <span>--%</span>
                         </div>
                         <canvas class="sparkline" id="spark1"></canvas>
@@ -612,7 +970,7 @@
             
             <!-- QPS -->
             <div class="col-3">
-                <div class="card kpi-card" id="kpiQps">
+                <div class="card kpi-card skeleton-wrapper" id="kpiQps">
                     <div class="card-header">
                         <span class="card-title">实时 QPS</span>
                         <span class="card-badge live">● 实时</span>
@@ -620,7 +978,7 @@
                     <div class="kpi-value" id="qpsValue">--</div>
                     <div class="kpi-footer">
                         <div class="kpi-change up" id="qpsChange">
-                            <span>▲</span>
+                            <span class="kpi-change-icon">▲</span>
                             <span>--%</span>
                         </div>
                         <canvas class="sparkline" id="spark2"></canvas>
@@ -630,7 +988,7 @@
             
             <!-- Error Rate -->
             <div class="col-3">
-                <div class="card kpi-card" id="kpiErrorRate">
+                <div class="card kpi-card skeleton-wrapper" id="kpiErrorRate">
                     <div class="card-header">
                         <span class="card-title">错误率</span>
                         <span class="card-badge">实时</span>
@@ -648,7 +1006,7 @@
                     </div>
                     <div class="kpi-footer">
                         <div class="kpi-change down" id="errorRateChange">
-                            <span>▼</span>
+                            <span class="kpi-change-icon">▼</span>
                             <span>--%</span>
                         </div>
                     </div>
@@ -657,7 +1015,7 @@
             
             <!-- Response Time -->
             <div class="col-3">
-                <div class="card kpi-card" id="kpiResponseTime">
+                <div class="card kpi-card skeleton-wrapper" id="kpiResponseTime">
                     <div class="card-header">
                         <span class="card-title">平均响应时间</span>
                         <span class="card-badge" id="p95Badge">P95: --ms</span>
@@ -665,7 +1023,7 @@
                     <div class="kpi-value"><span id="avgResponseTime">--</span><span style="font-size: 14px; color: var(--text-secondary);">ms</span></div>
                     <div class="kpi-footer">
                         <div class="kpi-change up" id="responseTimeChange">
-                            <span>▲</span>
+                            <span class="kpi-change-icon">▲</span>
                             <span>--ms</span>
                         </div>
                         <canvas class="sparkline" id="spark3"></canvas>
@@ -706,12 +1064,15 @@
                                     <th>接口</th>
                                     <th style="width: 100px;">响应时间</th>
                                     <th style="width: 80px;">QPS</th>
+                                    <th style="width: 60px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="topTable">
-                                <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">加载中...</td></tr>
+                                <!-- Empty State will be shown here if no data -->
                             </tbody>
                         </table>
+                        <!-- Mobile Cards View -->
+                        <div class="mobile-cards" id="mobileTopCards"></div>
                     </div>
                 </div>
             </div>
@@ -782,6 +1143,28 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Row 6: Traffic Heatmap (New) -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">流量热力图 (24小时)</span>
+                        <span class="card-badge">每小时</span>
+                    </div>
+                    <div class="heatmap-container">
+                        <div class="heatmap" id="heatmap">
+                            <!-- Heatmap cells will be dynamically added -->
+                        </div>
+                        <div class="heatmap-labels">
+                            <span>00:00</span>
+                            <span>06:00</span>
+                            <span>12:00</span>
+                            <span>18:00</span>
+                            <span>23:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -795,7 +1178,8 @@
             logStreamInterval: 3000,
             healthCheckInterval: 30000,
             maxLogEntries: 15,
-            apiBaseUrl: '/operation-log/dashboard/api'
+            apiBaseUrl: '/operation-log/dashboard/api',
+            sparklinePoints: 20
         };
 
         // ==================== State ====================
@@ -807,8 +1191,96 @@
                 totalRequests: [],
                 qps: [],
                 responseTime: []
-            }
+            },
+            tableSort: { column: null, direction: 'asc' },
+            isRefreshing: false
         };
+
+        // ==================== Toast Notifications ====================
+        function showToast(title, message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️',
+                warning: '⚠️'
+            };
+            
+            toast.innerHTML = `
+                <span class="toast-icon ${type}">${icons[type]}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ==================== Skeleton Loading ====================
+        function showSkeleton(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            
+            const skeletons = el.querySelectorAll('.kpi-value, .kpi-change');
+            skeletons.forEach(skel => {
+                skel.dataset.originalContent = skel.innerHTML;
+                skel.innerHTML = '<div class="skeleton skeleton-text" style="width: 60%;"></div>';
+            });
+        }
+
+        function hideSkeleton(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            
+            const skeletons = el.querySelectorAll('.kpi-value, .kpi-change');
+            skeletons.forEach(skel => {
+                if (skel.dataset.originalContent) {
+                    skel.innerHTML = skel.dataset.originalContent;
+                }
+            });
+        }
+
+        // ==================== Number Animation ====================
+        function animateNumber(element, from, to, duration = 800, suffix = '') {
+            const startTime = performance.now();
+            const startValue = typeof from === 'string' ? parseValue(from) : from;
+            const endValue = typeof to === 'string' ? parseValue(to) : to;
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 4);
+                const current = startValue + (endValue - startValue) * easeProgress;
+                
+                element.textContent = formatNumber(current) + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function parseValue(text) {
+            if (!text || text === '--') return 0;
+            return parseFloat(text.replace(/,/g, '').replace('%', '').replace('ms', ''));
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return Math.round(num).toLocaleString();
+        }
 
         // ==================== Sparkline Charts ====================
         function drawSparkline(canvasId, data, color) {
@@ -831,7 +1303,11 @@
             const min = Math.min(...data);
             const range = max - min || 1;
             
-            // Draw area
+            // Draw area with gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, color + '40');
+            gradient.addColorStop(1, color + '05');
+            
             ctx.beginPath();
             ctx.moveTo(0, height);
             data.forEach((v, i) => {
@@ -842,7 +1318,7 @@
             });
             ctx.lineTo(width, height);
             ctx.closePath();
-            ctx.fillStyle = color + '20';
+            ctx.fillStyle = gradient;
             ctx.fill();
             
             // Draw line
@@ -855,7 +1331,17 @@
             });
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
             ctx.stroke();
+            
+            // Draw end dot
+            const lastX = width;
+            const lastY = height - padding - ((data[data.length - 1] - min) / range) * (height - 2 * padding);
+            ctx.beginPath();
+            ctx.arc(lastX - 2, lastY, 3, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
         }
         
         // ==================== Trend Chart ====================
@@ -991,6 +1477,71 @@
             });
         }
 
+        // ==================== Heatmap ====================
+        function generateHeatmap() {
+            const container = document.getElementById('heatmap');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const hours = 24;
+            const days = window.innerWidth < 768 ? 7 : 7;
+            
+            for (let d = 0; d < days; d++) {
+                for (let h = 0; h < hours; h++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    
+                    // Generate random traffic level (0-5)
+                    const level = Math.floor(Math.random() * 6);
+                    cell.classList.add(`l${level}`);
+                    
+                    // Add tooltip data
+                    cell.dataset.hour = h;
+                    cell.dataset.day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][d];
+                    cell.dataset.value = Math.floor(Math.random() * 1000 + 100);
+                    
+                    // Tooltip events
+                    cell.addEventListener('mouseenter', (e) => {
+                        showTooltip(e, `${cell.dataset.day} ${String(h).padStart(2, '0')}:00`, `${cell.dataset.value} 请求`);
+                    });
+                    cell.addEventListener('mouseleave', hideTooltip);
+                    cell.addEventListener('mousemove', moveTooltip);
+                    
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        // ==================== Tooltip ====================
+        function showTooltip(e, title, value) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `
+                <div class="tooltip-title">${title}</div>
+                <div class="tooltip-value">${value}</div>
+            `;
+            tooltip.classList.add('show');
+            moveTooltip(e);
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.remove('show');
+        }
+
+        function moveTooltip(e) {
+            const tooltip = document.getElementById('tooltip');
+            const x = e.clientX + 10;
+            const y = e.clientY + 10;
+            
+            // Prevent overflow
+            const rect = tooltip.getBoundingClientRect();
+            const finalX = x + rect.width > window.innerWidth ? x - rect.width - 20 : x;
+            const finalY = y + rect.height > window.innerHeight ? y - rect.height - 20 : y;
+            
+            tooltip.style.left = finalX + 'px';
+            tooltip.style.top = finalY + 'px';
+        }
+
         // ==================== Data Fetching ====================
         async function fetchOverview() {
             try {
@@ -1048,50 +1599,24 @@
         }
 
         // ==================== UI Updates ====================
-        function updateKpiCard(id, value, change, changeType = 'up') {
+        function updateKpiCard(id, value, change, changeType = 'up', suffix = '') {
             const valueEl = document.getElementById(id);
             if (valueEl) {
-                // Animate number change
-                animateNumber(valueEl, parseValue(valueEl.textContent) || 0, value);
+                const from = valueEl.textContent;
+                animateNumber(valueEl, from, value, 800, suffix);
             }
             
             const changeEl = document.getElementById(id + 'Change');
             if (changeEl) {
                 const arrow = changeType === 'up' ? '▲' : '▼';
-                changeEl.innerHTML = `<span>${arrow}</span><span>${change}</span>`;
+                const iconEl = changeEl.querySelector('.kpi-change-icon');
+                const textEl = changeEl.querySelector('span:last-child');
+                
+                if (iconEl) iconEl.textContent = arrow;
+                if (textEl) textEl.textContent = change;
+                
                 changeEl.className = `kpi-change ${changeType}`;
             }
-        }
-
-        function parseValue(text) {
-            if (!text || text === '--') return 0;
-            return parseFloat(text.replace(/,/g, '').replace('%', '').replace('ms', ''));
-        }
-
-        function animateNumber(element, from, to) {
-            const duration = 300;
-            const startTime = performance.now();
-            
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeProgress = 1 - Math.pow(1 - progress, 3);
-                const current = from + (to - from) * easeProgress;
-                
-                element.textContent = formatNumber(current);
-                
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            }
-            
-            requestAnimationFrame(update);
-        }
-
-        function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return Math.round(num).toLocaleString();
         }
 
         function updateProgressRing(percentage) {
@@ -1100,28 +1625,61 @@
             const valueEl = document.getElementById('errorRateValue');
             
             if (ring) {
-                const circumference = 2 * Math.PI * 20; // r=20
+                const circumference = 2 * Math.PI * 20;
                 const offset = circumference - (percentage / 100) * circumference;
                 ring.style.strokeDashoffset = offset;
+                
+                // Color based on severity
+                if (percentage < 1) ring.style.stroke = 'var(--success)';
+                else if (percentage < 5) ring.style.stroke = 'var(--warning)';
+                else ring.style.stroke = 'var(--danger)';
             }
             
             if (text) text.textContent = percentage.toFixed(1) + '%';
-            if (valueEl) valueEl.textContent = percentage.toFixed(2) + '%';
+            if (valueEl) {
+                const from = parseValue(valueEl.textContent) || 0;
+                animateNumber(valueEl, from, percentage, 800, '%');
+                valueEl.style.color = percentage < 1 ? 'var(--success)' : percentage < 5 ? 'var(--warning)' : 'var(--danger)';
+            }
         }
 
         function updateTopTable(endpoints) {
             const tbody = document.getElementById('topTable');
+            const mobileContainer = document.getElementById('mobileTopCards');
+            
             if (!endpoints || endpoints.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">暂无数据</td></tr>';
+                const emptyState = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div class="empty-state-title">暂无接口数据</div>
+                        <div class="empty-state-desc">当前没有可显示的接口性能数据，请检查后端服务状态</div>
+                    </div>
+                `;
+                tbody.innerHTML = `<tr><td colspan="5">${emptyState}</td></tr>`;
+                if (mobileContainer) mobileContainer.innerHTML = emptyState;
                 return;
+            }
+            
+            // Sort if needed
+            if (state.tableSort.column) {
+                endpoints.sort((a, b) => {
+                    let aVal = a[state.tableSort.column];
+                    let bVal = b[state.tableSort.column];
+                    if (state.tableSort.direction === 'desc') {
+                        [aVal, bVal] = [bVal, aVal];
+                    }
+                    return aVal > bVal ? 1 : -1;
+                });
             }
             
             const maxTime = Math.max(...endpoints.map(e => e.avgResponseTime || 0));
             
+            // Desktop Table
             tbody.innerHTML = endpoints.map((item, idx) => {
                 const rank = idx + 1;
                 const rankClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : 'other';
                 const endpoint = item.endpoint || '/api/unknown';
+                const shortEndpoint = endpoint.length > 30 ? endpoint.substring(0, 27) + '...' : endpoint;
                 const responseTime = item.avgResponseTime || 0;
                 const callCount = item.callCount || 0;
                 const barWidth = maxTime > 0 ? (responseTime / maxTime) * 100 : 0;
@@ -1132,9 +1690,11 @@
                 if (responseTime > 400) barColor = 'var(--danger)';
                 
                 return `
-                    <tr>
+                    <tr data-endpoint="${endpoint}">
                         <td><span class="rank ${rankClass}">${rank}</span></td>
-                        <td>${endpoint}</td>
+                        <td>
+                            <div class="endpoint-name" title="${endpoint}">${shortEndpoint}</div>
+                        </td>
                         <td>
                             <div class="metric-bar">
                                 <span>${responseTime}ms</span>
@@ -1142,9 +1702,38 @@
                             </div>
                         </td>
                         <td>${callCount}</td>
+                        <td>
+                            <div class="row-actions">
+                                <button class="row-btn" onclick="showEndpointDetail('${endpoint}')">详情</button>
+                                <button class="row-btn" onclick="copyEndpoint('${endpoint}')">复制</button>
+                            </div>
+                        </td>
                     </tr>
                 `;
             }).join('');
+            
+            // Mobile Cards
+            if (mobileContainer) {
+                mobileContainer.innerHTML = endpoints.slice(0, 5).map((item, idx) => {
+                    const rank = idx + 1;
+                    const rankClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : 'other';
+                    const endpoint = item.endpoint || '/api/unknown';
+                    const shortEndpoint = endpoint.length > 25 ? endpoint.substring(0, 22) + '...' : endpoint;
+                    
+                    return `
+                        <div class="mobile-card">
+                            <div class="mobile-card-header">
+                                <div class="mobile-card-rank ${rankClass}">${rank}</div>
+                                <div class="mobile-card-title" title="${endpoint}">${shortEndpoint}</div>
+                            </div>
+                            <div class="mobile-card-body">
+                                <span>${item.avgResponseTime || 0}ms</span>
+                                <span>${item.callCount || 0} QPS</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
         function updateUserActivity(data) {
@@ -1154,9 +1743,18 @@
             const todayEl = document.getElementById('todayActive');
             const newEl = document.getElementById('newUsers');
             
-            if (onlineEl) onlineEl.textContent = formatNumber(data.activeUsers || 0);
-            if (todayEl) todayEl.textContent = formatNumber((data.activeUsers || 0) + (data.newUsers || 0));
-            if (newEl) newEl.textContent = formatNumber(data.newUsers || 0);
+            if (onlineEl) {
+                const from = parseValue(onlineEl.textContent) || 0;
+                animateNumber(onlineEl, from, data.activeUsers || 0);
+            }
+            if (todayEl) {
+                const from = parseValue(todayEl.textContent) || 0;
+                animateNumber(todayEl, from, (data.activeUsers || 0) + (data.newUsers || 0));
+            }
+            if (newEl) {
+                const from = parseValue(newEl.textContent) || 0;
+                animateNumber(newEl, from, data.newUsers || 0);
+            }
         }
 
         function updateStatusDistribution(data) {
@@ -1277,7 +1875,7 @@
                                   data.status === 'danger' ? 'var(--danger)' : 'var(--text-primary)';
                 
                 return `
-                    <div class="health-item">
+                    <div class="health-item" title="点击查看详情">
                         <div class="health-header">
                             <span class="health-name">${item.name}</span>
                             <span class="health-status ${statusClass}"></span>
@@ -1290,65 +1888,84 @@
 
         // ==================== Main Dashboard Update ====================
         async function updateDashboard() {
-            if (state.isPaused) return;
+            if (state.isPaused || state.isRefreshing) return;
             
-            // Fetch all data in parallel
-            const [overview, qps, slowEndpoints, userActivity, trend] = await Promise.all([
-                fetchOverview(),
-                fetchQps(),
-                fetchSlowEndpoints(),
-                fetchUserActivity(),
-                fetchTrend()
-            ]);
+            state.isRefreshing = true;
             
-            // Update KPI Cards
-            if (overview) {
-                updateKpiCard('totalRequests', overview.totalOperations, '12.5%', 'up');
-                state.sparklineData.totalRequests.push(overview.totalOperations);
-                if (state.sparklineData.totalRequests.length > 20) state.sparklineData.totalRequests.shift();
+            try {
+                // Show skeleton loading on first load
+                if (!state.lastData) {
+                    ['kpiTotalRequests', 'kpiQps', 'kpiErrorRate', 'kpiResponseTime'].forEach(showSkeleton);
+                }
+                
+                // Fetch all data in parallel
+                const [overview, qps, slowEndpoints, userActivity, trend] = await Promise.all([
+                    fetchOverview(),
+                    fetchQps(),
+                    fetchSlowEndpoints(),
+                    fetchUserActivity(),
+                    fetchTrend()
+                ]);
+                
+                // Update KPI Cards with animation
+                if (overview) {
+                    updateKpiCard('totalRequests', overview.totalOperations || 0, '+12.5%', 'up');
+                    state.sparklineData.totalRequests.push(overview.totalOperations || 0);
+                    if (state.sparklineData.totalRequests.length > CONFIG.sparklinePoints) state.sparklineData.totalRequests.shift();
+                }
+                
+                if (qps) {
+                    updateKpiCard('qpsValue', qps.currentQps || 0, '+5.2%', 'up');
+                    state.sparklineData.qps.push(qps.currentQps || 0);
+                    if (state.sparklineData.qps.length > CONFIG.sparklinePoints) state.sparklineData.qps.shift();
+                }
+                
+                if (overview) {
+                    const errorRate = (overview.errorRate || 0.0032) * 100;
+                    updateProgressRing(errorRate);
+                    updateKpiCard('errorRate', errorRate, '0.08%', 'down', '%');
+                }
+                
+                if (overview) {
+                    const avgTime = overview.avgResponseTime || 125;
+                    updateKpiCard('avgResponseTime', avgTime, '+8ms', 'up');
+                    document.getElementById('p95Badge').textContent = `P95: ${overview.p95ResponseTime || 234}ms`;
+                    state.sparklineData.responseTime.push(avgTime);
+                    if (state.sparklineData.responseTime.length > CONFIG.sparklinePoints) state.sparklineData.responseTime.shift();
+                }
+                
+                // Update Sparklines
+                if (state.sparklineData.totalRequests.length > 0) {
+                    drawSparkline('spark1', state.sparklineData.totalRequests, '#79c0ff');
+                    drawSparkline('spark2', state.sparklineData.qps, '#7ee787');
+                    drawSparkline('spark3', state.sparklineData.responseTime, '#d2a8ff');
+                }
+                
+                // Update Trend Chart
+                drawTrendChart(trend);
+                
+                // Update Tables
+                updateTopTable(slowEndpoints || []);
+                
+                // Update User Activity
+                if (userActivity) updateUserActivity(userActivity);
+                
+                // Update Status Distribution
+                if (overview) updateStatusDistribution(overview);
+                
+                // Update timestamp
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+                
+                state.lastData = { overview, qps, slowEndpoints, userActivity, trend };
+                
+            } catch (e) {
+                console.error('Dashboard update error:', e);
+                showToast('更新失败', '数据刷新失败，请稍后重试', 'error');
+            } finally {
+                state.isRefreshing = false;
+                // Hide skeletons
+                ['kpiTotalRequests', 'kpiQps', 'kpiErrorRate', 'kpiResponseTime'].forEach(hideSkeleton);
             }
-            
-            if (qps) {
-                updateKpiCard('qpsValue', qps.currentQps, '5.2%', 'up');
-                state.sparklineData.qps.push(qps.currentQps);
-                if (state.sparklineData.qps.length > 20) state.sparklineData.qps.shift();
-            }
-            
-            if (overview) {
-                updateProgressRing(overview.errorRate * 100 || 0.32);
-                updateKpiCard('errorRate', overview.errorRate * 100 || 0.32, '0.08%', 'down');
-            }
-            
-            if (overview) {
-                updateKpiCard('avgResponseTime', overview.avgResponseTime || 125, '8ms', 'up');
-                document.getElementById('p95Badge').textContent = `P95: ${overview.avgResponseTime || 234}ms`;
-                state.sparklineData.responseTime.push(overview.avgResponseTime || 125);
-                if (state.sparklineData.responseTime.length > 20) state.sparklineData.responseTime.shift();
-            }
-            
-            // Update Sparklines
-            if (state.sparklineData.totalRequests.length > 0) {
-                drawSparkline('spark1', state.sparklineData.totalRequests, '#58a6ff');
-                drawSparkline('spark2', state.sparklineData.qps, '#3fb950');
-                drawSparkline('spark3', state.sparklineData.responseTime, '#a371f7');
-            }
-            
-            // Update Trend Chart
-            drawTrendChart(trend);
-            
-            // Update Tables
-            if (slowEndpoints) updateTopTable(slowEndpoints);
-            
-            // Update User Activity
-            if (userActivity) updateUserActivity(userActivity);
-            
-            // Update Status Distribution
-            if (overview) updateStatusDistribution(overview);
-            
-            // Update timestamp
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
-            
-            state.lastData = { overview, qps, slowEndpoints, userActivity, trend };
         }
 
         function updateConnectionStatus(connected) {
@@ -1364,11 +1981,25 @@
             }
         }
 
+        // ==================== Row Actions ====================
+        function showEndpointDetail(endpoint) {
+            showToast('接口详情', `正在查看 ${endpoint} 的详细信息`, 'info');
+        }
+
+        function copyEndpoint(endpoint) {
+            navigator.clipboard.writeText(endpoint).then(() => {
+                showToast('复制成功', `${endpoint} 已复制到剪贴板`, 'success');
+            }).catch(() => {
+                showToast('复制失败', '请手动复制', 'error');
+            });
+        }
+
         // ==================== Initialization ====================
         function init() {
             // Draw initial charts
             drawTrendChart();
             drawUserChart();
+            generateHeatmap();
             
             // Initial data load
             updateDashboard();
@@ -1391,12 +2022,20 @@
             }, 1000);
             
             // Event handlers
-            document.getElementById('refreshBtn').addEventListener('click', updateDashboard);
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.addEventListener('click', () => {
+                refreshBtn.classList.add('refreshing');
+                updateDashboard().then(() => {
+                    setTimeout(() => refreshBtn.classList.remove('refreshing'), 500);
+                    showToast('刷新成功', '数据已更新', 'success');
+                });
+            });
             
             document.getElementById('pauseBtn').addEventListener('click', () => {
                 state.isPaused = !state.isPaused;
-                document.getElementById('pauseBtn').textContent = state.isPaused ? '▶️ 继续' : '⏸ 暂停';
+                document.getElementById('pauseBtn').innerHTML = state.isPaused ? '▶️ 继续' : '⏸ 暂停';
                 updateConnectionStatus(!state.isPaused);
+                showToast(state.isPaused ? '已暂停' : '已恢复', state.isPaused ? '数据更新已暂停' : '数据更新已恢复', 'info');
             });
             
             // Time selector
@@ -1406,21 +2045,52 @@
                     e.target.classList.add('active');
                     state.currentTimeRange = e.target.dataset.range;
                     updateDashboard();
+                    showToast('时间范围已切换', `当前范围: ${e.target.textContent}`, 'info');
                 });
+            });
+            
+            // Table sorting
+            document.querySelectorAll('th').forEach(th => {
+                if (th.textContent.includes('响应时间') || th.textContent.includes('QPS')) {
+                    th.classList.add('sortable');
+                    th.addEventListener('click', () => {
+                        const column = th.textContent.includes('响应时间') ? 'avgResponseTime' : 'callCount';
+                        if (state.tableSort.column === column) {
+                            state.tableSort.direction = state.tableSort.direction === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            state.tableSort.column = column;
+                            state.tableSort.direction = 'desc';
+                        }
+                        
+                        // Update sort indicators
+                        document.querySelectorAll('th').forEach(t => t.classList.remove('sort-asc', 'sort-desc'));
+                        th.classList.add(state.tableSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+                        
+                        if (state.lastData?.slowEndpoints) {
+                            updateTopTable(state.lastData.slowEndpoints);
+                        }
+                    });
+                }
             });
             
             // Resize handler
             window.addEventListener('resize', () => {
                 drawTrendChart(state.lastData?.trend);
                 drawUserChart();
+                generateHeatmap();
                 if (state.sparklineData.totalRequests.length > 0) {
-                    drawSparkline('spark1', state.sparklineData.totalRequests, '#58a6ff');
-                    drawSparkline('spark2', state.sparklineData.qps, '#3fb950');
-                    drawSparkline('spark3', state.sparklineData.responseTime, '#a371f7');
+                    drawSparkline('spark1', state.sparklineData.totalRequests, '#79c0ff');
+                    drawSparkline('spark2', state.sparklineData.qps, '#7ee787');
+                    drawSparkline('spark3', state.sparklineData.responseTime, '#d2a8ff');
                 }
             });
             
             updateConnectionStatus(true);
+            
+            // Welcome toast
+            setTimeout(() => {
+                showToast('欢迎使用', 'Dashboard 已加载完成', 'success');
+            }, 500);
         }
 
         document.addEventListener('DOMContentLoaded', init);
