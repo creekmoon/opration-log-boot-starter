@@ -405,7 +405,7 @@ class LogAspectTest {
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
         when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
-        when(applicationContext.getBean(OperationLogRecordInitializer.class)).thenReturn(logRecordInitializer);
+        lenient().when(applicationContext.getBean(OperationLogRecordInitializer.class)).thenReturn(logRecordInitializer);
         when(applicationContext.getBean(OperationLogProperties.class)).thenReturn(new OperationLogProperties());
 
         Map<String, ProfileCollector> profileMap = new HashMap<>();
