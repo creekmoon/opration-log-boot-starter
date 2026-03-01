@@ -2,6 +2,7 @@ package cn.creekmoon.operationLog.redis;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -83,36 +84,39 @@ public class RedisMetricsCollector {
             String latencyKey = RedisKeyConstants.latencyKey(endpoint);
             
             // 使用Pipeline批量执行
-            redisTemplate.executePipelined((connection) -> {
-                // 更新接口统计 (Hash)
-                connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), 1);
-                connection.hashCommands().hIncrBy(statKey.getBytes(), "totalResponseTime".getBytes(), responseTime);
-                
-                if (!success) {
-                    connection.hashCommands().hIncrBy(statKey.getBytes(), "errorCount".getBytes(), 1);
+            redisTemplate.executePipelined(new org.springframework.data.redis.core.RedisCallback<Object>() {
+                @Override
+                public Object doInRedis(org.springframework.data.redis.connection.RedisConnection connection) {
+                    // 更新接口统计 (Hash)
+                    connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), 1);
+                    connection.hashCommands().hIncrBy(statKey.getBytes(), "totalResponseTime".getBytes(), responseTime);
+                    
+                    if (!success) {
+                        connection.hashCommands().hIncrBy(statKey.getBytes(), "errorCount".getBytes(), 1);
+                    }
+                    
+                    // 更新最大响应时间
+                    byte[] maxKey = "maxResponseTime".getBytes();
+                    byte[] maxValue = connection.hashCommands().hGet(statKey.getBytes(), maxKey);
+                    long currentMax = maxValue == null ? 0 : Long.parseLong(new String(maxValue));
+                    if (responseTime > currentMax) {
+                        connection.hashCommands().hSet(statKey.getBytes(), maxKey, String.valueOf(responseTime).getBytes());
+                    }
+                    
+                    // 更新最小响应时间
+                    byte[] minKey = "minResponseTime".getBytes();
+                    byte[] minValue = connection.hashCommands().hGet(statKey.getBytes(), minKey);
+                    long currentMin = minValue == null ? Long.MAX_VALUE : Long.parseLong(new String(minValue));
+                    if (responseTime < currentMin) {
+                        connection.hashCommands().hSet(statKey.getBytes(), minKey, String.valueOf(responseTime).getBytes());
+                    }
+                    
+                    // 记录响应时间到Sorted Set
+                    connection.zSetCommands().zAdd(latencyKey.getBytes(), responseTime, 
+                            (System.nanoTime() + "").getBytes());
+                    
+                    return null;
                 }
-                
-                // 更新最大响应时间
-                byte[] maxKey = "maxResponseTime".getBytes();
-                byte[] maxValue = connection.hashCommands().hGet(statKey.getBytes(), maxKey);
-                long currentMax = maxValue == null ? 0 : Long.parseLong(new String(maxValue));
-                if (responseTime > currentMax) {
-                    connection.hashCommands().hSet(statKey.getBytes(), maxKey, String.valueOf(responseTime).getBytes());
-                }
-                
-                // 更新最小响应时间
-                byte[] minKey = "minResponseTime".getBytes();
-                byte[] minValue = connection.hashCommands().hGet(statKey.getBytes(), minKey);
-                long currentMin = minValue == null ? Long.MAX_VALUE : Long.parseLong(new String(minValue));
-                if (responseTime < currentMin) {
-                    connection.hashCommands().hSet(statKey.getBytes(), minKey, String.valueOf(responseTime).getBytes());
-                }
-                
-                // 记录响应时间到Sorted Set
-                connection.zSetCommands().zAdd(latencyKey.getBytes(), responseTime, 
-                        (System.nanoTime() + "").getBytes());
-                
-                return null;
             });
             
             // 设置TTL
@@ -168,26 +172,29 @@ public class RedisMetricsCollector {
             }
             
             // 批量写入Redis
-            redisTemplate.executePipelined((connection) -> {
-                for (Map.Entry<String, EndpointStats> entry : statsMap.entrySet()) {
-                    String endpoint = entry.getKey();
-                    EndpointStats stats = entry.getValue();
-                    String statKey = RedisKeyConstants.statKey(endpoint);
-                    
-                    connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), stats.totalCount);
-                    connection.hashCommands().hIncrBy(statKey.getBytes(), "totalResponseTime".getBytes(), stats.totalResponseTime);
-                    
-                    if (stats.errorCount > 0) {
-                        connection.hashCommands().hIncrBy(statKey.getBytes(), "errorCount".getBytes(), stats.errorCount);
+            redisTemplate.executePipelined(new org.springframework.data.redis.core.RedisCallback<Object>() {
+                @Override
+                public Object doInRedis(org.springframework.data.redis.connection.RedisConnection connection) {
+                    for (Map.Entry<String, EndpointStats> entry : statsMap.entrySet()) {
+                        String endpoint = entry.getKey();
+                        EndpointStats stats = entry.getValue();
+                        String statKey = RedisKeyConstants.statKey(endpoint);
+                        
+                        connection.hashCommands().hIncrBy(statKey.getBytes(), "totalCount".getBytes(), stats.totalCount);
+                        connection.hashCommands().hIncrBy(statKey.getBytes(), "totalResponseTime".getBytes(), stats.totalResponseTime);
+                        
+                        if (stats.errorCount > 0) {
+                            connection.hashCommands().hIncrBy(statKey.getBytes(), "errorCount".getBytes(), stats.errorCount);
+                        }
+                        
+                        // 更新最大/最小响应时间（使用简单的比较，可能存在并发问题，但可接受）
+                        connection.hashCommands().hSet(statKey.getBytes(), "maxResponseTime".getBytes(), 
+                                String.valueOf(stats.maxResponseTime).getBytes());
+                        connection.hashCommands().hSet(statKey.getBytes(), "minResponseTime".getBytes(), 
+                                String.valueOf(stats.minResponseTime).getBytes());
                     }
-                    
-                    // 更新最大/最小响应时间（使用简单的比较，可能存在并发问题，但可接受）
-                    connection.hashCommands().hSet(statKey.getBytes(), "maxResponseTime".getBytes(), 
-                            String.valueOf(stats.maxResponseTime).getBytes());
-                    connection.hashCommands().hSet(statKey.getBytes(), "minResponseTime".getBytes(), 
-                            String.valueOf(stats.minResponseTime).getBytes());
+                    return null;
                 }
-                return null;
             });
             
             // 设置TTL
@@ -298,14 +305,14 @@ public class RedisMetricsCollector {
             }
             
             long rank = (long) (total * percentile);
-            Set<Object> values = redisTemplate.opsForZSet().range(latencyKey, rank, rank);
+            Set<?> values = redisTemplate.opsForZSet().range(latencyKey, rank, rank);
             
             if (values == null || values.isEmpty()) {
                 return 0;
             }
             
             // 获取score（响应时间）
-            Object value = values.iterator().next();
+            String value = values.iterator().next().toString();
             Double score = redisTemplate.opsForZSet().score(latencyKey, value.toString());
             return score != null ? score.longValue() : 0;
             
