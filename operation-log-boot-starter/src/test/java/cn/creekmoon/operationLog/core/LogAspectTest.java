@@ -35,6 +35,8 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 
+import org.mockito.quality.Strictness;
+
 /**
  * LogAspect 单元测试
  */
@@ -345,13 +347,14 @@ class LogAspectTest {
         setupOperationLogAnnotation(OperationLog.OPERATION_SUMMARY_DEFAULT, false, "DEFAULT", false, false);
 
         when(proceedingJoinPoint.proceed()).thenReturn("result");
-        when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
+        // 使用 lenient 避免 UnnecessaryStubbing，因为这些 mock 可能在某些条件下不被调用
+        lenient().when(logRecordInitializer.init(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        lenient().doAnswer(invocation -> null).when(logRecordInitializer).functionPostProcess(any(), any());
 
         Map<String, OperationLogHandler> handlerMap = new HashMap<>();
-        when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
-        when(applicationContext.getBean(OperationLogRecordInitializer.class)).thenReturn(logRecordInitializer);
-        when(applicationContext.getBean(OperationLogProperties.class)).thenReturn(new OperationLogProperties());
+        lenient().when(applicationContext.getBeansOfType(OperationLogHandler.class)).thenReturn(handlerMap);
+        lenient().when(applicationContext.getBean(OperationLogRecordInitializer.class)).thenReturn(logRecordInitializer);
+        lenient().when(applicationContext.getBean(OperationLogProperties.class)).thenReturn(new OperationLogProperties());
 
         // When
         logAspect.around(proceedingJoinPoint);
