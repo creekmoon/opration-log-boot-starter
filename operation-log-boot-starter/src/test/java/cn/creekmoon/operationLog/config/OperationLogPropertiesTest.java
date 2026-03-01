@@ -12,8 +12,10 @@ class OperationLogPropertiesTest {
     void testDefaultValues() {
         OperationLogProperties properties = new OperationLogProperties();
         
-        assertTrue(properties.isEnabled());
+        assertFalse(properties.isHeatmapGlobalEnabled());
+        assertFalse(properties.isProfileGlobalEnabled());
         assertFalse(properties.isHandleOnFailGlobalEnabled());
+        assertFalse(properties.isUseValueAsType());
         assertNotNull(properties.getThreadPool());
     }
 
@@ -21,11 +23,17 @@ class OperationLogPropertiesTest {
     void testSettersAndGetters() {
         OperationLogProperties properties = new OperationLogProperties();
         
-        properties.setEnabled(false);
-        assertFalse(properties.isEnabled());
+        properties.setHeatmapGlobalEnabled(true);
+        assertTrue(properties.isHeatmapGlobalEnabled());
+        
+        properties.setProfileGlobalEnabled(true);
+        assertTrue(properties.isProfileGlobalEnabled());
         
         properties.setHandleOnFailGlobalEnabled(true);
         assertTrue(properties.isHandleOnFailGlobalEnabled());
+        
+        properties.setUseValueAsType(true);
+        assertTrue(properties.isUseValueAsType());
     }
 
     @Test
@@ -37,23 +45,17 @@ class OperationLogPropertiesTest {
         assertEquals(4, threadPool.getMaxSize());
         assertEquals(512, threadPool.getQueueCapacity());
         assertEquals(60, threadPool.getKeepAliveSeconds());
-        assertEquals("log-thread-", threadPool.getThreadNamePrefix());
-        assertTrue(threadPool.isAllowCoreThreadTimeout());
         
         // 测试 setter
         threadPool.setCoreSize(2);
         threadPool.setMaxSize(8);
         threadPool.setQueueCapacity(1024);
         threadPool.setKeepAliveSeconds(120);
-        threadPool.setThreadNamePrefix("custom-");
-        threadPool.setAllowCoreThreadTimeout(false);
         
         assertEquals(2, threadPool.getCoreSize());
         assertEquals(8, threadPool.getMaxSize());
         assertEquals(1024, threadPool.getQueueCapacity());
         assertEquals(120, threadPool.getKeepAliveSeconds());
-        assertEquals("custom-", threadPool.getThreadNamePrefix());
-        assertFalse(threadPool.isAllowCoreThreadTimeout());
     }
 
     @Test
@@ -74,6 +76,5 @@ class OperationLogPropertiesTest {
         String str = properties.toString();
         
         assertNotNull(str);
-        assertTrue(str.contains("enabled"));
     }
 }

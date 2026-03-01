@@ -95,9 +95,10 @@ class MetricsCollectorTest {
     void testTotalRequests() {
         assertEquals(0, MetricsCollector.getTotalRequests());
         
-        MetricsCollector.requestStarted();
-        MetricsCollector.requestStarted();
-        MetricsCollector.requestStarted();
+        // totalRequests 现在由 record() 统一计数, requestStarted() 不再增加
+        MetricsCollector.record("TestEndpoint.method1", 50);
+        MetricsCollector.record("TestEndpoint.method2", 100);
+        MetricsCollector.record("TestEndpoint.method3", 150);
         
         assertEquals(3, MetricsCollector.getTotalRequests());
     }
@@ -194,13 +195,20 @@ class MetricsCollectorTest {
 
     @Test
     void testQpsMetrics() {
-        // 模拟请求
+        // 模拟请求 - requestStarted 更新 QPS 窗口
         for (int i = 0; i < 100; i++) {
             MetricsCollector.requestStarted();
         }
         
         // QPS 应该大于0
         assertTrue(MetricsCollector.getCurrentQps() >= 0);
+        // totalRequests 现在由 record() 统一计数
+        assertEquals(0, MetricsCollector.getTotalRequests());
+        
+        // 调用 record() 增加 totalRequests
+        for (int i = 0; i < 100; i++) {
+            MetricsCollector.record("TestEndpoint.method", 50);
+        }
         assertEquals(100, MetricsCollector.getTotalRequests());
     }
 

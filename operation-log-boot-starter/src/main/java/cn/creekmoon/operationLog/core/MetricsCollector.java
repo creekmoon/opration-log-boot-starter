@@ -183,11 +183,12 @@ public class MetricsCollector {
 
     /**
      * 记录请求开始 (增加并发计数)
+     * 注意: totalRequests 的计数在 record() 方法中统一处理, 避免重复计数
      */
     public static void requestStarted() {
         long current = concurrentRequests.incrementAndGet();
         peakConcurrentRequests.updateAndGet(peak -> Math.max(peak, current));
-        totalRequests.increment();
+        // 注意: 不在此处增加 totalRequests, 由 record() 方法统一计数
         
         // 记录到当前秒的 QPS 窗口
         long currentSecond = System.currentTimeMillis() / 1000;
