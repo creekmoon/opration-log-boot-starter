@@ -1,7 +1,6 @@
 package cn.creekmoon.operationLog.dashboard.security;
 
 import cn.creekmoon.operationLog.dashboard.DashboardProperties;
-import com.alibaba.fastjson2.JSON;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,18 +9,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Base64;
 
 /**
- * Dashboard 访问控制过滤器
- * 拦截所有Dashboard相关请求，执行IP白名单和Token认证
+ * Dashboard Basic Auth 安全过滤器
+ * 
+ * 简化后的认证机制：
+ * 1. 默认 Dashboard 关闭 (enabled: false)
+ * 2. 支持 Basic Auth 认证（可选）
+ * 3. 向后兼容旧配置（IP白名单/Token 已废弃但保留功能）
  *
  * 注意：此过滤器在Spring Security过滤器链之后执行
  * 如果应用配置了Spring Security，需要在Security配置中允许Dashboard路径
@@ -32,13 +34,15 @@ import java.util.Map;
 @Order(Ordered.LOWEST_PRECEDENCE - 100)  // 确保在Spring Security之后，但在Controller之前
 public class DashboardSecurityFilter extends OncePerRequestFilter {
 
-    private final DashboardSecurityService securityService;
     private final DashboardProperties properties;
 
     // Dashboard路径前缀
     private static final String DASHBOARD_PATH_PREFIX = "/operation-log";
     private static final String DASHBOARD_HTML_PATH = "/operation-log-dashboard.html";
     private static final String AUTH_PATH_PREFIX = "/operation-log/dashboard/auth";
+
+    // Basic Auth realm
+    private static final String REALM = "Dashboard";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -53,7 +57,7 @@ public class DashboardSecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 跳过认证端点本身（避免循环）
+        // 跳过认证端点本身（兼容旧版本）
         if (isAuthEndpoint(requestUri)) {
             filterChain.doFilter(request, response);
             return;
@@ -65,20 +69,66 @@ public class DashboardSecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 无认证模式，直接放行
-        if (properties.getAuthMode() == DashboardProperties.AuthMode.OFF) {
+        // 如果没有启用认证，直接放行
+        if (!properties.isAuthEnabled()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 执行安全校验
-        DashboardSecurityService.AuthResult result = securityService.checkAccess(request);
-
-        if (result.allowed()) {
+        // 执行 Basic Auth 认证
+        if (checkBasicAuth(request)) {
             filterChain.doFilter(request, response);
         } else {
-            sendUnauthorizedResponse(response, result);
+            sendUnauthorizedResponse(response);
         }
+    }
+
+    /**
+     * 检查 Basic Auth
+     */
+    private boolean checkBasicAuth(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        
+        if (!StringUtils.hasText(authHeader) || !authHeader.startsWith("Basic ")) {
+            return false;
+        }
+
+        try {
+            // 解码 Base64
+            String base64Credentials = authHeader.substring(6);
+            String credentials = new String(
+                    Base64.getDecoder().decode(base64Credentials), 
+                    StandardCharsets.UTF_8);
+            
+            // 格式: username:password
+            int colonIndex = credentials.indexOf(':');
+            if (colonIndex < 0) {
+                return false;
+            }
+
+            String username = credentials.substring(0, colonIndex);
+            String password = credentials.substring(colonIndex + 1);
+
+            // 验证用户名密码
+            String expectedUsername = properties.getAuthUsername();
+            String expectedPassword = properties.getAuthPassword();
+
+            return expectedUsername.equals(username) && expectedPassword.equals(password);
+
+        } catch (Exception e) {
+            log.debug("Basic Auth 解析失败", e);
+            return false;
+        }
+    }
+
+    /**
+     * 发送401未授权响应
+     */
+    private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setHeader("WWW-Authenticate", "Basic realm=\"" + REALM + "\"");
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write("Authentication required");
     }
 
     /**
@@ -105,32 +155,6 @@ public class DashboardSecurityFilter extends OncePerRequestFilter {
      */
     private boolean isAuthEndpoint(String requestUri) {
         return requestUri.startsWith(AUTH_PATH_PREFIX);
-    }
-
-    /**
-     * 发送401未授权响应
-     */
-    private void sendUnauthorizedResponse(HttpServletResponse response,
-                                          DashboardSecurityService.AuthResult result) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-
-        Map<String, Object> errorBody = new HashMap<>();
-        errorBody.put("code", 401);
-        errorBody.put("message", properties.getAuthFailureMessage());
-
-        Map<String, Object> details = new HashMap<>();
-        details.put("mode", properties.getAuthMode().name());
-        if (result.reason() != null) {
-            details.put("reason", result.reason().getCode());
-        }
-        if (result.clientIp() != null) {
-            details.put("clientIp", result.clientIp());
-        }
-        errorBody.put("details", details);
-
-        response.getWriter().write(JSON.toJSONString(errorBody));
     }
 
     @Override
