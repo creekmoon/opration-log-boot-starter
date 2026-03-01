@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -103,8 +104,14 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Operation swaggerApi = signature.getMethod().getAnnotation(Operation.class);
         OperationLog annotation = signature.getMethod().getAnnotation(OperationLog.class);
-        logRecord.setMethodName(Optional.ofNullable(pjp.getSignature()).map(Signature::getName).orElse("unknownMethod"));
-        logRecord.setClassFullName(pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
+        /*设置方法全名用于指标采集*/
+        String endpoint = pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName();
+        logRecord.setClassFullName(endpoint);
+
+        /*记录请求开始 - 指标采集*/
+        MetricsCollector.requestStarted();
+        long startNanos = System.nanoTime();
+        boolean isError = false;
 
         /**
          * 赋值优先级 从上到下
@@ -179,6 +186,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         } catch (Exception e) {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
+            isError = true;  // 标记错误用于指标采集
             /*如果配置了handleOnFail(注解或全局), 将异常消息添加到remarks中*/
             boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
             if (handleOnFail) {
@@ -187,6 +195,14 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             }
             throw e;
         } finally {
+            /*记录响应时间和并发数 - 指标采集*/
+            long costMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
+            MetricsCollector.record(endpoint, costMillis);
+            MetricsCollector.requestEnded();
+            
+            if (isError) {
+                MetricsCollector.recordError(endpoint);
+            }
             /*操作结果正确 或者 操作结果失败且配置了失败记录 才会进行日志记录*/
             boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
             boolean isNeedRecord = logRecord.getRequestResult() || (!logRecord.getRequestResult() && handleOnFail);
