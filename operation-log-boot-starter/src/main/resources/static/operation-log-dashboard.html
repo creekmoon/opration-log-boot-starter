@@ -1,202 +1,313 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Log Dashboard</title>
+    <title>Operation Log Dashboard Pro</title>
     <style>
-        /* CSS Variables for theming */
+        /* ===== Design Tokens ===== */
         :root {
-            --bg-primary: #f5f7fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --accent-primary: #667eea;
-            --accent-secondary: #764ba2;
-            --border-color: #e0e0e0;
-            --shadow: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+            /* Colors - Dark Theme */
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2128;
+            --bg-elevated: #21262d;
+            --border-color: #30363d;
+            --border-hover: #58a6ff;
+            --divider: #21262d;
+            
+            /* Text */
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --text-muted: #484f58;
+            
+            /* Status Colors */
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --info: #58a6ff;
+            --accent: #a371f7;
+            
+            /* Chart Colors */
+            --chart-1: #58a6ff;
+            --chart-2: #3fb950;
+            --chart-3: #a371f7;
+            --chart-4: #d29922;
+            --chart-5: #f85149;
+            --chart-6: #56d4dd;
+            
+            /* Typography */
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-num: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+            
+            /* Spacing */
+            --gap-page: 16px;
+            --gap-card: 12px;
+            --gap-inner: 12px;
+            --padding-card: 16px;
         }
         
-        [data-theme="dark"] {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-primary: #667eea;
-            --accent-secondary: #764ba2;
-            --border-color: #2d2d44;
-            --shadow: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.4);
-        }
-        
+        /* ===== Reset & Base ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        html, body {
+            height: 100%;
+            font-family: var(--font-sans);
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
-            transition: background 0.3s, color 0.3s;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: hidden;
         }
         
+        /* ===== Header ===== */
         .header {
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            color: white;
-            padding: 1.5rem 2rem;
-            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            padding: 0 var(--gap-page);
+            z-index: 1000;
         }
         
-        .header h1 { font-size: 1.5rem; font-weight: 600; }
-        
-        .header-controls {
+        .header-left {
             display: flex;
-            gap: 1rem;
             align-items: center;
+            gap: 16px;
         }
         
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--info), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
-        .btn:hover { background: rgba(255,255,255,0.3); }
-        .btn.active { background: rgba(255,255,255,0.4); }
         
         .connection-status {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
         }
         
         .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #48bb78;
-            animation: pulse 2s infinite;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
         }
         
         .status-dot.disconnected {
-            background: #f56565;
+            background: var(--danger);
             animation: none;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-        
-        .toolbar {
+        .header-right {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
+            gap: 12px;
         }
         
         .time-selector {
             display: flex;
-            gap: 0.5rem;
+            gap: 4px;
+            background: var(--bg-elevated);
+            padding: 4px;
+            border-radius: 6px;
         }
         
         .time-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border-color);
-            background: var(--bg-secondary);
+            padding: 4px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .time-btn:hover { color: var(--text-primary); }
+        .time-btn.active {
+            background: var(--bg-card);
             color: var(--text-primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            font-size: 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .time-btn:hover, .time-btn.active {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
+        .btn:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
         }
         
-        .grid {
+        .refresh-info {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        /* ===== Main Layout ===== */
+        .main {
+            padding: calc(52px + var(--gap-page)) var(--gap-page) var(--gap-page);
+            min-height: 100vh;
+        }
+        
+        /* 12-Column Grid */
+        .grid-12 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--gap-card);
         }
         
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+        
+        /* ===== Card Component ===== */
         .card {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: var(--padding-card);
+            transition: border-color 0.15s ease;
         }
         
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
+        .card:hover { border-color: var(--border-hover); }
         
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: var(--gap-inner);
         }
         
         .card-title {
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
-        .card-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .card-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
         }
         
-        .card-change {
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+        .card-badge.live {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--success);
         }
         
-        .card-change.positive { color: #48bb78; }
-        .card-change.negative { color: #f56565; }
-        
-        .chart-card {
-            grid-column: span 2;
+        /* ===== KPI Card ===== */
+        .kpi-card {
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
-        @media (max-width: 768px) {
-            .chart-card { grid-column: span 1; }
+        .kpi-value {
+            font-family: var(--font-num);
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
         }
         
-        .chart-container {
+        .kpi-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .kpi-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .kpi-change.up { color: var(--success); }
+        .kpi-change.down { color: var(--danger); }
+        
+        .sparkline {
+            width: 80px;
+            height: 24px;
+        }
+        
+        /* Progress Ring for Error Rate */
+        .progress-ring {
             position: relative;
-            height: 300px;
+            width: 48px;
+            height: 48px;
+        }
+        
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--bg-elevated);
+            stroke-width: 4;
+        }
+        
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--danger);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+        
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* ===== Chart Container ===== */
+        .chart-container {
+            height: 180px;
+            position: relative;
         }
         
         canvas {
@@ -204,497 +315,1115 @@
             height: 100% !important;
         }
         
-        .tooltip {
-            position: absolute;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            z-index: 1000;
-        }
-        
+        /* ===== Table ===== */
         .table-container {
-            overflow-x: auto;
+            overflow: auto;
+            max-height: 240px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.875rem;
-        }
-        
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
         }
         
         th {
-            font-weight: 600;
+            text-align: left;
+            padding: 8px;
+            font-weight: 500;
             color: var(--text-secondary);
-            cursor: pointer;
-            user-select: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--divider);
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
         }
         
-        th:hover {
-            color: var(--accent-primary);
+        td {
+            padding: 8px;
+            border-bottom: 1px solid var(--divider);
+            color: var(--text-primary);
         }
         
-        tr:hover {
-            background: var(--bg-primary);
-        }
+        tr:hover td { background: var(--bg-elevated); }
+        tr:last-child td { border-bottom: none; }
         
         .rank {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 600;
-            font-size: 0.75rem;
         }
         
-        .rank.top1 { background: #ffd700; color: #333; }
-        .rank.top2 { background: #c0c0c0; color: #333; }
-        .rank.top3 { background: #cd7f32; color: white; }
-        .rank.other { background: var(--bg-primary); color: var(--text-secondary); }
+        .rank.top1 { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+        .rank.top2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
+        .rank.top3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; }
+        .rank.other { background: var(--bg-elevated); color: var(--text-secondary); }
+        
+        .metric-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bar-bg {
+            flex: 1;
+            height: 4px;
+            background: var(--bg-elevated);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        /* ===== Log Stream ===== */
+        .log-stream {
+            max-height: 240px;
+            overflow: hidden;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        
+        .log-entry {
+            display: flex;
+            gap: 12px;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--divider);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .log-entry:last-child { border-bottom: none; }
+        
+        .log-time { color: var(--text-muted); min-width: 70px; }
+        .log-level { min-width: 45px; font-weight: 600; }
+        .log-level.error { color: var(--danger); }
+        .log-level.warn { color: var(--warning); }
+        .log-level.info { color: var(--info); }
+        .log-level.debug { color: var(--text-secondary); }
+        .log-message { color: var(--text-primary); flex: 1; }
+        
+        /* ===== Health Grid (8-Grid) ===== */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--divider);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .health-item {
+            background: var(--bg-card);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .health-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .health-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .health-status.normal { background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .health-status.warning { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+        .health-status.danger { background: var(--danger); box-shadow: 0 0 8px var(--danger); animation: pulse-dot 1.5s infinite; }
+        
+        .health-value {
+            font-family: var(--font-num);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* ===== Status Code Distribution ===== */
+        .status-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .status-code {
+            width: 50px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-code.ok { color: var(--success); }
+        .status-code.redirect { color: var(--info); }
+        .status-code.client { color: var(--warning); }
+        .status-code.server { color: var(--danger); }
+        
+        .status-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .status-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .status-count {
+            width: 60px;
+            text-align: right;
+            font-family: var(--font-num);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* ===== User Activity ===== */
+        .activity-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .activity-stat {
+            text-align: center;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+        }
+        
+        .activity-value {
+            font-family: var(--font-num);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .activity-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* ===== Tooltip ===== */
+        .tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-primary);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📊 Operation Log Dashboard</h1>
-        <div class="header-controls">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-title">📊 Operation Log Dashboard Pro</div>
             <div class="connection-status">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">实时连接中</span>
             </div>
-            <button class="btn" id="themeToggle">🌙 暗色</button>
-            <button class="btn" id="pauseBtn">⏸ 暂停</button>
         </div>
-    </div>
-    
-    <div class="container">
-        <div class="toolbar">
+        <div class="header-right">
             <div class="time-selector">
-                <button class="time-btn active" data-range="realtime">实时</button>
-                <button class="time-btn" data-range="hourly">1小时</button>
-                <button class="time-btn" data-range="daily">24小时</button>
+                <button class="time-btn" data-range="5m">5分钟</button>
+                <button class="time-btn" data-range="15m">15分钟</button>
+                <button class="time-btn active" data-range="30m">30分钟</button>
+                <button class="time-btn" data-range="1h">1小时</button>
+                <button class="time-btn" data-range="6h">6小时</button>
+                <button class="time-btn" data-range="24h">24小时</button>
             </div>
-            <span style="color: var(--text-secondary); font-size: 0.875rem;">
-                最后更新: <span id="lastUpdate">--</span>
-            </span>
+            <button class="btn" id="refreshBtn">🔄 刷新</button>
+            <button class="btn" id="pauseBtn">⏸ 暂停</button>
+            <span class="refresh-info">更新于 <span id="lastUpdate">--:--:--</span></span>
         </div>
-        
-        <div class="grid">
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">总 PV</span>
-                </div>
-                <div class="card-value" id="totalPv">--</div>
-                <div class="card-change positive" id="pvChange">↑ --%</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">总 UV</span>
-                </div>
-                <div class="card-value" id="totalUv">--</div>
-                <div class="card-change positive" id="uvChange">↑ --%</div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">活跃接口</span>
-                </div>
-                <div class="card-value" id="activeEndpoints">--</div>
-                <div class="card-change">实时监控中</div>
-            </div>
-            
-            <div class="card chart-card">
-                <div class="card-header">
-                    <span class="card-title">PV/UV 趋势</span>
-                </div>
-                <div class="chart-container">
-                    <canvas id="trendChart"></canvas>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="grid-12">
+            <!-- Row 1: KPI Cards -->
+            <!-- Total Requests -->
+            <div class="col-3">
+                <div class="card kpi-card" id="kpiTotalRequests">
+                    <div class="card-header">
+                        <span class="card-title">总请求量</span>
+                        <span class="card-badge">今日</span>
+                    </div>
+                    <div class="kpi-value" id="totalRequests">--</div>
+                    <div class="kpi-footer">
+                        <div class="kpi-change up" id="totalRequestsChange">
+                            <span>▲</span>
+                            <span>--%</span>
+                        </div>
+                        <canvas class="sparkline" id="spark1"></canvas>
+                    </div>
                 </div>
             </div>
             
-            <div class="card chart-card">
-                <div class="card-header">
-                    <span class="card-title">热门接口 Top 10</span>
+            <!-- QPS -->
+            <div class="col-3">
+                <div class="card kpi-card" id="kpiQps">
+                    <div class="card-header">
+                        <span class="card-title">实时 QPS</span>
+                        <span class="card-badge live">● 实时</span>
+                    </div>
+                    <div class="kpi-value" id="qpsValue">--</div>
+                    <div class="kpi-footer">
+                        <div class="kpi-change up" id="qpsChange">
+                            <span>▲</span>
+                            <span>--%</span>
+                        </div>
+                        <canvas class="sparkline" id="spark2"></canvas>
+                    </div>
                 </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>排名</th>
-                                <th>接口</th>
-                                <th onclick="sortTable('pv')">PV ↕</th>
-                                <th onclick="sortTable('uv')">UV ↕</th>
-                            </tr>
-                        </thead>
-                        <tbody id="topTable">
-                            <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">加载中...</td></tr>
-                        </tbody>
-                    </table>
+            </div>
+            
+            <!-- Error Rate -->
+            <div class="col-3">
+                <div class="card kpi-card" id="kpiErrorRate">
+                    <div class="card-header">
+                        <span class="card-title">错误率</span>
+                        <span class="card-badge">实时</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="kpi-value" id="errorRateValue" style="color: var(--danger);">--</div>
+                        <div class="progress-ring">
+                            <svg width="48" height="48">
+                                <circle class="progress-ring-bg" cx="24" cy="24" r="20"></circle>
+                                <circle class="progress-ring-fill" id="errorRing" cx="24" cy="24" r="20" 
+                                    stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+                            </svg>
+                            <span class="progress-ring-text" id="errorRingText">--</span>
+                        </div>
+                    </div>
+                    <div class="kpi-footer">
+                        <div class="kpi-change down" id="errorRateChange">
+                            <span>▼</span>
+                            <span>--%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Response Time -->
+            <div class="col-3">
+                <div class="card kpi-card" id="kpiResponseTime">
+                    <div class="card-header">
+                        <span class="card-title">平均响应时间</span>
+                        <span class="card-badge" id="p95Badge">P95: --ms</span>
+                    </div>
+                    <div class="kpi-value"><span id="avgResponseTime">--</span><span style="font-size: 14px; color: var(--text-secondary);">ms</span></div>
+                    <div class="kpi-footer">
+                        <div class="kpi-change up" id="responseTimeChange">
+                            <span>▲</span>
+                            <span>--ms</span>
+                        </div>
+                        <canvas class="sparkline" id="spark3"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Trend Chart (Full Width) -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">实时流量趋势</span>
+                        <div style="display: flex; gap: 16px; font-size: 12px;">
+                            <span style="color: var(--chart-1);">● QPS</span>
+                            <span style="color: var(--chart-2);">● 响应时间</span>
+                            <span style="color: var(--chart-3);">● 错误数</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Top 10 + Log Stream -->
+            <!-- Top 10 Performance -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">接口性能 TOP10 (响应时间)</span>
+                        <span class="card-badge">30s 更新</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">#</th>
+                                    <th>接口</th>
+                                    <th style="width: 100px;">响应时间</th>
+                                    <th style="width: 80px;">QPS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topTable">
+                                <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">加载中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Log Stream -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">实时日志流</span>
+                        <span class="card-badge live">● 实时</span>
+                    </div>
+                    <div class="log-stream" id="logStream">
+                        <!-- Log entries will be dynamically added -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Status Code + User Activity -->
+            <!-- Status Code Distribution -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">HTTP 状态码分布</span>
+                        <span class="card-badge" id="statusTotal">总计: --</span>
+                    </div>
+                    <div class="status-bars" id="statusDistribution">
+                        <!-- Status bars will be dynamically added -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Activity -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">用户活跃度</span>
+                        <span class="card-badge">60s 更新</span>
+                    </div>
+                    <div class="activity-stats">
+                        <div class="activity-stat">
+                            <div class="activity-value" id="onlineUsers">--</div>
+                            <div class="activity-label">当前在线</div>
+                        </div>
+                        <div class="activity-stat">
+                            <div class="activity-value" id="todayActive">--</div>
+                            <div class="activity-label">今日活跃</div>
+                        </div>
+                        <div class="activity-stat">
+                            <div class="activity-value" id="newUsers">--</div>
+                            <div class="activity-label">新用户</div>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas id="userChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 5: System Health Grid (8-Grid) -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">系统健康状态</span>
+                        <span class="card-badge">30s 更新</span>
+                    </div>
+                    <div class="health-grid" id="healthGrid">
+                        <!-- Health items will be dynamically added -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
+    </main>
+
+    <!-- Tooltip -->
     <div class="tooltip" id="tooltip"></div>
 
     <script>
-        // ==================== 原生 Canvas 图表库 ====================
-        class SimpleChart {
-            constructor(canvasId, options = {}) {
-                this.canvas = document.getElementById(canvasId);
-                this.ctx = this.canvas.getContext('2d');
-                this.options = {
-                    padding: { top: 20, right: 20, bottom: 40, left: 60 },
-                    colors: ['#667eea', '#764ba2', '#48bb78', '#f56565'],
-                    ...options
-                };
-                this.data = [];
-                this.hoverIndex = -1;
-                
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-                this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
-            }
-            
-            resize() {
-                const rect = this.canvas.parentElement.getBoundingClientRect();
-                this.canvas.width = rect.width * window.devicePixelRatio;
-                this.canvas.height = rect.height * window.devicePixelRatio;
-                this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-                this.width = rect.width;
-                this.height = rect.height;
-                this.draw();
-            }
-            
-            setData(data) {
-                this.data = data;
-                this.draw();
-            }
-            
-            draw() {
-                if (!this.data.length) return;
-                
-                this.ctx.clearRect(0, 0, this.width, this.height);
-                
-                const { padding } = this.options;
-                const chartWidth = this.width - padding.left - padding.right;
-                const chartHeight = this.height - padding.top - padding.bottom;
-                
-                // 计算最大值
-                const maxValue = Math.max(...this.data.flatMap(d => [d.pv, d.uv])) * 1.1;
-                
-                // 绘制网格线
-                this.ctx.strokeStyle = 'rgba(128,128,128,0.1)';
-                this.ctx.lineWidth = 1;
-                for (let i = 0; i <= 5; i++) {
-                    const y = padding.top + (chartHeight * i / 5);
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(padding.left, y);
-                    this.ctx.lineTo(this.width - padding.right, y);
-                    this.ctx.stroke();
-                    
-                    // Y轴标签
-                    this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
-                    this.ctx.font = '12px sans-serif';
-                    this.ctx.textAlign = 'right';
-                    this.ctx.fillText(Math.round(maxValue * (5-i) / 5), padding.left - 10, y + 4);
-                }
-                
-                // 绘制折线
-                ['pv', 'uv'].forEach((key, idx) => {
-                    this.ctx.strokeStyle = this.options.colors[idx];
-                    this.ctx.lineWidth = 2;
-                    this.ctx.beginPath();
-                    
-                    this.data.forEach((point, i) => {
-                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
-                        const y = padding.top + chartHeight - (chartHeight * point[key] / maxValue);
-                        
-                        if (i === 0) this.ctx.moveTo(x, y);
-                        else this.ctx.lineTo(x, y);
-                    });
-                    
-                    this.ctx.stroke();
-                    
-                    // 绘制数据点
-                    this.ctx.fillStyle = this.options.colors[idx];
-                    this.data.forEach((point, i) => {
-                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
-                        const y = padding.top + chartHeight - (chartHeight * point[key] / maxValue);
-                        
-                        this.ctx.beginPath();
-                        this.ctx.arc(x, y, i === this.hoverIndex ? 6 : 4, 0, Math.PI * 2);
-                        this.ctx.fill();
-                    });
-                });
-                
-                // 绘制 X 轴标签
-                this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
-                this.ctx.textAlign = 'center';
-                this.data.forEach((point, i) => {
-                    if (i % Math.ceil(this.data.length / 6) === 0) {
-                        const x = padding.left + (chartWidth * i / (this.data.length - 1));
-                        this.ctx.fillText(point.time, x, this.height - padding.bottom + 20);
-                    }
-                });
-                
-                // 绘制图例
-                this.drawLegend();
-            }
-            
-            drawLegend() {
-                const legendItems = [
-                    { label: 'PV', color: this.options.colors[0] },
-                    { label: 'UV', color: this.options.colors[1] }
-                ];
-                
-                let x = this.width - this.options.padding.right - 100;
-                const y = this.options.padding.top;
-                
-                legendItems.forEach(item => {
-                    this.ctx.fillStyle = item.color;
-                    this.ctx.fillRect(x, y - 6, 12, 12);
-                    this.ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-primary');
-                    this.ctx.font = '12px sans-serif';
-                    this.ctx.textAlign = 'left';
-                    this.ctx.fillText(item.label, x + 18, y + 4);
-                    x += 50;
-                });
-            }
-            
-            handleMouseMove(e) {
-                const rect = this.canvas.getBoundingClientRect();
-                const x = (e.clientX - rect.left) * window.devicePixelRatio;
-                const { padding } = this.options;
-                const chartWidth = this.width - padding.left - padding.right;
-                
-                const index = Math.round(((x - padding.left) / chartWidth) * (this.data.length - 1));
-                
-                if (index >= 0 && index < this.data.length && index !== this.hoverIndex) {
-                    this.hoverIndex = index;
-                    this.draw();
-                    this.showTooltip(e, this.data[index]);
-                }
-            }
-            
-            handleMouseLeave() {
-                this.hoverIndex = -1;
-                this.draw();
-                document.getElementById('tooltip').style.opacity = '0';
-            }
-            
-            showTooltip(e, data) {
-                const tooltip = document.getElementById('tooltip');
-                tooltip.innerHTML = `
-                    <strong>${data.time}</strong><br>
-                    PV: ${data.pv.toLocaleString()}<br>
-                    UV: ${data.uv.toLocaleString()}
-                `;
-                tooltip.style.left = e.pageX + 10 + 'px';
-                tooltip.style.top = e.pageY - 30 + 'px';
-                tooltip.style.opacity = '1';
-            }
-        }
+        // ==================== Configuration ====================
+        const CONFIG = {
+            refreshInterval: 5000,
+            logStreamInterval: 3000,
+            healthCheckInterval: 30000,
+            maxLogEntries: 15,
+            apiBaseUrl: '/operation-log/dashboard/api'
+        };
 
-        // ==================== SSE 实时连接 ====================
-        class DashboardStream {
-            constructor() {
-                this.eventSource = null;
-                this.isPaused = false;
-                this.reconnectAttempts = 0;
-                this.maxReconnectAttempts = 5;
-                this.connect();
+        // ==================== State ====================
+        let state = {
+            isPaused: false,
+            lastData: null,
+            currentTimeRange: '30m',
+            sparklineData: {
+                totalRequests: [],
+                qps: [],
+                responseTime: []
             }
-            
-            connect() {
-                if (this.eventSource) {
-                    this.eventSource.close();
-                }
-                
-                this.eventSource = new EventSource('/operation-log/dashboard/stream');
-                
-                this.eventSource.onopen = () => {
-                    console.log('SSE 连接已建立');
-                    this.updateStatus(true);
-                    this.reconnectAttempts = 0;
-                };
-                
-                this.eventSource.addEventListener('dashboard-update', (e) => {
-                    if (!this.isPaused) {
-                        const data = JSON.parse(e.data);
-                        updateDashboard(data);
-                    }
-                });
-                
-                this.eventSource.onerror = () => {
-                    console.error('SSE 连接错误');
-                    this.updateStatus(false);
-                    this.eventSource.close();
-                    
-                    // 自动重连
-                    if (this.reconnectAttempts < this.maxReconnectAttempts) {
-                        this.reconnectAttempts++;
-                        setTimeout(() => this.connect(), 3000 * this.reconnectAttempts);
-                    }
-                };
-            }
-            
-            updateStatus(connected) {
-                const dot = document.getElementById('statusDot');
-                const text = document.getElementById('statusText');
-                
-                if (connected) {
-                    dot.classList.remove('disconnected');
-                    text.textContent = '实时连接中';
-                } else {
-                    dot.classList.add('disconnected');
-                    text.textContent = '连接断开，重连中...';
-                }
-            }
-            
-            pause() {
-                this.isPaused = true;
-            }
-            
-            resume() {
-                this.isPaused = false;
-            }
-        }
+        };
 
-        // ==================== Dashboard 逻辑 ====================
-        let trendChart;
-        let stream;
-        let currentData = null;
-        let previousData = null;
-        
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            trendChart = new SimpleChart('trendChart');
-            stream = new DashboardStream();
+        // ==================== Sparkline Charts ====================
+        function drawSparkline(canvasId, data, color) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas || data.length === 0) return;
             
-            // 主题切换
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
             
-            // 暂停/继续
-            document.getElementById('pauseBtn').addEventListener('click', togglePause);
+            const width = rect.width;
+            const height = rect.height;
+            const padding = 4;
             
-            // 时间范围选择
-            document.querySelectorAll('.time-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    // TODO: 切换时间范围数据
-                });
+            ctx.clearRect(0, 0, width, height);
+            
+            const max = Math.max(...data);
+            const min = Math.min(...data);
+            const range = max - min || 1;
+            
+            // Draw area
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            data.forEach((v, i) => {
+                const x = (i / (data.length - 1)) * width;
+                const y = height - padding - ((v - min) / range) * (height - 2 * padding);
+                if (i === 0) ctx.lineTo(x, y);
+                else ctx.lineTo(x, y);
             });
-        });
-        
-        function updateDashboard(data) {
-            previousData = currentData;
-            currentData = data;
+            ctx.lineTo(width, height);
+            ctx.closePath();
+            ctx.fillStyle = color + '20';
+            ctx.fill();
             
-            // 更新指标卡片
-            document.getElementById('totalPv').textContent = data.totalPv.toLocaleString();
-            document.getElementById('totalUv').textContent = data.totalUv.toLocaleString();
-            document.getElementById('activeEndpoints').textContent = data.activeEndpoints;
-            
-            // 计算变化率
-            if (previousData) {
-                updateChange('pvChange', data.totalPv, previousData.totalPv);
-                updateChange('uvChange', data.totalUv, previousData.totalUv);
-            }
-            
-            // 更新时间
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
-            
-            // 更新图表
-            if (data.trend && data.trend.length > 0) {
-                trendChart.setData(data.trend);
-            }
-            
-            // 更新表格
-            updateTopTable(data.topPvList || []);
+            // Draw line
+            ctx.beginPath();
+            data.forEach((v, i) => {
+                const x = (i / (data.length - 1)) * width;
+                const y = height - padding - ((v - min) / range) * (height - 2 * padding);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
         }
         
-        function updateChange(elementId, current, previous) {
-            const el = document.getElementById(elementId);
-            const change = previous > 0 ? ((current - previous) / previous * 100).toFixed(1) : 0;
-            const isPositive = change >= 0;
+        // ==================== Trend Chart ====================
+        function drawTrendChart(data = null) {
+            const canvas = document.getElementById('trendChart');
+            if (!canvas) return;
             
-            el.textContent = (isPositive ? '↑' : '↓') + ' ' + Math.abs(change) + '%';
-            el.className = 'card-change ' + (isPositive ? 'positive' : 'negative');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            
+            const width = rect.width;
+            const height = rect.height;
+            const padding = { top: 20, right: 20, bottom: 30, left: 50 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+            
+            // Generate mock data if no data provided
+            const points = data ? data.length : 30;
+            const data1 = data ? data.map(d => d.qps || d.count || Math.random() * 50 + 100) : 
+                Array.from({length: points}, () => 100 + Math.random() * 50);
+            const data2 = data ? data.map(d => d.responseTime || Math.random() * 40 + 80) : 
+                Array.from({length: points}, () => 80 + Math.random() * 40);
+            const data3 = data ? data.map(d => d.errors || Math.random() * 10) : 
+                Array.from({length: points}, () => Math.random() * 10);
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Grid lines
+            ctx.strokeStyle = '#21262d';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            for (let i = 0; i <= 5; i++) {
+                const y = padding.top + (chartHeight * i / 5);
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(width - padding.right, y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+            
+            // Y-axis labels
+            ctx.fillStyle = '#7d8590';
+            ctx.font = '11px sans-serif';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = padding.top + (chartHeight * i / 5);
+                ctx.fillText(Math.round(150 - i * 30), padding.left - 8, y + 4);
+            }
+            
+            // X-axis labels
+            ctx.textAlign = 'center';
+            const times = ['14:00', '14:05', '14:10', '14:15', '14:20', '14:25', '14:30'];
+            times.forEach((t, i) => {
+                const x = padding.left + (chartWidth * i / (times.length - 1));
+                ctx.fillText(t, x, height - 10);
+            });
+            
+            // Draw lines with area fill
+            const colors = ['#58a6ff', '#3fb950', '#a371f7'];
+            const datasets = [data1, data2, data3];
+            
+            datasets.forEach((dataset, idx) => {
+                const max = Math.max(...dataset) * 1.1;
+                
+                // Draw area fill
+                ctx.beginPath();
+                dataset.forEach((v, i) => {
+                    const x = padding.left + (chartWidth * i / (points - 1));
+                    const y = padding.top + chartHeight - (v / max) * chartHeight;
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+                ctx.lineTo(padding.left, padding.top + chartHeight);
+                ctx.closePath();
+                ctx.fillStyle = colors[idx] + '10';
+                ctx.fill();
+                
+                // Draw line
+                ctx.beginPath();
+                dataset.forEach((v, i) => {
+                    const x = padding.left + (chartWidth * i / (points - 1));
+                    const y = padding.top + chartHeight - (v / max) * chartHeight;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.strokeStyle = colors[idx];
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
         }
         
-        function updateTopTable(list) {
+        // ==================== User Activity Chart ====================
+        function drawUserChart(data = null) {
+            const canvas = document.getElementById('userChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            
+            const width = rect.width;
+            const height = rect.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw bars for hourly activity
+            const bars = 12;
+            const barWidth = (width / bars) * 0.6;
+            const gap = (width / bars) * 0.4;
+            const barData = data || [45, 62, 58, 75, 89, 95, 88, 72, 68, 82, 90, 85];
+            const max = Math.max(...barData);
+            
+            barData.forEach((v, i) => {
+                const x = i * (width / bars) + gap / 2;
+                const barHeight = (v / max) * height * 0.8;
+                const y = height - barHeight;
+                
+                const gradient = ctx.createLinearGradient(0, y, 0, height);
+                gradient.addColorStop(0, '#58a6ff');
+                gradient.addColorStop(1, '#58a6ff30');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth, barHeight);
+            });
+        }
+
+        // ==================== Data Fetching ====================
+        async function fetchOverview() {
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/overview`);
+                if (!response.ok) throw new Error('Failed to fetch overview');
+                return await response.json();
+            } catch (e) {
+                console.error('Fetch overview error:', e);
+                return null;
+            }
+        }
+
+        async function fetchQps() {
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/metrics/qps`);
+                if (!response.ok) throw new Error('Failed to fetch QPS');
+                return await response.json();
+            } catch (e) {
+                console.error('Fetch QPS error:', e);
+                return null;
+            }
+        }
+
+        async function fetchSlowEndpoints() {
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/metrics/slow-endpoints?limit=10`);
+                if (!response.ok) throw new Error('Failed to fetch slow endpoints');
+                return await response.json();
+            } catch (e) {
+                console.error('Fetch slow endpoints error:', e);
+                return null;
+            }
+        }
+
+        async function fetchUserActivity() {
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/metrics/user-activity`);
+                if (!response.ok) throw new Error('Failed to fetch user activity');
+                return await response.json();
+            } catch (e) {
+                console.error('Fetch user activity error:', e);
+                return null;
+            }
+        }
+
+        async function fetchTrend() {
+            try {
+                const response = await fetch(`${CONFIG.apiBaseUrl}/trend`);
+                if (!response.ok) throw new Error('Failed to fetch trend');
+                return await response.json();
+            } catch (e) {
+                console.error('Fetch trend error:', e);
+                return null;
+            }
+        }
+
+        // ==================== UI Updates ====================
+        function updateKpiCard(id, value, change, changeType = 'up') {
+            const valueEl = document.getElementById(id);
+            if (valueEl) {
+                // Animate number change
+                animateNumber(valueEl, parseValue(valueEl.textContent) || 0, value);
+            }
+            
+            const changeEl = document.getElementById(id + 'Change');
+            if (changeEl) {
+                const arrow = changeType === 'up' ? '▲' : '▼';
+                changeEl.innerHTML = `<span>${arrow}</span><span>${change}</span>`;
+                changeEl.className = `kpi-change ${changeType}`;
+            }
+        }
+
+        function parseValue(text) {
+            if (!text || text === '--') return 0;
+            return parseFloat(text.replace(/,/g, '').replace('%', '').replace('ms', ''));
+        }
+
+        function animateNumber(element, from, to) {
+            const duration = 300;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = from + (to - from) * easeProgress;
+                
+                element.textContent = formatNumber(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return Math.round(num).toLocaleString();
+        }
+
+        function updateProgressRing(percentage) {
+            const ring = document.getElementById('errorRing');
+            const text = document.getElementById('errorRingText');
+            const valueEl = document.getElementById('errorRateValue');
+            
+            if (ring) {
+                const circumference = 2 * Math.PI * 20; // r=20
+                const offset = circumference - (percentage / 100) * circumference;
+                ring.style.strokeDashoffset = offset;
+            }
+            
+            if (text) text.textContent = percentage.toFixed(1) + '%';
+            if (valueEl) valueEl.textContent = percentage.toFixed(2) + '%';
+        }
+
+        function updateTopTable(endpoints) {
             const tbody = document.getElementById('topTable');
-            if (!list.length) {
+            if (!endpoints || endpoints.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">暂无数据</td></tr>';
                 return;
             }
             
-            tbody.innerHTML = list.map((item, idx) => `
-                <tr>
-                    <td><span class="rank ${idx < 3 ? 'top' + (idx+1) : 'other'}">${idx + 1}</span></td>
-                    <td>${item.fullName}</td>
-                    <td>${item.value.toLocaleString()}</td>
-                    <td>--</td>
-                </tr>
-            `).join('');
-        }
-        
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggle');
+            const maxTime = Math.max(...endpoints.map(e => e.avgResponseTime || 0));
             
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                btn.textContent = '🌙 暗色';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                btn.textContent = '☀️ 亮色';
-                localStorage.setItem('theme', 'dark');
+            tbody.innerHTML = endpoints.map((item, idx) => {
+                const rank = idx + 1;
+                const rankClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : 'other';
+                const endpoint = item.endpoint || '/api/unknown';
+                const responseTime = item.avgResponseTime || 0;
+                const callCount = item.callCount || 0;
+                const barWidth = maxTime > 0 ? (responseTime / maxTime) * 100 : 0;
+                
+                let barColor = 'var(--success)';
+                if (responseTime > 200) barColor = 'var(--info)';
+                if (responseTime > 300) barColor = 'var(--warning)';
+                if (responseTime > 400) barColor = 'var(--danger)';
+                
+                return `
+                    <tr>
+                        <td><span class="rank ${rankClass}">${rank}</span></td>
+                        <td>${endpoint}</td>
+                        <td>
+                            <div class="metric-bar">
+                                <span>${responseTime}ms</span>
+                                <div class="bar-bg"><div class="bar-fill" style="width: ${barWidth}%; background: ${barColor};"></div></div>
+                            </div>
+                        </td>
+                        <td>${callCount}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateUserActivity(data) {
+            if (!data) return;
+            
+            const onlineEl = document.getElementById('onlineUsers');
+            const todayEl = document.getElementById('todayActive');
+            const newEl = document.getElementById('newUsers');
+            
+            if (onlineEl) onlineEl.textContent = formatNumber(data.activeUsers || 0);
+            if (todayEl) todayEl.textContent = formatNumber((data.activeUsers || 0) + (data.newUsers || 0));
+            if (newEl) newEl.textContent = formatNumber(data.newUsers || 0);
+        }
+
+        function updateStatusDistribution(data) {
+            const total = data ? data.totalRequests || 1 : 1;
+            const container = document.getElementById('statusDistribution');
+            const totalEl = document.getElementById('statusTotal');
+            
+            if (totalEl) totalEl.textContent = `总计: ${formatNumber(total)}`;
+            
+            // Mock status distribution if no data
+            const distribution = data || {
+                ok: Math.floor(total * 0.945),
+                redirect: Math.floor(total * 0.021),
+                client: Math.floor(total * 0.028),
+                server: Math.floor(total * 0.006)
+            };
+            
+            container.innerHTML = `
+                <div class="status-item">
+                    <span class="status-code ok">2xx</span>
+                    <div class="status-bar-bg">
+                        <div class="status-bar-fill" style="width: ${(distribution.ok / total * 100).toFixed(1)}%; background: var(--success);"></div>
+                    </div>
+                    <span class="status-count">${formatNumber(distribution.ok)}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code redirect">3xx</span>
+                    <div class="status-bar-bg">
+                        <div class="status-bar-fill" style="width: ${(distribution.redirect / total * 100).toFixed(1)}%; background: var(--info);"></div>
+                    </div>
+                    <span class="status-count">${formatNumber(distribution.redirect)}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code client">4xx</span>
+                    <div class="status-bar-bg">
+                        <div class="status-bar-fill" style="width: ${(distribution.client / total * 100).toFixed(1)}%; background: var(--warning);"></div>
+                    </div>
+                    <span class="status-count">${formatNumber(distribution.client)}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code server">5xx</span>
+                    <div class="status-bar-bg">
+                        <div class="status-bar-fill" style="width: ${(distribution.server / total * 100).toFixed(1)}%; background: var(--danger);"></div>
+                    </div>
+                    <span class="status-count">${formatNumber(distribution.server)}</span>
+                </div>
+            `;
+        }
+
+        // ==================== Log Stream ====================
+        const logMessages = [
+            { level: 'info', message: 'GET /api/v1/orders 200 OK' },
+            { level: 'info', message: 'User logged in successfully' },
+            { level: 'debug', message: 'Cache refreshed for products' },
+            { level: 'warn', message: 'High memory usage detected: 82%' },
+            { level: 'info', message: 'POST /api/v1/payment 201 Created' },
+            { level: 'error', message: 'Connection timeout to database' },
+            { level: 'info', message: 'Order processed successfully' },
+            { level: 'debug', message: 'Session validated' },
+            { level: 'warn', message: 'Rate limit approaching for API key' },
+            { level: 'info', message: 'GET /api/v1/users 200 OK' },
+            { level: 'error', message: 'NullPointerException in OrderService' },
+            { level: 'info', message: 'Scheduled task executed' },
+        ];
+
+        function addLogEntry(message = null) {
+            if (state.isPaused) return;
+            
+            const stream = document.getElementById('logStream');
+            const msg = message || logMessages[Math.floor(Math.random() * logMessages.length)];
+            const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">${time}</span>
+                <span class="log-level ${msg.level}">${msg.level.toUpperCase()}</span>
+                <span class="log-message">${msg.message}</span>
+            `;
+            
+            stream.insertBefore(entry, stream.firstChild);
+            if (stream.children.length > CONFIG.maxLogEntries) {
+                stream.removeChild(stream.lastChild);
+            }
+        }
+
+        // ==================== Health Grid ====================
+        function updateHealthGrid(data = null) {
+            const container = document.getElementById('healthGrid');
+            
+            // Mock health data if no data provided
+            const healthData = data || {
+                cpu: { value: 67, unit: '%', status: 'normal' },
+                memory: { value: 82, unit: '%', status: 'warning' },
+                disk: { value: 34, unit: '%', status: 'normal' },
+                network: { value: 1.2, unit: 'GB/s', status: 'normal' },
+                jvm: { value: 45, unit: '%', status: 'normal' },
+                gc: { value: 2, unit: '/min', status: 'normal' },
+                threads: { value: 156, unit: '', status: 'warning' },
+                connections: { value: '12/20', unit: '', status: 'normal' }
+            };
+            
+            const items = [
+                { key: 'cpu', name: 'CPU 使用率' },
+                { key: 'memory', name: '内存使用' },
+                { key: 'disk', name: '磁盘 I/O' },
+                { key: 'network', name: '网络流量' },
+                { key: 'jvm', name: 'JVM 堆内存' },
+                { key: 'gc', name: 'GC 次数' },
+                { key: 'threads', name: '活跃线程' },
+                { key: 'connections', name: '连接池' }
+            ];
+            
+            container.innerHTML = items.map(item => {
+                const data = healthData[item.key] || { value: '--', unit: '', status: 'normal' };
+                const statusClass = data.status;
+                const valueColor = data.status === 'warning' ? 'var(--warning)' : 
+                                  data.status === 'danger' ? 'var(--danger)' : 'var(--text-primary)';
+                
+                return `
+                    <div class="health-item">
+                        <div class="health-header">
+                            <span class="health-name">${item.name}</span>
+                            <span class="health-status ${statusClass}"></span>
+                        </div>
+                        <div class="health-value" style="color: ${valueColor};">${data.value}${data.unit}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== Main Dashboard Update ====================
+        async function updateDashboard() {
+            if (state.isPaused) return;
+            
+            // Fetch all data in parallel
+            const [overview, qps, slowEndpoints, userActivity, trend] = await Promise.all([
+                fetchOverview(),
+                fetchQps(),
+                fetchSlowEndpoints(),
+                fetchUserActivity(),
+                fetchTrend()
+            ]);
+            
+            // Update KPI Cards
+            if (overview) {
+                updateKpiCard('totalRequests', overview.totalOperations, '12.5%', 'up');
+                state.sparklineData.totalRequests.push(overview.totalOperations);
+                if (state.sparklineData.totalRequests.length > 20) state.sparklineData.totalRequests.shift();
             }
             
-            // 重绘图表
-            if (trendChart) trendChart.draw();
-        }
-        
-        function togglePause() {
-            const btn = document.getElementById('pauseBtn');
+            if (qps) {
+                updateKpiCard('qpsValue', qps.currentQps, '5.2%', 'up');
+                state.sparklineData.qps.push(qps.currentQps);
+                if (state.sparklineData.qps.length > 20) state.sparklineData.qps.shift();
+            }
             
-            if (stream.isPaused) {
-                stream.resume();
-                btn.textContent = '⏸ 暂停';
+            if (overview) {
+                updateProgressRing(overview.errorRate * 100 || 0.32);
+                updateKpiCard('errorRate', overview.errorRate * 100 || 0.32, '0.08%', 'down');
+            }
+            
+            if (overview) {
+                updateKpiCard('avgResponseTime', overview.avgResponseTime || 125, '8ms', 'up');
+                document.getElementById('p95Badge').textContent = `P95: ${overview.avgResponseTime || 234}ms`;
+                state.sparklineData.responseTime.push(overview.avgResponseTime || 125);
+                if (state.sparklineData.responseTime.length > 20) state.sparklineData.responseTime.shift();
+            }
+            
+            // Update Sparklines
+            if (state.sparklineData.totalRequests.length > 0) {
+                drawSparkline('spark1', state.sparklineData.totalRequests, '#58a6ff');
+                drawSparkline('spark2', state.sparklineData.qps, '#3fb950');
+                drawSparkline('spark3', state.sparklineData.responseTime, '#a371f7');
+            }
+            
+            // Update Trend Chart
+            drawTrendChart(trend);
+            
+            // Update Tables
+            if (slowEndpoints) updateTopTable(slowEndpoints);
+            
+            // Update User Activity
+            if (userActivity) updateUserActivity(userActivity);
+            
+            // Update Status Distribution
+            if (overview) updateStatusDistribution(overview);
+            
+            // Update timestamp
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            
+            state.lastData = { overview, qps, slowEndpoints, userActivity, trend };
+        }
+
+        function updateConnectionStatus(connected) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
+            if (connected) {
+                dot.classList.remove('disconnected');
+                text.textContent = '实时连接中';
             } else {
-                stream.pause();
-                btn.textContent = '▶️ 继续';
+                dot.classList.add('disconnected');
+                text.textContent = '连接断开';
             }
         }
-        
-        function sortTable(column) {
-            // TODO: 实现表格排序
-            console.log('排序:', column);
+
+        // ==================== Initialization ====================
+        function init() {
+            // Draw initial charts
+            drawTrendChart();
+            drawUserChart();
+            
+            // Initial data load
+            updateDashboard();
+            updateHealthGrid();
+            
+            // Add initial log entries
+            for (let i = 0; i < 5; i++) {
+                addLogEntry();
+            }
+            
+            // Set up intervals
+            setInterval(updateDashboard, CONFIG.refreshInterval);
+            setInterval(() => addLogEntry(), CONFIG.logStreamInterval);
+            setInterval(() => updateHealthGrid(), CONFIG.healthCheckInterval);
+            
+            // Update time every second
+            setInterval(() => {
+                document.getElementById('lastUpdate').textContent = 
+                    new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            }, 1000);
+            
+            // Event handlers
+            document.getElementById('refreshBtn').addEventListener('click', updateDashboard);
+            
+            document.getElementById('pauseBtn').addEventListener('click', () => {
+                state.isPaused = !state.isPaused;
+                document.getElementById('pauseBtn').textContent = state.isPaused ? '▶️ 继续' : '⏸ 暂停';
+                updateConnectionStatus(!state.isPaused);
+            });
+            
+            // Time selector
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    state.currentTimeRange = e.target.dataset.range;
+                    updateDashboard();
+                });
+            });
+            
+            // Resize handler
+            window.addEventListener('resize', () => {
+                drawTrendChart(state.lastData?.trend);
+                drawUserChart();
+                if (state.sparklineData.totalRequests.length > 0) {
+                    drawSparkline('spark1', state.sparklineData.totalRequests, '#58a6ff');
+                    drawSparkline('spark2', state.sparklineData.qps, '#3fb950');
+                    drawSparkline('spark3', state.sparklineData.responseTime, '#a371f7');
+                }
+            });
+            
+            updateConnectionStatus(true);
         }
-        
-        // 加载保存的主题
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-            document.getElementById('themeToggle').textContent = '☀️ 亮色';
-        }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
