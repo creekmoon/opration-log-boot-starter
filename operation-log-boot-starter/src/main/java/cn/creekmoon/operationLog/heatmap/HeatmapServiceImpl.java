@@ -4,8 +4,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.HyperLogLogOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -189,7 +191,8 @@ public class HeatmapServiceImpl implements HeatmapService {
         
         try {
             String pattern = properties.getRedisKeyPrefix() + ":pv:realtime:*";
-            Set<String> keys = redisTemplate.keys(pattern);
+            // 使用 scan 替代 keys, 避免阻塞 Redis
+            Set<String> keys = scanKeys(pattern);
             
             if (keys != null) {
                 for (String pvKey : keys) {
@@ -234,6 +237,30 @@ public class HeatmapServiceImpl implements HeatmapService {
         }
 
         return result;
+    }
+    
+    /**
+     * 使用 SCAN 命令非阻塞地获取匹配的 keys
+     * 替代 KEYS 命令, 避免在大数据量时阻塞 Redis
+     */
+    private Set<String> scanKeys(String pattern) {
+        Set<String> keys = new HashSet<>();
+        try {
+            redisTemplate.execute((RedisConnection connection) -> {
+                ScanOptions options = ScanOptions.scanOptions()
+                        .match(pattern)
+                        .count(100) // 每次扫描100个
+                        .build();
+                var cursor = connection.scan(options);
+                while (cursor.hasNext()) {
+                    keys.add(new String(cursor.next(), StandardCharsets.UTF_8));
+                }
+                return null;
+            });
+        } catch (Exception e) {
+            log.warn("[operation-log] Scan keys failed: {}", e.getMessage());
+        }
+        return keys;
     }
 
     /**
