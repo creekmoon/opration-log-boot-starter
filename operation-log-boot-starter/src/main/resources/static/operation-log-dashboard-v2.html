@@ -634,7 +634,7 @@
                         <span class="chart-title">PV/UV 趋势</span>
                         <div class="chart-actions">
                             <button class="btn" onclick="changeTimeRange('1h')">1小时</button>
-                            <button class="btn" onclick="changeTimeRange('24h')">24小时</button>
+                            <button class="btn btn-primary" onclick="changeTimeRange('24h')">24小时</button>
                             <button class="btn" onclick="changeTimeRange('7d')">7天</button>
                         </div>
                     </div>
@@ -812,23 +812,23 @@
         });
         
         // ==================== Charts ====================
-        function initCharts() {
-            // Trend Chart
+        async function initCharts() {
+            // 初始化图表但不加载数据
             const trendCtx = document.getElementById('trendChart').getContext('2d');
             charts.trend = new Chart(trendCtx, {
                 type: 'line',
                 data: {
-                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    labels: [],
                     datasets: [{
                         label: 'PV',
-                        data: [1200, 1900, 3000, 5000, 4800, 4200],
+                        data: [],
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         tension: 0.4,
                         fill: true
                     }, {
                         label: 'UV',
-                        data: [800, 1200, 2000, 3500, 3200, 2800],
+                        data: [],
                         borderColor: '#6366f1',
                         backgroundColor: 'rgba(99, 102, 241, 0.1)',
                         tension: 0.4,
@@ -850,7 +850,7 @@
                     }
                 }
             });
-            
+
             // Response Time Chart
             const rtCtx = document.getElementById('responseTimeChart').getContext('2d');
             charts.responseTime = new Chart(rtCtx, {
@@ -878,6 +878,53 @@
                     }
                 }
             });
+
+            // 加载初始趋势数据
+            await loadTrendData('24h');
+        }
+
+        // ==================== Trend Data ====================
+        let currentTimeRange = '24h';
+
+        async function loadTrendData(range) {
+            try {
+                const response = await fetch(`/operation-log/dashboard/api/trends?range=${range}`);
+                const trendData = await response.json();
+
+                if (trendData && trendData.data) {
+                    const labels = trendData.data.map(p => p.date);
+                    const pvData = trendData.data.map(p => p.count);
+                    const uvData = trendData.data.map(p => p.userCount);
+
+                    charts.trend.data.labels = labels;
+                    charts.trend.data.datasets[0].data = pvData;
+                    charts.trend.data.datasets[1].data = uvData;
+                    charts.trend.update();
+
+                    currentTimeRange = range;
+                    updateTimeRangeButtons(range);
+                }
+            } catch (e) {
+                console.error('加载趋势数据失败:', e);
+            }
+        }
+
+        function updateTimeRangeButtons(activeRange) {
+            // 更新按钮样式
+            const buttons = document.querySelectorAll('.chart-actions .btn');
+            buttons.forEach(btn => {
+                const range = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (range === activeRange) {
+                    btn.classList.add('btn-primary');
+                } else {
+                    btn.classList.remove('btn-primary');
+                }
+            });
+        }
+
+        function changeTimeRange(range) {
+            console.log('切换时间范围:', range);
+            loadTrendData(range);
         }
         
         // ==================== Data Loading ====================
@@ -1026,17 +1073,17 @@
         // ==================== Utils ====================
         function refreshAll() {
             loadOverview();
+            loadTrendData(currentTimeRange);
             if (currentPage === 'users') loadUsers();
         }
-        
+
         function changeTimeRange(range) {
-            console.log('切换时间范围:', range);
-            // TODO: reload chart data
+            loadTrendData(range);
         }
         
         // ==================== Init ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initCharts();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initCharts();
             loadOverview();
             initSSE();
         });
