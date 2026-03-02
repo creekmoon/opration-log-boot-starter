@@ -4,110 +4,97 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * DashboardProperties 测试类
+ * DashboardProperties 测试类（v2.3+ 简化版）
  */
 class DashboardPropertiesTest {
 
     @Test
     void testDefaultValues() {
         DashboardProperties properties = new DashboardProperties();
-        
-        assertFalse(properties.isEnabled());
-        assertEquals(30, properties.getRefreshInterval());
-        assertNull(properties.getAuth());
+
+        assertTrue(properties.isEnabled());
+        assertEquals("admin", properties.getUsername());
+        assertNull(properties.getPassword());
+        assertFalse(properties.isAuthEnabled());
     }
 
     @Test
     void testSettersAndGetters() {
         DashboardProperties properties = new DashboardProperties();
-        
+
+        properties.setEnabled(false);
+        assertFalse(properties.isEnabled());
+
         properties.setEnabled(true);
         assertTrue(properties.isEnabled());
-        
-        properties.setRefreshInterval(60);
-        assertEquals(60, properties.getRefreshInterval());
     }
 
     @Test
-    void testAuthConfigDefaultValues() {
-        DashboardProperties.AuthConfig authConfig = new DashboardProperties.AuthConfig();
-        
-        assertEquals("admin", authConfig.getUsername());
-        assertEquals("", authConfig.getPassword());
-    }
-
-    @Test
-    void testAuthConfigSettersAndGetters() {
-        DashboardProperties.AuthConfig authConfig = new DashboardProperties.AuthConfig();
-        
-        authConfig.setUsername("customuser");
-        assertEquals("customuser", authConfig.getUsername());
-        
-        authConfig.setPassword("custompass");
-        assertEquals("custompass", authConfig.getPassword());
-    }
-
-    @Test
-    void testAuthEnabled_WithAuthConfig() {
+    void testUsernameConfiguration() {
         DashboardProperties properties = new DashboardProperties();
-        
-        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
-        auth.setPassword("testpassword");
-        properties.setAuth(auth);
-        
+
+        assertEquals("admin", properties.getUsername());
+
+        properties.setUsername("customuser");
+        assertEquals("customuser", properties.getUsername());
+    }
+
+    @Test
+    void testAuthEnabled_WithPassword() {
+        DashboardProperties properties = new DashboardProperties();
+
+        properties.setPassword("testpassword");
+
         assertTrue(properties.isAuthEnabled());
-        assertEquals("admin", properties.getAuthUsername());
-        assertEquals("testpassword", properties.getAuthPassword());
+        assertEquals("admin", properties.getUsername());
+        assertEquals("testpassword", properties.getPassword());
     }
 
     @Test
-    void testAuthEnabled_WithoutAuthConfig() {
+    void testAuthEnabled_WithoutPassword() {
         DashboardProperties properties = new DashboardProperties();
-        
+
         assertFalse(properties.isAuthEnabled());
-        assertEquals("admin", properties.getAuthUsername());
-        assertEquals("", properties.getAuthPassword());
+        assertNull(properties.getPassword());
     }
 
     @Test
     void testAuthEnabled_WithEmptyPassword() {
         DashboardProperties properties = new DashboardProperties();
-        
-        DashboardProperties.AuthConfig auth = new DashboardProperties.AuthConfig();
-        auth.setPassword("");
-        properties.setAuth(auth);
-        
+
+        properties.setPassword("");
+
         assertFalse(properties.isAuthEnabled());
     }
 
     @Test
-    void testDeprecatedAuthMode() {
+    void testAuthEnabled_WithBlankPassword() {
         DashboardProperties properties = new DashboardProperties();
-        
-        // 使用废弃的 AuthMode 仍然可以工作
-        properties.setAuthMode(DashboardProperties.AuthMode.TOKEN_ONLY);
-        properties.setAuthToken("testtoken");
-        
+
+        properties.setPassword("   ");
+
+        assertFalse(properties.isAuthEnabled());
+    }
+
+    @Test
+    void testFullConfiguration() {
+        DashboardProperties properties = new DashboardProperties();
+
+        properties.setEnabled(true);
+        properties.setUsername("operator");
+        properties.setPassword("securepass123");
+
+        assertTrue(properties.isEnabled());
         assertTrue(properties.isAuthEnabled());
-        assertEquals("testtoken", properties.getAuthPassword());
+        assertEquals("operator", properties.getUsername());
+        assertEquals("securepass123", properties.getPassword());
     }
 
     @Test
     void testToString() {
         DashboardProperties properties = new DashboardProperties();
         String str = properties.toString();
-        
-        assertNotNull(str);
-    }
 
-    @Test
-    void testAuthModeEnum() {
-        // 测试 AuthMode 枚举值存在
-        DashboardProperties.AuthMode[] modes = DashboardProperties.AuthMode.values();
-        assertEquals(4, modes.length);
-        assertNotNull(DashboardProperties.AuthMode.OFF);
-        assertNotNull(DashboardProperties.AuthMode.IP_ONLY);
-        assertNotNull(DashboardProperties.AuthMode.TOKEN_ONLY);
-        assertNotNull(DashboardProperties.AuthMode.IP_AND_TOKEN);
+        assertNotNull(str);
     }
 }
