@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Log Dashboard V3 - Grafana Style</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        /* ===== Grafana 风格设计系统 ===== */
+        :root {
+            /* 深色主题 (默认) */
+            --bg-page: #111217;
+            --bg-panel: #181b1f;
+            --bg-panel-hover: #1f2329;
+            --bg-input: #0b0c0e;
+            --border-color: #2c3235;
+            --border-hover: #384045;
+            
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --warning-bg: rgba(245, 158, 11, 0.15);
+            --error-bg: rgba(239, 68, 68, 0.15);
+            
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            --radius: 3px;
+            --gap: 8px;
+        }
+        
+        [data-theme="light"] {
+            --bg-page: #f4f5f5;
+            --bg-panel: #ffffff;
+            --bg-panel-hover: #f7f8fa;
+            --bg-input: #ffffff;
+            --border-color: #e4e7e9;
+            --border-hover: #d1d5db;
+            
+            --text-primary: #1a1a1a;
+            --text-secondary: #666;
+            --text-muted: #999;
+            
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --warning-bg: rgba(245, 158, 11, 0.1);
+            --error-bg: rgba(239, 68, 68, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        /* ===== 顶部导航栏 ===== */
+        .header {
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .time-range {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .time-range:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .refresh-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .refresh-btn:hover {
+            background: var(--bg-panel-hover);
+        }
+        
+        .theme-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 6px 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* ===== 主内容区 ===== */
+        .main {
+            padding: var(--gap);
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+        
+        /* ===== 12列网格系统 ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--gap);
+        }
+        
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+        
+        /* ===== 面板卡片 ===== */
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .panel:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .panel-header {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .panel-body {
+            padding: 12px;
+        }
+        
+        /* ===== KPI 指标卡片 ===== */
+        .kpi-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent-blue);
+        }
+        
+        .kpi-card.success::before { background: var(--accent-green); }
+        .kpi-card.warning::before { background: var(--accent-yellow); }
+        .kpi-card.error::before { background: var(--accent-red); }
+        
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            line-height: 1.2;
+        }
+        
+        .kpi-unit {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+        
+        .kpi-change {
+            font-size: 11px;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .kpi-change.up { color: var(--accent-green); }
+        .kpi-change.down { color: var(--accent-red); }
+        
+        .kpi-sparkline {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 40px;
+            opacity: 0.6;
+        }
+        
+        /* ===== 系统健康网格 ===== */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+        }
+        
+        .health-item {
+            background: var(--bg-panel);
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .health-item:hover {
+            background: var(--bg-panel-hover);
+        }
+        
+        .health-icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .health-icon.ok { background: var(--success-bg); color: var(--accent-green); }
+        .health-icon.warn { background: var(--warning-bg); color: var(--accent-yellow); }
+        .health-icon.error { background: var(--error-bg); color: var(--accent-red); }
+        
+        .health-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        
+        .health-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+        }
+        
+        /* ===== 表格样式 ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        
+        .data-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .data-table tr:hover td {
+            background: var(--bg-panel-hover);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-input);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        
+        .progress-fill.green { background: var(--accent-green); }
+        .progress-fill.yellow { background: var(--accent-yellow); }
+        .progress-fill.red { background: var(--accent-red); }
+        
+        /* ===== 日志流 ===== */
+        .log-stream {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .log-time {
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        
+        .log-level {
+            padding: 0 6px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .log-level.info { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+        .log-level.warn { background: var(--warning-bg); color: var(--accent-yellow); }
+        .log-level.error { background: var(--error-bg); color: var(--accent-red); }
+        
+        .log-message {
+            color: var(--text-primary);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* ===== 图表容器 ===== */
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+        
+        /* ===== 状态标签 ===== */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .status-badge.ok { background: var(--success-bg); color: var(--accent-green); }
+        .status-badge.ok::before { background: var(--accent-green); }
+        
+        .status-badge.warn { background: var(--warning-bg); color: var(--accent-yellow); }
+        .status-badge.warn::before { background: var(--accent-yellow); }
+        
+        .status-badge.error { background: var(--error-bg); color: var(--accent-red); }
+        .status-badge.error::before { background: var(--accent-red); }
+        
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-page);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <span>Operation Log Dashboard</span>
+            </div>
+        </div>
+        <div class="header-controls">
+            <select class="time-range" id="timeRange">
+                <option value="5m">最近 5 分钟</option>
+                <option value="15m">最近 15 分钟</option>
+                <option value="30m" selected>最近 30 分钟</option>
+                <option value="1h">最近 1 小时</option>
+                <option value="6h">最近 6 小时</option>
+                <option value="24h">最近 24 小时</option>
+            </select>
+            <button class="refresh-btn" onclick="refreshAll()">
+                <span>🔄</span>
+                <span>刷新</span>
+            </button>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="grid">
+            <!-- KPI 行 - 4个指标 -->
+            <div class="col-3">
+                <div class="kpi-card success">
+                    <div class="kpi-label">总请求量 (PV)</div>
+                    <div class="kpi-value">
+                        <span id="totalPv">--</span>
+                        <span class="kpi-unit"></span>
+                    </div>
+                    <div class="kpi-change up">
+                        <span>↑</span>
+                        <span>12.5%</span>
+                    </div>
+                    <canvas class="kpi-sparkline" id="pvSparkline"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <div class="kpi-card">
+                    <div class="kpi-label">实时 QPS</div>
+                    <div class="kpi-value">
+                        <span id="currentQps">--</span>
+                        <span class="kpi-unit">req/s</span>
+                    </div>
+                    <div class="kpi-change">
+                        <span>峰值:</span>
+                        <span id="peakQps">--</span>
+                    </div>
+                    <canvas class="kpi-sparkline" id="qpsSparkline"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <div class="kpi-card warning">
+                    <div class="kpi-label">错误率</div>
+                    <div class="kpi-value">
+                        <span id="errorRate">--</span>
+                        <span class="kpi-unit">%</span>
+                    </div>
+                    <div class="kpi-change down">
+                        <span>↑</span>
+                        <span>0.3%</span>
+                    </div>
+                    <canvas class="kpi-sparkline" id="errorSparkline"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <div class="kpi-card">
+                    <div class="kpi-label">平均响应时间</div>
+                    <div class="kpi-value">
+                        <span id="avgResponseTime">--</span>
+                        <span class="kpi-unit">ms</span>
+                    </div>
+                    <div class="kpi-change up">
+                        <span>↓</span>
+                        <span>8.2%</span>
+                    </div>
+                    <canvas class="kpi-sparkline" id="latencySparkline"></canvas>
+                </div>
+            </div>
+
+            <!-- 实时趋势图 - 全宽 -->
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>📈 实时流量趋势</span>
+                        <span class="status-badge ok">实时</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 接口性能 TOP10 -->
+            <div class="col-6">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>🔥 接口性能 TOP10</span>
+                        <span style="color: var(--text-muted); font-size: 11px;">按平均响应时间排序</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>接口</th>
+                                    <th>QPS</th>
+                                    <th>响应时间</th>
+                                    <th>错误率</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topEndpointsTable">
+                                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">加载中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时日志流 -->
+            <div class="col-6">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>📝 实时日志流</span>
+                        <span class="status-badge ok">LIVE</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="log-stream" id="logStream">
+                            <div class="log-entry">
+                                <span class="log-time">--:--:--</span>
+                                <span class="log-level info">INFO</span>
+                                <span class="log-message">等待日志数据...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统健康状态网格 - 8宫格 -->
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>🖥️ 系统健康状态</span>
+                        <span style="color: var(--text-muted); font-size: 11px;">每 30 秒更新</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="health-grid">
+                            <div class="health-item">
+                                <div class="health-icon ok">💻</div>
+                                <div class="health-label">CPU 使用率</div>
+                                <div class="health-value" id="cpuUsage">--%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">💾</div>
+                                <div class="health-label">内存使用</div>
+                                <div class="health-value" id="memoryUsage">--%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">💿</div>
+                                <div class="health-label">磁盘 I/O</div>
+                                <div class="health-value" id="diskIo">--</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">🌐</div>
+                                <div class="health-label">网络流量</div>
+                                <div class="health-value" id="networkTraffic">--</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">☕</div>
+                                <div class="health-label">JVM 堆内存</div>
+                                <div class="health-value" id="jvmHeap">--%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">🗑️</div>
+                                <div class="health-label">GC 次数</div>
+                                <div class="health-value" id="gcCount">--</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">🧵</div>
+                                <div class="health-label">线程数</div>
+                                <div class="health-value" id="threadCount">--</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-icon ok">🔗</div>
+                                <div class="health-label">连接池</div>
+                                <div class="health-value" id="connectionPool">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ===== 主题切换 =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('dashboard-theme', newTheme);
+            
+            // 更新图表主题
+            updateChartTheme();
+        }
+        
+        // 加载保存的主题
+        const savedTheme = localStorage.getItem('dashboard-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // ===== 数据加载 =====
+        async function loadDashboardData() {
+            try {
+                // 加载实时数据
+                const realtimeRes = await fetch('/operation-log/dashboard/api/realtime');
+                const realtime = await realtimeRes.json();
+                
+                document.getElementById('totalPv').textContent = formatNumber(realtime.totalPv || 0);
+                document.getElementById('currentQps').textContent = realtime.currentQps || 0;
+                document.getElementById('peakQps').textContent = formatNumber(realtime.peakQps || 0);
+                document.getElementById('errorRate').textContent = (realtime.errorRate || 0).toFixed(2);
+                
+                // 加载趋势数据
+                await loadTrendData();
+                
+                // 加载 TOP10 接口
+                await loadTopEndpoints();
+                
+            } catch (e) {
+                console.error('加载 Dashboard 数据失败:', e);
+            }
+        }
+        
+        async function loadTrendData() {
+            try {
+                const timeRange = document.getElementById('timeRange').value;
+                const res = await fetch(`/operation-log/dashboard/api/trends?range=${timeRange}`);
+                const data = await res.json();
+                
+                if (data && data.data) {
+                    updateTrendChart(data.data);
+                }
+            } catch (e) {
+                console.error('加载趋势数据失败:', e);
+            }
+        }
+        
+        async function loadTopEndpoints() {
+            try {
+                const res = await fetch('/operation-log/dashboard/api/top-operations?limit=10');
+                const endpoints = await res.json();
+                
+                const tbody = document.getElementById('topEndpointsTable');
+                if (endpoints && endpoints.length > 0) {
+                    tbody.innerHTML = endpoints.map((ep, i) => `
+                        <tr>
+                            <td>
+                                <div style="font-weight:500">${ep.operationName}</div>
+                                <div style="font-size:11px;color:var(--text-muted)">${ep.operationType}</div>
+                            </td>
+                            <td>${formatNumber(ep.count)}</td>
+                            <td>
+                                <span style="${ep.avgResponseTime > 500 ? 'color:var(--accent-red)' : ''}">${ep.avgResponseTime}ms</span>
+                                <div class="progress-bar" style="margin-top:4px;width:60px;">
+                                    <div class="progress-fill ${ep.avgResponseTime > 500 ? 'red' : ep.avgResponseTime > 200 ? 'yellow' : 'green'}" style="width:${Math.min(ep.avgResponseTime / 10, 100)}%"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge ${ep.errorCount > 0 ? 'error' : 'ok'}">
+                                    ${ep.errorCount > 0 ? '异常' : '正常'}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">暂无数据</td></tr>';
+                }
+            } catch (e) {
+                console.error('加载 TOP10 接口失败:', e);
+            }
+        }
+        
+        // ===== 图表 =====
+        let trendChart;
+        
+        function initTrendChart() {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#a0a0a0' : '#666';
+            const gridColor = isDark ? '#2c3235' : '#e4e7e9';
+            
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'QPS',
+                        data: [],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }, {
+                        label: '错误数',
+                        data: [],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: textColor,
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: gridColor, drawBorder: false },
+                            ticks: { color: textColor, font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: gridColor, drawBorder: false },
+                            ticks: { color: textColor, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateTrendChart(data) {
+            if (!trendChart || !data) return;
+            
+            trendChart.data.labels = data.map(d => d.date);
+            trendChart.data.datasets[0].data = data.map(d => d.count);
+            trendChart.update();
+        }
+        
+        function updateChartTheme() {
+            if (!trendChart) return;
+            
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#a0a0a0' : '#666';
+            const gridColor = isDark ? '#2c3235' : '#e4e7e9';
+            
+            trendChart.options.scales.x.grid.color = gridColor;
+            trendChart.options.scales.x.ticks.color = textColor;
+            trendChart.options.scales.y.grid.color = gridColor;
+            trendChart.options.scales.y.ticks.color = textColor;
+            trendChart.options.plugins.legend.labels.color = textColor;
+            trendChart.update();
+        }
+        
+        // ===== SSE 实时日志 =====
+        let eventSource;
+        
+        function initLogStream() {
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource('/operation-log/dashboard/stream');
+            
+            eventSource.addEventListener('dashboard-update', (e) => {
+                try {
+                    const data = JSON.parse(e.data);
+                    addLogEntry('INFO', `Dashboard update: PV=${data.totalPv}, UV=${data.totalUv}`);
+                } catch (err) {
+                    console.error('解析日志数据失败:', err);
+                }
+            });
+            
+            eventSource.onerror = () => {
+                console.log('SSE 连接错误，尝试重连...');
+            };
+        }
+        
+        function addLogEntry(level, message) {
+            const container = document.getElementById('logStream');
+            const now = new Date();
+            const time = now.toTimeString().split(' ')[0];
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">${time}</span>
+                <span class="log-level ${level.toLowerCase()}">${level}</span>
+                <span class="log-message">${message}</span>
+            `;
+            
+            container.insertBefore(entry, container.firstChild);
+            
+            // 保持最多 50 条日志
+            while (container.children.length > 50) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // ===== 工具函数 =====
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        function refreshAll() {
+            loadDashboardData();
+        }
+        
+        // ===== 初始化 =====
+        document.addEventListener('DOMContentLoaded', () => {
+            initTrendChart();
+            loadDashboardData();
+            initLogStream();
+            
+            // 定时刷新
+            setInterval(loadDashboardData, 30000);
+            
+            // 时间范围切换
+            document.getElementById('timeRange').addEventListener('change', loadTrendData);
+        });
+    </script>
+</body>
+</html>

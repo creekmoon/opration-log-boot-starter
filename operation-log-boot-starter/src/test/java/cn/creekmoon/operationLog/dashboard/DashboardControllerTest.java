@@ -25,12 +25,26 @@ class DashboardControllerTest {
     void testDashboard() throws Exception {
         mockMvc.perform(get("/operation-log/dashboard"))
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("/operation-log-dashboard.html"));
+                .andExpect(forwardedUrl("/operation-log-dashboard-v3.html"));
     }
 
     @Test
     void testDashboardWithTrailingSlash() throws Exception {
         mockMvc.perform(get("/operation-log/dashboard/"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/operation-log-dashboard-v3.html"));
+    }
+
+    @Test
+    void testDashboardV2() throws Exception {
+        mockMvc.perform(get("/operation-log/dashboard/v2"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/operation-log-dashboard-v2.html"));
+    }
+
+    @Test
+    void testDashboardV1() throws Exception {
+        mockMvc.perform(get("/operation-log/dashboard/v1"))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("/operation-log-dashboard.html"));
     }

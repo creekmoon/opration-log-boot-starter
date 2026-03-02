@@ -13,10 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DashboardController {
 
     /**
-     * Dashboard首页
+     * Dashboard首页 (V3 - Grafana风格)
      */
     @GetMapping({"/dashboard", "/dashboard/"})
     public String dashboard() {
+        return "forward:/operation-log-dashboard-v3.html";
+    }
+
+    /**
+     * Dashboard V2 (旧版本)
+     */
+    @GetMapping("/dashboard/v2")
+    public String dashboardV2() {
+        return "forward:/operation-log-dashboard-v2.html";
+    }
+
+    /**
+     * Dashboard V1 (旧版本)
+     */
+    @GetMapping("/dashboard/v1")
+    public String dashboardV1() {
         return "forward:/operation-log-dashboard.html";
     }
 }
