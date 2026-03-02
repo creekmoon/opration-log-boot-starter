@@ -128,7 +128,7 @@ public class OrderController {
     @PutMapping("/{id}")
     public Order update(@PathVariable Long id, @RequestBody Order order) {
         // 跟踪字段变更
-        OperationLogContext.follow(() -> orderService.getById(id));
+        OperationLogContext.followIfRecordExists(() -> orderService.getById(id));
         return orderService.update(id, order);
     }
 }

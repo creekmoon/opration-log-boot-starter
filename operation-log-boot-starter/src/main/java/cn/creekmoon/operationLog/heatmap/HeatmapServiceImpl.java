@@ -5,21 +5,17 @@ import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.HyperLogLogOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
  * 热力图服务实现类
@@ -251,9 +247,10 @@ public class HeatmapServiceImpl implements HeatmapService {
                         .match(pattern)
                         .count(100) // 每次扫描100个
                         .build();
-                var cursor = connection.scan(options);
-                while (cursor.hasNext()) {
-                    keys.add(new String(cursor.next(), StandardCharsets.UTF_8));
+                try (var cursor = connection.scan(options)) {
+                    while (cursor.hasNext()) {
+                        keys.add(new String(cursor.next(), StandardCharsets.UTF_8));
+                    }
                 }
                 return null;
             });
@@ -275,15 +272,15 @@ public class HeatmapServiceImpl implements HeatmapService {
 
     @Override
     public List<HeatmapTopItem> getTopN(TimeWindow timeWindow, MetricType metricType, int topN) {
+        /* fast-fail：功能未启用时直接返回 */
         if (!properties.isEnabled()) {
             return Collections.emptyList();
         }
-
+        /* 构建查询参数 */
         int limit = Math.min(topN, properties.getTopNMaxSize());
         String pattern = buildPatternForTimeWindow(timeWindow, metricType);
-        
         Map<String, Long> allStats = new HashMap<>();
-
+        /* 汇总 Redis 指标值 */
         try {
             Set<String> keys = redisTemplate.keys(pattern);
             if (keys != null) {
@@ -302,25 +299,21 @@ public class HeatmapServiceImpl implements HeatmapService {
         } catch (Exception e) {
             handleRedisError("getTopN", e);
         }
-
-        // 排序并取TopN
-        return allStats.entrySet().stream()
+        /* 排序并组装 TopN 结果 */
+        List<Map.Entry<String, Long>> sortedEntries = allStats.entrySet().stream()
                 .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
                 .limit(limit)
-                .map(entry -> {
-                    String[] parts = entry.getKey().split("\\.", 2);
-                    String className = parts.length > 0 ? parts[0] : "unknown";
-                    String methodName = parts.length > 1 ? parts[1] : "unknown";
-                    return new HeatmapTopItem(0, className, methodName, entry.getValue(), metricType);
-                })
-                .collect(Collectors.toList())
-                .stream()
-                .map(item -> new HeatmapTopItem(
-                        (int) (allStats.entrySet().stream()
-                                .filter(e -> e.getValue() > item.value())
-                                .count() + 1),
-                        item.className(), item.methodName(), item.value(), metricType))
-                .collect(Collectors.toList());
+                .toList();
+        List<HeatmapTopItem> topItems = new ArrayList<>(sortedEntries.size());
+        int rank = 1;
+        for (Map.Entry<String, Long> entry : sortedEntries) {
+            String[] parts = entry.getKey().split("\\.", 2);
+            String className = parts.length > 0 ? parts[0] : "unknown";
+            String methodName = parts.length > 1 ? parts[1] : "unknown";
+            topItems.add(new HeatmapTopItem(rank, className, methodName, entry.getValue(), metricType));
+            rank++;
+        }
+        return topItems;
     }
 
     @Override

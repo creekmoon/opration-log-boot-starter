@@ -26,7 +26,14 @@ public class ProfileCollector {
      * @param logRecord 日志记录
      */
     public void collect(LogRecord logRecord) {
-        collect(logRecord, logRecord != null ? logRecord.getOperationType() : null);
+        /* fast-fail：日志为空直接返回 */
+        if (logRecord == null) {
+            return;
+        }
+        /* 声明参数 */
+        String operationType = logRecord.getOperationType();
+        /* 复用主流程 */
+        collect(logRecord, operationType);
     }
 
     /**
@@ -36,30 +43,33 @@ public class ProfileCollector {
      * @param operationType 操作类型
      */
     public void collect(LogRecord logRecord, String operationType) {
+        /* fast-fail：功能未启用或日志上下文不完整时直接返回 */
         if (!properties.isEnabled()) {
             return;
         }
-
         if (logRecord == null) {
             return;
         }
-
-        // 必须有用户ID
         if (logRecord.getUserId() == null) {
             return;
         }
-
-        // 使用final变量供lambda使用
-        final String finalOperationType = operationType != null && !operationType.isEmpty() 
-                ? operationType : "DEFAULT";
-        final String userId = logRecord.getUserId().toString();
-        final LocalDateTime timestamp = logRecord.getOperationTime() != null 
-                ? logRecord.getOperationTime() : LocalDateTime.now();
-
-        // 异步处理
+        /* 声明参数 */
+        String finalOperationType = operationType;
+        String userId = logRecord.getUserId().toString();
+        LocalDateTime timestamp = logRecord.getOperationTime();
+        /* 默认值兜底 */
+        if (finalOperationType == null || finalOperationType.isEmpty()) {
+            finalOperationType = "DEFAULT";
+        }
+        if (timestamp == null) {
+            timestamp = LocalDateTime.now();
+        }
+        /* 异步上报画像数据 */
+        String operationTypeToSave = finalOperationType;
+        LocalDateTime timestampToSave = timestamp;
         LogThreadPool.runTask(() -> {
             try {
-                profileService.recordOperation(userId, finalOperationType, timestamp);
+                profileService.recordOperation(userId, operationTypeToSave, timestampToSave);
             } catch (Exception e) {
                 log.debug("[operation-log] Profile collect error: {}", e.getMessage());
             }

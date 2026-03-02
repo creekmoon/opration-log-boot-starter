@@ -135,15 +135,15 @@ public class DashboardSecurityService {
     @Deprecated(since = "2.3", forRemoval = true)
     public String extractToken(HttpServletRequest request) {
         log.warn("[Deprecated] Token 认证已废弃，v2.3+ 使用 Basic Auth");
-        
-        // 1. 从Header获取
+
+        /* 从 Header 提取 token */
         String tokenHeader = properties.getTokenHeader();
         String token = request.getHeader(tokenHeader);
         if (StringUtils.hasText(token)) {
             return token.trim();
         }
 
-        // 2. 从Query Parameter获取 (如果启用)
+        /* 允许 query 参数时，从 query 提取 token */
         if (properties.isAllowTokenInQuery()) {
             token = request.getParameter("token");
             if (StringUtils.hasText(token)) {

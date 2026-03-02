@@ -59,7 +59,7 @@ Default implementations (`DefaultOperationLogHandler`, `DefaultOperationLogRecor
 3. `LogRecord` is initialized via `OperationLogRecordInitializer`
 4. Method parameters are serialized and stored
 5. Original method executes
-6. If `OperationLogContext.follow()` was called, the "after" value is captured
+6. If `OperationLogContext.followIfRecordExists()` was called, the "after" value is captured
 7. Log is processed asynchronously via `LogThreadPool` through all registered `OperationLogHandler` beans
 8. Context is cleaned via `OperationLogContext.clean()`
 
@@ -86,7 +86,7 @@ public Result update(User user) { ... }
 @OperationLog("Update Order")
 @PostMapping("/order/update")
 public Result updateOrder(Long orderId, Order newOrder) {
-    OperationLogContext.follow(() -> orderService.getById(orderId));
+    OperationLogContext.followIfRecordExists(() -> orderService.getById(orderId));
     orderService.update(newOrder);
     return Result.ok();
 }

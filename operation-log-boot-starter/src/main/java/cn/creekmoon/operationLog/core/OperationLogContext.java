@@ -28,14 +28,14 @@ public class OperationLogContext {
     protected static ThreadLocal<ServletRequest> currentServletRequest = new ThreadLocal<>();
     /*跟踪的元数据*/
     protected static ThreadLocal<Callable<Object>> metadataSupplier = new ThreadLocal<>();
-    protected static ConcurrentHashMap<String, LogRecord> recordId2Logs = new ConcurrentHashMap(1024);
+    protected static ConcurrentHashMap<String, LogRecord> recordId2Logs = new ConcurrentHashMap<>(1024);
 
     /**
      * 传入一个获取数据的方式,会通过这个方式监控数据变化 体现在effectFields字段中
      *
      * @param metadata 元数据,传入需要监控的对象
      */
-    public static void follow(Callable<Object> metadata) {
+    public static void followIfRecordExists(Callable<Object> metadata) {
         if (disable) {
             return;
         }
@@ -47,7 +47,7 @@ public class OperationLogContext {
         try {
             if (metadata != null) {
                 metadataSupplier.set(metadata);
-                //序列化成JSON格式
+                /* 序列化成 JSON 格式 */
                 JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(metadata.call()));
                 record.setPreValue(parse);
             }
@@ -57,16 +57,34 @@ public class OperationLogContext {
     }
 
     /**
+     * 兼容旧方法，建议改用 followIfRecordExists
+     *
+     * @param metadata 元数据,传入需要监控的对象
+     */
+    @Deprecated
+    public static void follow(Callable<Object> metadata) {
+        followIfRecordExists(metadata);
+    }
+
+    /**
      * 标记当前的日志操作为失败
      *
      * @return
      */
-    public static void markFail() {
+    public static void markFailIfRecordExists() {
         LogRecord currentLogRecord = getCurrentLogRecord();
         if (currentLogRecord == null) {
             return;
         }
         currentLogRecord.setRequestResult(false);
+    }
+
+    /**
+     * 兼容旧方法，建议改用 markFailIfRecordExists
+     */
+    @Deprecated
+    public static void markFail() {
+        markFailIfRecordExists();
     }
 
     /**
@@ -85,7 +103,7 @@ public class OperationLogContext {
      *
      * @param tags 标签
      */
-    public static void addTags(String... tags) {
+    public static void addTagsIfRecordExists(String... tags) {
         if (disable || tags == null) {
             return;
         }
@@ -101,11 +119,21 @@ public class OperationLogContext {
     }
 
     /**
+     * 兼容旧方法，建议改用 addTagsIfRecordExists
+     *
+     * @param tags 标签
+     */
+    @Deprecated
+    public static void addTags(String... tags) {
+        addTagsIfRecordExists(tags);
+    }
+
+    /**
      * 增加备注
      *
      * @param remarks 备注信息
      */
-    public static void addRemarks(String... remarks) {
+    public static void addRemarksIfRecordExists(String... remarks) {
         if (disable || remarks == null) {
             return;
         }
@@ -121,6 +149,16 @@ public class OperationLogContext {
         }
     }
 
+    /**
+     * 兼容旧方法，建议改用 addRemarksIfRecordExists
+     *
+     * @param remarks 备注信息
+     */
+    @Deprecated
+    public static void addRemarks(String... remarks) {
+        addRemarksIfRecordExists(remarks);
+    }
+
 
     /**
      * 清理当前的上下文信息
@@ -130,11 +168,11 @@ public class OperationLogContext {
         if (recordId == null) {
             return;
         }
-        /*移除对象*/
-        OperationLogContext.recordId2Logs.remove(recordId);   //及时移除对象
-        OperationLogContext.currentServletRequest.remove(); //及时移除对象
-        OperationLogContext.metadataSupplier.remove();//及时移除对象
-        OperationLogContext.currentRecordId.remove();//及时移除对象
+        /* 移除当前线程关联对象 */
+        OperationLogContext.recordId2Logs.remove(recordId);
+        OperationLogContext.currentServletRequest.remove();
+        OperationLogContext.metadataSupplier.remove();
+        OperationLogContext.currentRecordId.remove();
     }
 
 }

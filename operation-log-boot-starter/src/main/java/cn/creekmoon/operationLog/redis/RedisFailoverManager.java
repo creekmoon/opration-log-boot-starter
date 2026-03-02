@@ -5,7 +5,6 @@ import jakarta.annotation.PreDestroy;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Redis故障降级管理器
@@ -69,6 +67,8 @@ public class RedisFailoverManager {
     
     // 健康检查调度器
     private ScheduledExecutorService healthCheckScheduler;
+    // 健康检查超时执行器（复用，避免每次检查创建线程池）
+    private ExecutorService healthCheckExecutor;
     
     // 恢复上报调度器
     private ScheduledExecutorService flushScheduler;
@@ -93,6 +93,11 @@ public class RedisFailoverManager {
     @PostConstruct
     public void init() {
         log.info("RedisFailoverManager 初始化完成，实例ID: {}", instanceId);
+        healthCheckExecutor = Executors.newSingleThreadExecutor(r -> {
+            Thread t = new Thread(r, "redis-health-check-worker");
+            t.setDaemon(true);
+            return t;
+        });
         
         // 启动健康检查
         startHealthCheck();
@@ -114,6 +119,9 @@ public class RedisFailoverManager {
         
         if (flushScheduler != null) {
             flushScheduler.shutdown();
+        }
+        if (healthCheckExecutor != null) {
+            healthCheckExecutor.shutdown();
         }
         
         // 尝试最后刷新一次队列
@@ -198,9 +206,12 @@ public class RedisFailoverManager {
      * 检查Redis健康状态
      */
     private boolean checkRedisHealth() {
+        if (healthCheckExecutor == null || healthCheckExecutor.isShutdown()) {
+            return false;
+        }
+        Future<Boolean> future = null;
         try {
-            // 使用超时控制
-            Future<Boolean> future = Executors.newSingleThreadExecutor().submit(() -> {
+            future = healthCheckExecutor.submit(() -> {
                 try {
                     String pong = redisTemplate.execute((org.springframework.data.redis.core.RedisCallback<String>) (connection) -> {
                         return connection.ping();
@@ -214,6 +225,9 @@ public class RedisFailoverManager {
             return future.get(HEALTH_CHECK_TIMEOUT_MS, TimeUnit.MILLISECONDS);
             
         } catch (TimeoutException e) {
+            if (future != null) {
+                future.cancel(true);
+            }
             log.warn("Redis健康检查超时");
             return false;
         } catch (Exception e) {

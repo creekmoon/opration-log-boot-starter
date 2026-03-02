@@ -15,7 +15,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -36,7 +35,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -113,13 +111,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         long startNanos = System.nanoTime();
         boolean isError = false;
 
-        /**
-         * 赋值优先级 从上到下
-         * 1.使用OperationLog注解(如果已经填写)
-         * 2.使用Swagger注解(如果已经填写)
-         * 3.使用当前方法类名
-         *
-         * */
+        /* 赋值优先级：OperationLog 注解 > Swagger 注解 > 方法全名 */
         if (!OperationLog.OPERATION_SUMMARY_DEFAULT.equals(annotation.value())) {
             logRecord.setOperationName(annotation.value());
         } else if (swaggerApi != null && swaggerApi.summary() != null) {
@@ -186,7 +178,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
         } catch (Exception e) {
             log.debug("[operation-log]原生方法执行异常!", e);
             logRecord.setRequestResult(Boolean.FALSE);
-            isError = true;  // 标记错误用于指标采集
+            isError = true;
             /*如果配置了handleOnFail(注解或全局), 将异常消息添加到remarks中*/
             boolean handleOnFail = annotation.handleOnFail() || getOperationLogProperties().isHandleOnFailGlobalEnabled();
             if (handleOnFail) {
@@ -210,7 +202,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
             if (isNeedRecord) {
                 if (OperationLogContext.metadataSupplier.get() != null) {
                     try {
-                        //序列化成JSON格式
+                        /* 序列化 metadataSupplier 的 after 值 */
                         JSONObject parse = JSONObject.parseObject(JSONObject.toJSONString(OperationLogContext.metadataSupplier.get().call()));
                         logRecord.setAfterValue(parse);
                     } catch (Exception e) {
@@ -287,7 +279,7 @@ public class LogAspect implements ApplicationContextAware, Ordered {
                             operationType = inference.inferType(logRecord.getOperationName());
                         }
                     } catch (Exception ex) {
-                        // 如果获取 bean 失败，使用默认值
+                        /* 如果获取 Bean 失败，使用默认值 */
                         operationType = "DEFAULT";
                     }
                 }

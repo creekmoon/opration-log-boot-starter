@@ -21,9 +21,9 @@ public class DashboardDataService {
      * 获取概览数据
      */
     public DashboardDataController.OverviewData getOverviewData(LocalDateTime start, LocalDateTime end) {
-        // 获取所有接口统计
+        /* 获取所有接口统计 */
         Map<String, HeatmapService.HeatmapStats> allStats = heatmapService.getAllRealtimeStats();
-        
+        /* 汇总所有接口 PV/UV */
         long totalOperations = allStats.values().stream()
             .mapToLong(HeatmapService.HeatmapStats::pv)
             .sum();
@@ -34,10 +34,10 @@ public class DashboardDataService {
         return new DashboardDataController.OverviewData(
             totalOperations,
             totalUsers,
-            0L,  // todayOperations - 需要实现
-            0L,  // avgResponseTime - 需要实现
-            0.0, // errorRate - 需要实现
-            List.of()  // trend - 需要实现
+            0L,
+            0L,
+            0.0,
+            List.of()
         );
     }
     
@@ -45,7 +45,7 @@ public class DashboardDataService {
      * 获取热门操作统计
      */
     public List<DashboardDataController.OperationStat> getTopOperations(LocalDateTime start, LocalDateTime end, int limit) {
-        // 从热力图服务获取 TopN 数据
+        /* 从热力图服务获取 TopN 数据 */
         List<HeatmapService.HeatmapTopItem> topItems = heatmapService.getTopN(
             HeatmapService.TimeWindow.REALTIME,
             HeatmapService.MetricType.PV,
@@ -57,9 +57,9 @@ public class DashboardDataService {
                 item.fullName(),
                 "DEFAULT",
                 item.value(),
-                0.0,  // percentage - 需要计算
-                0L,   // avgResponseTime - 需要实现
-                0L    // errorCount - 需要实现
+                0.0,
+                0L,
+                0L
             ))
             .toList();
     }
@@ -68,7 +68,7 @@ public class DashboardDataService {
      * 获取趋势数据
      */
     public List<DashboardDataController.TrendPoint> getTrendData(LocalDateTime start, LocalDateTime end) {
-        // 简化实现，返回空列表
+        /* 简化实现，返回空列表 */
         return List.of();
     }
     
@@ -76,7 +76,7 @@ public class DashboardDataService {
      * 获取操作类型分布
      */
     public Map<String, Long> getOperationTypeDistribution(LocalDateTime start, LocalDateTime end) {
-        // 简化实现，返回空 map
+        /* 简化实现，返回空 map */
         return Map.of();
     }
 
@@ -84,26 +84,23 @@ public class DashboardDataService {
      * 获取实时 Dashboard 数据
      */
     public DashboardRealtimeData getRealtimeData() {
-        // 获取所有接口统计
+        /* 获取所有接口统计 */
         Map<String, HeatmapService.HeatmapStats> allStats = heatmapService.getAllRealtimeStats();
-        
-        // 计算总 PV/UV
+        /* 计算总 PV/UV */
         long totalPv = allStats.values().stream()
             .mapToLong(HeatmapService.HeatmapStats::pv)
             .sum();
         long totalUv = allStats.values().stream()
             .mapToLong(HeatmapService.HeatmapStats::uv)
             .sum();
-        
-        // 获取 Top10
+        /* 获取 Top10 */
         List<HeatmapService.HeatmapTopItem> topPv = heatmapService.getTopN(
             HeatmapService.TimeWindow.REALTIME, 
             HeatmapService.MetricType.PV, 
             10
         );
-        
-        // 构建趋势数据 (最近 12 个点，每 5 分钟一个)
-        List<TrendPoint> trend = generateTrendData();
+        /* 构建趋势数据（当前为简化实现） */
+        List<TrendPoint> trend = List.of();
         
         return new DashboardRealtimeData(
             totalPv,
@@ -113,12 +110,6 @@ public class DashboardDataService {
             trend,
             LocalDateTime.now()
         );
-    }
-    
-    private List<TrendPoint> generateTrendData() {
-        // 从 Redis 或内存中获取历史趋势数据
-        // 这里简化实现，实际应从 Redis 时间序列中获取
-        return List.of(); // 待实现
     }
     
     /**

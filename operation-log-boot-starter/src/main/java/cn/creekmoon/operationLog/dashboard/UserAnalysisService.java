@@ -28,12 +28,12 @@ public class UserAnalysisService {
      * 获取用户列表
      */
     public List<UserAnalysisController.UserSummary> listUsers(int page, int size, String tag) {
-        // 从 Redis 获取用户列表
+        /* 从 Redis 获取用户列表 */
         Set<String> userIds = redisTemplate.opsForSet().members("operation-log:all-users");
         if (userIds == null) {
             return Collections.emptyList();
         }
-
+        /* 过滤标签并分页，最后映射用户摘要 */
         return userIds.stream()
                 .skip((long) page * size)
                 .limit(size)
@@ -72,13 +72,12 @@ public class UserAnalysisService {
      * 获取用户详情
      */
     public UserAnalysisController.UserDetail getUserDetail(String userId) {
+        /* 查询用户统计与标签 */
         Map<Object, Object> stats = redisTemplate.opsForHash().entries(USER_STATS_KEY + userId);
         Set<String> tags = redisTemplate.opsForSet().members(USER_TAGS_KEY + userId);
-
-        // 获取 top endpoints
+        /* 获取 top endpoints */
         Map<String, Long> topEndpoints = getTopEndpointsFromRedis(userId, 5);
-
-        // 获取 hourly distribution
+        /* 获取 hourly distribution */
         Map<Integer, Long> hourlyDistribution = getHourlyDistributionFromRedis(userId);
 
         return new UserAnalysisController.UserDetail(
@@ -197,7 +196,7 @@ public class UserAnalysisService {
     }
 
     private long getCountLastDays(String userId, int days) {
-        // TODO: implement
+        /* TODO: implement */
         return 0;
     }
 
@@ -211,7 +210,7 @@ public class UserAnalysisService {
     }
 
     private UserAnalysisController.UserTimelineEvent parseTimelineEvent(String json) {
-        // TODO: parse JSON
+        /* TODO: parse JSON */
         return null;
     }
 }
