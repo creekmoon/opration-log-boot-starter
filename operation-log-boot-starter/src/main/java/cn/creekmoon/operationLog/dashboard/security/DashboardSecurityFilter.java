@@ -110,8 +110,8 @@ public class DashboardSecurityFilter extends OncePerRequestFilter {
             String password = credentials.substring(colonIndex + 1);
 
             // 验证用户名密码
-            String expectedUsername = properties.getAuthUsername();
-            String expectedPassword = properties.getAuthPassword();
+            String expectedUsername = properties.getUsername();
+            String expectedPassword = properties.getPassword();
 
             return expectedUsername.equals(username) && expectedPassword.equals(password);
 

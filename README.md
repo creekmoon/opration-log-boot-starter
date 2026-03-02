@@ -256,27 +256,35 @@ operation-log:
 | `fallback-enabled` | boolean | true | 是否启用降级策略 |
 | `async-queue-size` | int | 512 | 异步更新队列大小 |
 
-#### Dashboard配置 (operation-log.dashboard.*)
+#### Dashboard配置 (operation-log.dashboard.*) - v2.3 简化版
 
 | 配置项 | 类型 | 默认值 | 说明 |
 |--------|------|--------|------|
-| `enabled` | boolean | false | 是否启用Dashboard（v2.3+ 默认关闭）|
-| `refresh-interval` | int | 30 | 自动刷新间隔（秒） |
-| `auth.username` | string | admin | Basic Auth 用户名（可选）|
-| `auth.password` | string | - | Basic Auth 密码（配置后启用认证）|
+| `enabled` | boolean | **true** | 是否启用 Dashboard |
+| `username` | string | admin | Basic Auth 用户名 |
+| `password` | string | - | Basic Auth 密码（**配置后启用认证**）|
 
-> 💡 **提示**: Dashboard 访问路径固定为 `/operation-log/dashboard`，如需自定义请通过反向代理（Nginx）实现。
+> 💡 **极简配置**: 只有 3 个配置项！不配置 `password` 时无需认证，配置后自动启用 Basic Auth。
 
-**配置场景：**
+**配置示例：**
 
-| 场景 | 配置 |
-|------|------|
-| 本地开发 | `enabled: true`（不配置 auth 则无需认证） |
-| 生产环境 | `enabled: true` + `auth.username/password` |
+```yaml
+# 场景1: 本地开发（无需认证）
+operation-log:
+  dashboard:
+    enabled: true  # 可不写，默认就是 true
 
-> 🔐 **安全建议**: 生产环境必须使用 HTTPS，建议使用环境变量配置密码。
+# 场景2: 生产环境（需要认证）
+operation-log:
+  dashboard:
+    enabled: true
+    username: admin
+    password: ${DASHBOARD_PASSWORD}  # 建议环境变量
+```
 
-> ⚠️ **废弃通知**: `auth-mode`、`auth-token`、`allow-ips` 等旧配置已废弃，仍可使用但会显示警告，建议迁移到 `auth` 配置。
+> 🔐 **安全提示**: 生产环境建议配置密码并通过 HTTPS 访问。
+
+> ⚠️ **破坏性变更 v2.3**: `auth-mode`、`auth-token`、`allow-ips`、`auth.username`、`auth.password` 等旧配置已移除，请使用新的扁平化配置。
 
 ---
 
